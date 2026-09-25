@@ -43,11 +43,15 @@ Each rule was a correction from the client or a lesson from a delivered video. A
 - **Show the truth.** Never invent features, flows, labels or numbers the product doesn't have. Keep the app's
   exact UI text. Sample data is fictional but plausible, with no real customer names. If a feature isn't in the
   site kit, get screenshots (see §2) rather than guessing.
+  - If nobody can supply them, rebuild the screen from site-kit pieces with as few changes as possible.
+  - List every element you had to invent (a row, a pill, a label, a route) in your delivery message, so the client
+    can confirm it before the video is used.
 - **Bilingual.** Every title, caption, step and callout has an English line and a natural Arabic line. Write the
   Arabic as its own sentence, not a word-for-word translation.
 - **Western digits (0–9) in both languages**, in captions, callouts and the steps rail. The client's own brief
   says digits stay Western, and the app's cards use them (for example «ثقة 80%»). Inside site-kit pages, keep
-  whatever the real page shows.
+  whatever the real page shows. Text you add to a page (an injected card, a rebuilt row) uses the digits of its
+  neighbours on that page.
 - **Calm pace.** Entrances take 0.6–1.0 s on a decelerating ease, and camera glides take 1–1.5 s. Nothing pops or
   snaps. A caption holds for about two bars (5 s) or more.
 - **No shaking, no pulsing, no cuts.** No camera shake, wiggles, bobbing or overshoot; nothing throbs to the beat;
@@ -64,7 +68,7 @@ Get these, asking only for what you can't infer, in one short round:
 
 1. **The workflow or feature**, and the one thing the viewer should take away.
 2. **Kind and length.** A short demo runs 20–60 s: a title, 2–4 ideas and an end card. A walkthrough runs
-   45 s – 3 min: a title, 3–7 numbered steps, an outro and an end card.
+   40 s – 3 min: a title, 3–7 numbered steps, an outro and an end card. Three steps make about 41 s.
 3. **Formats.** Both, unless told otherwise.
 4. **Music.** Use `fit/product-video.mp3` (the default; both references use it), `fit/stylish.mp3`, or a licensed
    track the client supplies. New tracks need `python3 tools/beats.py <file>` (DEMOS.md §7).
@@ -84,6 +88,13 @@ range, with the time, the caption (EN / AR) and what happens on screen. `M.B(k)`
   - The cursor leaves on +5.
   - A highlight or callout holds until +10.5.
   - The caption ends at +11.5, 0.5 s before the next step.
+- **Two common variants:**
+  - **Typing:** click on +3, then type from +4. The field lights up 0.5 s before the first letter, so typing can't
+    start with the click. Results arrive from +5.
+  - **A click that opens another page:** glide out to the new page as it fades in (+3.5, about 1.4 s), rather than
+    holding the zoomed view. The new page is the result.
+- **Where the end card lands** (the anatomy has the table): with `product-video.mp3`, 3 steps put it on k52
+  (41 s), 4 steps on k68 (52 s), and 5 steps on k80 (60 s).
 - **Short demo:** a title of about 2 bars, then 2–4 ideas of 2–3 bars each with one caption each, then the end
   card (about 3 bars; it needs 4 s to finish its entrance).
 - **Beats:** put the big moments on the music's section changes (DEMOS.md §7 lists them per track), and clicks and
@@ -111,18 +122,29 @@ Edit `demo.json` (title, duration, music), then write the timeline against the A
 Frame each format on purpose, using `M.pick(a16x9, a9x16)` (or `v(...)` as in the reference):
 
 - **16:9:** the window shows the whole page at 0.717. Focus at 0.95–1.0 to show a whole card, and at 1.3–1.6 for
-  small targets like tabs (pass `max`).
+  small targets like tabs. An explicit `scale` is used as given.
 - **9:16:** the window is a 1000×1000 square, and the page is wider than it. Never shrink a wide card to fit;
-  show the part that matters at a scale of at least 1.0 (the reference uses 1.08), and pan with a second focus
-  for the next part. Arabic pages read from the right, so aim right of centre (`dx`).
+  show the part that matters at a scale of at least 1.0, and pan with a second focus for the next part. Arabic
+  pages read from the right, so aim right of centre (`dx`).
+  - The bar: the subject's main text reads at about 25 px or more on screen. That means about 1.1 for card titles,
+    and 1.3 or more for body text.
+  - Name small pills and icons with a callout rather than zooming until they are large.
+- **Edges:** in a hold, the window's edge must not slice through a line of text. A sliver of a tab row or a
+  half-cut title looks like a mistake. `tools/cutcheck.js` (§5) finds these and prints the nearest clean view
+  centre. Set a view centre directly with a zero-size target: `app.focus(t, {x, y, w:0, h:0}, {scale})`.
+- **Long pans:** keep each glide under about one window width. A long, fast slide at high zoom strobes even with
+  motion blur, so pull back a little, or pan in two moves.
 - **9:16 safe zones:** the engine keeps text between about y 220 and 1600, clear of the top and bottom bands that
   TikTok, Reels and Shorts cover with their own UI. Don't move captions or content into those bands.
 - **Clicks:** set `{ax, ay}` so the pointer tip lands just under or beside the label. The reference uses
   `{ax:0.2, ay:0.95}` on a tab.
-- **Callouts:** at most two per step. Use `side`, `gap` and `dx`/`dy` to keep the box off the title, buttons and
-  numbers, and end it before the view moves on.
-- **Timing:** leave about 2 s after an action before the next camera move. End each caption at least 0.5 s
-  before the next starts, because its fade takes 0.5 s.
+- **Callouts:** at most two boxes on screen at once; highlight rings don't count. Use `side`, `gap` and `dx`/`dy`
+  to keep the box off the title, buttons and numbers, and end it before the view moves on. To name three or more
+  items, ring the ones English viewers can already read and call out the rest, or call them out one after
+  another.
+- **Timing:** leave about 2 s after an action before the next camera move, so the viewer sees the result. A
+  click that opens a page is the exception (see §3). End each caption at least 0.5 s before the next starts,
+  because its fade takes 0.5 s.
 
 ## 5. Review stills in both formats
 
@@ -132,14 +154,24 @@ python3 tools/stills.py <slug> 8,11,13,20,23,33,36,47,58,68,80 --beats   # your 
 ```
 
 This writes `style_audit/<slug>-stills-16x9.png` and `…-9x16.png`. Look at both sheets, then open the full-size
-still for any doubtful frame. Go through `references/quality-bar.md` point by point, fix, and re-check. Most
-defects show up here, and a still costs seconds while a render costs minutes.
+still for any doubtful frame (the sheet shows each file's exact time). Go through `references/quality-bar.md`
+point by point, fix, and re-check. Most defects show up here, and a still costs seconds while a render costs
+minutes.
+
+Then check the edges, which the eye misses on small sheets:
+
+```bash
+node tools/cutcheck.js <slug>      # both formats: every hold where the window's edge slices text, with a clean centre
+```
+
+Fix every hold it lists, until it prints `clean` for both formats. Its notes about long lines running off the side
+are fine, unless that line is the step's subject.
 
 ## 6. Build, QA, look
 
 ```bash
 SUB=1 ./build_demo.sh <slug>      # optional quick draft (no motion blur) to check timing in motion
-./build_demo.sh <slug>            # final: both formats, motion blur, QA; about 8 min per format for 60 s
+./build_demo.sh <slug>            # final: both formats, motion blur, QA; about 6–8 min per format for 60 s
 ```
 
 Both formats must print `RESULT PASS`: pulse at most 1.15 and shake 0. Then open
@@ -149,9 +181,11 @@ Don't loosen the check.
 ## 7. Deliver and record
 
 - Send `out/<slug>-16x9.mp4` and `out/<slug>-9x16.mp4`, each under 30 MB, with one line on what each shows.
+- If anything on screen was invented (§1), list it in the same message, and say the client needs to confirm it
+  before the video is used.
 - Commit `demos/<slug>/` and any engine, tool or site-kit change to `main`, and push. Build outputs are
   gitignored.
-- If you changed the engine, re-check both references with `tools/stills.py`.
+- If you changed the engine, re-check both references with `tools/stills.py` and `tools/cutcheck.js`.
 - Add the video to DEMOS.md §10.
 
 ## 8. When the client gives feedback

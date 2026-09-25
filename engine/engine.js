@@ -230,7 +230,8 @@ function app(o){
     const sPage=LAY.cover?Math.max(WIN.w/pg.w,WIN.h/pg.h):Math.min(WIN.w/pg.w,WIN.h/pg.h);
     if(k.spec==='page')return {cx:k.opt.x??pg.w/2,cy:k.opt.y??pg.h/2,s:sPage*(k.opt.zoom||1),pg};
     const r=rectFor(k.spec,k.t),fill=k.opt.fill??LAY.fill;
-    const s=clamp(k.opt.scale??Math.min(fill*WIN.w/r.w,fill*WIN.h/r.h),sPage,k.opt.max??LAY.sMax);
+    // an explicit scale is used as given (up to 2.5, or max); a fill-computed zoom stops at the format's sMax unless max says more
+    const s=k.opt.scale!=null?clamp(k.opt.scale,sPage,k.opt.max??2.5):clamp(Math.min(fill*WIN.w/r.w,fill*WIN.h/r.h),sPage,k.opt.max??LAY.sMax);
     return {cx:r.x+r.w/2+(k.opt.dx||0),cy:r.y+r.h/2+(k.opt.dy||0),s,pg};
   }
   function rawKey(i,t){
@@ -264,6 +265,7 @@ function app(o){
       const onKey=sw<0.5&&tb?tb:ta;chTabs.forEach(e=>e.classList.toggle('on',e.dataset.k===onKey));}
     VIEW=viewAt(t);
     st(site,{transform:`translate(${f2(VIEW.tx)}px,${f2(VIEW.ty)}px) scale(${f3(VIEW.s)})`});
+    window.VIEWNOW={cx:(WIN.w/2-VIEW.tx)/VIEW.s,cy:(WIN.h/2-VIEW.ty)/VIEW.s,s:VIEW.s,ww:WIN.w,wh:WIN.h};   // the view centre in page px (tools/cutcheck.js)
   });
 
   /* cursor: glides between targets on a gentle arc; clicks press it and send one soft ring */
@@ -284,7 +286,9 @@ function app(o){
     const c=WOFF.vis?curAt(t):null;
     if(!c||c.vis<=0.001){cur.style.opacity=0;}
     else{let press=1;for(const k of CLK){const q=P(t,k.t-0.06,k.t+0.24);if(q>0&&q<1)press=Math.min(press,1-0.14*Math.sin(Math.PI*q));}
-      st(cur,{opacity:f3(c.vis),transform:`translate(${f1(VIEW.tx+c.x*VIEW.s-LAY.tip[0])}px,${f1(VIEW.ty+c.y*VIEW.s-LAY.tip[1])}px) scale(${f3(press)})`});}
+      const px=VIEW.tx+c.x*VIEW.s,py=VIEW.ty+c.y*VIEW.s;            // the tip, in window px
+      const inWin=clamp(1-Math.max(-px,px-WIN.w,-py,py-WIN.h,0)/30,0,1); // a view move that carries the cursor out of the window fades it
+      st(cur,{opacity:f3(c.vis*inWin),transform:`translate(${f1(px-LAY.tip[0])}px,${f1(py-LAY.tip[1])}px) scale(${f3(press)})`});}
     let rp=null;for(const k of CLK)if(t>=k.t&&t<k.t+0.6)rp=k;
     if(rp&&c){const q=P(t,rp.t,rp.t+0.6),r=(16+40*ez.outC(q))*LAY.rip;
       st(rip,{opacity:f3(0.9*(1-q)),left:f1(VIEW.tx+c.x*VIEW.s-r)+'px',top:f1(VIEW.ty+c.y*VIEW.s-r)+'px',width:f1(2*r)+'px',height:f1(2*r)+'px',

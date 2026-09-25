@@ -38,7 +38,8 @@ python3 tools/make_demo.py my-feature && python3 tools/stills.py my-feature 8,11
 
 Preview while writing: open `build/<slug>-16x9.html` in Chrome, and add `#t=12.5` to the URL to see that
 second (or call `SEEK(12.5)` in the console). `tools/stills.py` writes `style_audit/<slug>-stills-<format>.png`,
-a labelled sheet per format, and keeps each still at full size next to it.
+a labelled sheet per format, and keeps each still at full size next to it. `node tools/cutcheck.js <slug>` lists
+every hold where the window's edge slices a line of text, with the nearest clean view centre.
 
 The procedure and the quality bar live in the `marsad-demo` skill (`.claude/skills/marsad-demo/`). Its
 `references/quality-bar.md` is the checklist to go through before any build.
@@ -98,6 +99,7 @@ These come from the client's feedback on the campaign films. The engine's defaul
 | `tools/beats.py` | Tempo, beats, downbeat candidates and a loudness map of a track |
 | `tools/qa.py` | Pace, pulse and shake checks and a contact sheet of a rendered MP4 |
 | `tools/stills.py` | Review stills in both formats at given times or beats, tiled into one labelled sheet per format |
+| `tools/cutcheck.js` | Text sliced by the app window's edge during holds, with the nearest clean view centre |
 | `render_mb.js`, `tools/blend.py` | Motion blur: four sub-frames per frame over a 180° shutter, then averaged (shared with the films) |
 | `build_demo.sh` | All of the above in order |
 | `render_full.js`, `render_ab.js` | Frame renderer and still renderer (shared with the films) |
@@ -128,13 +130,16 @@ sliders, trendUp, swap, send, check, clock, ccheck, cx, bang, maximize.
 ```js
 const app = M.app({at, out, page:'pulse', view:{x, y, zoom}});   // one per demo; view = the opening framing
 app.page(t, 'decisions')                 // cross-fade to another page; the tab underline slides
-app.focus(t, target, {fill, scale, dx, dy, dur, max})   // glide the view to an element (max: allow a closer zoom)
+app.focus(t, target, {fill, scale, dx, dy, dur, max})   // glide the view to an element
+app.focus(t, {x, y, w:0, h:0}, {scale})  // glide to a view centre in page px (what tools/cutcheck.js suggests)
 app.focus(t, 'page', {x, y, zoom})       // back to the whole page (16:9 fits it; 9:16 shows a square crop at x,y)
 app.cursor(t, target)                    // the cursor glides to an element (appears on the first call)
 app.click(t, target, {ax, ay})           // moves there in the second before t, presses, one soft ring. ax/ay (0-1):
                                          // where the pointer tip lands in the element; put it beside the label, not on it
 app.cursorOut(t)
-app.type(t, target, 'text', {cps:14, clearAt})   // types into an input; steady caret, no blinking
+app.type(t, target, 'text', {cps:14, clearAt})   // types into an input; steady caret, no blinking. The field lights
+                                         // 0.5 s before the first letter: type from the beat after the click. It treats
+                                         // the field's first <span> (or .ph) as the placeholder
 app.show(t, target, {from:'below'|'above'|'left'|'right'|'none', dist, scale, dur, display})
 app.hide(t, target, {dur})
 app.highlight(from, to, target, {pad})   // a glowing ring around an element
@@ -146,8 +151,10 @@ app.set(t, target, (el, on, t) => { … }) // anything else, per frame
 app.inject('pulse', '<div class="abs" id="alertCard">…</div>')   // add an element to a page
 ```
 
-`fill` (default 0.72 in 16:9, 0.9 in 9:16) is how much of the window the element should fill; `scale` sets the
-zoom directly (natural px → screen px; the whole page in 16:9 is 0.717, the most is 1.3 in 16:9 and 1.6 in 9:16).
+`fill` (default 0.72 in 16:9, 0.9 in 9:16) is how much of the window the element should fill. A `fill`-computed
+zoom stops at 1.3 in 16:9 and 1.6 in 9:16 unless `max` says more. `scale` sets the zoom directly (natural px →
+screen px; the whole page in 16:9 is 0.717, in 9:16 0.943) and is used as given, up to 2.5. The cursor fades out
+if a view move carries it outside the window.
 `dx`/`dy` shift the centre in page pixels. Focus is format-aware: the same call frames well in both formats as
 long as the element fits; for wide elements in 9:16, aim at the part that matters (Arabic pages read from the
 right).
@@ -183,6 +190,17 @@ the frame's time `Math.round(t*30)/30`, or it ghosts; `count`, `text`, `type` an
 
 Every page shares the top bar and tabs (`.sk-tab[data-k="home|pulse|data|dec|ai|proj|admin"]`, `.sk-badge`,
 `.sk-search`). `site_pages/*.png` shows what each page looks like.
+
+Limits worth knowing:
+- **search:** reached from Data → «البحث والاستعلام» in the section sidebar (`.sk-side .sk-item:nth-child(5)`).
+  - The field already shows «فاتورة».
+  - The results are always on screen.
+  - The results come only from Odoo and WhatsApp, although the subtitle names files too.
+  - There is no room for a fifth row.
+  - To show the search itself, rebuild the page in `pages.js` as `demos/search-walkthrough/` does: an empty field,
+    and results that appear after typing.
+- The top-bar search box (Ctrl K) is not modelled; what it opens in the real app is unknown.
+- Anything you add or change on a page is invented until the client confirms it. List it when you deliver.
 
 ### 6.2 New elements on an existing page
 
@@ -234,7 +252,8 @@ section if the demo is longer than the track, fades in and out, and normalises t
 
 ## 8. Quality check
 
-`build_demo.sh` runs `python3 tools/qa.py out/<slug>-<format>.mp4` after each render:
+Before rendering, `node tools/cutcheck.js <slug>` must print `clean` for both formats: no hold where the window's
+edge slices a line of text. After each render, `build_demo.sh` runs `python3 tools/qa.py out/<slug>-<format>.mp4`:
 
 - **pace**: frame-to-frame change (0–255). The examples measure a median of about 0.05 and a max of 3.5–6.
   Anything over 12 is listed with its time (a fast move or a hard cut).
@@ -265,4 +284,5 @@ target, nothing cut off in 9:16.
 | Demo | Kind | Length | Music | Notes |
 |---|---|---|---|---|
 | [`pulse-short`](demos/pulse-short/demo.js) | Short feature demo (example) | 30 s | `product-video.mp3` | Business Pulse: the daily advisor switches on, new findings, a stock alert with highlight and callout |
+| [`search-walkthrough`](demos/search-walkthrough/demo.js) | Walkthrough, 3 steps (the skill's test run) | 41 s | `product-video.mp3` | Search across all your data: open Search from the Data sidebar, type «فاتورة», results from Odoo, WhatsApp and files. `pages.js` rebuilds the search page. **To confirm with the client before use:** the files result row and its pills are invented, and the route through the Data sidebar |
 | [`decisions-walkthrough`](demos/decisions-walkthrough/demo.js) | Walkthrough (**the reference**) | 60 s | `product-video.mp3` | Approve a recommendation in 5 steps: open Decisions, pick, check confidence and source, approve, counters update. v2 (2026-09-25): closer tab click with the label visible, callouts clear of content, readable 9:16 framing, Western digits, motion blur |

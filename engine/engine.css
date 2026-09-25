@@ -55,7 +55,8 @@ body.f9x16 #stage{width:1080px;height:1920px;}
 .m-title .sub{position:relative;font:500 26px/1.45 'Inter';color:var(--body);margin-top:22px;opacity:0;}
 body.f16x9 .m-title{top:250px;}
 body.f9x16 .m-title{top:600px;padding:0 70px;}
-body.f9x16 .m-title .en{font-size:88px;}
+body.f9x16 .m-title .en{font-size:88px;text-wrap:balance;}
+body.f9x16 .m-title .ar{text-wrap:balance;}
 
 /* ---------- captions (bilingual) ---------- */
 .m-cap{position:absolute;left:0;width:100%;text-align:center;}

@@ -18,14 +18,19 @@ M.steps({at:B(8),out:B(68),list:[
   {at:B(56),en:'It is recorded right away',       ar:'يُسجَّل القرار فوراً'},
 ]});
 
-// 1 — the Decisions tab: close enough to read the tabs; the pointer lands under the label, never on it
-app.focus(B(8),'.sk-tab[data-k="dec"]',{scale:v(1.5,1.45),max:1.6,dy:v(120,200)});
+// Framing: every hold is set where no line of text is sliced by the window's edge (tools/cutcheck.js suggests these
+// centres; {x,y,w:0,h:0} is a view centre in page px). PAGE9 is the whole-page view in 9:16.
+const at=(x,y)=>({x,y,w:0,h:0}), PAGE9={x:954,zoom:1.018};
+
+// 1 — the Decisions tab: close enough to read the tabs; the pointer lands under the label, never on it.
+//     The click opens a new page, so the view glides out as it fades in (B11.5) instead of holding on it.
+app.focus(B(8),v('.sk-tab[data-k="dec"]',at(1491,355)),{scale:v(1.5,1.45),max:1.6,dy:v(120,0)});
 app.click(B(11),'.sk-tab[data-k="dec"]',{ax:0.2,ay:0.95});
 app.page(B(11.25),'decisions');
-app.focus(B(13),'page',{x:v(948,1000),dur:1.2});
+app.focus(B(11.5),'page',{...v({x:948},PAGE9),dur:1.4});
 
 // 2 — the recommendation card. 16:9: the whole card fills the window; 9:16: its right half (title, pills, buttons) at a readable size
-app.focus(B(20),'#decCard',{scale:v(0.95,1.08),dx:v(0,330),dur:1.2});
+app.focus(B(20),'#decCard',{scale:v(0.95,1.08),dx:v(0,334),dy:v(-190,-248),dur:1.2});
 app.click(B(23),'#decCard',{ax:v(0.6,0.75)});
 app.highlight(B(23),B(30.5),'#decCard',{pad:10});
 app.cursorOut(B(25));
@@ -33,19 +38,18 @@ app.cursorOut(B(25));
 // 3 — confidence and source (9:16 shows one at a time: the card is wider than the frame).
 //     The confidence callout sits below and to the left, clear of the title above and the buttons below.
 app.callout(B(33),v(B(42),B(35.5)),'text:ثقة 80%',{en:'80% confidence',ar:'ثقة 80%',side:'bottom',gap:20,dx:v(-340,-360)});
-if(M.FORMAT==='9x16')app.focus(B(36),'text:المخزون · Odoo',{scale:1.15,dx:360,dy:150,dur:1.2});
+if(M.FORMAT==='9x16')app.focus(B(36),at(520,617),{scale:1.13,dur:1.2});
 app.callout(B(37),B(42),'text:المخزون · Odoo',{en:'Source: Odoo inventory',ar:'المصدر: مخزون Odoo',side:'top'});
 
 // 4 — approve
-app.focus(B(44),'#btnOK',{scale:v(1.1,1.2),dx:v(-150,-120),dur:1.2});
+app.focus(B(44),v(at(1196,568),at(1012,606)),{scale:v(1.01,1.1),dur:1.2});   // the button and, after the click, the whole confirmation
 app.click(B(47),'#btnOK');
 app.show(B(47.25),'#toast',{from:'none',scale:0.97,dur:0.8});
 app.cursorOut(B(49));
-if(M.FORMAT==='9x16')app.focus(B(49),'text:تم تنفيذ الإجراء',{scale:1.1,dur:1.1});   // 9:16: glide to the message
 
 // 5 — the counters update
 const TWO={x:772,y:405,w:688,h:138};           // the "approved" and "in review" stat cards (natural coords)
-app.focus(B(56),TWO,{fill:v(0.72,0.9),dur:1.3});
+app.focus(B(56),v(TWO,at(1017,552)),{fill:0.72,scale:v(undefined,1.09),dx:v(-39,0),dy:v(-70,0),dur:1.3});
 app.count(B(58),'#stats .sk-stat:nth-child(3) .n',0,1);
 app.count(B(58),'#stats .sk-stat:nth-child(4) .n',6,5);
 app.text(B(58),'text:موافق عليها (0)','موافق عليها (1)');
@@ -54,7 +58,7 @@ app.highlight(B(59),B(66),'#stats .sk-stat:nth-child(3)',{pad:8});   // the "app
 
 // outro
 M.caption({at:B(68),out:B(78),en:'From recommendation to action, in seconds.',ar:'من التوصية إلى التنفيذ في ثوانٍ.'});
-app.focus(B(68),'page',{x:v(948,1000),dur:1.4});
+app.focus(B(68),'page',{...v({x:948},PAGE9),dur:1.4});
 
 M.endcard({at:B(80)});
 M.start();

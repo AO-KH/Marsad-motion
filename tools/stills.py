@@ -35,10 +35,10 @@ def main():
         if not bpm:
             sys.exit('--beats needs music with a bpm in demo.json')
         ts = [phase + 60.0 / bpm * k for k in vals]
-        labels = [f'{t:.2f}s  B({k:g})' for t, k in zip(ts, vals)]
+        labels = [f'{t:.3f}s  B({k:g})' for t, k in zip(ts, vals)]   # the same time as the full-size file's name
     else:
         ts = vals
-        labels = [f'{t:.2f}s' for t in ts]
+        labels = [f'{t:.3f}s' for t in ts]
     tlist = ','.join(f'{t:.3f}' for t in ts)
     out = os.path.join(ROOT, 'style_audit')
     os.makedirs(out, exist_ok=True)

@@ -6,10 +6,16 @@ A demo is ready when every point below holds in **both** formats. Check it on th
 ## Checklist, per still
 
 **Subject and framing**
-- [ ] What the caption talks about is in frame, near the centre, and readable. In 9:16, UI text that matters
-      should look at least as big as the Arabic caption line; if it doesn't, zoom in (focus scale ≥ 1.0) and pan.
+- [ ] What the caption talks about is in frame, near the centre, and readable. In 9:16 the subject's main text
+      reads at about 25 px or more (card titles at scale ≈ 1.1, body text ≈ 1.3); small pills get a callout.
 - [ ] Nothing important is cut by the window edge: page titles, the card being discussed, the button being
       clicked. Arabic pages read from the right, so keep the right side.
+- [ ] `node tools/cutcheck.js <slug>` prints `clean` for both formats: no hold where the edge slices a line of
+      text (a sliver of the tab row, half a title, a label cut mid-word). Long body lines running off the side are
+      notes, and fine unless they are the subject.
+- [ ] The checker only sees text. Glance at the window edges on the stills for cards, icons and injected
+      elements. A sliver of a card at the edge (a lone red dot, a strip of a button) is just as sloppy: frame it
+      whole, or leave it out.
 - [ ] 9:16: no key text in the platform bands (top ~220 px, bottom ~320 px). The engine's layout already respects
       this, so only custom overlays can break it.
 
@@ -28,10 +34,12 @@ A demo is ready when every point below holds in **both** formats. Check it on th
 - [ ] Western digits in captions, callouts and the rail («ثقة 80%», «الخطوة 3 من 5»).
 - [ ] No caption is clipped, and no line is left with one word (9:16 captions balance their lines).
 - [ ] No two captions overlap: each ends at least 0.5 s before the next starts.
-- [ ] Product text on screen is the app's real text. Nothing is invented.
+- [ ] Product text on screen is the app's real text. Anything you had to invent (because the site kit lacks it and
+      nobody could send a screenshot) is listed in the delivery message for the client to confirm.
 
 **Motion (on the render, not the stills)**
 - [ ] Glides are smooth and 1–1.5 s long; entrances ease out over 0.6–1.0 s; nothing pops, bounces or shakes.
+- [ ] No glide slides much more than one window width at high zoom (it strobes, even with motion blur).
 - [ ] Every action lands on a beat or an 8th; nothing repeats on every beat.
 - [ ] QA prints `RESULT PASS` (pulse ≤ 1.15, shake 0), and the contact sheet looks like the stills.
 - [ ] The final render has motion blur (the default `SUB=4`). A `SUB=1` draft is never delivered.
@@ -49,6 +57,14 @@ A demo is ready when every point below holds in **both** formats. Check it on th
 | Two captions on screen at once | A caption's 0.5 s fade overlapped the next | End each caption ≥ 0.5 s before the next (`out: next - 0.5`; `M.steps` does this) |
 | A callout pointing at nothing | The view moved while the callout was up | End the callout before the focus that moves away. Callouts also fade by themselves off-window |
 | Numbers look doubled (a ghost 39 behind 38) | Motion blur averaged sub-frames with different values | `app.count`, `app.text`, `app.type` and `app.toggle` step once per frame. Custom `M.track` text should use `Math.round(t*30)/30` |
+| A sliver of the tab row or half a page title at the window's top edge | The view's edge falls through a line of text; the eye misses it on stills | `node tools/cutcheck.js <slug>`: it lists the hold and prints the nearest clean view centre; focus on `{x, y, w:0, h:0}` with that scale |
+| After a click opens a page, its title is cut while the zoomed view holds | Holding the close-up that suited the old page | Glide out to the new page as it fades in (+3.5), not 2 s later |
+| The cursor floats over the purple background | The view panned away from where the cursor was parked | The engine now fades a cursor that leaves the window; still call `cursorOut` when a step is done with it |
+| A zoom doesn't go as close as asked | Older engine capped `scale` at 1.3 (16:9) / 1.6 (9:16) | An explicit `scale` is now used as given (up to 2.5); `max` still caps a `fill`-computed zoom |
+| The field lights up before the click | `app.type` lights the field 0.5 s before the first letter | Type from the beat after the click (+4 when the click is on +3) |
+| A title leaves one word alone on its second line (9:16) | Titles weren't balanced | The engine balances 9:16 titles and captions (`text-wrap: balance`) |
+| A long pan shows a title as 3–4 separate copies | A fast slide at 2× zoom moves too far per frame for 4 sub-frames | Shorter pans: pull back a little, or move in two steps; or build with `SUB=8` |
+| A result, route or label the site kit doesn't have | The feature is only partly in the site kit | Ask for a screenshot. If there is none, rebuild the page in `pages.js` with the fewest changes, and list what you invented when you deliver |
 | Glass icons flicker or double their glow | Chromium backdrop-root changes during fades | Keep the `.gk` base layer (`M.GLASS(...)` adds it); don't strip it |
 | A title's Arabic line is invisible | A child selector matched a nested element | Style engine parts with `:scope>`-level selectors and `m-` prefixed classes |
 | A pill renders as three boxes | A `span` rule matched spans nested inside the pill | Scope styles to the pill's own class, not `span` |
