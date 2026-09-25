@@ -1,0 +1,24 @@
+// Render the same timestamps from two HTML versions for side-by-side comparison
+const { chromium } = require('playwright');
+const path = require('path'), fs = require('fs');
+(async () => {
+  const [file, prefix, tlist] = process.argv.slice(2);
+  const ts = tlist.split(',').map(Number);
+  const out = path.join(__dirname, 'style_audit'); fs.mkdirSync(out, { recursive: true });
+  const browser = await chromium.launch({ executablePath: '/opt/pw-browsers/chromium',
+    args: ['--force-color-profile=srgb', '--disable-lcd-text', '--hide-scrollbars'] });
+  const page = await browser.newPage({ viewport: { width: 1920, height: 1080 } });
+  page.on('pageerror', e => console.error('PAGE ERROR:', e.message));
+  await page.goto('file://' + path.join(__dirname, file));
+  await page.waitForFunction('typeof window.SEEK === "function"');
+  await page.evaluate(() => document.fonts.ready);
+  await page.waitForFunction(() => [...document.images].every(i => i.complete && i.naturalWidth > 0));
+  await page.waitForTimeout(300);
+  for (const t of ts) {
+    await page.evaluate(tt => window.SEEK(tt), t);
+    await page.waitForTimeout(80);
+    await page.screenshot({ path: path.join(out, `${prefix}_${t.toFixed(3)}.png`) });
+  }
+  console.log(prefix, 'rendered', ts.length);
+  await browser.close();
+})();

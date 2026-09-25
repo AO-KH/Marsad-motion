@@ -1,0 +1,143 @@
+<body>
+<div id="stage">
+<canvas id="bg" width="1920" height="1080"></canvas>
+
+<!-- S10 backdrop: a wall of the site's pages (sits under the orb bloom) -->
+<div id="wallWrap"><div id="wall"></div><div id="wallVeil"></div></div>
+
+<!-- orb carrier -->
+<div id="orb" style="width:120px;height:120px;margin:-60px 0 0 -60px;border-radius:50%;
+  background:radial-gradient(circle, rgba(250,235,255,0.95), rgba(188,89,209,0.70) 30%, rgba(142,50,195,0.30) 58%, rgba(142,50,195,0) 78%);
+  filter:blur(7px);box-shadow:0 0 70px 26px rgba(188,89,209,0.30), 0 0 170px 60px rgba(142,50,195,0.14);"></div>
+<img id="orbM" src="assets_logo_m.png" style="width:120px;">
+
+<svg id="vec" width="1920" height="1080" viewBox="0 0 1920 1080" style="left:0;top:0;">
+  <defs>
+    <linearGradient id="gr" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#5F0DB4"/><stop offset="55%" stop-color="#8E32C3"/><stop offset="100%" stop-color="#C040E0"/>
+    </linearGradient>
+  </defs>
+  <g id="edges"></g>
+  <circle id="loopRing" cx="960" cy="540" r="0" fill="none" stroke="url(#gr)" stroke-width="2.6" opacity="0"/>
+  <circle id="loopGlowArc" cx="960" cy="540" r="0" fill="none" stroke="#DE0DFF" stroke-width="5" stroke-linecap="round" opacity="0"/>
+  <circle id="spin" cx="960" cy="540" r="0" fill="none" stroke="url(#gr)" stroke-width="5" stroke-linecap="round" opacity="0"/>
+</svg>
+
+<!-- S1 -->
+<div id="s1">
+  <div id="tiles"></div>
+  <div class="kick" id="k1" style="top:112px;">THE PROBLEM · <span class="ar">المشكلة</span></div>
+  <div class="copyEN" id="c1en" style="top:842px;">Your company&rsquo;s data is everywhere.</div>
+  <div class="copyAR" id="c1ar" style="top:912px;">بيانات شركتك مبعثرة في كل مكان.</div>
+</div>
+
+<!-- S2 -->
+<div id="s2">
+  <div id="chatCard">
+    <div id="chatTitle">TEAM CHAT&nbsp;&nbsp;·&nbsp;&nbsp;MONDAY 09:12</div>
+    <div id="qBubble">Where are we on Q2 numbers?</div>
+    <div id="typing"><i></i><i></i><i></i></div>
+    <div id="waitRow">WAITING · 00:47</div>
+    <div id="waitBar"><div id="waitFill"></div></div>
+  </div>
+  <div class="kick" id="k2" style="top:112px;">THE PROBLEM · <span class="ar">المشكلة</span></div>
+  <div class="copyEN" id="c2en" style="top:842px;">When you need a quick answer, your system makes you wait.</div>
+  <div class="copyAR" id="c2ar" style="top:912px;">حين تحتاج إجابة سريعة، يجعلك نظامك تنتظر.</div>
+</div>
+
+<!-- S3 return tiles -->
+<div id="s3"><div id="tiles3"></div>
+  <div class="copyEN" id="c3en" style="top:842px;">Marsad changes that.</div>
+  <div class="copyAR" id="c3ar" style="top:912px;">مرصد يغيّر المعادلة.</div>
+</div>
+
+<!-- S4 loop -->
+<div id="s4">
+  <div id="n0" class="nodeWrap"><div class="nodeDot"></div></div>
+  <div id="l0" class="nodeLbl"><span class="en">CONNECT</span><span class="ar">اربط</span></div>
+  <div id="n1" class="nodeWrap"><div class="nodeDot"></div></div>
+  <div id="l1" class="nodeLbl"><span class="en">UNIFY</span><span class="ar">وحّد</span></div>
+  <div id="n2" class="nodeWrap"><div class="nodeDot"></div></div>
+  <div id="l2" class="nodeLbl"><span class="en">MONITOR</span><span class="ar">راقب</span></div>
+  <div id="n3" class="nodeWrap"><div class="nodeDot"></div></div>
+  <div id="l3" class="nodeLbl"><span class="en">ACT</span><span class="ar">نفّذ</span></div>
+  <div class="kick" id="k4" style="top:112px;">HOW IT WORKS · <span class="ar">كيف يعمل</span></div>
+  <div class="copyEN" id="c4en" style="top:842px;">One workflow. Fully automated.</div>
+  <div class="copyAR" id="c4ar" style="top:912px;">سير عمل واحد، مؤتمت بالكامل.</div>
+</div>
+
+<!-- S5 living model (the site's knowledge graph) -->
+<div id="s5">
+  <div id="chips"></div>
+  <div id="elbls"></div>
+  <div id="gnodes"></div>
+  <img id="hubM" src="assets_logo_m.png" style="width:104px;left:960px;top:540px;filter:drop-shadow(0 8px 22px rgba(142,50,195,0.35));">
+  <div class="copyEN" id="c5en" style="top:842px;">Every system. One living model.</div>
+  <div class="copyAR" id="c5ar" style="top:912px;">كل الأنظمة… نموذج حيّ واحد.</div>
+</div>
+
+<!-- S6/S7 the Marsad web app -->
+<div id="s67">
+  <div class="micro" id="uiTag" style="left:280px;top:128px;">MARSAD · WEB APP · BUSINESS PULSE · نبض الأعمال</div>
+  <div id="uiWrap">
+    <div id="uiFrame"><div class="site" id="uiSite"></div></div>
+    <svg id="vec2" width="1360" height="760" viewBox="0 0 1360 760" style="left:0;top:0;">
+      <defs><linearGradient id="gr2" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#5F0DB4"/><stop offset="100%" stop-color="#BC59D1"/></linearGradient></defs>
+      <circle id="spin2" cx="680" cy="370" r="26" fill="none" stroke="url(#gr2)" stroke-width="5" stroke-linecap="round" opacity="0"/>
+    </svg>
+    <svg id="cursor" viewBox="0 0 28 40"><path d="M2 2 L2 30 L9.5 24 L14 36 L19 34 L14.5 22 L24 22 Z" fill="#FFFFFF" stroke="#1A191E" stroke-width="2.4" stroke-linejoin="round"/></svg>
+    <div class="ripple" id="rip"></div>
+  </div>
+  <div class="copyEN" id="c6en" style="top:952px;font-size:40px;">Real-time recommendations — from your own numbers.</div>
+  <div class="copyAR" id="c6ar" style="top:1014px;font-size:22px;">توصيات لحظية مبنية على أرقامك — بلا اختلاق.</div>
+  <div class="copyEN" id="c7en" style="top:952px;">Decision to action. Nothing in between.</div>
+  <div class="copyAR" id="c7ar" style="top:1013px;font-size:22px;">من القرار إلى التنفيذ — بلا خطوات بينهما.</div>
+</div>
+
+<!-- S8 shield -->
+<div id="s8">
+  <div id="sweep"></div>
+  <div id="rings"></div>
+  <div id="sents"></div>
+  <img id="coreM" src="assets_logo_m.png" style="filter:drop-shadow(0 6px 18px rgba(142,50,195,0.40));">
+  <div id="gridCap"><span>DEFENSE GRID · </span><b>ACTIVE</b><span> · </span><span class="arc">٦ طبقات حماية</span></div>
+  <div id="shLbls"></div>
+  <div class="copyEN" id="c8en" style="top:906px;font-size:40px;">Defense in depth. Sovereign. PDPL-compliant.</div>
+  <div class="copyAR" id="c8ar" style="top:968px;font-size:23px;">دفاع متعدد الطبقات — بنية سيادية متوافقة مع نظام حماية البيانات الشخصية.</div>
+</div>
+
+<!-- S9 ask = the site's AI assistant -->
+<div id="s9">
+  <div id="askHead">اسأل بالعربية.</div>
+  <div id="askSub">Ask in Arabic. The answer comes from your original data.</div>
+  <div id="chatPanel">
+    <div id="chatHead">
+      <div class="who"><span class="bot" id="botHead"></span><span class="nm">مساعد مرصد الذكي</span></div>
+      <div class="ws" id="wsChip"><span>كل مساحة العمل</span></div>
+    </div>
+    <div id="userMsg">لماذا انخفضت مبيعات الرياض هذا الأسبوع؟</div>
+    <div id="ansWrap">
+      <div id="ansAv"></div>
+      <div id="ansCard"><div id="ansTxt"></div><div id="ansChip">✓&nbsp; مبني على بياناتك الأصلية — بدون اختلاق</div></div>
+    </div>
+    <div id="inputRow">
+      <div id="askInput"><span id="askPh">اسأل مرصد عن أي شيء بخصوص بياناتك...</span><span id="askQ"></span><span id="askCaret"></span></div>
+      <div id="sendBtn"></div>
+    </div>
+  </div>
+</div>
+
+<!-- S10 end -->
+<div id="s10">
+  <img id="endM" src="assets_logo_m.png">
+  <img id="endWord" src="assets_logo_wordmark_white.png">
+  <div id="endTag">One operational nervous system.</div>
+  <div id="endTagAR">جهاز عصبي تشغيلي واحد لشركتك.</div>
+  <div id="endCTA"><span id="ctaPill"><span>Request a demo</span><span style="position:static;color:rgba(255,255,255,0.55);">·</span><span class="ar">اطلب عرضاً</span><span style="position:static;color:rgba(255,255,255,0.55);">·</span><span class="web">nasl-tech.com</span></span></div>
+  <div id="endFoot">NASL TECHNOLOGIES · RIYADH</div>
+</div>
+
+<div id="flash"></div>
+<canvas id="fx" width="1920" height="1080"></canvas>
+<div id="fade"></div>
+</div>
