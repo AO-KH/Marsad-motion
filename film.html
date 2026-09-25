@@ -661,7 +661,7 @@ let CAM={x:0,y:0,s:1,r:0,bx:0,by:0,sw:[]};
 function camState(t){
   let x=0,y=0,s=1,r=0,bx=0,by=0;const sw=[];
   for(const e of TR){
-    if(e.type==='punch'){const a=P(t,e.t-0.05,e.t),dcy=P(t,e.t,e.t+e.d);if(a>0&&dcy<1)s*=1+e.amp*(dcy>0?1-ez.outC(dcy):ez.outC(a));continue;}
+    if(e.type==='punch'){const a=P(t,e.t-(e.at||0.05),e.t),dcy=P(t,e.t,e.t+e.d);if(a>0&&dcy<1)s*=1+e.amp*(dcy>0?1-ez.outC(dcy):ez.outC(a));continue;}   // punch: optional e.at = attack before the beat (default 0.05 s)
     if(e.type==='charge'){if(t<e.t){const q=P(t,e.t0,e.t);s*=1+e.amp*ez.ioC(q);r+=e.rot*Math.sin(Math.PI*q);}else s*=1+e.amp*(1-ez.outC(P(t,e.t,e.t+0.6)));continue;}
     if(e.type==='anticipate'){if(t<e.t)s*=1+e.amp*ez.inC(P(t,e.t-e.a,e.t));else s*=1+e.amp*(1-ez.outC(P(t,e.t,e.t+0.45)));continue;}
     if(e.type==='shake'){const q=t-e.t;if(q>=0&&q<e.d)r+=e.amp*Math.sin(2*Math.PI*e.f*q)*Math.exp(-q/0.16);continue;}

@@ -317,7 +317,9 @@ This is a rebuild of an older 54-second dark "space" cut. The client asked for:
 - the **same script and captions**;
 - the **same music track**;
 - **no voiceover**: music and captions only;
-- no pulsing, as in section 7.
+- no pulsing, as in section 7;
+- after v3: **"make the pace a little slower and remove the icons shaking"**. The client chose *same length,
+  calmer motion* (not a longer cut with slowed music). See "Calm pace" below.
 
 Delivered cuts:
 
@@ -325,7 +327,8 @@ Delivered cuts:
 |---|---|
 | `marsad-54s-v1.mp4` | First cut. |
 | `marsad-54s-v2.mp4` | Glass icons: source tiles, file chips, Know/Watch/Decide icons, glass seal. |
-| `marsad-54s-v3.mp4` | The "? SOURCE UNKNOWN · المصدر غير معروف" tag is one pill again (it rendered as three boxes), and the glass no longer flickers (the `.gk` base, section 10). The Know/Watch/Decide icons keep v2's richer glow (`.kwd .kwdIcon .gb` at 0.78). **Current.** |
+| `marsad-54s-v3.mp4` | The "? SOURCE UNKNOWN · المصدر غير معروف" tag is one pill again (it rendered as three boxes), and the glass no longer flickers (the `.gk` base, section 10). The Know/Watch/Decide icons keep v2's richer glow (`.kwd .kwdIcon .gb` at 0.78). |
+| `marsad-54s-v4.mp4` | Calm pace, no shaking (below). Same music, length and storyboard. **Current.** |
 
 - **Build:** `./build54.sh out/marsad-54s.mp4` takes about 6 minutes.
 - **Source:** `film54_src/` holds `style.css`, `body.html` and `scenes.js`. `make_film54.py` combines them with
@@ -359,3 +362,14 @@ Delivered cuts:
   | 40–54 | — | Logo ignition on k64, then wordmark, tagline, marsadnasl.com and "Book your demo · احجز عرضك التجريبي" when the drums return |
 - **Focus track:** `FOCUS` in `scenes.js` pushes the app window in on the key moments, so the small UI text
   stays readable. A white band behind the captions keeps them legible over the zoomed window.
+- **Calm pace (v4).** Keep these when editing:
+  - No shaking: no `shake` camera moves, no rotation lean, no wiggles (the refused edit only turns the button
+    red), no bobbing (the sources drift outward in a straight line), no overshoot on the logo (4%, then settles).
+  - No beat cuts in the camera: the zoom-through (k16), page nudges (k24, k32) and zoom-out (k48) jumped the
+    zoom or position on the beat and were removed. The window's own grow/recede and 0.55 s page cross-fades
+    carry those moments. Only the `rise` into Know/Watch/Decide keeps a cut, at a moment with nothing on screen.
+  - Punches are small (1–2%) and swell in over 0.25 s (`at:0.25`; `camState` in `film.html` takes an optional
+    `at`, default 0.05 s, so the 63 s film is unchanged).
+  - Entrances run 0.6–1.0 s on `ez.dec`; no `ez.emph` pops. Focus glides take 1.4–1.6 beats.
+  - Measured on the camera path (point 500 px from centre): rotation 0 (v3: ±0.8° with 29 reversals), peak
+    speed 68 px/frame (v3: 162), frames with a jolt over 3 px 31 (v3: 107).

@@ -100,6 +100,7 @@ canvas{left:0;top:0;}
 #aiAns{left:98px;top:478px;width:800px;background:var(--surf);border:1.5px solid var(--line);border-radius:22px 6px 22px 22px;
   padding:18px 30px 20px;direction:rtl;opacity:0;}
 #aiTxt{position:static;font:500 26px/1.7 'PlexAR';color:var(--ink);min-height:44px;}
+#aiTxt .aw{position:static;}
 #aiTxt .hl{position:static;color:var(--pd);font-weight:700;background:var(--pl);padding:0 8px;border-radius:7px;box-shadow:0 0 16px rgba(188,89,209,0.5);}
 #aiChips{position:static;display:flex;gap:10px;margin-top:12px;direction:rtl;flex-wrap:nowrap;}
 #aiChips *{position:static;}
