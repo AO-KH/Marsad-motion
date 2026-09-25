@@ -1,0 +1,6 @@
+{
+  "title": "Business Pulse — feature demo",
+  "duration": 30,
+  "formats": ["16x9", "9x16"],
+  "music": {"file": "fit/music54.m4a", "bpm": 95.96, "downbeat": 0.03, "start": 0, "fade_out": 2.5}
+}

@@ -1,0 +1,8 @@
+/* the stock alert that slides into the Business Pulse page (natural page coordinates) */
+#alertCard{left:183px;top:196px;width:690px;height:124px;background:#fff;border:1.5px solid #EBC5C7;border-radius:20px;direction:rtl;
+  box-shadow:0 0 0 1px rgba(168,19,28,0.10),0 0 44px rgba(168,19,28,0.16),0 24px 50px rgba(60,30,120,0.12);}
+#alertCard > *{position:absolute;white-space:nowrap;}
+#alertCard .dot{right:26px;top:26px;width:14px;height:14px;border-radius:50%;background:#A8131C;box-shadow:0 0 12px rgba(168,19,28,0.7);}
+#alertCard .t{right:52px;top:14px;font:700 24px 'PlexAR';color:#1A191E;}
+#alertCard .m{right:52px;top:66px;display:flex;gap:10px;align-items:center;}
+#alertCard svg{left:26px;top:22px;}

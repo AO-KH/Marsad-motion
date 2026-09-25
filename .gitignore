@@ -7,3 +7,5 @@ fit/*.wav
 *.npy
 *.mp4
 *.log
+build/
+__pycache__/

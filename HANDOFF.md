@@ -9,6 +9,8 @@ from now on.
 
 Read sections 1–4 before changing anything; section 7 lists what the client has asked for and rejected.
 
+This file covers the two finished ads. For new product demo videos, see [`DEMOS.md`](DEMOS.md).
+
 ## 1. Where things stand
 
 - **Latest delivered cut: v6** (`marsad-film-final-v6.mp4`, sent in chat on 2026-09-25): 63.0 s, 1920×1080,

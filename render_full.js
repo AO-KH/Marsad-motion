@@ -1,4 +1,4 @@
-// Render a film page to JPEG frames (length from window.DURATION), split across W parallel pages
+// Render a film or demo page to JPEG frames (length from window.DURATION, size from window.STAGE_W/H), split across W parallel pages
 const { chromium } = require('playwright');
 const path = require('path'), fs = require('fs');
 // Chromium: $CHROMIUM_PATH, else the cloud image's copy, else Playwright's own browser (npx playwright install chromium)
@@ -18,6 +18,8 @@ const CHROME = process.env.CHROMIUM_PATH || (fs.existsSync('/opt/pw-browsers/chr
     await page.waitForFunction('typeof window.SEEK === "function"');
     await page.evaluate(() => document.fonts.ready);
     await page.waitForFunction(() => [...document.images].every(i => i.complete && i.naturalWidth > 0));
+    const [vw, vh] = await page.evaluate(() => [window.STAGE_W || 1920, window.STAGE_H || 1080]);   // 9:16 demos: 1080x1920
+    if (vw !== 1920 || vh !== 1080) await page.setViewportSize({ width: vw, height: vh });
     await page.waitForTimeout(300);
     N = Math.round(await page.evaluate(() => window.DURATION) * FPS);      // film length comes from the page
     const F1 = parseInt(process.argv[6] || String(N));

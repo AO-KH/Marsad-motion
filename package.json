@@ -4,7 +4,8 @@
   "description": "MARSAD campaign film: deterministic HTML animation rendered to frames with Playwright",
   "scripts": {
     "build": "./build.sh",
-    "frames": "node render_full.js 4 film.html frames"
+    "frames": "node render_full.js 4 film.html frames",
+    "demo": "bash build_demo.sh"
   },
   "dependencies": {
     "playwright": "1.63.0"

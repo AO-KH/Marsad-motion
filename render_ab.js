@@ -15,6 +15,8 @@ const CHROME = process.env.CHROMIUM_PATH || (fs.existsSync('/opt/pw-browsers/chr
   await page.waitForFunction('typeof window.SEEK === "function"');
   await page.evaluate(() => document.fonts.ready);
   await page.waitForFunction(() => [...document.images].every(i => i.complete && i.naturalWidth > 0));
+  const [vw, vh] = await page.evaluate(() => [window.STAGE_W || 1920, window.STAGE_H || 1080]);
+  if (vw !== 1920 || vh !== 1080) await page.setViewportSize({ width: vw, height: vh });
   await page.waitForTimeout(300);
   for (const t of ts) {
     await page.evaluate(tt => window.SEEK(tt), t);

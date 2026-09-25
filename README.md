@@ -1,8 +1,22 @@
-# Marsad motion — campaign films
+# Marsad motion
 
-A 63-second bilingual (EN/AR) ad for **Marsad**, the sovereign AI business platform by NASL Technologies.
-It is built as a deterministic HTML animation (`film.html`) and rendered to video with Playwright and
-ffmpeg.
+Motion videos for **Marsad**, the sovereign AI business platform by NASL Technologies: bilingual (EN/AR),
+built as deterministic HTML animations and rendered to video with Playwright and ffmpeg.
+
+## Product demo videos
+
+The base for making Marsad demo videos (short feature demos and step-by-step walkthroughs, 16:9 and 9:16,
+music and bilingual captions). **Start with [`DEMOS.md`](DEMOS.md).**
+
+```bash
+npm install
+./build_demo.sh pulse-short             # the short example  -> out/pulse-short-16x9.mp4, out/pulse-short-9x16.mp4
+./build_demo.sh decisions-walkthrough   # the walkthrough example
+```
+
+## The campaign films
+
+A 63-second bilingual ad (`film.html`) and a 54-second one (`film54.html`).
 
 - **Start with [`HANDOFF.md`](HANDOFF.md).** It covers where the film stands, the build pipeline, the
   music's beat grid, the scene-by-scene beat map, the audio and voiceover setup, and the client's
