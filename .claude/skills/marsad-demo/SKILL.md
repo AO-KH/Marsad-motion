@@ -192,5 +192,8 @@ Don't loosen the check.
 
 Treat each correction as a rule for every future video, not a one-off fix. Apply it to the current video, then
 write it down where the next video will see it: `CLAUDE.md` (the client's rules), DEMOS.md §2, and this skill (§1
-here, or `references/quality-bar.md`). That is how the baseline grows. Also update the repo copy at
-`.claude/skills/marsad-demo/` so it matches any installed copy.
+here, or `references/quality-bar.md`). That is how the baseline grows.
+
+The skill's source is `.claude/skills/marsad-demo/` in the repo. After changing it, run
+`python3 tools/package_skill.py` and commit `skills/` too. That folder holds the installable copies
+(`marsad-demo.skill` and `.zip`) for adding the skill to a Claude account.

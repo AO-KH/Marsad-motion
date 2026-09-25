@@ -10,6 +10,8 @@ and muxed with ffmpeg.
   [`DEMOS.md`](DEMOS.md). To make one, follow the `marsad-demo` skill
   (`.claude/skills/marsad-demo/SKILL.md`), which is the baseline for all demo work. Its references hold the
   reference walkthrough's anatomy and the quality checklist.
+  - `skills/marsad-demo.skill` and `.zip` are its installable copies for a Claude account.
+  - Rebuild them with `python3 tools/package_skill.py` whenever the skill changes.
 - **Two finished ads**: `film.html` (63 s campaign film, `./build.sh`) and `film54_src/` → `film54.html` (54 s
   "Know. Watch. Decide.", `./build54.sh`). Their history, beat maps and delivered versions are in
   [`HANDOFF.md`](HANDOFF.md). Change them only when asked.
