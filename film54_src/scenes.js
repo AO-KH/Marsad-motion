@@ -37,14 +37,21 @@ function fmt(n){return Math.round(n).toLocaleString('en-US');}
 
 /* ================= B: scattered sources ================= */
 const FILES=['invoices_q3.xlsx','branch_returns.csv','po_2291.pdf','suppliers_2025.xlsx'];
+const FILE_COL={xlsx:'#2EA36B',csv:'#12A594',pdf:'#E5484D'};
+const GLASS=col=>`<i class="gb" style="background:${col};"></i><i class="gp"></i><i class="gs"></i>`;
+function shade(hex,f=0.72){const n=parseInt(hex.slice(1),16);const r=(n>>16)&255,g=(n>>8)&255,b=n&255;
+  return '#'+[r,g,b].map(v=>Math.round(v*f).toString(16).padStart(2,'0')).join('');}
+function glassTileHTML(n){
+  if(n.k){const b=BRANDS[n.k];return GLASS(b.hex)+`<svg viewBox="0 0 24 24"><path fill="${b.hex}" d="${b.path}"/></svg><span class="tg">${b.label}</span>`;}
+  return GLASS(n.col)+`<span class="doc" style="background:linear-gradient(160deg,${n.col},${shade(n.col)});">${n.doc}</span><span class="tg">${n.doc} file</span>`;}
 const ITEMS=[...TILES.map(n=>({kind:'tile',n})),...FILES.map(f=>({kind:'file',f}))];
 const HOME=[[330,250],[1590,215],[640,470],[1330,470],[250,640],[1690,610],[905,190],[1085,660],
             [540,130],[1260,120],[330,450],[1560,760]];
 const FILE_ICON='<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#6C6A74" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>';
 {const R=mulberry(54),box=$('items');
  ITEMS.forEach((it,i)=>{const d=document.createElement('div');
-   if(it.kind==='tile'){d.className='tile';d.innerHTML=tileHTML(it.n);it.w=112;it.h=112;}
-   else {d.className='fchip';d.innerHTML=FILE_ICON+`<span>${it.f}</span>`;it.w=0;it.h=58;}
+   if(it.kind==='tile'){d.className='tile';d.innerHTML=glassTileHTML(it.n);it.w=112;it.h=112;}
+   else {d.className='fchip';d.innerHTML=GLASS(FILE_COL[it.f.split('.').pop()])+FILE_ICON+`<span>${it.f}</span>`;it.w=0;it.h=58;}
    box.appendChild(d);it.el=d;it.home=HOME[i];it.ro=(R()-0.5)*16;it.ph=R()*6.3;});
  ITEMS.forEach(it=>{if(it.kind==='file')it.w=it.el.offsetWidth||250;});}
 const BURST0=vbeat(8), ABSORB_ORDER=[8,0,9,1,10,2,11,3,4,5,6,7];     // files land first, then the sources
@@ -161,7 +168,10 @@ decMain.insertAdjacentHTML('beforeend',`
  </div>
  <svg class="abs" id="stamp" viewBox="0 0 220 220">
   <defs><path id="stampArc" d="M110,110 m-78,0 a78,78 0 1,1 156,0 a78,78 0 1,1 -156,0"/></defs>
-  <circle cx="110" cy="110" r="102" fill="rgba(255,255,255,0.86)" stroke="#5909B4" stroke-width="5"/>
+  <defs><radialGradient id="stGl" cx="38%" cy="28%" r="80%"><stop offset="0" stop-color="#fff" stop-opacity="0.88"/><stop offset="0.6" stop-color="#fff" stop-opacity="0.42"/><stop offset="1" stop-color="#EBDDF8" stop-opacity="0.34"/></radialGradient>
+    <linearGradient id="stSh" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity="0.9"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient></defs>
+  <circle cx="110" cy="110" r="102" fill="url(#stGl)" stroke="#5909B4" stroke-width="5"/>
+  <ellipse cx="110" cy="58" rx="74" ry="36" fill="url(#stSh)" opacity="0.7"/>
   <circle cx="110" cy="110" r="90" fill="none" stroke="#8E32C3" stroke-width="2"/>
   <circle cx="110" cy="110" r="58" fill="none" stroke="#BC59D1" stroke-width="2"/>
   <text font-family="JBMono" font-size="17" font-weight="700" letter-spacing="3" fill="#5909B4"><textPath href="#stampArc">SEALED · مختوم · SEALED · مختوم ·</textPath></text>
@@ -321,7 +331,7 @@ function sceneH(t){
   const on=t>=vbeat(55.8)&&t<IGN+0.05; showS($('sH'),on); if(!on)return;
   const conv=ez.inC(P(t,vbeat(62),IGN));
   [0,1,2].forEach(i=>{const g=$('kw'+i),t0=vbeat(56+2*i);
-    const svg=g.querySelector('svg'),en=g.querySelector('.en'),ar=g.querySelector('.ar'),path=$('kw'+i+'p');
+    const svg=g.querySelector('.kwdIcon'),en=g.querySelector('.en'),ar=g.querySelector('.ar'),path=$('kw'+i+'p');
     const pI=ez.dec(P(t,t0,t0+0.5)),pE=ez.dec(P(t,t0,t0+0.55)),pA=ez.dec(P(t,t0+S8,t0+S8+0.5));
     const L=path.getTotalLength();path.style.strokeDasharray=L;path.style.strokeDashoffset=(L*(1-pI)).toFixed(2);
     st(svg,{opacity:pI.toFixed(3),transform:`translateY(${((1-pI)*14).toFixed(1)}px)`});
