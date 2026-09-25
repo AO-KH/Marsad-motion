@@ -30,10 +30,12 @@ canvas{left:0;top:0;}
   font-variant-numeric:tabular-nums;text-shadow:0 0 40px rgba(142,50,195,0.16);}
 #kpiCur{left:0;top:252px;width:800px;text-align:center;font:600 22px 'JBMono';letter-spacing:0.28em;color:var(--meta);}
 #kpiSrc{left:0;top:664px;width:1920px;text-align:center;opacity:0;}
-#kpiSrc span{position:relative;display:inline-flex;align-items:center;gap:12px;height:48px;padding:0 22px;border-radius:24px;
-  background:#FEF6EC;border:1.5px solid #F2D6B5;color:var(--amber);font:600 16px 'JBMono';letter-spacing:0.18em;direction:ltr;}
-#kpiSrc span *{position:static;}
-#kpiSrc .ar{font:600 18px 'PlexAR';letter-spacing:0;}
+#kpiSrc .pill{position:relative;display:inline-flex;align-items:center;gap:12px;height:48px;padding:0 22px 0 11px;border-radius:24px;
+  background:#FEF6EC;border:1.5px solid #F2D6B5;color:var(--amber);font:600 16px 'JBMono';letter-spacing:0.18em;direction:ltr;
+  box-shadow:0 10px 26px rgba(170,60,7,0.10);}
+#kpiSrc .pill>*{position:static;display:block;white-space:nowrap;}
+#kpiSrc .sep{letter-spacing:0;opacity:0.7;}
+#kpiSrc .ar{font:600 18px 'PlexAR';letter-spacing:0;direction:rtl;}
 #kpiSrc .q{width:26px;height:26px;border-radius:50%;background:var(--amber);color:#fff;font:700 16px 'Inter';letter-spacing:0;
   display:flex;align-items:center;justify-content:center;}
 
@@ -41,8 +43,11 @@ canvas{left:0;top:0;}
 .tile{width:112px;height:112px;border-radius:28px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:9px;
   box-shadow:0 22px 44px rgba(60,30,120,0.16),0 0 42px rgba(142,50,195,0.18);}
 .tile *{position:static;}
-/* glass icons: a frosted pane over a soft brand-colour glow, a bright rim and a glossy top */
-.gb,.gp,.gs{position:absolute!important;display:block;pointer-events:none;}
+/* glass icons: a frosted pane over a soft brand-colour glow, a bright rim and a glossy top.
+   .gk is an opaque base in the page's lavender so the pane frosts the same thing in every frame (see film.html's glass block:
+   without it the glow doubles whenever an ancestor fades or the camera's motion blur is on, and the glass flickers) */
+.gk,.gb,.gp,.gs{position:absolute!important;display:block;pointer-events:none;}
+.gk{left:0;top:0;width:100%;height:100%;border-radius:inherit;background:#F1E3F8;}
 .gb{left:12%;top:16%;width:76%;height:76%;border-radius:50%;filter:blur(15px);opacity:0.6;}
 .gp{left:0;top:0;width:100%;height:100%;border-radius:inherit;
   background:linear-gradient(150deg,rgba(255,255,255,0.74) 0%,rgba(255,255,255,0.36) 46%,rgba(255,255,255,0.22) 100%);
@@ -190,6 +195,7 @@ canvas{left:0;top:0;}
 .kwd{top:300px;width:420px;height:360px;}
 .kwd .kwdIcon{left:145px;top:-22px;width:130px;height:130px;border-radius:34px;opacity:0;
   box-shadow:0 24px 50px rgba(60,30,120,0.16),0 0 50px rgba(142,50,195,0.24);}
+.kwd .kwdIcon .gb{opacity:0.78;}   /* the richer glow these three icons had in v2, now steady */
 .kwd .kwdIcon svg{position:absolute;left:27px;top:27px;width:76px;height:76px;z-index:1;
   filter:drop-shadow(0 1px 0 rgba(255,255,255,0.95)) drop-shadow(0 6px 12px rgba(95,13,180,0.30));}
 .kwd .en{left:0;top:132px;width:420px;text-align:center;font:700 96px/1 'Inter';letter-spacing:-0.035em;color:var(--ink);opacity:0;

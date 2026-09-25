@@ -38,19 +38,13 @@ function fmt(n){return Math.round(n).toLocaleString('en-US');}
 /* ================= B: scattered sources ================= */
 const FILES=['invoices_q3.xlsx','branch_returns.csv','po_2291.pdf','suppliers_2025.xlsx'];
 const FILE_COL={xlsx:'#2EA36B',csv:'#12A594',pdf:'#E5484D'};
-const GLASS=col=>`<i class="gb" style="background:${col};"></i><i class="gp"></i><i class="gs"></i>`;
-function shade(hex,f=0.72){const n=parseInt(hex.slice(1),16);const r=(n>>16)&255,g=(n>>8)&255,b=n&255;
-  return '#'+[r,g,b].map(v=>Math.round(v*f).toString(16).padStart(2,'0')).join('');}
-function glassTileHTML(n){
-  if(n.k){const b=BRANDS[n.k];return GLASS(b.hex)+`<svg viewBox="0 0 24 24"><path fill="${b.hex}" d="${b.path}"/></svg><span class="tg">${b.label}</span>`;}
-  return GLASS(n.col)+`<span class="doc" style="background:linear-gradient(160deg,${n.col},${shade(n.col)});">${n.doc}</span><span class="tg">${n.doc} file</span>`;}
 const ITEMS=[...TILES.map(n=>({kind:'tile',n})),...FILES.map(f=>({kind:'file',f}))];
 const HOME=[[330,250],[1590,215],[640,470],[1330,470],[250,640],[1690,610],[905,190],[1085,660],
             [540,130],[1260,120],[330,450],[1560,760]];
 const FILE_ICON='<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#6C6A74" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>';
 {const R=mulberry(54),box=$('items');
  ITEMS.forEach((it,i)=>{const d=document.createElement('div');
-   if(it.kind==='tile'){d.className='tile';d.innerHTML=glassTileHTML(it.n);it.w=112;it.h=112;}
+   if(it.kind==='tile'){d.className='tile';d.innerHTML=tileHTML(it.n);it.w=112;it.h=112;}
    else {d.className='fchip';d.innerHTML=GLASS(FILE_COL[it.f.split('.').pop()])+FILE_ICON+`<span>${it.f}</span>`;it.w=0;it.h=58;}
    box.appendChild(d);it.el=d;it.home=HOME[i];it.ro=(R()-0.5)*16;it.ph=R()*6.3;});
  ITEMS.forEach(it=>{if(it.kind==='file')it.w=it.el.offsetWidth||250;});}

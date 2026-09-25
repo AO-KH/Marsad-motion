@@ -1,5 +1,5 @@
 # Build film54.html: the 54-second "Know. Watch. Decide." film.
-# Engine pieces (helpers, source tiles, background, camera) are taken from film.html; the scenes live in film54_src/.
+# Engine pieces (helpers, glass source tiles, background, camera) are taken from film.html; the scenes live in film54_src/.
 import re
 src=open('film.html',encoding='utf-8').read()
 def between(a,b):
@@ -13,6 +13,7 @@ fonts='\n'.join(l for l in src.splitlines() if l.startswith('@font-face'))
 helpers=between('/* ================= helpers ================= */','/* ================= build static structures ================= */')
 brands=re.search(r'^const BRANDS=.*$',src,re.M).group(0)
 tiles=re.search(r'const TILES=\[.*?\];',src,re.S).group(0)
+glass=re.search(r'^const GLASS=.*$',src,re.M).group(0)+'\n'+fn('shade')
 canv=between('/* ================= canvases ================= */','/* ================= TRANSITIONS')
 cam=re.search(r'^let CAM=.*$',src,re.M).group(0)+'\n'+fn('camState')+'\n'+fn('camera')
 css=open('film54_src/style.css',encoding='utf-8').read()
@@ -38,6 +39,7 @@ html=f'''<!DOCTYPE html>
 /* ================= source tiles (shared with film.html) ================= */
 {brands}
 {tiles}
+{glass}
 {fn('tileHTML')}
 
 {canv}

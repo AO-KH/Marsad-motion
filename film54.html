@@ -43,10 +43,12 @@ canvas{left:0;top:0;}
   font-variant-numeric:tabular-nums;text-shadow:0 0 40px rgba(142,50,195,0.16);}
 #kpiCur{left:0;top:252px;width:800px;text-align:center;font:600 22px 'JBMono';letter-spacing:0.28em;color:var(--meta);}
 #kpiSrc{left:0;top:664px;width:1920px;text-align:center;opacity:0;}
-#kpiSrc span{position:relative;display:inline-flex;align-items:center;gap:12px;height:48px;padding:0 22px;border-radius:24px;
-  background:#FEF6EC;border:1.5px solid #F2D6B5;color:var(--amber);font:600 16px 'JBMono';letter-spacing:0.18em;direction:ltr;}
-#kpiSrc span *{position:static;}
-#kpiSrc .ar{font:600 18px 'PlexAR';letter-spacing:0;}
+#kpiSrc .pill{position:relative;display:inline-flex;align-items:center;gap:12px;height:48px;padding:0 22px 0 11px;border-radius:24px;
+  background:#FEF6EC;border:1.5px solid #F2D6B5;color:var(--amber);font:600 16px 'JBMono';letter-spacing:0.18em;direction:ltr;
+  box-shadow:0 10px 26px rgba(170,60,7,0.10);}
+#kpiSrc .pill>*{position:static;display:block;white-space:nowrap;}
+#kpiSrc .sep{letter-spacing:0;opacity:0.7;}
+#kpiSrc .ar{font:600 18px 'PlexAR';letter-spacing:0;direction:rtl;}
 #kpiSrc .q{width:26px;height:26px;border-radius:50%;background:var(--amber);color:#fff;font:700 16px 'Inter';letter-spacing:0;
   display:flex;align-items:center;justify-content:center;}
 
@@ -54,8 +56,11 @@ canvas{left:0;top:0;}
 .tile{width:112px;height:112px;border-radius:28px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:9px;
   box-shadow:0 22px 44px rgba(60,30,120,0.16),0 0 42px rgba(142,50,195,0.18);}
 .tile *{position:static;}
-/* glass icons: a frosted pane over a soft brand-colour glow, a bright rim and a glossy top */
-.gb,.gp,.gs{position:absolute!important;display:block;pointer-events:none;}
+/* glass icons: a frosted pane over a soft brand-colour glow, a bright rim and a glossy top.
+   .gk is an opaque base in the page's lavender so the pane frosts the same thing in every frame (see film.html's glass block:
+   without it the glow doubles whenever an ancestor fades or the camera's motion blur is on, and the glass flickers) */
+.gk,.gb,.gp,.gs{position:absolute!important;display:block;pointer-events:none;}
+.gk{left:0;top:0;width:100%;height:100%;border-radius:inherit;background:#F1E3F8;}
 .gb{left:12%;top:16%;width:76%;height:76%;border-radius:50%;filter:blur(15px);opacity:0.6;}
 .gp{left:0;top:0;width:100%;height:100%;border-radius:inherit;
   background:linear-gradient(150deg,rgba(255,255,255,0.74) 0%,rgba(255,255,255,0.36) 46%,rgba(255,255,255,0.22) 100%);
@@ -203,6 +208,7 @@ canvas{left:0;top:0;}
 .kwd{top:300px;width:420px;height:360px;}
 .kwd .kwdIcon{left:145px;top:-22px;width:130px;height:130px;border-radius:34px;opacity:0;
   box-shadow:0 24px 50px rgba(60,30,120,0.16),0 0 50px rgba(142,50,195,0.24);}
+.kwd .kwdIcon .gb{opacity:0.78;}   /* the richer glow these three icons had in v2, now steady */
 .kwd .kwdIcon svg{position:absolute;left:27px;top:27px;width:76px;height:76px;z-index:1;
   filter:drop-shadow(0 1px 0 rgba(255,255,255,0.95)) drop-shadow(0 6px 12px rgba(95,13,180,0.30));}
 .kwd .en{left:0;top:132px;width:420px;text-align:center;font:700 96px/1 'Inter';letter-spacing:-0.035em;color:var(--ink);opacity:0;
@@ -269,7 +275,7 @@ canvas{left:0;top:0;}
     <div id="kpiNum">0</div>
     <div id="kpiCur">SAR · ر.س</div>
   </div>
-  <div id="kpiSrc"><span><span class="q">?</span><span>SOURCE UNKNOWN</span><span class="ar">· المصدر غير معروف</span></span></div>
+  <div id="kpiSrc"><span class="pill"><span class="q">?</span><span class="en">SOURCE UNKNOWN</span><span class="sep">·</span><span class="ar">المصدر غير معروف</span></span></div>
 </div>
 
 <!-- B: scattered sources (tiles + files) -->
@@ -286,15 +292,15 @@ canvas{left:0;top:0;}
 <!-- H: Know. Watch. Decide. -->
 <div id="sH">
   <div class="kwd" id="kw0" style="left:330px;">
-    <div class="kwdIcon"><i class="gb" style="background:#8E32C3;"></i><i class="gp"></i><i class="gs"></i><svg viewBox="0 0 100 100"><g fill="none" stroke="url(#kg)" stroke-width="5" stroke-linecap="round"><path id="kw0p" d="M50 22 L22 72 M50 22 L78 72 M22 72 L78 72"/></g>
+    <div class="kwdIcon"><i class="gk"></i><i class="gb" style="background:#8E32C3;"></i><i class="gp"></i><i class="gs"></i><svg viewBox="0 0 100 100"><g fill="none" stroke="url(#kg)" stroke-width="5" stroke-linecap="round"><path id="kw0p" d="M50 22 L22 72 M50 22 L78 72 M22 72 L78 72"/></g>
       <g fill="#fff" stroke="#8E32C3" stroke-width="5"><circle cx="50" cy="22" r="10"/><circle cx="22" cy="72" r="10"/><circle cx="78" cy="72" r="10"/></g>
       <defs><linearGradient id="kg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#5F0DB4"/><stop offset="1" stop-color="#BC59D1"/></linearGradient></defs></svg></div>
     <div class="en">Know.</div><div class="ar">اعرف.</div></div>
   <div class="kwd" id="kw1" style="left:750px;">
-    <div class="kwdIcon"><i class="gb" style="background:#8E32C3;"></i><i class="gp"></i><i class="gs"></i><svg viewBox="0 0 100 100"><path id="kw1p" d="M6 56 L28 56 L38 30 L52 78 L64 46 L72 56 L94 56" fill="none" stroke="url(#kg)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div class="kwdIcon"><i class="gk"></i><i class="gb" style="background:#8E32C3;"></i><i class="gp"></i><i class="gs"></i><svg viewBox="0 0 100 100"><path id="kw1p" d="M6 56 L28 56 L38 30 L52 78 L64 46 L72 56 L94 56" fill="none" stroke="url(#kg)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
     <div class="en">Watch.</div><div class="ar">راقب.</div></div>
   <div class="kwd" id="kw2" style="left:1170px;">
-    <div class="kwdIcon"><i class="gb" style="background:#8E32C3;"></i><i class="gp"></i><i class="gs"></i><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="38" fill="none" stroke="url(#kg)" stroke-width="6"/><path id="kw2p" d="M32 51 L45 64 L69 38" fill="none" stroke="url(#kg)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div class="kwdIcon"><i class="gk"></i><i class="gb" style="background:#8E32C3;"></i><i class="gp"></i><i class="gs"></i><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="38" fill="none" stroke="url(#kg)" stroke-width="6"/><path id="kw2p" d="M32 51 L45 64 L69 38" fill="none" stroke="url(#kg)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
     <div class="en">Decide.</div><div class="ar">قرّر.</div></div>
 </div>
 
@@ -386,10 +392,13 @@ const TILES=[
   {k:'sap'},{k:'salesforce'},{k:'oracle'},{k:'excel'},{k:'shopify'},{k:'quickbooks'},
   {doc:'PDF',col:'#E5484D'},{doc:'CSV',col:'#12A594'},
 ];
+const GLASS=col=>`<i class="gk"></i><i class="gb" style="background:${col};"></i><i class="gp"></i><i class="gs"></i>`;
+function shade(hex,f=0.72){const n=parseInt(hex.slice(1),16);const r=(n>>16)&255,g=(n>>8)&255,b=n&255;
+  return '#'+[r,g,b].map(v=>Math.round(v*f).toString(16).padStart(2,'0')).join('');}
 function tileHTML(n){
   if(n.k){const b=BRANDS[n.k];
-    return `<svg viewBox="0 0 24 24"><path fill="${b.hex}" d="${b.path}"/></svg><span class="tg">${b.label}</span>`;}
-  return `<span class="doc" style="background:${n.col}22;border:1.5px solid ${n.col};color:${n.col};">${n.doc}</span><span class="tg">${n.doc} file</span>`;
+    return GLASS(b.hex)+`<svg viewBox="0 0 24 24"><path fill="${b.hex}" d="${b.path}"/></svg><span class="tg">${b.label}</span>`;}
+  return GLASS(n.col)+`<span class="doc" style="background:linear-gradient(160deg,${n.col},${shade(n.col)});">${n.doc}</span><span class="tg">${n.doc} file</span>`;
 }
 
 /* ================= canvases ================= */
@@ -521,19 +530,13 @@ function fmt(n){return Math.round(n).toLocaleString('en-US');}
 /* ================= B: scattered sources ================= */
 const FILES=['invoices_q3.xlsx','branch_returns.csv','po_2291.pdf','suppliers_2025.xlsx'];
 const FILE_COL={xlsx:'#2EA36B',csv:'#12A594',pdf:'#E5484D'};
-const GLASS=col=>`<i class="gb" style="background:${col};"></i><i class="gp"></i><i class="gs"></i>`;
-function shade(hex,f=0.72){const n=parseInt(hex.slice(1),16);const r=(n>>16)&255,g=(n>>8)&255,b=n&255;
-  return '#'+[r,g,b].map(v=>Math.round(v*f).toString(16).padStart(2,'0')).join('');}
-function glassTileHTML(n){
-  if(n.k){const b=BRANDS[n.k];return GLASS(b.hex)+`<svg viewBox="0 0 24 24"><path fill="${b.hex}" d="${b.path}"/></svg><span class="tg">${b.label}</span>`;}
-  return GLASS(n.col)+`<span class="doc" style="background:linear-gradient(160deg,${n.col},${shade(n.col)});">${n.doc}</span><span class="tg">${n.doc} file</span>`;}
 const ITEMS=[...TILES.map(n=>({kind:'tile',n})),...FILES.map(f=>({kind:'file',f}))];
 const HOME=[[330,250],[1590,215],[640,470],[1330,470],[250,640],[1690,610],[905,190],[1085,660],
             [540,130],[1260,120],[330,450],[1560,760]];
 const FILE_ICON='<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#6C6A74" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>';
 {const R=mulberry(54),box=$('items');
  ITEMS.forEach((it,i)=>{const d=document.createElement('div');
-   if(it.kind==='tile'){d.className='tile';d.innerHTML=glassTileHTML(it.n);it.w=112;it.h=112;}
+   if(it.kind==='tile'){d.className='tile';d.innerHTML=tileHTML(it.n);it.w=112;it.h=112;}
    else {d.className='fchip';d.innerHTML=GLASS(FILE_COL[it.f.split('.').pop()])+FILE_ICON+`<span>${it.f}</span>`;it.w=0;it.h=58;}
    box.appendChild(d);it.el=d;it.home=HOME[i];it.ro=(R()-0.5)*16;it.ph=R()*6.3;});
  ITEMS.forEach(it=>{if(it.kind==='file')it.w=it.el.offsetWidth||250;});}

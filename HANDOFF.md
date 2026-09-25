@@ -11,16 +11,17 @@ Read sections 1–4 before changing anything; section 7 lists what the client ha
 
 ## 1. Where things stand
 
-- **Latest delivered cut: v5** (`marsad-film-final-v5.mp4`, sent in chat on 2026-09-25): 63.0 s, 1920×1080,
-  30 fps, H.264 (crf 20) + AAC 192k, master at −14.5 LUFS / −1.5 dBTP.
+- **Latest delivered cut: v6** (`marsad-film-final-v6.mp4`, sent in chat on 2026-09-25): 63.0 s, 1920×1080,
+  30 fps, H.264 (crf 20) + AAC 192k, master at −14.5 LUFS / −1.5 dBTP. v6 is v5 with glass icons (section 7,
+  item 10); timing and audio are unchanged.
 - **What it is:** a 63-second bilingual (EN/AR) ad for **Marsad**, the sovereign AI business platform by
   NASL Technologies. It uses the Marsad web app's light visual language with a purple glow layer and real
   app pages. The English voiceover is TTS (Kokoro, voice "Michael"). The music is SoundSurfer's "Stylish",
   fitted without time-stretch.
 - **State of the edit:** every visual event, sound effect and voice phrase sits on the music's 94 BPM beat
   grid, and nothing pulses to the beat.
-- `./build.sh` rebuilds v5 from this folder. The audio comes out byte-identical and the picture visually
-  identical; see section 9.
+- `./build.sh` rebuilds v6 from this folder (v6 was rendered with it). The audio is byte-identical to v5's;
+  see section 9.
 
 ## 2. Quick start
 
@@ -235,6 +236,10 @@ In order:
 8. **Align the rhythm between the video and music:** everything on the grid, as in sections 5 and 6.
 9. **"It is pulsing, don't make it like that":** all beat-synced pulsing was removed. Do not bring back
    background flashes, logo or node kicks, or breathing loops.
+10. **Glass icons.** The client asked for glassy icons in the 54 s film (section 12), then **"apply the glass to
+   the first video"**. The source tiles (S1, and the tiles flying into the charge in S3) and the S5 source
+   chips are frosted glass: `GLASS(col)` in `film.html`, styles in `<style id="glass">`. The app pages keep
+   the site's own styling.
 
 ## 8. Audio pipeline
 
@@ -257,6 +262,8 @@ In order:
 
 ## 9. Verification
 
+- **v6** was rendered with `./build.sh` here. Its audio master is byte-identical to v5's (same md5), and
+  `pulse_check.py` still reads 1.0×. A per-frame glow scan of the glass tiles and chips shows no flicker.
 - **This rebuild:** `./build.sh` in this folder reproduced v5 (compared on 2026-09-25).
   - The audio mix and master are byte-identical.
   - The frames are visually identical. 1,674 of 1,890 are byte-identical.
@@ -280,6 +287,11 @@ In order:
 - Preview with `render_ab.js` stills. For small fixes, re-render only the affected frame range with
   `render_full.js … <from> <to>` and re-run the mux line from `build.sh`.
 - Keep entrances on `ez.dec` or `ez.emph`. Do not add beat-synced loops.
+- Glass elements: build them with `GLASS(col)`, which adds four layers — `.gk` opaque lavender base, `.gb`
+  colour glow, `.gp` frosted pane (`backdrop-filter`), `.gs` gloss. Keep the `.gk` base. Without it the pane's
+  backdrop depends on Chromium's *backdrop root*: whenever the element fades (opacity < 1) or the camera's
+  motion blur puts a filter on `#cam`, the pane frosts only the glow, which doubles, so the glass flickers
+  between vivid and faint. The 54 s v2 had this flicker on its Know/Watch/Decide icons.
 
 ## 11. Delivered versions (all sent in chat; not stored in the repo)
 
@@ -292,7 +304,8 @@ In order:
 | `marsad-film-final-v2.mp4` | Labels removed, bigger M. |
 | `marsad-film-final-v3.mp4` | Dynamic logo reveal (charge-up and ignition). |
 | `marsad-film-final-v4.mp4` | Rhythm lock (had beat pulsing). |
-| `marsad-film-final-v5.mp4` | Rhythm lock without pulsing. **Current.** |
+| `marsad-film-final-v5.mp4` | Rhythm lock without pulsing. |
+| `marsad-film-final-v6.mp4` | Glass source tiles and chips, as in the 54 s film. **Current.** |
 
 Earlier explorations (a dark-glass style pass, four synthesized music samples) are superseded.
 
@@ -306,12 +319,19 @@ This is a rebuild of an older 54-second dark "space" cut. The client asked for:
 - **no voiceover**: music and captions only;
 - no pulsing, as in section 7.
 
-The first delivered cut is `marsad-54s-v1.mp4`.
+Delivered cuts:
+
+| Version | What changed |
+|---|---|
+| `marsad-54s-v1.mp4` | First cut. |
+| `marsad-54s-v2.mp4` | Glass icons: source tiles, file chips, Know/Watch/Decide icons, glass seal. |
+| `marsad-54s-v3.mp4` | The "? SOURCE UNKNOWN · المصدر غير معروف" tag is one pill again (it rendered as three boxes), and the glass no longer flickers (the `.gk` base, section 10). The Know/Watch/Decide icons keep v2's richer glow (`.kwd .kwdIcon .gb` at 0.78). **Current.** |
 
 - **Build:** `./build54.sh out/marsad-54s.mp4` takes about 6 minutes.
 - **Source:** `film54_src/` holds `style.css`, `body.html` and `scenes.js`. `make_film54.py` combines them with
   engine pieces copied from `film.html` (helpers, source tiles, background, camera) into `film54.html`. Edit
-  `film54_src/`, then rebuild. Don't edit `film54.html` by hand.
+  `film54_src/`, then rebuild. Don't edit `film54.html` by hand. The glass helpers (`GLASS`, `shade`,
+  `tileHTML`) come from `film.html`, so both films share one glass tile; the glass CSS is per film.
 - **Music:** `fit/music54.m4a` is the original track, copied out of the old cut without re-encoding. It is
   normalised to −14 LUFS at build time.
 - **Beat grid:** 95.96 BPM. Beat k falls at `0.03 + 0.62525·k` seconds, and a bar is 2.501 s. In the code:

@@ -227,6 +227,36 @@ canvas{left:0;top:0;}
 .cw{position:relative;display:inline-block;}
 #odots i{width:8px;height:8px;border-radius:50%;background:#BC59D1;box-shadow:0 0 12px 3px rgba(188,89,209,0.8);opacity:0;}
 </style>
+<style id="glass">
+/* ===== GLASS ICONS — the source tiles (S1, S3) and source chips (S5) as frosted glass; same language as the 54s film ===== */
+/* a soft brand-colour glow (.gb) under a frosted pane with a bright rim (.gp) and a glossy top (.gs); content sits above.
+   .gk is an opaque base in the page's lavender: it keeps what the pane frosts the same in every frame. Without it the
+   frosted backdrop depends on Chromium's "backdrop root" — whenever the element or the camera has opacity < 1 or a
+   filter (fades, motion blur), the pane frosts only the glow and it doubles, so the glass flickers vivid/faint. */
+.gk,.gb,.gp,.gs{position:absolute!important;display:block;pointer-events:none;}
+.gk{left:0;top:0;width:100%;height:100%;border-radius:inherit;background:#F1E3F8;}
+.gb{left:12%;top:16%;width:76%;height:76%;border-radius:50%;filter:blur(15px);opacity:0.6;}
+.gp{left:0;top:0;width:100%;height:100%;border-radius:inherit;
+  background:linear-gradient(150deg,rgba(255,255,255,0.74) 0%,rgba(255,255,255,0.36) 46%,rgba(255,255,255,0.22) 100%);
+  border:1.5px solid rgba(255,255,255,0.92);
+  box-shadow:inset 0 1.5px 1px rgba(255,255,255,1),inset 0 -12px 22px rgba(142,50,195,0.10),inset 0 0 0 0.5px rgba(142,50,195,0.22);
+  -webkit-backdrop-filter:blur(14px) saturate(170%);backdrop-filter:blur(14px) saturate(170%);}
+.gs{left:5%;top:3%;width:90%;height:46%;border-radius:22px 22px 50% 50% / 22px 22px 34% 34%;
+  background:linear-gradient(180deg,rgba(255,255,255,0.92) 0%,rgba(255,255,255,0) 100%);opacity:0.65;}
+.tile{background:none;border:0;border-radius:28px;box-shadow:0 22px 44px rgba(60,30,120,0.16),0 0 42px rgba(142,50,195,0.18);}
+.tile svg,.tile .doc,.tile .tg{position:relative;z-index:1;}
+.tile .tg{text-shadow:0 1px 0 rgba(255,255,255,0.9);}
+.tile svg{filter:drop-shadow(0 1px 0 rgba(255,255,255,0.9)) drop-shadow(0 5px 9px rgba(60,30,120,0.22));}
+.tile .doc{width:42px;height:42px;border-radius:11px;color:#fff;
+  box-shadow:inset 0 1.5px 0 rgba(255,255,255,0.55),inset 0 -6px 10px rgba(0,0,0,0.12),0 5px 10px rgba(60,30,120,0.22);}
+.chip{background:none;border:0;height:56px;border-radius:18px;gap:11px;padding:0 22px 0 18px;
+  box-shadow:0 14px 30px rgba(60,30,120,0.13),0 0 30px rgba(142,50,195,0.16);}
+.chip b,.chip span{position:relative;z-index:1;}
+.chip span{text-shadow:0 1px 0 rgba(255,255,255,0.9);}
+.chip b{width:14px;height:14px;border-radius:4px;box-shadow:inset 0 1px 0 rgba(255,255,255,0.55),0 2px 5px rgba(60,30,120,0.25);}
+.chip .gb{left:6%;top:8%;width:88%;height:84%;border-radius:30px;filter:blur(13px);opacity:0.42;}
+.chip .gs{border-radius:16px 16px 40% 40% / 16px 16px 30% 30%;height:50%;}
+</style>
 <script src="site_kit.js"></script>
 </head>
 <body>
@@ -439,10 +469,14 @@ const tileHome=TILES.map((n,i)=>{
   return {n,x:960+Math.cos(ang)*rad*1.55,y:520+Math.sin(ang)*rad*0.86,ro:(R1()-0.5)*10,
           vx:Math.cos(ang),vy:Math.sin(ang)};
 });
+/* glass icons: a brand-colour glow under a frosted pane, a bright rim and a glossy top (styles in <style id="glass">) */
+const GLASS=col=>`<i class="gk"></i><i class="gb" style="background:${col};"></i><i class="gp"></i><i class="gs"></i>`;
+function shade(hex,f=0.72){const n=parseInt(hex.slice(1),16);const r=(n>>16)&255,g=(n>>8)&255,b=n&255;
+  return '#'+[r,g,b].map(v=>Math.round(v*f).toString(16).padStart(2,'0')).join('');}
 function tileHTML(n){
   if(n.k){const b=BRANDS[n.k];
-    return `<svg viewBox="0 0 24 24"><path fill="${b.hex}" d="${b.path}"/></svg><span class="tg">${b.label}</span>`;}
-  return `<span class="doc" style="background:${n.col}22;border:1.5px solid ${n.col};color:${n.col};">${n.doc}</span><span class="tg">${n.doc} file</span>`;
+    return GLASS(b.hex)+`<svg viewBox="0 0 24 24"><path fill="${b.hex}" d="${b.path}"/></svg><span class="tg">${b.label}</span>`;}
+  return GLASS(n.col)+`<span class="doc" style="background:linear-gradient(160deg,${n.col},${shade(n.col)});">${n.doc}</span><span class="tg">${n.doc} file</span>`;
 }
 const tilesDiv=$('tiles'),tiles3Div=$('tiles3');
 for(const tt of tileHome){
@@ -492,8 +526,9 @@ const WALL_PAGES=['pulse','home','decisions','knowledgeMap','assistant','objectT
 /* S5 source chips + the site's knowledge graph (object types from the live ontology) */
 const CHIPS=[['CSV',150,318,700,395],['XLSX',120,742,652,690],['PDF',1690,300,1210,390],['API',1712,760,1235,672]];
 const chipsDiv=$('chips');
-CHIPS.forEach(c=>{const d=document.createElement('div');d.className='chip';
- d.innerHTML=`<b></b><span style="position:static;">${c[0]}</span>`;chipsDiv.appendChild(d);});
+const CHIP_COL={CSV:'#12A594',XLSX:'#2EA36B',PDF:'#E5484D',API:'#8E32C3'};
+CHIPS.forEach(c=>{const d=document.createElement('div');d.className='chip';const col=CHIP_COL[c[0]];
+ d.innerHTML=GLASS(col)+`<b style="background:linear-gradient(160deg,${col},${shade(col)});"></b><span>${c[0]}</span>`;chipsDiv.appendChild(d);});
 const chipEls=[...chipsDiv.children];
 // same six anchor points as the original graph; names + colours from the site's الخريطة المعرفية
 const GN=[['موظف','EMPLOYEE',700,395,'#CE730B'],['عميل','CUSTOMER',960,300,'#DB4E11'],['فاتورة','INVOICE',1210,390,'#17A186'],
