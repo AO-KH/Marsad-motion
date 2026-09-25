@@ -15,7 +15,7 @@
      const app=M.app({at,out,page,view})                     the Marsad app window (site-kit page or M.definePage)
        app.page(t,key)  app.focus(t,target,{fill,scale,dur,x,y})  app.cursor(t,target)  app.click(t,target)
        app.cursorOut(t)  app.type(t,target,text,{cps,clearAt})  app.show(t,target,{from,dist,dur,display})
-       app.hide(t,target)  app.highlight(at,out,target)  app.callout(at,out,target,{en,ar,side})
+       app.hide(t,target)  app.highlight(at,out,target)  app.callout(at,out,target,{en,ar,side,dx,dy})
        app.toggle(t,target)  app.count(t,target,from,to,{dur,fmt})  app.text(t,target,html)
        app.set(t,target,(el,on,t)=>{})  app.inject(page,html)  app.el(target,t)
      M.endcard({at,cta,ctaAr,url,tag,tagAr})                 logo, tagline, URL and CTA
@@ -44,6 +44,7 @@ const DRIFT=0.012;                                    // the whole stage pushes 
 /* ---------------- helpers ---------------- */
 const clamp=(x,a,b)=>Math.max(a,Math.min(b,x)), lerp=(a,b,p)=>a+(b-a)*p;
 const P=(t,a,b)=>b<=a?(t>=a?1:0):clamp((t-a)/(b-a),0,1);
+const FQ=t=>Math.round(t*30)/30;   // the frame a time belongs to: discrete changes (numbers, typed text, swaps) use it, so motion blur never ghosts them
 function cubicBezier(x1,y1,x2,y2){return x=>{if(x<=0)return 0;if(x>=1)return 1;let lo=0,hi=1,u=x;
   for(let i=0;i<30;i++){u=(lo+hi)/2;const cx=3*u*(1-u)*(1-u)*x1+3*u*u*(1-u)*x2+u*u*u;if(cx<x)lo=u;else hi=u;}
   return 3*u*(1-u)*(1-u)*y1+3*u*u*(1-u)*y2+u*u*u;};}
@@ -92,7 +93,7 @@ function drawFX(t){                                   // purple vignette + fine 
   fxx.clearRect(0,0,W,H);
   const v=fxx.createRadialGradient(W/2,H/2,Math.min(W,H)*0.6,W/2,H/2,Math.hypot(W,H)*0.72);
   v.addColorStop(0,'rgba(110,30,180,0)');v.addColorStop(1,'rgba(110,30,180,0.12)');fxx.fillStyle=v;fxx.fillRect(0,0,W,H);
-  const r=mulberry(9000+Math.floor(t*30+1e-6));fxx.globalAlpha=0.028;
+  const r=mulberry(9000+Math.round(t*30));fxx.globalAlpha=0.028;
   for(let i=0;i<1500;i++){const x=r()*W,y=r()*H,l=100+r()*155;fxx.fillStyle=`rgb(${l},${l},${l})`;fxx.fillRect(x,y,1.6,1.6);}
   fxx.globalAlpha=1;
 }
@@ -153,7 +154,7 @@ function steps(o){
       b.on.style.opacity=f3(pOn*(1-pDn));b.dn.style.opacity=f3(pDn);b.up.style.opacity=f3(1-pOn);});
     let prog=0;o.list.forEach((s,i)=>{if(i>0)prog+=ez.ioC(P(t,s.at,s.at+0.8));});
     const f=n>1?prog/(n-1):0;pr.setAttribute('x2',f1(lerp(x0,x1,f)));pr.setAttribute('y2',f1(lerp(y0,y1,f)));
-    const k=cur?`STEP ${cur} / ${n}<span class="ar">الخطوة ${arNum(cur)} من ${arNum(n)}</span>`:`STEPS<span class="ar">الخطوات</span>`;
+    const k=cur?`STEP ${cur} / ${n}<span class="ar">الخطوة ${cur} من ${n}</span>`:`STEPS<span class="ar">الخطوات</span>`;
     if(k!==lastK){kick.innerHTML=k;lastK=k;}});
   return rail;
 }
@@ -319,7 +320,7 @@ function app(o){
       MID.push(tt=>{const e=get();
         if(!e._mt){e._ph=e.querySelector('.ph')||[...e.children].find(c=>c.tagName==='SPAN');
           e._mt=el('span','m-typed');e._mc=el('span','m-caret');if(e._ph)e._ph.after(e._mt,e._mc);else e.append(e._mt,e._mc);}
-        const cleared=opt.clearAt!=null&&tt>=opt.clearAt,n=tt<t||cleared?0:Math.min(text.length,Math.floor((tt-t)*cps)+1);
+        const q=FQ(tt),cleared=opt.clearAt!=null&&q>=opt.clearAt,n=q<t||cleared?0:Math.min(text.length,Math.floor((q-t)*cps)+1);
         e._mt.textContent=text.slice(0,n);if(e._ph)e._ph.style.display=n>0?'none':'';
         const act=tt>=t-0.5&&!cleared;e._mc.style.opacity=act?1:0;e.classList.toggle('focus',act);});
       return api;},
@@ -337,16 +338,16 @@ function app(o){
       MID.push(tt=>{const e=get();
         if(!parts){e.innerHTML=`<svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke-width="1.8"><rect x="2" y="7" width="20" height="10" rx="5"/><circle cx="7.5" cy="12" r="2.8"/></svg><span>${opt.off||'مُعطّل'}</span>`;
           parts={r:e.querySelector('rect'),k:e.querySelector('circle'),s:e.querySelector('span')};}
-        const p=ez.dec(P(tt,t,t+dur)),o=p>0.5;
+        const p=ez.dec(P(tt,t,t+dur)),o=ez.dec(P(FQ(tt),t,t+dur))>0.5;
         parts.k.setAttribute('cx',f2(7.5+9*p));parts.k.setAttribute('fill',o?'#5909B4':'#535257');
         parts.r.setAttribute('fill',o?'#E6D6F5':'#F3F3F3');parts.r.setAttribute('stroke',o?'#8E32C3':'#535257');
         parts.s.textContent=o?(opt.on||'مُفعّل'):(opt.off||'مُعطّل');
         st(e,{background:o?'#F1E9FA':'#F3F3F3',borderColor:o?'#D6C1EE':'#D2D1D4',color:o?'#5909B4':'#535257',boxShadow:o?'0 0 26px rgba(142,50,195,0.28)':''});});
       return api;},
     count(t,spec,from,to,opt={}){const get=lazy(spec,t),dur=opt.dur??0.8,fm=opt.fmt||(v=>String(Math.round(v)));
-      MID.push(tt=>{get().textContent=fm(lerp(from,to,ez.dec(P(tt,t,t+dur))));});return api;},
+      MID.push(tt=>{get().textContent=fm(lerp(from,to,ez.dec(P(FQ(tt),t,t+dur))));});return api;},
     text(t,spec,html){const get=lazy(spec,t);let old=null;
-      MID.push(tt=>{const e=get();if(old===null)old=e.innerHTML;const nw=tt>=t?html:old;if(e.innerHTML!==nw)e.innerHTML=nw;
+      MID.push(tt=>{const e=get();if(old===null)old=e.innerHTML;const nw=FQ(tt)>=t?html:old;if(e.innerHTML!==nw)e.innerHTML=nw;
         const q=P(tt,t-0.25,t+0.25);e.style.opacity=q>0&&q<1?f3(0.35+0.65*Math.abs(2*q-1)):'';});
       return api;},
     set(t,spec,fn){const get=lazy(spec,t);MID.push(tt=>fn(get(),tt>=t,tt));return api;},
@@ -377,7 +378,7 @@ function callout(a,b,spec,opt,find,rectFor){
     else if(side==='bottom'){bx=sx+sw/2-bw/2;by=sy+sh+g;ax=sx+sw/2;ay=sy+sh;}
     else if(side==='left'){bx=sx-g-bw;by=sy+sh/2-bh/2;ax=sx;ay=sy+sh/2;}
     else{bx=sx+sw+g;by=sy+sh/2-bh/2;ax=sx+sw;ay=sy+sh/2;}
-    bx=clamp(bx,24,W-24-bw);by=clamp(by,24,H-24-bh);
+    bx=clamp(bx+(opt.dx||0),24,W-24-bw);by=clamp(by+(opt.dy||0),24,H-24-bh);   // dx/dy: move the box off content it would cover
     // fade out if the target leaves the window (e.g. the view moved on), so a callout never points at nothing
     const out=Math.max(WIN.x-ax,ax-(WIN.x+WIN.w),WIN.y-ay,ay-(WIN.y+WIN.h),0),inWin=clamp(1-out/40,0,1);
     const p=ez.dec(P(t,a,a+0.7)),x=ez.inC(P(t,b,b+0.5)),o=p*(1-x)*inWin,off=(1-p)*14*(side==='top'?-1:side==='bottom'?1:0);

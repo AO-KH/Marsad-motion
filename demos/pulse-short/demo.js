@@ -8,7 +8,7 @@ const X=M.pick(948,1260);                      // 9:16 crops the page: keep the 
 M.title({at:B(0.5),out:B(6.5),icon:'pulse',kicker:'FEATURE',kickerAr:'ميزة',en:'Business Pulse',ar:'نبض الأعمال'});
 
 const app=M.app({at:B(7),out:B(35.5),page:'pulse',view:{x:X}});
-app.inject('pulse',`<div class="abs" id="alertCard"><span class="dot"></span><span class="t">تنبيه: انخفاض مخزون فرع الرياض ١٨٪</span>
+app.inject('pulse',`<div class="abs" id="alertCard"><span class="dot"></span><span class="t">تنبيه: انخفاض مخزون فرع الرياض 18%</span>
   <span class="m">${SK.pill('hi','مرتفع')}${SK.pill('src','المخزون · Odoo')}<span class="sk-meta">الآن</span></span>
   <svg width="130" height="76" viewBox="0 0 130 76"><polyline points="4,16 26,20 46,14 66,30 86,34 104,56 126,62" fill="none" stroke="#A8131C" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="126" cy="62" r="5" fill="#A8131C"/></svg></div>`);
 
@@ -20,7 +20,7 @@ if(M.FORMAT==='16x9'){
   app.focus(B(8.5),'text:المستشار اليومي',{scale:1.0,dx:-300,dur:1.2});
   app.focus(B(10.5),'.sk-toggle',{scale:1.1,dx:330,dur:1.2});
 }
-app.click(B(12),'.sk-toggle').toggle(B(12),'.sk-toggle');
+app.click(B(12),'.sk-toggle',{ax:0.72,ay:0.62}).toggle(B(12),'.sk-toggle');   // on the switch: the label stays readable
 app.cursorOut(B(13.5));
 app.focus(B(14),'page',{x:X,dur:1.2});
 [1,2,3].forEach((n,i)=>app.show(B(15)+i*S8,`#recRows .sk-rec:nth-child(${n}) .sk-pill.new`,{from:'none',scale:0.9}));

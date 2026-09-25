@@ -24,8 +24,8 @@ The pipeline runs these steps:
 
 1. `make.py` writes `build/monitor-<cut>.html`.
 2. `audio.py` writes `out/monitor-hero.wav`, `out/monitor-bumper.wav` and `out/monitor-cues.json`.
-3. `render.js` renders four sub-frames per frame across a 180° shutter, never across a cut.
-4. `blend.py` averages the sub-frames into motion-blurred frames.
+3. `render_mb.js` (repo root) renders four sub-frames per frame across a 180° shutter, never across a cut.
+4. `tools/blend.py` averages the sub-frames into motion-blurred frames.
 5. ffmpeg encodes the MP4 (crf 18, AAC 192k).
 6. `tools/qa.py --cuts …` checks the result: shake 0, with the intended cuts skipped.
 

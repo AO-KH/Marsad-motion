@@ -18,21 +18,22 @@ M.steps({at:B(8),out:B(68),list:[
   {at:B(56),en:'It is recorded right away',       ar:'يُسجَّل القرار فوراً'},
 ]});
 
-// 1 — the Decisions tab
-app.focus(B(8),'.sk-tab[data-k="dec"]',{scale:v(1.0,1.25),dy:260});
-app.click(B(11),'.sk-tab[data-k="dec"]');
+// 1 — the Decisions tab: close enough to read the tabs; the pointer lands under the label, never on it
+app.focus(B(8),'.sk-tab[data-k="dec"]',{scale:v(1.5,1.45),max:1.6,dy:v(120,200)});
+app.click(B(11),'.sk-tab[data-k="dec"]',{ax:0.2,ay:0.95});
 app.page(B(11.25),'decisions');
 app.focus(B(13),'page',{x:v(948,1000),dur:1.2});
 
-// 2 — the recommendation card
-app.focus(B(20),'#decCard',{scale:v(0.95,undefined),dx:v(0,250),dur:1.2});   // 16:9: the whole card fills the window
+// 2 — the recommendation card. 16:9: the whole card fills the window; 9:16: its right half (title, pills, buttons) at a readable size
+app.focus(B(20),'#decCard',{scale:v(0.95,1.08),dx:v(0,330),dur:1.2});
 app.click(B(23),'#decCard',{ax:v(0.6,0.75)});
 app.highlight(B(23),B(30.5),'#decCard',{pad:10});
 app.cursorOut(B(25));
 
-// 3 — confidence and source (9:16 shows one at a time: the card is wider than the frame)
-app.callout(B(33),v(B(42),B(35.5)),'text:ثقة 80%',{en:'80% confidence',ar:'ثقة ٨٠٪',side:'top'});
-if(M.FORMAT==='9x16')app.focus(B(36),'text:المخزون · Odoo',{scale:1.15,dx:360,dur:1.2});
+// 3 — confidence and source (9:16 shows one at a time: the card is wider than the frame).
+//     The confidence callout sits below and to the left, clear of the title above and the buttons below.
+app.callout(B(33),v(B(42),B(35.5)),'text:ثقة 80%',{en:'80% confidence',ar:'ثقة 80%',side:'bottom',gap:20,dx:v(-340,-360)});
+if(M.FORMAT==='9x16')app.focus(B(36),'text:المخزون · Odoo',{scale:1.15,dx:360,dy:150,dur:1.2});
 app.callout(B(37),B(42),'text:المخزون · Odoo',{en:'Source: Odoo inventory',ar:'المصدر: مخزون Odoo',side:'top'});
 
 // 4 — approve

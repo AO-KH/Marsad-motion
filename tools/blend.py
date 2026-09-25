@@ -1,8 +1,8 @@
-"""Average each frame's sub-frames (from render.js) into one motion-blurred frame.
+"""Average each frame's sub-frames (from render_mb.js) into one motion-blurred frame, then delete the sub-frames.
 
-usage: python3 films/monitor/blend.py <outdir>        <outdir>/sub/s_<frame>_<k>.jpg -> <outdir>/f_<frame>.jpg
+usage: python3 tools/blend.py <outdir>        <outdir>/sub/s_<frame>_<k>.jpg -> <outdir>/f_<frame>.jpg
 """
-import glob, os, re, sys
+import glob, os, re, shutil, sys
 from collections import defaultdict
 import numpy as np
 from PIL import Image
@@ -21,6 +21,7 @@ def main():
             acc = a if acc is None else acc + a
         img = np.clip(acc / len(groups[i]) + 0.5, 0, 255).astype(np.uint8)
         Image.fromarray(img).save(os.path.join(out, f'f_{i:04d}.jpg'), quality=95)
+    shutil.rmtree(os.path.join(out, 'sub'))
     print('blended', len(groups), 'frames')
 
 

@@ -23,20 +23,25 @@ npm install                                   # once (playwright; Chromium: see 
 ```
 
 Each build writes the pages to `build/`, fits the music to `out/<slug>-music.wav`, renders the frames to
-`frames/<slug>-<format>/`, muxes the MP4 and runs the QA check (section 8). A 30 s demo takes about 2–3
-minutes per format.
+`frames/<slug>-<format>/`, muxes the MP4 and runs the QA check (section 8). Final builds have motion blur:
+`render_mb.js` renders four sub-frames per frame and `tools/blend.py` averages them. This takes about 8 minutes per
+format for 60 s. `SUB=1 ./build_demo.sh <slug>` makes a quick draft without blur, about 4× faster.
 
 Start a new demo by copying the closest example:
 
 ```bash
 cp -r demos/pulse-short demos/my-feature        # or demos/decisions-walkthrough
 # edit demos/my-feature/demo.json and demo.js, then:
-python3 tools/make_demo.py my-feature && node render_ab.js build/my-feature-16x9.html chk 2,6,12   # stills
+python3 tools/make_demo.py my-feature && python3 tools/stills.py my-feature 8,11,20,23 --beats   # review sheets, both formats
 ./build_demo.sh my-feature
 ```
 
 Preview while writing: open `build/<slug>-16x9.html` in Chrome, and add `#t=12.5` to the URL to see that
-second (or call `SEEK(12.5)` in the console). Stills from `render_ab.js` land in `style_audit/`.
+second (or call `SEEK(12.5)` in the console). `tools/stills.py` writes `style_audit/<slug>-stills-<format>.png`,
+a labelled sheet per format, and keeps each still at full size next to it.
+
+The procedure and the quality bar live in the `marsad-demo` skill (`.claude/skills/marsad-demo/`). Its
+`references/quality-bar.md` is the checklist to go through before any build.
 
 ## 2. The house style (the client's decisions; keep them)
 
@@ -54,7 +59,15 @@ These come from the client's feedback on the campaign films. The engine's defaul
 - **No camera cuts:** views glide; they never jump on a beat.
 - **Rhythm:** place events on the music's beats (`M.B(k)`) so the video feels musical without pulsing.
 - **Legible:** push in (`app.focus`) on whatever the caption talks about. In 9:16 the page is cropped, so
-  every step needs a focus that keeps its subject in frame.
+  every step needs a focus that keeps its subject in frame. Never shrink a wide card to fit 9:16: show the part
+  that matters at a scale of at least 1.0 and pan.
+- **Nothing covers what it explains:** the cursor lands beside a label, not on it (`app.click(t, target, {ax, ay})`).
+  Callout boxes stay off titles, buttons and numbers (`side`, `gap`, `dx`/`dy`).
+- **Western digits** (0–9) in captions, callouts and the steps rail, in both languages, as in the app's cards (the
+  client's brief: digits stay Western).
+- **9:16 safe zones:** keep text between about y 220 and 1600. The engine's layout does this; the bands outside it
+  are covered by TikTok, Reels and Shorts UI.
+- **Motion blur on final renders** (the default). A `SUB=1` draft is never delivered.
 
 ## 3. How a demo is made
 
@@ -84,6 +97,8 @@ These come from the client's feedback on the campaign films. The engine's defaul
 | `tools/music_fit.py` | Cuts, loops, fades and normalises the music (-14 LUFS) -> `out/<slug>-music.wav` |
 | `tools/beats.py` | Tempo, beats, downbeat candidates and a loudness map of a track |
 | `tools/qa.py` | Pace, pulse and shake checks and a contact sheet of a rendered MP4 |
+| `tools/stills.py` | Review stills in both formats at given times or beats, tiled into one labelled sheet per format |
+| `render_mb.js`, `tools/blend.py` | Motion blur: four sub-frames per frame over a 180° shutter, then averaged (shared with the films) |
 | `build_demo.sh` | All of the above in order |
 | `render_full.js`, `render_ab.js` | Frame renderer and still renderer (shared with the films) |
 | `fit/` | Music: `product-video.mp3` (117 s, 88 BPM; the examples use it), `stylish.mp3` (75 s, 94 BPM) and `music54.m4a` (54 s, 95.96 BPM) |
@@ -113,16 +128,17 @@ sliders, trendUp, swap, send, check, clock, ccheck, cx, bang, maximize.
 ```js
 const app = M.app({at, out, page:'pulse', view:{x, y, zoom}});   // one per demo; view = the opening framing
 app.page(t, 'decisions')                 // cross-fade to another page; the tab underline slides
-app.focus(t, target, {fill, scale, dx, dy, dur, max})   // glide the view to an element
+app.focus(t, target, {fill, scale, dx, dy, dur, max})   // glide the view to an element (max: allow a closer zoom)
 app.focus(t, 'page', {x, y, zoom})       // back to the whole page (16:9 fits it; 9:16 shows a square crop at x,y)
 app.cursor(t, target)                    // the cursor glides to an element (appears on the first call)
-app.click(t, target)                     // moves there in the second before t, presses, one soft ring
+app.click(t, target, {ax, ay})           // moves there in the second before t, presses, one soft ring. ax/ay (0-1):
+                                         // where the pointer tip lands in the element; put it beside the label, not on it
 app.cursorOut(t)
 app.type(t, target, 'text', {cps:14, clearAt})   // types into an input; steady caret, no blinking
 app.show(t, target, {from:'below'|'above'|'left'|'right'|'none', dist, scale, dur, display})
 app.hide(t, target, {dur})
 app.highlight(from, to, target, {pad})   // a glowing ring around an element
-app.callout(from, to, target, {en, ar, side:'top'|'bottom'|'left'|'right'|'auto'})
+app.callout(from, to, target, {en, ar, side:'top'|'bottom'|'left'|'right'|'auto', gap, dx, dy})   // dx/dy move the box
 app.toggle(t, '.sk-toggle')              // a site-kit switch turns on
 app.count(t, target, from, to, {dur, fmt})
 app.text(t, target, 'new text')          // swap the text with a soft dip
@@ -144,7 +160,9 @@ right).
 - elements of the top bar and tabs, e.g. `'.sk-tab[data-k="dec"]'`, `'.sk-badge'`, `'.sk-search'`.
 
 **Custom logic:** `M.track(t=>…)` runs every frame; `M.at(t0,(on,t)=>…)`; `M.tween(t0,dur,p=>…,'dec')`.
-Everything must be a pure function of `t` (no timers, no randomness except the seeded `mulberry`).
+Everything must be a pure function of `t` (no timers, no randomness except the seeded `mulberry`). Motion blur
+renders sub-frames around each frame. Anything that changes in steps (a number, typed text, a label swap) must use
+the frame's time `Math.round(t*30)/30`, or it ghosts; `count`, `text`, `type` and `toggle` already do.
 
 ## 6. Pages and screens
 
@@ -247,4 +265,4 @@ target, nothing cut off in 9:16.
 | Demo | Kind | Length | Music | Notes |
 |---|---|---|---|---|
 | [`pulse-short`](demos/pulse-short/demo.js) | Short feature demo (example) | 30 s | `product-video.mp3` | Business Pulse: the daily advisor switches on, new findings, a stock alert with highlight and callout |
-| [`decisions-walkthrough`](demos/decisions-walkthrough/demo.js) | Walkthrough (example) | 60 s | `product-video.mp3` | Approve a recommendation in 5 steps: open Decisions, pick, check confidence and source, approve, counters update |
+| [`decisions-walkthrough`](demos/decisions-walkthrough/demo.js) | Walkthrough (**the reference**) | 60 s | `product-video.mp3` | Approve a recommendation in 5 steps: open Decisions, pick, check confidence and source, approve, counters update. v2 (2026-09-25): closer tab click with the label visible, callouts clear of content, readable 9:16 framing, Western digits, motion blur |

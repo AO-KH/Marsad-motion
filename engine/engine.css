@@ -67,8 +67,8 @@ body.f9x16 .m-title .en{font-size:88px;}
   letter-spacing:0;box-shadow:0 0 0 5px rgba(142,50,195,0.12),0 8px 18px rgba(95,13,180,0.30);}
 body.f16x9 .m-cap{top:926px;}
 body.f9x16 .m-cap{top:1452px;padding:0 60px;}
-body.f9x16 .m-cap .en{font-size:52px;line-height:1.18;white-space:normal;}
-body.f9x16 .m-cap .ar{font-size:34px;white-space:normal;margin-top:12px;}
+body.f9x16 .m-cap .en{font-size:52px;line-height:1.18;white-space:normal;text-wrap:balance;}
+body.f9x16 .m-cap .ar{font-size:34px;white-space:normal;margin-top:12px;text-wrap:balance;}
 body.f9x16 .m-cap .sn{width:60px;height:60px;font-size:30px;vertical-align:6px;}
 
 /* ---------- walkthrough steps rail ---------- */

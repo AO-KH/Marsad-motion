@@ -13,8 +13,8 @@ $PY films/monitor/make.py "${CUTS[@]}"
 $PY films/monitor/audio.py
 for C in "${CUTS[@]}"; do
   KIND=${C%%-*}                                    # hero | bumper
-  node films/monitor/render.js "build/monitor-$C.html" "frames/monitor-$C" "$SUB" "$JOBS"
-  $PY films/monitor/blend.py "frames/monitor-$C" && rm -rf "frames/monitor-$C/sub"
+  node render_mb.js "$JOBS" "build/monitor-$C.html" "frames/monitor-$C" "$SUB"
+  $PY tools/blend.py "frames/monitor-$C"
   ffmpeg -loglevel error -y -framerate 30 -i "frames/monitor-$C/f_%04d.jpg" -i "out/monitor-$KIND.wav" -map 0:v -map 1:a \
     -c:v libx264 -preset slow -crf 18 -pix_fmt yuv420p -profile:v high -c:a aac -b:a 192k -movflags +faststart -shortest \
     "out/monitor-$C.mp4"

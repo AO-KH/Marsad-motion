@@ -8,7 +8,8 @@ and muxed with ffmpeg.
 
 - **Product demo videos** (the ongoing work): `engine/`, `demos/`, `tools/`, `build_demo.sh`. Read
   [`DEMOS.md`](DEMOS.md). To make one, follow the `marsad-demo` skill
-  (`.claude/skills/marsad-demo/SKILL.md`).
+  (`.claude/skills/marsad-demo/SKILL.md`), which is the baseline for all demo work. Its references hold the
+  reference walkthrough's anatomy and the quality checklist.
 - **Two finished ads**: `film.html` (63 s campaign film, `./build.sh`) and `film54_src/` → `film54.html` (54 s
   "Know. Watch. Decide.", `./build54.sh`). Their history, beat maps and delivered versions are in
   [`HANDOFF.md`](HANDOFF.md). Change them only when asked.
@@ -24,6 +25,10 @@ and muxed with ffmpeg.
 - Calm pace: entrances 0.6–1.0 s on a decelerating ease, camera glides of 1–1.5 s, nothing pops.
 - No shaking (camera shake, wiggles, bobbing, overshoot), no pulsing to the beat, no camera cuts.
 - Demos: music and captions only, no voiceover. Formats 16:9 and 9:16.
+- Western digits (0–9) in captions, callouts and the steps rail, in both languages, as in the app.
+- Readable on a phone: in 9:16 the subject is shown at a readable size (pan, don't shrink). The cursor and
+  callouts never cover what they explain.
+- Final renders have motion blur (the default in the builds); drafts (`SUB=1`) are never delivered.
 
 ## Working conventions
 
