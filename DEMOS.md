@@ -86,7 +86,7 @@ These come from the client's feedback on the campaign films. The engine's defaul
 | `tools/qa.py` | Pace, pulse and shake checks and a contact sheet of a rendered MP4 |
 | `build_demo.sh` | All of the above in order |
 | `render_full.js`, `render_ab.js` | Frame renderer and still renderer (shared with the films) |
-| `fit/` | Music: `stylish.mp3` (75 s, 94 BPM) and `music54.m4a` (54 s, 95.96 BPM) |
+| `fit/` | Music: `product-video.mp3` (117 s, 88 BPM; the examples use it), `stylish.mp3` (75 s, 94 BPM) and `music54.m4a` (54 s, 95.96 BPM) |
 
 ## 5. The engine API
 
@@ -98,7 +98,7 @@ Times are seconds; `M.B(k)` is beat `k` of the music (bar lines at `B(0)`, `B(4)
 
 ```js
 M.title({at, out, icon:'pulse', kicker:'FEATURE', kickerAr:'ميزة', en:'Business Pulse', ar:'نبض الأعمال', sub});
-M.caption({at, out, en:'It flags what changed.', ar:'ينبّهك لما تغيّر.'});
+M.caption({at, out, en:'It flags what changed.', ar:'ينبّهك لما تغيّر.'});   // fades out over 0.5 s after `out`: end it 0.5 s before the next
 M.steps({at, out, list:[{at:B(8), en:'Open Decisions', ar:'افتح صفحة القرارات'}, …]});  // rail + one caption per step
 M.endcard({at, cta, ctaAr, url, tag, tagAr});   // defaults: Book your demo · احجز عرضك التجريبي, marsadnasl.com
 ```
@@ -206,10 +206,12 @@ section if the demo is longer than the track, fades in and out, and normalises t
 
   | File | Length | BPM | Downbeat | Shape |
   |---|---|---|---|---|
+  | `fit/product-video.mp3` (SoundSurfer "Product Video") | 117 s | 88.0 | 0.016 | k0–3 intro, groove k4–67 (phrases start on k4, k20, k36, k52), a stop on k70–71, quiet breakdown k72–87, build k88–99, drop on k100, groove to the end on k164 (111.8 s). The kick is on beat 4 of the bar |
   | `fit/stylish.mp3` (SoundSurfer "Stylish") | 75 s | 94.0 | 0.041 | k0–3 near silence, k4–7 build, k8–71 groove, k72–79 quiet breakdown, groove from k80 |
   | `fit/music54.m4a` (from the old 54 s cut) | 54 s | 95.96 | 0.03 | k0–15 quiet intro, drums from k16 (10 s), breakdown k48–79, drums back k80 |
 
-  For long walkthroughs, `stylish.mp3` with `"loop": [8, 72]` repeats the groove as many times as needed.
+  `product-video.mp3` covers walkthroughs up to about 1:50 without a loop; beyond that, `"loop": [100, 164]` repeats
+  its second groove. For `stylish.mp3`, `"loop": [8, 72]`.
 - New music: make sure it is licensed for commercial use.
 
 ## 8. Quality check
@@ -244,5 +246,5 @@ target, nothing cut off in 9:16.
 
 | Demo | Kind | Length | Music | Notes |
 |---|---|---|---|---|
-| [`pulse-short`](demos/pulse-short/demo.js) | Short feature demo (example) | 30 s | `music54.m4a` | Business Pulse: the daily advisor switches on, new findings, a stock alert with highlight and callout |
-| [`decisions-walkthrough`](demos/decisions-walkthrough/demo.js) | Walkthrough (example) | 58 s | `stylish.mp3` | Approve a recommendation in 5 steps: open Decisions, pick, check confidence and source, approve, counters update |
+| [`pulse-short`](demos/pulse-short/demo.js) | Short feature demo (example) | 30 s | `product-video.mp3` | Business Pulse: the daily advisor switches on, new findings, a stock alert with highlight and callout |
+| [`decisions-walkthrough`](demos/decisions-walkthrough/demo.js) | Walkthrough (example) | 60 s | `product-video.mp3` | Approve a recommendation in 5 steps: open Decisions, pick, check confidence and source, approve, counters update |

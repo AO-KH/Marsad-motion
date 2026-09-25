@@ -93,8 +93,8 @@ def main():
     print('          time (s)      ' + '  '.join(f'{beat + i * period:7.3f}' for i in range(4)))
     print('          section jumps ' + '  '.join(f'{nov[i]:7.3f}' for i in range(4)) + '   (loudness change between bars)')
     print('          kick strength ' + '  '.join(f'{kick_ph[i] / np.mean(kick_ph):7.2f}' for i in range(4)))
-    print('          Confirm by ear: sections and big hits start on a downbeat. Known: fit/music54.m4a 0.03, '
-          'fit/stylish.mp3 0.04 (see DEMOS.md).')
+    print('          Confirm by ear, or print the loudness beat by beat around a section change: sections start on a')
+    print('          downbeat. Known: fit/product-video.mp3 0.016, fit/music54.m4a 0.03, fit/stylish.mp3 0.041 (DEMOS.md).')
     print('\n"music": ' + json.dumps({'file': a.audio, 'bpm': round(float(bpm), 2), 'downbeat': round(float(downbeat), 3),
                                      'start': 0.0, 'fade_out': 2.5}))
     # 4) loudness per bar (RMS), to plan sections: intro, drums in, breakdown, loop points

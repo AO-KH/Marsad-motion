@@ -1,6 +1,6 @@
 {
   "title": "Approve a recommendation — walkthrough",
-  "duration": 58,
+  "duration": 60,
   "formats": ["16x9", "9x16"],
-  "music": {"file": "fit/stylish.mp3", "bpm": 94.0, "downbeat": 0.041, "start": 0, "fade_out": 3.0}
+  "music": {"file": "fit/product-video.mp3", "bpm": 88.0, "downbeat": 0.016, "start": 0, "fade_out": 3.0}
 }

@@ -15,7 +15,8 @@ Get these, asking only for what you can't infer (one short round of questions):
 - **The feature or workflow**, and the one thing the viewer should take away.
 - **Kind**: short feature demo (20–60 s) or walkthrough (45 s – 3 min).
 - **Formats**: both 16:9 and 9:16 unless told otherwise.
-- **Music**: `fit/stylish.mp3` (75 s, 94 BPM), `fit/music54.m4a` (54 s, 95.96 BPM), or a licensed track the
+- **Music**: `fit/product-video.mp3` (117 s, 88 BPM; the examples use it), `fit/stylish.mp3` (75 s, 94 BPM),
+  `fit/music54.m4a` (54 s, 95.96 BPM), or a licensed track the
   client supplies. Walkthroughs longer than the track use a `loop` (DEMOS.md §7).
 - **Screens**: if the feature isn't one of the site-kit pages (DEMOS.md §6.1), ask for screenshots. Then either
   rebuild the screens with site-kit pieces (preferred: sharp when zoomed) or use the screenshots as pages.

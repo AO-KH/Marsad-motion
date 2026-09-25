@@ -1,6 +1,7 @@
-/* Approve a recommendation — a 58 s step-by-step walkthrough (the "walkthrough" template).
-   Music: "Stylish", 94 BPM; B(k) is beat k (bars every 4). Intro k0-3, build k4-7, groove k8-71,
-   quiet breakdown k72-79, the groove returns on k80 with the end card.
+/* Approve a recommendation — a 60 s step-by-step walkthrough (the "walkthrough" template).
+   Music: SoundSurfer "Product Video" (fit/product-video.mp3), 88 BPM; B(k) is beat k (bars every 4). The groove
+   runs from k4; the music stops for a moment on k70-71, a quiet breakdown carries the outro and the end card
+   (k72-87), and the video ends on k88 (60 s), just before the build.
    Shape: title → the app → 5 steps of 12 beats (numbered rail + one caption per step) → outro → end card. */
 const B=M.B, v=M.pick;                          // v(a16x9, a9x16): per-format framing
 
