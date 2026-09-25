@@ -1,8 +1,13 @@
 # MARSAD campaign film — handoff
 
-Everything needed to continue the film lives in this folder (`marketing/campaign-film/`, branch
-`claude/sweet-carson-48mpkx`). Read sections 1–4 before changing anything; section 7 lists what the
-client has asked for and rejected.
+Everything needed to continue the film lives in this repo: **AO-KH/Marsad-motion**, branch `main`. The
+local copy is at `C:\Users\aomar\Desktop\Marsad motion`.
+
+The project was split out of the Marsad product monorepo (`Mohammedx12/marsad`, folder
+`marketing/campaign-film/` on branch `claude/sweet-carson-48mpkx`), with its history kept. Work here
+from now on.
+
+Read sections 1–4 before changing anything; section 7 lists what the client has asked for and rejected.
 
 ## 1. Where things stand
 
@@ -20,7 +25,7 @@ client has asked for and rejected.
 ## 2. Quick start
 
 ```bash
-cd marketing/campaign-film
+# from the repo root
 npm install                        # playwright 1.63; uses the preinstalled Chromium at /opt/pw-browsers/chromium
 ./build.sh out/marsad-film.mp4     # ~5 min: audio stems → mix → loudnorm → 1890 frames → MP4
 node render_ab.js film.html chk 11.6,25.0,39.1    # quick stills → style_audit/chk_<t>.png

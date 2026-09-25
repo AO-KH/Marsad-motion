@@ -1,5 +1,3 @@
-# the repo root ignores *.png; this project's images are sources
-!*.png
 # build outputs (all reproducible with ./build.sh)
 frames*/
 out/
