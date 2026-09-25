@@ -243,8 +243,10 @@ In order:
 
 - **This rebuild:** `./build.sh` in this folder reproduced v5 (compared on 2026-09-25).
   - The audio mix and master are byte-identical.
-  - The frames are visually identical. About 5% differ by Chromium rasterization noise: 1–6 levels out
-    of 255 on a few pixels, and at most 17 levels on 22 pixels in one frame.
+  - The frames are visually identical. 1,674 of 1,890 are byte-identical.
+  - The other 216 differ only by Chromium anti-aliasing noise on edges. Most are off by under 25 levels
+    out of 255 on a few hundred pixels.
+  - The largest single case is 1,460 pixels along the end-card logo's edges, invisible side by side.
 - **`python3 tools/pulse_check.py frames`** gives the median ratio of the frame change right after each
   beat to the change in surrounding frames. 1.0 means no pulsing; v4 measured 12×, v5 measures 1.0×.
 - **`python3 tools/visual_sync.py frames`** gives the share of element onsets that start within one frame
