@@ -295,3 +295,47 @@ In order:
 | `marsad-film-final-v5.mp4` | Rhythm lock without pulsing. **Current.** |
 
 Earlier explorations (a dark-glass style pass, four synthesized music samples) are superseded.
+
+
+## 12. Second film: "Know. Watch. Decide." (54 s)
+
+This is a rebuild of an older 54-second dark "space" cut. The client asked for:
+- the new light website style, like the 63-second film;
+- the **same script and captions**;
+- the **same music track**;
+- **no voiceover**: music and captions only;
+- no pulsing, as in section 7.
+
+The first delivered cut is `marsad-54s-v1.mp4`.
+
+- **Build:** `./build54.sh out/marsad-54s.mp4` takes about 6 minutes.
+- **Source:** `film54_src/` holds `style.css`, `body.html` and `scenes.js`. `make_film54.py` combines them with
+  engine pieces copied from `film.html` (helpers, source tiles, background, camera) into `film54.html`. Edit
+  `film54_src/`, then rebuild. Don't edit `film54.html` by hand.
+- **Music:** `fit/music54.m4a` is the original track, copied out of the old cut without re-encoding. It is
+  normalised to −14 LUFS at build time.
+- **Beat grid:** 95.96 BPM. Beat k falls at `0.03 + 0.62525·k` seconds, and a bar is 2.501 s. In the code:
+  `vbeat(k)`, `kOf(t)`, `S16`, `S8`, `S32`.
+
+  | Beats | Time (s) | Section |
+  |---|---|---|
+  | k0–k15 | 0–10 | Quiet intro |
+  | k16–k47 | 10–30 | Drums (groove) |
+  | k48–k79 | 30–50 | Breakdown, with a hit on k64 (40.05 s) |
+  | k80 | 50.05 | Drums return |
+  | — | 52.4–54 | Fade |
+- **Storyboard.** Each caption holds for 2 bars.
+
+  | Time (s) | Caption | Scene |
+  |---|---|---|
+  | 0–5 | "Where did this number come from?" | A Q3 sales number counts up, then a "source unknown" tag appears |
+  | 5–10 | "Your data is everywhere." | The number shatters into 8 sources and 4 files; they land in the Projects page on 16ths |
+  | 10–15 | "Ask. Get proof." | The Assistant types the question on 32nds, streams the answer, then shows source chips and a proof table |
+  | 15–20 | "It watches for you." | Business Pulse: the advisor switches on, "new" badges appear and a stock alert slides in |
+  | 20–25 | "Both sides. With evidence." | Decisions: a for/against panel with evidence chips and an 80% confidence recommendation |
+  | 25–30 | "Sealed. Unrewritable." | Approve on k40, the seal stamp lands on k42, then hash, lock and a refused edit |
+  | 30–35 | "And much more." | The window recedes into the wall of pages |
+  | 35–40 | "Know. Watch. Decide." | One word per 2 beats (k56, k58, k60); the words converge into the logo |
+  | 40–54 | — | Logo ignition on k64, then wordmark, tagline, marsadnasl.com and "Book your demo · احجز عرضك التجريبي" when the drums return |
+- **Focus track:** `FOCUS` in `scenes.js` pushes the app window in on the key moments, so the small UI text
+  stays readable. A white band behind the captions keeps them legible over the zoomed window.

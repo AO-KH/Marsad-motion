@@ -1,4 +1,4 @@
-# Marsad motion — campaign film
+# Marsad motion — campaign films
 
 A 63-second bilingual (EN/AR) ad for **Marsad**, the sovereign AI business platform by NASL Technologies.
 It is built as a deterministic HTML animation (`film.html`) and rendered to video with Playwright and
@@ -13,3 +13,13 @@ ffmpeg.
   `PYTHON=python bash build.sh` from Git Bash.
 - **Quick look without rendering:** open `film.html` in Chrome and run `SEEK(11.6)` in the console to
   jump to any second.
+
+## The two films
+
+| Film | Length | Source | Rebuild |
+|---|---|---|---|
+| Campaign film ("One operational nervous system") | 63 s | `film.html` | `./build.sh` |
+| "Know. Watch. Decide." | 54 s | `film54.html`, generated from `film54_src/` by `make_film54.py` | `./build54.sh` |
+
+Both use the new light website style, the same app pages (`site_kit.js`), fonts and logos, and keep every motion on
+their music's beat, with no pulsing.

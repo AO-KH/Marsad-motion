@@ -1,0 +1,94 @@
+<div id="stage">
+<canvas id="bg" width="1920" height="1080"></canvas>
+
+<div id="cam">
+<!-- G / I backdrop: a tilted wall of the site's pages -->
+<div id="wallWrap"><div id="wall"></div><div id="wallVeil"></div></div>
+
+<!-- ignition layer (I) -->
+<div id="orb" style="width:120px;height:120px;margin:-60px 0 0 -60px;border-radius:50%;opacity:0;
+  background:radial-gradient(circle, rgba(250,235,255,0.95), rgba(188,89,209,0.70) 30%, rgba(142,50,195,0.30) 58%, rgba(142,50,195,0) 78%);
+  filter:blur(7px);box-shadow:0 0 70px 26px rgba(188,89,209,0.30), 0 0 170px 60px rgba(142,50,195,0.14);"></div>
+<div id="shock1"></div><div id="shock2"></div>
+<svg id="vec" width="1920" height="1080" viewBox="0 0 1920 1080" style="left:0;top:0;">
+  <defs>
+    <filter id="glowP" filterUnits="userSpaceOnUse" x="0" y="0" width="1920" height="1080"><feGaussianBlur in="SourceGraphic" stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  </defs>
+  <g id="trails" filter="url(#glowP)"></g>
+  <g id="burst" filter="url(#glowP)" opacity="0"></g>
+</svg>
+
+<!-- A: the number -->
+<div id="sA">
+  <div id="kpi">
+    <div id="kpiLbl"><span class="ar">مبيعات الربع الثالث</span><i></i><span class="en">Q3 SALES</span></div>
+    <div id="kpiNum">0</div>
+    <div id="kpiCur">SAR · ر.س</div>
+  </div>
+  <div id="kpiSrc"><span><span class="q">?</span><span>SOURCE UNKNOWN</span><span class="ar">· المصدر غير معروف</span></span></div>
+</div>
+
+<!-- B: scattered sources (tiles + files) -->
+<div id="items"></div>
+
+<!-- C–G: the Marsad web app -->
+<div id="uiWrap">
+  <div id="uiFrame"><div class="site" id="uiSite"></div></div>
+  <div class="beam soft" id="uiBeamS" style="left:-7px;top:-7px;width:1374px;height:774px;border-radius:25px;"></div><div class="beam" id="uiBeam" style="left:-2px;top:-2px;width:1364px;height:764px;border-radius:20px;"></div>
+  <svg id="cursor" viewBox="0 0 28 40"><path d="M2 2 L2 30 L9.5 24 L14 36 L19 34 L14.5 22 L24 22 Z" fill="#FFFFFF" stroke="#1A191E" stroke-width="2.4" stroke-linejoin="round"/></svg>
+  <div class="ripple" id="rip"></div>
+</div>
+
+<!-- H: Know. Watch. Decide. -->
+<div id="sH">
+  <div class="kwd" id="kw0" style="left:330px;">
+    <svg viewBox="0 0 100 100"><g fill="none" stroke="url(#kg)" stroke-width="5" stroke-linecap="round"><path id="kw0p" d="M50 22 L22 72 M50 22 L78 72 M22 72 L78 72"/></g>
+      <g fill="#fff" stroke="#8E32C3" stroke-width="5"><circle cx="50" cy="22" r="10"/><circle cx="22" cy="72" r="10"/><circle cx="78" cy="72" r="10"/></g>
+      <defs><linearGradient id="kg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#5F0DB4"/><stop offset="1" stop-color="#BC59D1"/></linearGradient></defs></svg>
+    <div class="en">Know.</div><div class="ar">اعرف.</div></div>
+  <div class="kwd" id="kw1" style="left:750px;">
+    <svg viewBox="0 0 100 100"><path id="kw1p" d="M6 56 L28 56 L38 30 L52 78 L64 46 L72 56 L94 56" fill="none" stroke="url(#kg)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <div class="en">Watch.</div><div class="ar">راقب.</div></div>
+  <div class="kwd" id="kw2" style="left:1170px;">
+    <svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="38" fill="none" stroke="url(#kg)" stroke-width="6"/><path id="kw2p" d="M32 51 L45 64 L69 38" fill="none" stroke="url(#kg)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <div class="en">Decide.</div><div class="ar">قرّر.</div></div>
+</div>
+
+<!-- I: end card -->
+<div id="sI">
+  <img id="endM" src="assets_logo_m.png">
+  <div id="mGlint"></div>
+  <img id="endWord" src="assets_logo_wordmark_white.png">
+  <div id="endTag">Know. Watch. Decide.</div>
+  <div id="endTagAR">اعرف. راقب. قرّر.</div>
+  <div id="endURL">marsadnasl.com</div>
+  <div id="endCTA"><span id="ctaPill"><span>Book your demo</span><span class="sep">·</span><span class="ar">احجز عرضك التجريبي</span></span></div>
+</div>
+
+<!-- a soft white band keeps captions legible over the zoomed app -->
+<div id="capBand"></div>
+<!-- captions (words that belong together reveal together; two-part lines reveal part by part) -->
+<div id="caps">
+  <div class="copyEN" id="c1en" style="top:842px;">Where did this number come from?</div>
+  <div class="copyAR" id="c1ar" style="top:912px;">من أين جاء هذا الرقم؟</div>
+  <div class="copyEN" id="c2en" style="top:842px;">Your data is everywhere.</div>
+  <div class="copyAR" id="c2ar" style="top:912px;">بياناتك في كل مكان</div>
+  <div class="copyEN" id="c3en" style="top:938px;"><span class="cw">Ask.</span> <span class="cw">Get proof.</span></div>
+  <div class="copyAR" id="c3ar" style="top:1000px;"><span class="cw">اسأل...</span> <span class="cw">وخذ الدليل</span></div>
+  <div class="copyEN" id="c4en" style="top:938px;">It watches for you.</div>
+  <div class="copyAR" id="c4ar" style="top:1000px;">يراقب عنك</div>
+  <div class="copyEN" id="c5en" style="top:938px;"><span class="cw">Both sides.</span> <span class="cw">With evidence.</span></div>
+  <div class="copyAR" id="c5ar" style="top:1000px;"><span class="cw">الحجج</span> <span class="cw">والأدلة أمامك</span></div>
+  <div class="copyEN" id="c6en" style="top:938px;"><span class="cw">Sealed.</span> <span class="cw">Unrewritable.</span></div>
+  <div class="copyAR" id="c6ar" style="top:1000px;"><span class="cw">مختوم...</span> <span class="cw">لا يقبل التعديل</span></div>
+  <div class="copyEN" id="c7en" style="top:842px;">And much more.</div>
+  <div class="copyAR" id="c7ar" style="top:912px;">وأكثر من ذلك بكثير</div>
+</div>
+</div><!-- /cam -->
+
+<div id="swp"><i id="swA"></i><i id="swB"></i></div>
+<svg width="0" height="0" style="position:absolute;left:0;top:0;"><filter id="mblur" x="-8%" y="-8%" width="116%" height="116%" color-interpolation-filters="sRGB"><feGaussianBlur id="mbG" stdDeviation="0 0"/></filter></svg>
+<div id="flash"></div>
+<canvas id="fx" width="1920" height="1080"></canvas>
+<div id="fade"></div>
+</div>
