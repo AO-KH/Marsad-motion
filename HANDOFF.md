@@ -27,9 +27,20 @@ node render_ab.js film.html chk 11.6,25.0,39.1    # quick stills → style_audit
 node render_full.js 4 film.html frames 1160 1200  # re-render a frame range only (indices, 30 fps)
 ```
 
-Needs `ffmpeg`, `python3` with `numpy` (plus `Pillow` for `tools/`), and node 18+. If Chromium lives
-elsewhere, change `executablePath` in `render_full.js` and `render_ab.js`. Outputs (`out/`, `frames/`,
-`style_audit/`, `*.npy`, `fit/*.wav`) are gitignored.
+Needs `ffmpeg`, `python3` with `numpy` (plus `Pillow` for `tools/`), and node 18+. The renderers use
+`$CHROMIUM_PATH` if set, else the cloud image's Chromium, else Playwright's own browser.
+
+**On Windows** (local copy at `C:\Users\aomar\Desktop\Marsad motion`):
+
+1. Install Node 18+, Python 3 (`pip install numpy pillow`), and ffmpeg on your PATH.
+2. In the folder, run `npm install` and then `npx playwright install chromium`.
+3. From Git Bash, run `PYTHON=python bash build.sh`. WSL (Ubuntu) also works with the Linux commands
+   above.
+
+For a quick look without rendering, open `film.html` in Chrome, press F12, and type `SEEK(11.6)` in the
+console to jump to any second.
+
+Outputs (`out/`, `frames/`, `style_audit/`, `*.npy`, `fit/*.wav`) are gitignored.
 
 ## 3. Files
 

@@ -1,11 +1,13 @@
 // Full-length render of film_styled.html -> frames_styled/, split across N parallel pages
 const { chromium } = require('playwright');
 const path = require('path'), fs = require('fs');
+// Chromium: $CHROMIUM_PATH, else the cloud image's copy, else Playwright's own browser (npx playwright install chromium)
+const CHROME = process.env.CHROMIUM_PATH || (fs.existsSync('/opt/pw-browsers/chromium') ? '/opt/pw-browsers/chromium' : undefined);
 (async () => {
   const W = parseInt(process.argv[2] || '4'), FPS = 30;
   const FILE = process.argv[3] || 'film_styled.html', OUT = process.argv[4] || 'frames_styled';
   const out = path.join(__dirname, OUT); fs.mkdirSync(out, { recursive: true });
-  const browser = await chromium.launch({ executablePath: '/opt/pw-browsers/chromium',
+  const browser = await chromium.launch({ executablePath: CHROME,
     args: ['--force-color-profile=srgb', '--disable-lcd-text', '--hide-scrollbars'] });
   const t0 = Date.now();
   const N = 1890, F0 = parseInt(process.argv[5] || '0'), F1 = parseInt(process.argv[6] || String(N));
