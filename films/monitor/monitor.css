@@ -1,0 +1,118 @@
+/* ===== Marsad Monitor Film — the Opal look: real UI components (dark theme) on a black stage ===== */
+@font-face{font-family:'Inter';src:url('../../fonts/Inter-var.ttf');font-weight:100 900;}
+@font-face{font-family:'PlexAR';src:url('../../fonts/IBMPlexSansArabic-Regular.ttf');font-weight:400;}
+@font-face{font-family:'PlexAR';src:url('../../fonts/IBMPlexSansArabic-Medium.ttf');font-weight:500;}
+@font-face{font-family:'PlexAR';src:url('../../fonts/IBMPlexSansArabic-SemiBold.ttf');font-weight:600;}
+@font-face{font-family:'PlexAR';src:url('../../fonts/IBMPlexSansArabic-Bold.ttf');font-weight:700;}
+@font-face{font-family:'Kufi';src:url('../../fonts/NotoKufiArabic-700-arabic.woff2') format('woff2');font-weight:700;
+  unicode-range:U+0600-06FF,U+0750-077F,U+200C-200E,U+FB50-FDFF,U+FE70-FEFC;}
+@font-face{font-family:'Kufi';src:url('../../fonts/NotoKufiArabic-700-latin.woff2') format('woff2');font-weight:700;}
+
+:root{
+  --stage:#07060B; --b1:#c86dd7; --b2:#5f1cb8; --amber:#ffd991; --green:#94e2b2; --seal:#2f8a54;
+  --text:#FFFFFF; --label:rgba(255,255,255,0.6); --ink:#2A2217;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{background:var(--stage);overflow:hidden;}
+#stage{position:relative;overflow:hidden;background:var(--stage);font-family:'PlexAR','Inter',sans-serif;color:var(--text);}
+body.f9x16 #stage{width:1080px;height:1920px;}
+body.f16x9 #stage{width:1920px;height:1080px;}
+body.f1x1 #stage{width:1080px;height:1080px;}
+.abs{position:absolute;}
+.shot{position:absolute;left:0;top:0;width:100%;height:100%;display:none;overflow:hidden;}
+.lens{position:absolute;left:0;top:0;width:100%;height:100%;}        /* one depth-of-field layer of a shot */
+.world{position:absolute;left:0;top:0;width:0;height:0;}             /* a shot's camera: origin at the frame centre */
+#light{position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none;
+  background:radial-gradient(ellipse 90% 46% at 50% -8%,rgba(95,28,184,0.25) 0%,rgba(95,28,184,0.10) 48%,rgba(95,28,184,0) 78%);}
+#fx{position:absolute;left:0;top:0;pointer-events:none;}
+.ltr{direction:ltr;unicode-bidi:isolate;display:inline-block;}     /* numbers and the URL stay left-to-right */
+.rtl{direction:rtl;}
+svg{overflow:visible;}
+
+/* ---------- glass components ---------- */
+.card{border-radius:32px;background:linear-gradient(160deg,rgba(38,29,56,0.94),rgba(17,13,26,0.96));
+  box-shadow:inset 0 0 40px rgba(200,109,215,0.10),0 30px 80px rgba(0,0,0,0.55);}
+.card::before{content:'';position:absolute;inset:0;border-radius:inherit;padding:1.5px;pointer-events:none;   /* thin gradient stroke */
+  background:linear-gradient(135deg,rgba(200,109,215,0.8),rgba(95,28,184,0.25) 38%,rgba(255,255,255,0.10) 70%,rgba(200,109,215,0.4));
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;}
+.chip{border-radius:999px;height:64px;padding:0 26px;display:inline-flex;align-items:center;gap:12px;white-space:nowrap;direction:rtl;
+  font:600 31px 'PlexAR';color:#fff;background:rgba(255,255,255,0.07);box-shadow:inset 0 0 0 1.5px rgba(255,255,255,0.16);}
+.chip.amber{color:#2B1D05;background:var(--amber);box-shadow:0 0 34px rgba(255,217,145,0.40);}
+.chip.green{color:#0C2517;background:var(--green);box-shadow:0 0 34px rgba(148,226,178,0.40);}
+.chip.purple{color:#F2DDF7;background:rgba(200,109,215,0.14);box-shadow:inset 0 0 0 1.5px rgba(200,109,215,0.55);}
+.row{display:flex;align-items:center;gap:16px;direction:rtl;}
+
+/* ---------- 1–3: the chart ---------- */
+.grid{left:64px;right:64px;height:2px;background:rgba(255,255,255,0.07);}
+.axis{left:64px;right:64px;height:3px;background:rgba(255,255,255,0.16);}
+.limit{left:40px;right:40px;height:0;border-top:5px dashed rgba(255,255,255,0.6);}
+.lim-label{font:600 54px 'PlexAR';color:rgba(255,255,255,0.72);white-space:nowrap;direction:rtl;}
+.ch-title{font:700 72px 'PlexAR';color:#fff;white-space:nowrap;direction:rtl;}
+.bar{border-radius:14px 14px 3px 3px;transform-origin:50% 100%;
+  background:linear-gradient(180deg,var(--b1),var(--b2));box-shadow:0 0 28px rgba(200,109,215,0.32);}
+.bar.today{box-shadow:0 0 40px rgba(200,109,215,0.6);}
+.mbar{border-radius:30px 30px 0 0;overflow:hidden;box-shadow:0 0 70px rgba(200,109,215,0.45);}
+.mbar .fill{left:0;right:0;top:0;bottom:0;background:linear-gradient(180deg,var(--b1),var(--b2) 900px);}
+.mbar .over{left:0;right:0;top:0;background:linear-gradient(180deg,#fff1cf,var(--amber) 60%);}
+.aglow{border-radius:60px;background:var(--amber);filter:blur(46px);}
+.tip{width:360px;height:224px;border-radius:30px;text-align:center;background:rgba(21,16,31,0.9);
+  box-shadow:inset 0 0 0 1.5px rgba(255,255,255,0.14),0 22px 60px rgba(0,0,0,0.55);}
+.tip .l{position:absolute;left:0;right:0;top:26px;font:500 34px 'PlexAR';color:var(--label);direction:rtl;}
+.tip .v{position:absolute;left:0;right:0;top:78px;font:700 124px/1 'PlexAR';color:#fff;}
+.tip .caret{position:absolute;left:162px;bottom:-17px;width:36px;height:36px;transform:rotate(45deg);border-radius:6px;
+  background:rgba(21,16,31,0.95);box-shadow:inset -1.5px -1.5px 0 rgba(255,255,255,0.14);}
+
+/* ---------- 4: the alert ---------- */
+.header{border-radius:48px;background:linear-gradient(180deg,rgba(30,23,43,0.95),rgba(20,15,29,0.95));
+  box-shadow:inset 0 0 0 1.5px rgba(255,255,255,0.09),0 24px 60px rgba(0,0,0,0.5);}
+.srch{border-radius:26px;display:flex;align-items:center;gap:18px;padding:0 28px;direction:rtl;
+  font:500 34px 'PlexAR';color:rgba(255,255,255,0.42);background:rgba(255,255,255,0.05);box-shadow:inset 0 0 0 1.5px rgba(255,255,255,0.10);}
+.bellbtn{border-radius:50%;background:rgba(255,255,255,0.07);box-shadow:inset 0 0 0 1.5px rgba(255,255,255,0.14);}
+.nt{font:600 47px/1.55 'PlexAR';color:#fff;direction:rtl;text-align:right;}
+.aico{border-radius:28px;background:rgba(255,217,145,0.13);box-shadow:inset 0 0 0 1.5px rgba(255,217,145,0.5),0 0 40px rgba(255,217,145,0.18);
+  display:flex;align-items:center;justify-content:center;}
+
+/* ---------- 5–6: evidence and the decision ---------- */
+.ev{height:86px;border-radius:24px;display:flex;align-items:center;justify-content:center;gap:14px;
+  font:600 34px 'PlexAR';color:#fff;background:rgba(255,255,255,0.06);
+  box-shadow:inset 0 0 0 1.5px rgba(200,109,215,0.38),0 0 26px rgba(200,109,215,0.12);}
+.dc-title{font:700 50px/1.55 'PlexAR';color:#fff;direction:rtl;text-align:right;}
+.btn{border-radius:30px;overflow:hidden;}
+.btn .a,.btn .b{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:16px;white-space:nowrap;direction:rtl;}
+.btn .a{font:700 50px 'PlexAR';color:#fff;background:linear-gradient(90deg,var(--b1),var(--b2));}
+.btn .b{font:600 40px 'PlexAR';color:#E9FBF0;background:rgba(148,226,178,0.14);border-radius:30px;box-shadow:inset 0 0 0 1.5px rgba(148,226,178,0.6);}
+.btnglow{border-radius:40px;background:linear-gradient(90deg,var(--b1),var(--b2));filter:blur(34px);}
+.cursor{width:64px;height:92px;transform-origin:4px 4px;filter:drop-shadow(0 6px 12px rgba(0,0,0,0.55));}
+.ripple{border-radius:50%;border:5px solid rgba(200,109,215,0.95);box-shadow:0 0 34px rgba(200,109,215,0.7),inset 0 0 24px rgba(200,109,215,0.5);}
+.flip{perspective:600px;}
+.flip .chip{position:absolute;left:0;top:0;backface-visibility:hidden;}
+
+/* ---------- 7: the passport (cream security paper, the one physical object) ---------- */
+.paper{border-radius:22px;overflow:hidden;background:#F3EAD7;color:var(--ink);
+  box-shadow:0 60px 120px rgba(0,0,0,0.75),0 0 0 1px rgba(255,255,255,0.35) inset,inset 0 0 90px rgba(150,120,70,0.20);}
+.pp-title{font:700 66px 'PlexAR';direction:rtl;white-space:nowrap;color:var(--ink);}
+.pp-sub{font:500 31px/1.5 'PlexAR';direction:rtl;text-align:right;color:rgba(42,34,23,0.72);}
+.pp-link{font:600 46px 'PlexAR';direction:rtl;white-space:nowrap;color:var(--ink);}
+.pp-node{border-radius:50%;background:var(--seal);box-shadow:0 0 0 7px rgba(47,138,84,0.16);display:flex;align-items:center;justify-content:center;}
+.pp-line{background:rgba(42,34,23,0.28);border-radius:3px;}
+.chain-ok{font:600 38px 'PlexAR';direction:rtl;white-space:nowrap;color:var(--seal);display:flex;align-items:center;gap:14px;}
+
+/* ---------- 8–9: the rule card and the brand ---------- */
+.rc-ico{border-radius:30px;background:linear-gradient(145deg,rgba(200,109,215,0.28),rgba(95,28,184,0.30));
+  box-shadow:inset 0 0 0 1.5px rgba(200,109,215,0.55);display:flex;align-items:center;justify-content:center;}
+.rc-title{font:700 62px 'PlexAR';color:#fff;direction:rtl;white-space:nowrap;}
+.rc-cond{font:500 40px 'PlexAR';color:var(--label);direction:rtl;white-space:nowrap;}
+.tog{width:112px;height:62px;border-radius:31px;background:linear-gradient(90deg,var(--b1),var(--b2));box-shadow:0 0 30px rgba(200,109,215,0.4);}
+.tog i{position:absolute;left:6px;top:6px;width:50px;height:50px;border-radius:50%;background:#fff;}
+.mglow{border-radius:50%;background:radial-gradient(circle,rgba(200,109,215,0.55),rgba(95,28,184,0.25) 45%,rgba(95,28,184,0) 70%);}
+.endline{left:0;width:100%;text-align:center;font:700 72px/1.5 'Kufi';color:#fff;direction:rtl;white-space:nowrap;}
+.endline.en{font:700 70px/1.3 'Inter';letter-spacing:-0.02em;direction:ltr;}
+.url{left:0;width:100%;text-align:center;font:500 38px 'Inter';color:var(--label);letter-spacing:0.03em;}
+.cta{left:0;width:100%;text-align:center;}
+.cta span{display:inline-flex;align-items:center;height:100px;padding:0 54px;border-radius:32px;font:700 44px 'PlexAR';color:#fff;direction:rtl;
+  background:linear-gradient(90deg,var(--b1),var(--b2));box-shadow:0 18px 50px rgba(95,28,184,0.5),0 0 70px rgba(200,109,215,0.35);}
+.cta.en span{font:600 42px 'Inter';direction:ltr;}
+.cap{position:absolute;left:0;width:100%;text-align:center;font:500 38px 'Inter';color:rgba(255,255,255,0.82);letter-spacing:-0.005em;}
+#bloom,#flash{position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none;opacity:0;}
+#bloom{background:radial-gradient(circle at var(--bx,50%) var(--by,45%),#fff 0%,rgba(255,246,222,0.96) 22%,rgba(255,217,145,0.6) 46%,rgba(255,217,145,0) 78%);}
+#flash{background:#fff;}

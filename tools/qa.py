@@ -8,7 +8,8 @@ usage: python3 tools/qa.py <video.mp4> [--slug <slug>] [--sheet 12]
           1.0 = nothing pulses to the beat; above 1.15 fails
   shake   back-and-forth motion (camera shake, wiggles): frames where the motion reverses direction in 3+ of the
           4 quadrants at once (steps over 0.5 px at 480 px wide). Must be 0. It catches a shake on a calm frame,
-          not one hidden under a flash or burst, so the engine simply has no shake effects
+          not one hidden under a flash or burst, so the engine simply has no shake effects; --cuts lists intended hard cuts
+          (films cut on the beat; demos never cut) so the check skips them
   sheet   style_audit/<name>-sheet.png: N frames spread over the video, time-stamped
 """
 import argparse, json, os, subprocess, sys
@@ -48,6 +49,7 @@ def main():
     ap.add_argument('video')
     ap.add_argument('--slug')
     ap.add_argument('--sheet', type=int, default=12)
+    ap.add_argument('--cuts', default='', help='comma-separated times of intended hard cuts; the shake check skips them')
     a = ap.parse_args()
     name = os.path.splitext(os.path.basename(a.video))[0]
     slug = a.slug or next((d for d in sorted(os.listdir(os.path.join(ROOT, 'demos')), key=len, reverse=True)
@@ -82,8 +84,11 @@ def main():
     h, w = G.shape[1:]
     quads = [(0, h // 2, 0, w // 2), (0, h // 2, w // 2, w), (h // 2, h, 0, w // 2), (h // 2, h, w // 2, w)]
     V = np.array([[shift(G[i][y0:y1, x0:x1], G[i + 1][y0:y1, x0:x1]) for (y0, y1, x0, x1) in quads] for i in range(len(G) - 1)])
+    cut_frames = {int(round(float(c) * fps)) for c in a.cuts.split(',') if c.strip()}
     events = []
     for i in range(1, len(V)):
+        if any(abs(i - c) <= 1 for c in cut_frames):         # a hard cut is not a shake
+            continue
         rev = sum(1 for q in range(4) for ax in range(2)
                   if abs(V[i - 1, q, ax]) > 0.5 and abs(V[i, q, ax]) > 0.5 and np.sign(V[i - 1, q, ax]) != np.sign(V[i, q, ax]))
         if rev >= 3 and not any(abs(i - e) < 15 for e in events):

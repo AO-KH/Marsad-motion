@@ -12,6 +12,9 @@ and muxed with ffmpeg.
 - **Two finished ads**: `film.html` (63 s campaign film, `./build.sh`) and `film54_src/` → `film54.html` (54 s
   "Know. Watch. Decide.", `./build54.sh`). Their history, beat maps and delivered versions are in
   [`HANDOFF.md`](HANDOFF.md). Change them only when asked.
+- **The Monitor film** (13 s, 120 BPM, dark UI on a black stage, cuts on the beat): `films/monitor/`. Read its
+  [`README.md`](films/monitor/README.md). Its own production brief governs it where it differs from the rules below
+  (black stage, beat cuts, the bell swing, overshoot on the press and the seal only).
 - `site_kit.js` / `site_kit.css`: the Marsad web app rebuilt as HTML (shared by the ads and the demos).
 
 ## The client's rules (each one was an explicit correction; apply them everywhere)

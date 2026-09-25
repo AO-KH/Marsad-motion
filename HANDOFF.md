@@ -375,3 +375,14 @@ Delivered cuts:
   - Entrances run 0.6–1.0 s on `ez.dec`; no `ez.emph` pops. Focus glides take 1.4–1.6 beats.
   - Measured on the camera path (point 500 px from centre): rotation 0 (v3: ±0.8° with 29 reversals), peak
     speed 68 px/frame (v3: 162), frames with a jolt over 3 px 31 (v3: 107).
+
+## 13. Third film: the Monitor film (13 s)
+
+The film lives in `films/monitor/`, and its `README.md` covers the shot list, the build, the cuts, the music, and the
+placeholders to replace before release. It is code-rendered with motion blur (`render.js` + `blend.py`) and has an
+original score (`audio.py`).
+
+Delivered versions:
+
+- **v1**: the 9:16 Arabic master with the organic end card, plus stills of the organic and paid end cards (2026-09-25).
+  Next, once the master is approved: 16:9 and 1:1 recompositions, the 6 s bumper, the English cut, and the paid cut.
