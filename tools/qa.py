@@ -4,13 +4,14 @@ usage: python3 tools/qa.py <video.mp4> [--slug <slug>] [--sheet 12]
 
   pace    frame-to-frame change (0-255, mean over a 320 px wide greyscale copy): median / 95th / 99th / max,
           and the moments above 12 (fast motion or hard cuts)
-  pulse   with a beat grid (from demos/<slug>/demo.json): change on beat frames vs the frames around them.
+  pulse   with a beat grid (from demos/<slug>/demo.json or films/<slug>/film.json): change on beat frames vs the frames around them.
           1.0 = nothing pulses to the beat; above 1.15 fails
   shake   back-and-forth motion (camera shake, wiggles): frames where the motion reverses direction in 3+ of the
           4 quadrants at once (steps over 0.5 px at 480 px wide). Must be 0. It catches a shake on a calm frame,
           not one hidden under a flash or burst, so the engine simply has no shake effects; --cuts lists intended hard cuts
           (films cut on the beat; demos never cut) so the check skips them
   sheet   style_audit/<name>-sheet.png: N frames spread over the video, time-stamped
+  audio   the master's integrated loudness (-14 +/- 1.5 LUFS) and true peak (at most -1 dBTP), measured on the MP4
 """
 import argparse, json, os, subprocess, sys
 import numpy as np
@@ -52,8 +53,8 @@ def main():
     ap.add_argument('--cuts', default='', help='comma-separated times of intended hard cuts; the shake check skips them')
     a = ap.parse_args()
     name = os.path.splitext(os.path.basename(a.video))[0]
-    slug = a.slug or next((d for d in sorted(os.listdir(os.path.join(ROOT, 'demos')), key=len, reverse=True)
-                           if name.startswith(d)), None) if os.path.isdir(os.path.join(ROOT, 'demos')) else None
+    names = [n for b in ('demos', 'films') if os.path.isdir(os.path.join(ROOT, b)) for n in os.listdir(os.path.join(ROOT, b))]
+    slug = a.slug or next((n for n in sorted(names, key=len, reverse=True) if name.startswith(n)), None)
     F, (W, H) = frames(a.video, 320)
     fps = 30.0
     d = np.abs(np.diff(F, axis=0)).mean(axis=(1, 2))
@@ -64,9 +65,10 @@ def main():
     if len(fast):
         print('        fast moments (>12):', ', '.join(f'{i / fps:.2f}s ({d[i]:.1f})' for i in fast[:12]))
     # pulse on the beat grid
-    if slug and os.path.isfile(os.path.join(ROOT, 'demos', slug, 'demo.json')):
-        import make_demo
-        meta = json.load(open(os.path.join(ROOT, 'demos', slug, 'demo.json'), encoding='utf-8'))
+    import make_demo
+    mdir = next((os.path.join(ROOT, b, slug) for b in ('demos', 'films') if slug and os.path.isdir(os.path.join(ROOT, b, slug))), None)
+    if mdir and make_demo.part(mdir, 'json'):
+        meta = json.load(open(make_demo.part(mdir, 'json'), encoding='utf-8'))
         bpm, phase = make_demo.grid(meta)
         if bpm:
             mb = 60 / bpm
@@ -116,6 +118,17 @@ def main():
     out = os.path.join(ROOT, 'style_audit', f'{name}-sheet.png')
     sheet.save(out)
     print('sheet  ', os.path.relpath(out, ROOT))
+    # audio: the master's loudness and true peak, as delivered (after AAC). Platforms clip above -1 dBTP.
+    r = subprocess.run(['ffmpeg', '-hide_banner', '-nostats', '-i', a.video, '-af', 'ebur128=peak=true', '-f', 'null', '-'],
+                       capture_output=True, text=True).stderr
+    import re
+    mi = re.findall(r'I:\s+(-?[\d.]+) LUFS', r)
+    mp = re.findall(r'Peak:\s+(-?[\d.]+|-inf) dBFS', r)
+    if mi and mp:
+        li, tp = float(mi[-1]), float(mp[-1]) if mp[-1] != '-inf' else -99.0
+        aok = tp <= -1.0 and abs(li + 14) <= 1.5
+        ok &= aok
+        print(f'audio   {li:.1f} LUFS, true peak {tp:.1f} dBTP  ' + ('OK' if aok else 'FAIL: aim for -14 LUFS and a true peak at or under -1 dBTP'))
     print('RESULT ', 'PASS' if ok else 'FAIL')
     sys.exit(0 if ok else 1)
 

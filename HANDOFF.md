@@ -386,3 +386,26 @@ Delivered versions:
 
 - **v1**: the 9:16 Arabic master with the organic end card, plus stills of the organic and paid end cards (2026-09-25).
   Next, once the master is approved: 16:9 and 1:1 recompositions, the 6 s bumper, the English cut, and the paid cut.
+
+## 14. New campaign films (from 2026-09-28)
+
+New brand and launch ads are no longer hand-built pages like `film.html` or `film54_src/`. They are built on the demo
+engine, which already has the films' look, real app pages, the current end card, motion blur, review stills, the
+edge checker and QA. Follow the `marsad-campaign` skill (`.claude/skills/marsad-campaign/`); its references hold this
+film's anatomy, the client's rules for campaign films and the music map of `fit/stylish.mp3`.
+
+- A film is a folder `films/<slug>/` with `film.json` (title, duration, `"formats": ["16x9"]`, music, and optional
+  `vo` and `sfx`) and `film.js` (the timeline). `./build_demo.sh <slug>` builds it like a demo.
+- `films/kit/` gives every film the eight famous source tiles (as in section 7's glass request), the Marsad mark and
+  a big statement style. The engine adds `M.layer()` for scenes outside the app window and `M.punch()` (at most 2%).
+- `tools/film_audio.py` speaks the voiceover with Kokoro "Michael" (the model folder `kokoro-en-v0_19/` is
+  downloaded as in `tools/make_vo.py` and gitignored), places synthesized effects from `tools/sfx.py` on beats,
+  ducks the music under the voice, limits the voice's consonant peaks, and normalises the whole mix to −14 LUFS /
+  −2 dBTP (under −1 dBTP after AAC; `tools/qa.py` checks it on the MP4).
+- `tools/sfx.py`'s `bloom` fades its chord; the copy in `audio_stems.py` (this film's) still stops dead at 57.8 s.
+
+Films made this way:
+
+| Film | Length | Notes |
+|---|---|---|
+| [`brand-together-30`](films/brand-together-30/film.js) | 30 s, 16:9 | The skill's test run and worked example (2026-09-28): the famous sources gather and connect into the mark, which flies into the app window's logo; Business Pulse, then Decisions approved in one click; the end card on the drop of "Stylish" (song beat 44 onwards). English voiceover (Michael), EN/AR captions, 16 effects. QA PASS, −14.1 LUFS, −1.8 dBTP. **To confirm with the client before use:** the new caption and voice copy, the staging (recommendations arriving, the spotlight, the mark flying into the logo), the end-card tagline, and the music licence for paid use |

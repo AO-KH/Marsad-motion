@@ -101,6 +101,9 @@ These come from the client's feedback on the campaign films. The engine's defaul
 | `tools/stills.py` | Review stills in both formats at given times or beats, tiled into one labelled sheet per format |
 | `tools/cutcheck.js` | Text sliced by the app window's edge during holds, with the nearest clean view centre |
 | `render_mb.js`, `tools/blend.py` | Motion blur: four sub-frames per frame over a 180° shutter, then averaged (shared with the films) |
+| `films/<slug>/film.json`, `film.js` | A campaign film (the `marsad-campaign` skill): the same roles as `demo.json`/`demo.js`; the tools find a slug in `demos/`, then `films/` |
+| `films/kit/kit.js`, `kit.css` | The film kit: the famous source tiles, the Marsad mark, big bilingual statements (included for `films/` only) |
+| `tools/film_audio.py`, `tools/sfx.py` | A film's voiceover (Kokoro "Michael") and synthesized sound effects, mixed under or over the music by `music_fit.py` |
 | `build_demo.sh` | All of the above in order |
 | `render_full.js`, `render_ab.js` | Frame renderer and still renderer (shared with the films) |
 | `fit/` | Music: `product-video.mp3` (117 s, 88 BPM; the examples use it), `stylish.mp3` (75 s, 94 BPM) and `music54.m4a` (54 s, 95.96 BPM) |
@@ -140,7 +143,7 @@ app.cursorOut(t)
 app.type(t, target, 'text', {cps:14, clearAt})   // types into an input; steady caret, no blinking. The field lights
                                          // 0.5 s before the first letter: type from the beat after the click. It treats
                                          // the field's first <span> (or .ph) as the placeholder
-app.show(t, target, {from:'below'|'above'|'left'|'right'|'none', dist, scale, dur, display})
+app.show(t, target, {from:'below'|'above'|'left'|'right'|'none', dist, scale, dur, display})   // an element's first show hides it until t
 app.hide(t, target, {dur})
 app.highlight(from, to, target, {pad})   // a glowing ring around an element
 app.callout(from, to, target, {en, ar, side:'top'|'bottom'|'left'|'right'|'auto', gap, dx, dy})   // dx/dy move the box
@@ -167,6 +170,18 @@ right).
 - elements of the top bar and tabs, e.g. `'.sk-tab[data-k="dec"]'`, `'.sk-badge'`, `'.sk-search'`.
 
 **Custom logic:** `M.track(t=>…)` runs every frame; `M.at(t0,(on,t)=>…)`; `M.tween(t0,dur,p=>…,'dec')`.
+`M.mulberry(seed)` gives seeded random numbers; `M.FQ(t)` is the frame's time, for anything that changes in steps.
+
+**For campaign films** (`films/<slug>/`, the `marsad-campaign` skill):
+- `M.layer()` / `M.layer('over')`: a free layer under or over the app window, for scenes outside it. Build DOM with
+  `M.el(tag, cls, html, parent)` and animate it with `M.track`.
+- `M.punch(t, {amp, at, d})`: the whole stage swells into beat `t` and settles, capped at 2% (the client's calm
+  rule). Use it on 2–4 big beats only.
+- `app.toStage(target, t)`: where an app element is on the stage at time t (`{x, y, w, h, cx, cy, s}`), with the
+  view and the window's entrance: fly a scene element onto the app (the mark into the window's logo).
+- The film kit (`films/kit/`, included automatically for `films/`): `K.TILES` and `K.tile(n)` (the eight famous
+  sources as glass tiles, class `k-tile m-glass`), `K.mark(w)` (the Marsad mark), `K.glow(w)` (its glow for a
+  reveal), and the `k-say` statement style. `films/brand-together-30/` is a worked example.
 Everything must be a pure function of `t` (no timers, no randomness except the seeded `mulberry`). Motion blur
 renders sub-frames around each frame. Anything that changes in steps (a number, typed text, a label swap) must use
 the frame's time `Math.round(t*30)/30`, or it ghosts; `count`, `text`, `type` and `toggle` already do.
@@ -179,7 +194,7 @@ the frame's time `Math.round(t*30)/30`, or it ghosts; `count`, `text`, `type` an
 |---|---|---|
 | `home` | المؤسسات (organisations) | `.sk-input`, `.sk-card`, `.sk-btn`, `text:` |
 | `pulse` | نبض الأعمال (Business Pulse) | `#genBtn`, `#advCard`, `.sk-toggle`, `#recRows .sk-rec`, `.sk-pill.new` |
-| `decisions` | القرارات (Decisions) | `#stats .sk-stat`, `#segTabs`, `#decCard`, `#btnOK`, `#toast` (hidden until shown), `#dec2` |
+| `decisions` | القرارات (Decisions) | `#stats .sk-stat`, `#segTabs`, `#decCard`, `#btnOK`, `#toast` (hidden until shown), `#dec2`, `#veil` (a spotlight: raise its opacity to dim the page around `#decCard`) |
 | `assistant` | مساعد مرصد الذكي (AI assistant) | `.sk-input` (type here), `.sk-card`, `.sk-btn` |
 | `objectTypes` | أنواع الكائنات (object types) | `.sk-item`, `.sk-seg`, `text:` |
 | `knowledgeMap` | الخريطة المعرفية (knowledge map): an older version, see below | `.sk-item`, `text:` |

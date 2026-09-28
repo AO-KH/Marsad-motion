@@ -1,6 +1,8 @@
 """Find a music track's tempo, beat grid and downbeat (numpy + ffmpeg only), for demo.json.
 
-usage: python3 tools/beats.py <audio file> [--min 70] [--max 180] [--bars 32]
+usage: python3 tools/beats.py <audio file> [--min 70] [--max 180] [--bars 32] [--downbeat S] [--beats A-B]
+       --downbeat S   use this downbeat (seconds) instead of the guess: the map and the beat numbers count from it
+       --beats A-B    also print the loudness beat by beat for beats A..B (find stops, drops and hits)
 
 Prints the BPM, the first beat and first downbeat (seconds into the file), a "music" block to paste into
 demo.json, and a per-bar loudness map so you can see where the drums come in, where it breaks down, and
@@ -46,6 +48,8 @@ def main():
     ap.add_argument('--min', type=float, default=70)
     ap.add_argument('--max', type=float, default=180)
     ap.add_argument('--bars', type=int, default=48, help='bars to show in the loudness map')
+    ap.add_argument('--downbeat', type=float, help='a confirmed downbeat (s): number beats and bars from it')
+    ap.add_argument('--beats', help='A-B: print the loudness of each beat A..B')
     a = ap.parse_args()
     x = decode(a.audio)
     dur = len(x) / SR
@@ -84,11 +88,15 @@ def main():
     j = int(np.argmax(nov))
     downbeat = beat + j * period
     conf = max(nov) / (sorted(nov)[-2] + 1e-9)
+    guess = downbeat
+    if a.downbeat is not None:
+        downbeat = a.downbeat
     bar = 4 * period
     print(f'file      {a.audio}  ({dur:.2f} s)')
     print(f'bpm       {bpm:.2f}   (beat = {period:.5f} s, bar = {bar:.4f} s)')
     print(f'beat      {beat:.3f} s  (first beat)')
-    print(f'downbeat  {downbeat:.3f} s  (best guess; evidence {conf:.2f}x the next candidate)')
+    print(f'downbeat  {downbeat:.3f} s  ' + ('(given; the guess was %.3f s)' % guess if a.downbeat is not None else
+                                            f'(best guess; evidence {conf:.2f}x the next candidate)'))
     print('          The bar phase is a guess: tempo and beats are reliable, downbeats often are not. Candidates:')
     print('          time (s)      ' + '  '.join(f'{beat + i * period:7.3f}' for i in range(4)))
     print('          section jumps ' + '  '.join(f'{nov[i]:7.3f}' for i in range(4)) + '   (loudness change between bars)')
@@ -109,6 +117,16 @@ def main():
     top = max(rms) if rms else 1
     for b, r in enumerate(rms):
         print(f'{b:3d}  k{4 * b:<4d} {downbeat + b * bar:7.2f}  {"#" * int(40 * r / top)}')
+    # 5) beat by beat, for a range: one-beat stops, drops and hits show up here (bar lines marked |)
+    if a.beats:
+        k0, k1 = (int(v) for v in a.beats.split('-'))
+        print(f'\nbeat   time(s)  loudness (from the downbeat {downbeat:.3f} s)')
+        for k in range(k0, k1 + 1):
+            s0 = downbeat + k * period
+            if s0 < 0 or s0 + period > dur:
+                continue
+            r = np.sqrt(np.mean(x[int(s0 * SR):int((s0 + period) * SR)] ** 2))
+            print(f'{"|" if k % 4 == 0 else " "}k{k:<4d} {s0:7.2f}  {"#" * int(40 * r / top)}')
 
 
 if __name__ == '__main__':

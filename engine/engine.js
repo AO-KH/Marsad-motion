@@ -17,8 +17,10 @@
        app.cursorOut(t)  app.type(t,target,text,{cps,clearAt})  app.show(t,target,{from,dist,dur,display})
        app.hide(t,target)  app.highlight(at,out,target)  app.callout(at,out,target,{en,ar,side,dx,dy})
        app.toggle(t,target)  app.count(t,target,from,to,{dur,fmt})  app.text(t,target,html)
-       app.set(t,target,(el,on,t)=>{})  app.inject(page,html)  app.el(target,t)
+       app.set(t,target,(el,on,t)=>{})  app.inject(page,html)  app.el(target,t)  app.toStage(target,t) (films)
      M.endcard({at,cta,ctaAr,url,tag,tagAr})                 logo, tagline, URL and CTA
+     M.layer('under'|'over')                                 films: a free layer for scenes outside the app window
+     M.punch(t,{amp,at,d})                                   films: the stage swells up to 2% into beat t and settles
      M.track(t=>{}) / M.at(t,(on,t)=>{}) / M.tween(t0,dur,p=>{},ease)   custom per-frame logic
      M.start()                                               last line of every demo
    Targets: a CSS selector on the page shown at that time, 'text:…' (the smallest element containing the text),
@@ -214,8 +216,9 @@ function app(o){
   }
   const lazy=(spec,t)=>{let e=null;return ()=>e||(e=find(spec,t));};
   function rectOf(e){                                                  // natural page coords of the layout box
-    const root=e.closest('.m-page'),fixes=[];
-    for(let a=e;a&&a!==root;a=a.parentElement)if(getComputedStyle(a).display==='none'){fixes.push([a,a.style.display]);a.style.display='block';}
+    const root=e.closest('.m-page'),fixes=[];                          // un-hide every hidden ancestor while measuring,
+    for(let a=e;a&&a!==document.body;a=a.parentElement)                // the window too (it is display:none before it opens)
+      if(getComputedStyle(a).display==='none'){fixes.push([a,a.style.display]);a.style.display='block';}
     let x=0,y=0,n=e;while(n&&n!==root){x+=n.offsetLeft;y+=n.offsetTop;n=n.offsetParent;}
     const r={x,y,w:e.offsetWidth,h:e.offsetHeight};
     fixes.forEach(([a,d])=>a.style.display=d);
@@ -358,6 +361,14 @@ function app(o){
     inject(key,html){page(key).el.insertAdjacentHTML('beforeend',html);return api;},
     el(spec,t=0){return find(spec,t);},
     rect(spec,t=0){return rectFor(spec,t);},
+    // films: where a page element is on the stage at time t (the view, the window's entrance/exit and its 1.5 px
+    // frame border included), so a scene element in M.layer() can fly onto it: {x,y,w,h,cx,cy,s}
+    toStage(spec,t){
+      const r=rectFor(spec,t),v=viewAt(t),p=ez.dec(P(t,at,at+0.9)),q=ez.inC(P(t,out,out+0.7));
+      const wy=(1-p)*36-q*14,ws=(0.965+0.035*p)*(1-0.02*q),b=1.5;
+      const X=lx=>WIN.x+WIN.w/2+(lx-WIN.w/2)*ws, Y=ly=>WIN.y+WIN.h/2+wy+(ly-WIN.h/2)*ws;
+      const x=X(b+v.tx+r.x*v.s),y=Y(b+v.ty+r.y*v.s),w=r.w*v.s*ws,h=r.h*v.s*ws;
+      return {x,y,w,h,cx:x+w/2,cy:y+h/2,s:v.s*ws};},
   };
   APP=api;return api;
 }
@@ -412,19 +423,29 @@ function endcard(o={}){
   return e;
 }
 
+/* ---------------- films: free scene layers and soft camera punches ---------------- */
+// M.layer('under') sits under the app window, 'over' above it (under callouts and captions). Build a scene's DOM in it
+// and animate it with M.track / M.tween; every frame stays a pure function of t.
+function layer(where='under'){const e=el('div','m-layer m-scene');cam.insertBefore(e,where==='over'?L.over:L.win);return e;}
+// A punch swells the whole stage into a big beat over `at` s and settles over `d` s. The client's calm rule caps it at
+// 2% (the 54 s film uses 0.8-2.2% with a 0.25 s swell). Use it on a few big moments, never on every beat.
+const PUNCH=[];
+function punch(t,o={}){PUNCH.push({t,amp:Math.min(o.amp??0.015,0.02),at:o.at??0.25,d:o.d??0.9});}
+const punchAt=t=>PUNCH.reduce((a,k)=>a+k.amp*ez.dec(P(t,k.t-k.at,k.t))*(1-ez.ioC(P(t,k.t,k.t+k.d))),0);
+
 /* ---------------- master ---------------- */
 function fade(a,b){MID.push(t=>{fadeEl.style.opacity=f3(ez.inC(P(t,a,b)));});}
 function start(){
   window.DURATION=DUR;window.STAGE_W=W;window.STAGE_H=H;window.FORMAT=FORMAT;
   window.SEEK=function(t){t=clamp(t,0,DUR);drawBG(t);
     for(const f of PRE)f(t);for(const f of MID)f(t);for(const f of POST)f(t);
-    cam.style.transform=`scale(${f3(1+DRIFT*t/DUR)})`;drawFX(t);return true;};
+    cam.style.transform=`scale(${(1+DRIFT*t/DUR+punchAt(t)).toFixed(4)})`;drawFX(t);return true;};
   const go=()=>window.SEEK(+(location.hash.match(/t=([\d.]+)/)||[])[1]||0);   // preview: open the page with #t=12.5
   if(document.fonts&&document.fonts.ready)document.fonts.ready.then(go);else go();
 }
 
-return {FORMAT,W,H,DUR,B,MB,S8:MB/2,S16:MB/4,S32:MB/8,ez,P,lerp,clamp,st,el,pick,GLASS,arNum,ic,
-  title,caption,steps,app,endcard,definePage,fade,start,
+return {FORMAT,W,H,DUR,B,MB,S8:MB/2,S16:MB/4,S32:MB/8,ez,P,lerp,clamp,st,el,pick,GLASS,arNum,ic,mulberry,FQ,
+  title,caption,steps,app,endcard,definePage,fade,start,layer,punch,
   track:f=>{MID.push(f);},at:(t0,fn)=>{MID.push(t=>fn(t>=t0,t));},
   tween:(t0,dur,fn,ease='dec')=>{MID.push(t=>fn(ez[ease](P(t,t0,t0+dur)),t));}};
 })();

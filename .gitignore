@@ -9,3 +9,8 @@ fit/*.wav
 *.log
 build/
 __pycache__/
+
+# the Kokoro TTS model for voiceovers (tools/film_audio.py, tools/make_vo.py): download it, never commit it
+kokoro-en-v0_19/
+kokoro-en-v0_19
+*.tar.bz2

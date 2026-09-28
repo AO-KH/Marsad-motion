@@ -1,0 +1,26 @@
+{
+  "title": "Marsad — Your data, together (30 s brand ad)",
+  "duration": 30.0,
+  "formats": ["16x9"],
+  "music": {"file": "fit/stylish.mp3", "bpm": 93.99, "downbeat": 0.041, "start": 28.129, "fade_out": 2.5},
+  "vo": {"voice": 6, "lines": [
+    {"id": "vo1", "text": "Your company's data is everywhere.", "beat": 1, "max": 2.6},
+    {"id": "vo2", "text": "Marsad brings it all together.", "beat": 10, "max": 2.4},
+    {"id": "vo3", "text": "It turns your numbers into decisions.", "beat": 18, "max": 2.6},
+    {"id": "vo4", "text": "Act on them in one click.", "beat": 28, "max": 2.2},
+    {"id": "vo5", "text": "Marsad. Book your demo at marsad nasl dot com.", "beat": 38.5, "max": 4.2}
+  ]},
+  "sfx": [
+    {"type": "absorb", "beats": [9.5, 10, 10.5, 11]},
+    {"type": "whoosh_rev", "beat": 12, "gain": -3},
+    {"type": "thump", "beat": 12},
+    {"type": "whoosh", "beat": 16},
+    {"type": "tick", "beats": [18, 18.25, 18.5], "gain": -6},
+    {"type": "swell", "beat": 22, "gain": -3},
+    {"type": "click", "beat": 31},
+    {"type": "chime", "beat": 31.25},
+    {"type": "tick", "beat": 32, "gain": -6},
+    {"type": "riser", "beat": 37},
+    {"type": "bloom", "beat": 37}
+  ]
+}

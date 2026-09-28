@@ -12,6 +12,10 @@ and muxed with ffmpeg.
   reference walkthrough's anatomy and the quality checklist.
   - `skills/marsad-demo.skill` and `.zip` are its installable copies for a Claude account.
   - Rebuild them with `python3 tools/package_skill.py` whenever the skill changes.
+- **New campaign films** (brand and launch ads, 30–90 s, like the 63 s film): `films/<slug>/` (`film.json`,
+  `film.js`), built with the demo engine, the film kit (`films/kit/`) and `build_demo.sh`. Follow the
+  `marsad-campaign` skill (`.claude/skills/marsad-campaign/SKILL.md`). The voiceover and sound effects are mixed by
+  `tools/film_audio.py`; the Kokoro voice model (`kokoro-en-v0_19/`) is downloaded, never committed.
 - **Two finished ads**: `film.html` (63 s campaign film, `./build.sh`) and `film54_src/` → `film54.html` (54 s
   "Know. Watch. Decide.", `./build54.sh`). Their history, beat maps and delivered versions are in
   [`HANDOFF.md`](HANDOFF.md). Change them only when asked.
@@ -27,6 +31,9 @@ and muxed with ffmpeg.
 - Calm pace: entrances 0.6–1.0 s on a decelerating ease, camera glides of 1–1.5 s, nothing pops.
 - No shaking (camera shake, wiggles, bobbing, overshoot), no pulsing to the beat, no camera cuts.
 - Demos: music and captions only, no voiceover. Formats 16:9 and 9:16.
+- Campaign films: a 16:9 master; the captions carry the story (it must read with the sound off); an English
+  voiceover is optional and uses Kokoro "Michael", the voice the client chose ("this is so robotic voice" ruled the
+  others out). The end card says "Book your demo · احجز عرضك التجريبي" and marsadnasl.com.
 - Western digits (0–9) in captions, callouts and the steps rail, in both languages, as in the app.
 - Readable on a phone: in 9:16 the subject is shown at a readable size (pan, don't shrink). The cursor and
   callouts never cover what they explain.
@@ -40,4 +47,5 @@ and muxed with ffmpeg.
   `frames*/`, `out/`, `style_audit/`) are gitignored.
 - Commit to `main` of AO-KH/Marsad-motion and push. The client pulls into `C:\Users\aomar\Desktop\Marsad motion`
   on Windows (Git Bash: `PYTHON=python bash build_demo.sh <slug>`).
-- Keep `DEMOS.md` (demos) and `HANDOFF.md` (the ads) current: delivered versions and any new client decision.
+- Keep `DEMOS.md` (demos) and `HANDOFF.md` (the ads and campaign films) current: delivered versions and any new
+  client decision. After changing a skill, run `python3 tools/package_skill.py` and commit `skills/`.

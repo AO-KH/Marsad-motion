@@ -1,0 +1,8 @@
+/* films/brand-together-30: the hub scene (the sources' connecting lines and data points, and the mark) */
+.bt-lines{position:absolute;left:0;top:0;overflow:visible;}
+.bt-lines line{filter:drop-shadow(0 0 5px rgba(188,89,209,0.55));}
+.bt-dots{filter:drop-shadow(0 0 6px rgba(188,89,209,0.95));}
+/* the mark and a blurred copy of itself: its own glow, shaped like the M (no orb or disc behind it) */
+.bt-mk{position:absolute;left:0;top:0;transform-origin:50% 50%;}
+.bt-mk img{position:absolute;left:0;top:0;width:100%;display:block;}
+.bt-mk .glow{filter:blur(20px) saturate(1.5);opacity:0;}
