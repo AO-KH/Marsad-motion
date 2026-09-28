@@ -64,6 +64,11 @@ Copy the helpers (`kt`, `gwrap`, `T3`, the mesh stage) from the newer one: its `
 - **The problem looks dull:** the waiting chat has a grey edge (`gwrap(..., 'dull')`) and no glow. Only Marsad's parts glow.
 - **Pitch away:** the graph group tilts back (`rotateX` 58°) and rises out of frame as the next part rises in.
 
+## Its sound
+
+- The music is Koi-discovery "Oxforf by Night" (CC0, 96.67 BPM), which the client picked from three samples fitted to the film. A `stop` makes the breath silent, and the music returns with the logo.
+- The client wants effects **only on the transitions**: stereo `air` moves on the scene changes and a swell into each reveal. The UI itself (clicks, typing, chips) makes no sound. See `references/audio.md`.
+
 ## Still the house rules
 
 - English and Arabic on every line, Western digits, and real app text on real parts.

@@ -270,6 +270,10 @@ section if the demo is longer than the track, fades in and out, and normalises t
   (beats counted from `downbeat`), so a track's silence or drop can land where the video needs it. Film beat 0 is
   beat `a`; cut at the same place in a phrase on both sides. `films/coffee-launch/film.json` and
   `films/film63-launch/film.json` are examples.
+- `stops`: `[[a, b], ...]` in the video's beats: the music drops out on beat a and comes back, in time, on beat b
+  (`films/film63-launch`: a silent breath before the logo).
+- The master keeps the music's dynamics: one linear gain to −14 LUFS, then a limiter on a 4× oversampled copy (the
+  true-peak ceiling). The old two-pass `loudnorm` flattened quiet intros and drops whenever the gain didn't fit.
 - A new track, or a sound file for `"sfx"`, needs a licence that allows commercial use and editing, confirmed on
   its own page: record it in `fit/CREDITS.md`.
 - Known tracks:
@@ -279,6 +283,7 @@ section if the demo is longer than the track, fades in and out, and normalises t
   | `fit/product-video.mp3` (SoundSurfer "Product Video") | 117 s | 88.0 | 0.016 | k0–3 intro, groove k4–67 (phrases start on k4, k20, k36, k52), a stop on k70–71, quiet breakdown k72–87, build k88–99, drop on k100, groove to the end on k164 (111.8 s). The kick is on beat 4 of the bar |
   | `fit/stylish.mp3` (SoundSurfer "Stylish") | 75 s | 94.0 | 0.041 | k0–3 near silence, k4–7 build, k8–71 groove, k72–79 quiet breakdown, groove from k80 |
   | `fit/music54.m4a` (from the old 54 s cut) | 54 s | 95.96 | 0.03 | k0–15 quiet intro, drums from k16 (10 s), breakdown k48–79, drums back k80 |
+  | `fit/koi-discovery-oxforf-by-night.mp3` (Koi-discovery "Oxforf by Night", CC0) | 227 s | 96.67 | 0.466 | k0–63 a quiet intro (about 6 dB under the groove), k64–95 the build, the full groove from k96 to about k340, then the outro. No stop of its own: use `stops`. E minor |
   | `fit/holizna-movement.mp3` (HoliznaCC0 "Movement", CC0) | 173 s | 96.67 | 0.218 | 4-bar rows of 16 beats. k0–31 stripped intro (bass and kick, no hats), k32–95 groove A, k96–135 groove B (brighter hats), a two-beat silence on k136–137, stripped k138–175, groove A again from k176, groove B from k240, ends k272. C minor |
 
   `product-video.mp3` covers walkthroughs up to about 1:50 without a loop; beyond that, `"loop": [100, 164]` repeats

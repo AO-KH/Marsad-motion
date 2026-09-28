@@ -15,7 +15,9 @@ film.json (or demo.json) may add, next to "music":
          A cue can be a sound file instead of a type: {"file": "fit/sfx/glass-press.wav", "beat": 48, "gain": -3}.
          Its peak is set to -3 dBFS, then "gain" applies; its attack lands on the beat ("accent": seconds into the
          file to use another point, e.g. the swell's peak). Licensed files only: record each one in fit/CREDITS.md.
-Levels, then the whole mix is normalised to -14 LUFS / -1.5 dBTP by music_fit.py:
+  "sfx_level": the effects' loudness in LUFS (default -25). A film whose only effects are a few transitions can raise it
+         (films/film63-launch: -20).
+Levels, then the whole mix is mastered to -14 LUFS / -2 dBTP by music_fit.py:
   VO -16 LUFS with its peaks limited to 12 dB over that; music -20 LUFS with VO (-16 without), ducked by up to 8 dB
   while the voice speaks;
   effects -25 LUFS, ducked a little under the voice.
@@ -222,6 +224,10 @@ def sfx_stem(cues, n, when, report):
                 continue
             seg = s[max(0, -i0):max(0, n - i0)]
             k0 = max(i0, 0)
+            if seg.ndim == 2:                          # a stereo effect (sfx 'air') carries its own panning
+                x[k0:k0 + len(seg)] += seg
+                count += 1
+                continue
             x[k0:k0 + len(seg), 0] += seg * np.cos((pan + 1) * np.pi / 4)
             x[k0:k0 + len(seg), 1] += seg * np.sin((pan + 1) * np.pi / 4)
             count += 1
@@ -230,7 +236,7 @@ def sfx_stem(cues, n, when, report):
 
 
 def mix(slug, meta, bed):
-    """bed: the fitted music (n x 2). Returns music + VO + effects at their levels, before the final loudnorm."""
+    """bed: the fitted music (n x 2). Returns music + VO + effects at their levels, before the master (music_fit.py)."""
     n = len(bed)
     when = timer(meta)
     report = []
@@ -238,7 +244,8 @@ def mix(slug, meta, bed):
     fx = sfx_stem(meta.get('sfx', []), n, when, report) if meta.get('sfx') else np.zeros((n, 2))
     lv = {'music': lufs(bed), 'sfx': lufs(fx)}
     bed = to_level(bed, LEVEL['music_vo'] if vo is not None else LEVEL['music'])
-    fx = to_level(fx, LEVEL['sfx'])
+    lv_sfx = float(meta.get('sfx_level', LEVEL['sfx']))       # a film with only a few effects (transitions) can raise them
+    fx = to_level(fx, lv_sfx)
     if vo is None:
         out = bed + fx
     else:
@@ -248,7 +255,8 @@ def mix(slug, meta, bed):
         e = duck_env(vo)[:, None]
         out = bed * (1 - DUCK_MUSIC * e) + fx * (1 - DUCK_SFX * e) + vo[:, None] * np.array([[0.7071, 0.7071]])
     pk = 20 * np.log10(np.max(np.abs(out)) + 1e-9) - lufs(out)
-    report.append('levels  ' + '  '.join(f'{k} {v:.1f} -> {LEVEL["vo" if k == "vo" else "sfx" if k == "sfx" else "music_vo" if vo is not None else "music"]:.0f} LUFS'
+    target = {'vo': LEVEL['vo'], 'sfx': lv_sfx, 'music': LEVEL['music_vo' if vo is not None else 'music']}
+    report.append('levels  ' + '  '.join(f'{k} {v:.1f} -> {target[k]:.0f} LUFS'
                                          for k, v in lv.items() if v > -69) +
                   f'  |  peak-to-loudness {pk:.1f} dB' + ('  (high: the master will be limited by more than 3 dB; lower the loudest effect\'s or line\'s "gain")' if pk > 15 else ''))
     print('\n'.join(report))

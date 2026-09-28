@@ -13,11 +13,17 @@ demo.json "music":
             `downbeat`; `start` is ignored), crossfaded over 30 ms at each join. Cut on bar lines, so the film's beat
             grid runs straight through: a section from the track's groove, then its breakdown, then its drop, shaped
             to the film's scenes without a time-stretch. Film beat 0 is beat a of the first section.
+  stops     optional [[a, b], ...] in the video's beats (M.B): the music drops out on beat a (a 20 ms fade) and comes
+            back on beat b, where the track would have been (it runs on, silent, underneath). A stop before the logo
+            makes any track land its hit on the logo, like a song's own break
   fade_in   seconds (default 0)       fade_out  seconds at the end (default 2.5)
   true_peak the master's ceiling in dBTP (default -2). AAC can add up to 1.5 dB on bass-heavy tracks: if QA's
             true peak on the MP4 is over -1, use -3
 No "music" block (or file: null) gives silence.
-A film's "vo" and "sfx" (film.json) are mixed in by tools/film_audio.py before the loudness normalisation.
+A film's "vo" and "sfx" (film.json) are mixed in by tools/film_audio.py before the master.
+The master is one linear gain to -14 LUFS, then a limiter on a 4x oversampled copy (the true-peak ceiling). It keeps
+the music's own dynamics: a quiet intro stays quiet, a drop still lands. (ffmpeg's loudnorm did this only when the gain
+fitted under the ceiling; otherwise it fell back to its dynamic mode and flattened intros and drops.)
 """
 import json, os, subprocess, sys, tempfile
 import numpy as np
@@ -46,17 +52,31 @@ def splice(parts, xf):
     return out
 
 
-def loudnorm(x, out, tp=-2.0):
+def write_f32(path, x):
+    subprocess.run(['ffmpeg', '-loglevel', 'error', '-y', '-f', 'f32le', '-ar', str(SR), '-ac', '2', '-i', '-', '-c:a', 'pcm_f32le',
+                    path], input=np.ascontiguousarray(x, dtype='<f4').tobytes(), check=True)
+
+
+def lufs(x):
+    """integrated loudness (ffmpeg's loudnorm analysis) of a float signal, without clipping it; -70 for silence."""
+    with tempfile.TemporaryDirectory() as td:
+        raw = os.path.join(td, 'a.wav')
+        write_f32(raw, x)
+        r = subprocess.run(['ffmpeg', '-hide_banner', '-nostats', '-i', raw, '-af', 'loudnorm=print_format=json', '-f', 'null', '-'],
+                           capture_output=True, text=True).stderr
+    v = json.loads(r[r.rindex('{'):r.rindex('}') + 1])['input_i']
+    return -70.0 if v in ('-inf', 'inf') else max(float(v), -70.0)
+
+
+def master(x, out, tp=-2.0, target=-14.0):
+    """-14 LUFS by one linear gain, then a limiter on a 4x oversampled copy: a true-peak ceiling of `tp` dBTP (-2: AAC
+    adds about 0.6 dB; bass-heavy tracks up to 1.5 dB, "true_peak": -3). The music keeps its own dynamics."""
+    g = 10 ** ((target - lufs(x)) / 20)
     with tempfile.TemporaryDirectory() as td:
         raw = os.path.join(td, 'mix.wav')
-        write_wav(raw, x)
-        af = f'loudnorm=I=-14:TP={tp:g}:LRA=11'      # -2 dBTP: AAC adds about 0.6 dB; bass-heavy tracks up to 1.5 dB ("true_peak": -3)
-        r = subprocess.run(['ffmpeg', '-hide_banner', '-nostats', '-i', raw, '-af', af + ':print_format=json', '-f', 'null', '-'],
-                           capture_output=True, text=True).stderr
-        j = json.loads(r[r.rindex('{'):r.rindex('}') + 1])
-        af2 = (f"{af}:measured_I={j['input_i']}:measured_TP={j['input_tp']}:measured_LRA={j['input_lra']}"
-               f":measured_thresh={j['input_thresh']}:offset={j['target_offset']}:linear=true")
-        subprocess.run(['ffmpeg', '-loglevel', 'error', '-y', '-i', raw, '-af', af2, '-ar', str(SR), out], check=True)
+        write_f32(raw, x * g)
+        af = f'aresample={4 * SR},alimiter=limit={10 ** (tp / 20):.4f}:attack=1:release=60:level=disabled,aresample={SR}'
+        subprocess.run(['ffmpeg', '-loglevel', 'error', '-y', '-i', raw, '-af', af, '-c:a', 'pcm_s16le', out], check=True)
 
 
 def write_wav(path, x):
@@ -81,7 +101,7 @@ def main():
     if not m.get('file'):
         if extra:
             import film_audio
-            loudnorm(film_audio.mix(slug, meta, np.zeros((n, 2), np.float32)), out)
+            master(film_audio.mix(slug, meta, np.zeros((n, 2), np.float32)), out)
             print('vo/sfx without music, -14 LUFS ->', os.path.relpath(out, ROOT))
             return
         write_wav(out, np.zeros((n, 2), np.float32))
@@ -119,6 +139,18 @@ def main():
         print(f'warning: the track covers {len(y) / SR:.1f} s of {dur:.1f} s; the rest is silence (add a "loop")')
         y = np.concatenate([y, np.zeros((n - len(y), 2), np.float32)])
     y = y[:n].copy()
+    if m.get('stops'):
+        import make_demo
+        bpm_, ph = make_demo.grid(meta)
+        for a_, b_ in m['stops']:               # the music drops out on beat a and comes back on beat b, in time
+            i0, i1 = (int(round((ph + k * 60.0 / bpm_) * SR)) for k in (a_, b_))
+            r, q = int(0.02 * SR), int(0.004 * SR)
+            g = np.ones(len(y))
+            g[i0:i1] = 0
+            g[i0:i0 + r] = np.linspace(1, 0, r)
+            g[max(i0, i1 - q):i1] = np.linspace(0, 1, i1 - max(i0, i1 - q))
+            y *= g[:, None]
+        print('stops: ' + ', '.join(f'beats {a_}-{b_}' for a_, b_ in m['stops']))
     fi, fo = float(m.get('fade_in', 0)), float(m.get('fade_out', 2.5))
     if fi > 0:
         k = int(fi * SR); y[:k] *= np.linspace(0, 1, k)[:, None]
@@ -127,7 +159,7 @@ def main():
     if extra:
         import film_audio
         y = film_audio.mix(slug, meta, y)
-    loudnorm(y, out, float(m.get('true_peak', -2)))
+    master(y, out, float(m.get('true_peak', -2)))
     print(f'{os.path.relpath(src, ROOT)} {m.get("start", 0)}s -> {dur:.2f}s{" + vo/sfx" if extra else ""}, -14 LUFS ->',
           os.path.relpath(out, ROOT))
 

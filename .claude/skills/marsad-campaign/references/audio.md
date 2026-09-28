@@ -3,7 +3,7 @@
 `film.json` holds a film's audio next to its picture. `./build_demo.sh <slug>` builds it:
 1. `tools/music_fit.py` fits the music.
 2. `tools/film_audio.py` adds the voiceover and the effects.
-3. The whole mix is normalised to −14 LUFS / −1.5 dBTP.
+3. The whole mix is mastered to −14 LUFS / −2 dBTP: one linear gain, then a limiter on a 4× oversampled copy, so the music keeps its own dynamics (see "The mix").
 
 ## Music
 
@@ -25,6 +25,7 @@
     - Each later section starts 30 ms early for the crossfade, so its first beat lands on the join at full level: the grid runs straight through.
     - Cut where the pattern repeats: the same position in a 4-bar phrase on both sides (for example song beat 86 → 134 in `holizna-movement.mp3`, both 6 beats into a 16-beat row).
     - `films/coffee-launch/` uses `[[24, 86], [134, 150]]`: the end of the stripped intro and groove A, then the end of groove B, its two-beat silence and the hit after it (the logo).
+  - `stops: [[a, b], ...]` (video beats) silences the music from beat a to beat b; it comes back in time on b, where the track would have been. It gives any track the stop-then-hit that "Movement" has built in: `films/film63-launch/` stops "Oxforf by Night" on k88–91 for the breath and brings it back on the logo (k92). Put the logo on a downbeat (a beat divisible by 4), so the music comes back on beat 1 of a bar.
     - `films/film63-launch/` uses `[[16, 96], [128, 150]]` for 63 s: half the stripped intro (the problem), groove A from film beat 16 (the turn), the last two bars of groove B, the silence and the hit. The join skips two whole 16-beat rows, so it is inaudible, and the logo lands at 55.9 s, where the 63 s film's drop was.
 - **No time-stretch, ever:** the client asked for the track as it is. To fit a length, choose `start` and the film's scene lengths instead.
 
@@ -100,6 +101,12 @@ Each cue's accent lands on its beat: a whoosh peaks there, and a riser ends ther
 
 **Restraint:** the client twice asked for fewer and quieter effects. A 30 s film needs about 10–20 hits. Don't score every tile. Nothing hums or hisses under the mix.
 
+**Effects only on the transitions** (the client, 2026-09-28, choosing the 63 s launch cut's sound): after hearing three UI palettes, the client asked for none of them and for effects on the scene transitions only.
+- `films/film63-launch/film.json` is the model: an `air` move on each change of scene (a zoom-through, a pitch away, a carousel swing, a card leaving), a reversed `air` swell into the two reveals (the mark, the logo) with a soft `thump` under each, and nothing on clicks, typing, chips or counts.
+- `air` is stereo: `dur`, `rise` (where its accent sits, 0–1), `pan0` → `pan1` (a sideways move: 0.7 → −0.7 for a part leaving to the left), `width`, `f_hi` (brighter for the big move), `reverse` (a swell), `seed` (one per cue, so they don't all sound alike). Place the accent on the fastest moment of the move.
+- With so few effects, raise them: `"sfx_level": -20` (the default −25 is for films with many small hits).
+- Ask before scoring UI events again.
+
 ## The mix
 
 `tools/film_audio.py` sets the levels, and `tools/music_fit.py` normalises the result:
@@ -108,8 +115,8 @@ Each cue's accent lands on its beat: a whoosh peaks there, and a riser ends ther
 |---|---|---|
 | Voiceover | −16 LUFS | 80 Hz high-pass, 8 ms fades, trimmed to the first syllable, peaks limited to 12 dB over its level |
 | Music | −20 LUFS with a voiceover, −16 without | ducked by up to 8 dB while the voice speaks (80 ms attack, 350 ms release) |
-| Effects | −25 LUFS | ducked a little under the voice |
-| Master | −14 LUFS integrated, −2 dBTP | two-pass `loudnorm`, the same for demos. AAC adds up to about 0.6 dB, so the MP4 stays under −1 dBTP |
+| Effects | −25 LUFS (`sfx_level` in film.json to change it) | ducked a little under the voice |
+| Master | −14 LUFS integrated, −2 dBTP | one linear gain, then a limiter on a 4× oversampled copy (the true-peak ceiling), the same for demos. AAC adds up to about 0.6 dB, so the MP4 stays under −1 dBTP. It replaced a two-pass `loudnorm`, which fell back to its dynamic mode whenever the gain would break the ceiling and flattened quiet intros, stops and drops |
 
 **To check it:** read the report the build prints.
 - Each voice line's times, and the effects count.

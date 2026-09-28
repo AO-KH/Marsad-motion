@@ -14,6 +14,8 @@ Types (use them sparingly; the client asked for restrained, balanced effects):
   riser     a rise that ends on the beat (before a drop)            swell        a soft noise swell
   bloom     a low boom, shimmer and a D minor chord (the logo on the drop; 2.2 s)
   absorb    a short upward glide (an item absorbed; i= 0..n raises the pitch)
+  air       a stereo air move for a scene transition: brightens into its accent, spreads in stereo (width=), moves from
+            pan0= to pan1= (-1 left .. 1 right); reverse=True makes a swell that peaks on the beat (into a reveal)
 """
 import numpy as np
 
@@ -145,9 +147,25 @@ def absorb(i=0, **_):
     return norm(gliss(f, f * 1.6, n) * env(0.12, 0.002, 0.115, 4)[:n]), 0.06
 
 
+def air(dur=0.8, f_lo=150, f_hi=3600, rise=0.45, pan0=0.0, pan1=0.0, width=0.5, reverse=False, seed=21, **_):
+    """(stereo signal n x 2, accent): two bands of noise that brighten into the accent (`rise` of the way in) and fade
+    after it, spread in stereo and moving across the field. reverse=True: a swell whose peak (the accent) is near its end."""
+    n = int(dur * SR)
+    na = max(1, int(n * rise))
+    e = np.concatenate([np.linspace(0, 1, na) ** 1.8, np.linspace(1, 0, n - na) ** 2.4])
+    lo, hi, side = (norm(bandnoise(n, a, b, seed + k)) for k, (a, b) in enumerate([(f_lo, f_hi * 0.35), (f_lo * 3, f_hi), (f_lo * 2, f_hi)]))
+    w = np.concatenate([np.linspace(0.15, 1, na), np.linspace(1, 0.3, n - na)])      # brighter at the accent
+    mid, side = lo * (1 - w) + hi * w, side * width
+    p = np.linspace(pan0, pan1, n)
+    s = np.stack([(mid + side) * np.cos((p + 1) * np.pi / 4), (mid - side) * np.sin((p + 1) * np.pi / 4)], 1) * e[:, None]
+    if reverse:
+        return norm(s[::-1]), dur * (1 - rise)
+    return norm(s), dur * rise
+
+
 TYPES = {'whoosh': whoosh, 'whoosh_rev': whoosh_rev, 'tick': tick, 'key': key, 'pop': pop, 'blip': blip,
          'click': click, 'ping': ping, 'chime': chime, 'thump': thump, 'riser': riser, 'swell': swell,
-         'bloom': bloom, 'absorb': absorb}
+         'bloom': bloom, 'absorb': absorb, 'air': air}
 
 
 def make(kind, **params):
