@@ -1,0 +1,62 @@
+/* The Knowledge Map page (pages.js): the app's own sizes x 1.5 (the site kit's scale), the site kit's palette.
+   The graph inside the canvas is drawn at 130% (x 1.3), like React Flow's zoom. */
+.sk-badge{display:none;}                                   /* the snapshot shows no notification badge */
+
+/* mode pills: استكشاف / مخطط الأنطولوجيا (rounded-full, px-4 py-1.5, text-sm, 16 px icon) */
+.km-modes{display:flex;align-items:center;gap:12px;direction:rtl;}
+.km-mode{height:51px;padding:0 24px;border-radius:999px;border:1.5px solid #E5E4E9;background:#fff;color:#52505A;
+  display:inline-flex;align-items:center;gap:9px;font:400 21px 'PlexAR';white-space:nowrap;direction:rtl;}
+.km-on{position:absolute;left:-1.5px;top:-1.5px;right:-1.5px;bottom:-1.5px;border-radius:999px;border:1.5px solid rgba(106,18,184,0.4);
+  background:#F1E9FA;color:#5909B4;font-weight:600;display:flex;align-items:center;justify-content:center;gap:9px;white-space:nowrap;direction:rtl;}
+
+/* the canvas (rounded-2xl, border, bg-subtle); schema mode adds React Flow's dots */
+.km-canvas{position:absolute;left:0;right:0;top:196px;height:672px;border:1.5px solid #E5E4E9;border-radius:24px;background-color:#F8F7FC;
+  overflow:hidden;direction:ltr;}
+.km-rf{display:none;background-image:radial-gradient(circle,#CECDD2 1.1px,transparent 1.5px);background-size:31.2px 31.2px;}
+
+/* Explore mode: the empty state */
+.km-empty{position:absolute;left:0;right:0;top:0;bottom:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;direction:rtl;padding:36px;}
+.km-empty .tile{width:84px;height:84px;border-radius:24px;background:#F1E9FA;display:flex;align-items:center;justify-content:center;margin-bottom:24px;}
+.km-empty .t{font:700 36px/48px 'PlexAR';color:#1A191E;margin-bottom:12px;white-space:nowrap;}
+.km-empty .d{font:400 21px/30px 'PlexAR';color:#52505A;margin-bottom:30px;max-width:864px;}
+.km-empty .in{width:864px;height:72px;border-radius:18px;border:1.5px solid #CECDD2;background:#fff;display:flex;align-items:center;gap:15px;
+  padding:0 18px;font:400 24px 'PlexAR';color:#8A8797;direction:rtl;white-space:nowrap;}
+.km-empty .h{font:400 18px/24px 'PlexAR';color:#8A8797;margin-top:24px;white-space:nowrap;}
+
+/* schema mode: types (node pills), links (lines and labels), the summary chip, the attribution */
+.km-nw{width:300px;height:43px;display:flex;align-items:center;justify-content:center;}
+.km-node{height:43px;padding:0 15.6px;border-radius:999px;background:#fff;border:1.3px solid #E5E4E9;box-shadow:0 1.3px 2.6px rgba(0,0,0,0.05);
+  display:flex;align-items:center;gap:10.4px;direction:rtl;white-space:nowrap;}
+.km-node i{width:15.6px;height:15.6px;border-radius:50%;flex:0 0 auto;}
+.km-node b{font:600 16.9px 'PlexAR';color:#1A191E;}
+.km-node small{font:400 14.3px 'PlexAR';color:#8A8797;}
+.km-sel{position:absolute;left:-1.3px;top:-1.3px;right:-1.3px;bottom:-1.3px;border-radius:999px;border:1.3px solid #6A12B8;
+  box-shadow:0 0 0 2.6px rgba(106,18,184,0.25);opacity:0;}
+.km-lines{left:0;top:0;overflow:visible;}
+.km-lines line{stroke:#6A12B8;stroke-width:2.6;}
+.km-lw{width:300px;height:27px;display:flex;align-items:center;justify-content:center;}
+.km-el{padding:2.6px 5.2px;border-radius:5.2px;background:rgba(255,255,255,0.9);font:400 14.3px/21.5px 'PlexAR';color:#52505A;
+  white-space:nowrap;direction:rtl;}
+.km-info{right:18px;top:18px;max-width:576px;padding:12px 18px;border-radius:18px;border:1.5px solid #E5E4E9;background:rgba(255,255,255,0.95);
+  box-shadow:0 1.5px 3px rgba(0,0,0,0.05);font:400 18px/24px 'PlexAR';color:#52505A;direction:rtl;text-align:right;white-space:nowrap;}
+.km-info span{display:block;color:#8A8797;}
+.km-attr{right:0;bottom:0;padding:3px 6px;background:rgba(255,255,255,0.5);font:400 15px 'Inter';color:#8A8797;}
+
+/* the details panel of the selected type (end-3 top-3 w-80, rounded-2xl, shadow-lg) */
+.km-panel{left:18px;top:18px;width:480px;display:none;border-radius:24px;border:1.5px solid #E5E4E9;background:#fff;z-index:5;direction:rtl;
+  box-shadow:0 15px 22px -4px rgba(0,0,0,0.1),0 6px 9px -6px rgba(0,0,0,0.1);}
+.km-ph{display:flex;align-items:flex-start;gap:12px;padding:24px;border-bottom:1.5px solid #E5E4E9;}
+.km-ph i{width:18px;height:18px;border-radius:50%;margin-top:9px;flex:0 0 auto;}
+.km-ph .nm{flex:1;min-width:0;}
+.km-ph .t{font:700 24px/36px 'PlexAR';color:#1A191E;}
+.km-ph .s{font:400 18px/24px 'PlexAR';color:#8A8797;}
+.km-x{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex:0 0 auto;}
+.km-pb{padding:24px;display:flex;flex-direction:column;gap:24px;}
+.km-sec .h{font:600 18px/24px 'PlexAR';color:#8A8797;margin-bottom:12px;}
+.km-row{display:flex;align-items:center;gap:12px;padding:9px 12px;border-radius:12px;}
+.km-row i{width:12px;height:12px;border-radius:50%;flex:0 0 auto;}
+.km-row .t{font:400 21px/30px 'PlexAR';color:#1A191E;white-space:nowrap;}
+.km-row .s{font:400 16.5px/30px 'PlexAR';color:#8A8797;white-space:nowrap;}
+.km-btn{height:57px;border-radius:18px;border:1.5px solid #D6D5DA;background:#fff;display:flex;align-items:center;justify-content:center;gap:9px;
+  font:500 21px 'PlexAR';color:#1A191E;direction:rtl;}

@@ -64,6 +64,8 @@ A demo is ready when every point below holds in **both** formats. Check it on th
 | The field lights up before the click | `app.type` lights the field 0.5 s before the first letter | Type from the beat after the click (+4 when the click is on +3) |
 | A title leaves one word alone on its second line (9:16) | Titles weren't balanced | The engine balances 9:16 titles and captions (`text-wrap: balance`) |
 | A long pan shows a title as 3–4 separate copies | A fast slide at 2× zoom moves too far per frame for 4 sub-frames | Shorter pans: pull back a little, or move in two steps; or build with `SUB=8` |
+| A callout's dot sits on the first word of an Arabic line | The target is a right-aligned text block, so its right edge is where the text starts | Point at the row or element that holds the text; the dot lands beside it (`demos/ontology-walkthrough`, step 4) |
+| A callout box beside a side panel runs past the 9:16 window | A panel shown at a readable size leaves only ~300 px beside it | Keep those callouts to about 16 characters per line ("Holds many files"), or place them over free space |
 | A result, route or label the site kit doesn't have | The feature is only partly in the site kit | Ask for a screenshot. If there is none, rebuild the page in `pages.js` with the fewest changes, and list what you invented when you deliver |
 | Glass icons flicker or double their glow | Chromium backdrop-root changes during fades | Keep the `.gk` base layer (`M.GLASS(...)` adds it); don't strip it |
 | A title's Arabic line is invisible | A child selector matched a nested element | Style engine parts with `:scope>`-level selectors and `m-` prefixed classes |

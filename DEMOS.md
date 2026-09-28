@@ -182,7 +182,7 @@ the frame's time `Math.round(t*30)/30`, or it ghosts; `count`, `text`, `type` an
 | `decisions` | القرارات (Decisions) | `#stats .sk-stat`, `#segTabs`, `#decCard`, `#btnOK`, `#toast` (hidden until shown), `#dec2` |
 | `assistant` | مساعد مرصد الذكي (AI assistant) | `.sk-input` (type here), `.sk-card`, `.sk-btn` |
 | `objectTypes` | أنواع الكائنات (object types) | `.sk-item`, `.sk-seg`, `text:` |
-| `knowledgeMap` | الخريطة المعرفية (knowledge map) | `.sk-item`, `text:` |
+| `knowledgeMap` | الخريطة المعرفية (knowledge map): an older version, see below | `.sk-item`, `text:` |
 | `links` | الروابط (links) | `.sk-pill`, `text:` |
 | `search` | البحث في كل البيانات (search) | `.sk-input`, `.sk-pill` |
 | `projects` | المشاريع (projects) | `.sk-card`, `text:` |
@@ -199,6 +199,10 @@ Limits worth knowing:
   - There is no room for a fifth row.
   - To show the search itself, rebuild the page in `pages.js` as `demos/search-walkthrough/` does: an empty field,
     and results that appear after typing.
+- **knowledgeMap** is an older version of the page: its subtitle, its seven sample types and its two buttons no
+  longer match the app. The real page (the «استكشاف» / «مخطط الأنطولوجيا» pills, Explore's empty state, the schema
+  with its summary chip, and the details panel of a selected type) is rebuilt from the client's HTML snapshot in
+  `demos/ontology-walkthrough/pages.js` as `ontologyMap`. Use that one; its header comment lists what is inferred.
 - The top-bar search box (Ctrl K) is not modelled; what it opens in the real app is unknown.
 - Anything you add or change on a page is invented until the client confirms it. List it when you deliver.
 
@@ -285,4 +289,5 @@ target, nothing cut off in 9:16.
 |---|---|---|---|---|
 | [`pulse-short`](demos/pulse-short/demo.js) | Short feature demo (**the reference**) | 30 s | `product-video.mp3` | Business Pulse: the daily advisor switches on, new findings, a stock alert with highlight and callout. v2 (2026-09-25): Western digits (18%), the click on the switch not its label, clean edges (the alert whole in 9:16), motion blur |
 | [`search-walkthrough`](demos/search-walkthrough/demo.js) | Walkthrough, 3 steps (the skill's test run) | 41 s | `product-video.mp3` | Search across all your data: open Search from the Data sidebar, type «فاتورة», results from Odoo, WhatsApp and files. `pages.js` rebuilds the search page. **To confirm with the client before use:** the files result row and its pills are invented, and the route through the Data sidebar |
+| [`ontology-walkthrough`](demos/ontology-walkthrough/demo.js) | Walkthrough, 4 steps | 52 s | `product-video.mp3` | Your ontology at a glance: open the Knowledge Map from the Data sidebar, switch to «مخطط الأنطولوجيا», read a type and a link, select مشروع to open its details panel (a project holds many files and sits in one section). `pages.js` rebuilds the real page from the client's HTML snapshot (2026-09-27). **To confirm with the client before use:** the page opening in Explore mode, the graph's zoom (130%) and position, the panel showing only after a click, the links drawn in the brand colour when nothing is selected, the look-alike icons, and the empty search page the video starts on |
 | [`decisions-walkthrough`](demos/decisions-walkthrough/demo.js) | Walkthrough (**the reference**) | 60 s | `product-video.mp3` | Approve a recommendation in 5 steps: open Decisions, pick, check confidence and source, approve, counters update. v2 (2026-09-25): closer tab click with the label visible, callouts clear of content, readable 9:16 framing, Western digits, motion blur. v3 (same day): every hold clean in `tools/cutcheck.js`, glide out as the new page fades in |
