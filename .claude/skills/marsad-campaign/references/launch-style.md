@@ -210,6 +210,22 @@ After the Figma cut, the client sent two more references for the ontology film:
 - **Turn every ring the same way.** Rings turning in opposite directions, fast in the spin into the centre, trip `tools/qa.py`'s shake check (motion reverses across quadrants).
 - **Keep the camera above a tier to show its objects.** In a close-up of a lower tier, the tier above is overhead: show its underside and edge, as Foundry does.
 
+## Porting a film to the main theme (the 48 s film's)
+
+The client chose the 48 s film's look (`films/style-jupiter`) as Marsad's main theme. `films/ontology-main-theme` ports the Foundry-style ontology film to it, keeping the story, the timing and the drawing:
+- **Stage:** the 48 s film's canvas painter (`lens`, `haze`, `dust`) replaces the white frame and the light canvas. There is no frame and no title box.
+- **Type:** the 48 s film's `jt` (words blur in where they stand; `g` for gradient words, `d` for grey ones) replaces the typed title box. Put lines at the top over a drawing, and at the bottom over the opening's rings, with the rings masked out under them (`mask-image`).
+- **The turn:** the icons spin into the centre and a lens bursts out of it, as the 48 s film's mark did. The lens grows past the frame (radius 1700), and its dark body is the drawing's ground, with violet only in the corners.
+- **The drawing in the theme:**
+  - The plates are dark violet glass (`rgba(18,10,36,0.9)`) with a light lavender rim over a wider, soft magenta stroke (a cheap glow). Their front bands carry a violet-to-black gradient instead of hatching.
+  - Each object stands on a small lens: its pad is filled with the lens gradient (`RIM` as an SVG `radialGradient` in bounding-box units).
+  - The icons use dark violet faces, light lavender lines and violet and pink accents. The same set glows in the opening's rings, with one `drop-shadow` on the whole layer.
+  - Cables and links are glowing lavender dashes, each with a light running along it now and then (a point on the cubic, never on the beat).
+  - Labels are the 48 s film's chips: dark violet, a glowing edge, JBMono or IBM Plex Sans Arabic.
+  - Real app parts (the WhatsApp note as the search shows it, the pages, the toast) stay white and get glowing rims.
+  - Under the whole stack there is a horizon lens.
+- **The end:** the 48 s film's capsule, with its steps compressed to fit a 30 s film: the bloom on the hit, the shrink 2.75 beats later, then the mark, the line and the footer. "Book your demo" is still on screen for the last 2.3 s or more.
+
 ## Its sound
 
 - The music is HoliznaCC0 "Movement" (CC0), as in `coffee-launch`. The client tried "Oxforf by Night" (v2) and went back to it.

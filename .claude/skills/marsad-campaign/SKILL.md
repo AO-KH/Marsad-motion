@@ -45,6 +45,10 @@ Each rule comes from the client, in their own words, or from a delivered film. A
 - **The app as it really is.** "this is the new website UI keep the style oriented to it, also show the pages".
   - Use the light UI and real pages from the site kit, with a soft purple glow ("add a glowed purple styling") and glass icons ("make the icons glassy").
   - App pages keep their own styling; glass is for tiles, chips and icons.
+- **Marsad's main theme is the 48 s film's.** After the style samples, the client said of `films/style-jupiter` (48 s): "the theme of 48 second video is good". They then asked for new films in "marsad main theme, fonts color and everything".
+  - The theme: near-black (`#06050E`) with drifting dust; lenses with dark bodies and rims running indigo, violet, magenta and pink; white Inter (medium) type whose words blur in, with grey and gradient words and the Arabic in IBM Plex Sans Arabic under it; the app's parts with glowing rims; chips in dark violet with glowing edges; the glowing capsule end.
+  - `films/ontology-main-theme` is the worked example. `references/launch-style.md` says how a film in another style is ported to it.
+  - The light app look above still holds for the app's own pages, which keep their own styling inside the dark frame.
 - **Famous sources, ending connected.** "get only the famous ones": SAP, Salesforce, Oracle, Excel, Shopify, QuickBooks, PDF and CSV (`K.TILES`). "the scattered data should be … connected to marsad at the end".
 - **A big, living logo.** "make marsad logo bigger". "when the logo appear the transition look static".
   - Build the reveal on the beats: sources absorbed one per 16th, the mark easing in, a soft punch.
