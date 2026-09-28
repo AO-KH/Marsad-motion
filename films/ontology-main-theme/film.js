@@ -17,16 +17,20 @@
                       WhatsApp and the company's files, cables flowing up; "Connect your sources."
      k16-24  unify    the camera cranes up to the ontology: seven types on small lenses, six links with their names, the
                       WhatsApp note as the app shows it; "Unify them in one ontology."
-     k24-32  act      up to the app's pages (Business Pulse, Decisions, the Assistant) with glowing rims; the restock
-                      action rises to Decisions, "Action executed · PO-2291"; "Monitor and act."
+     k24-32  act      up to the app's pages (Business Pulse, Decisions, the Assistant), lying on the top tier; they stand
+                      up as glass slabs (bezel, thickness, a reflection on the plate) in an arc facing the middle, and
+                      their parts float out of them while the camera circles; the restock action rises from Product to
+                      Decisions and its "Action executed · PO-2291" card lifts out, glowing green; "Monitor and act."
      k32-44  model    the pull-back to the whole stack over a glowing horizon; "Every system. One living model."
      k42.5-48         "Meet the Marsad ontology." through the track's break
      k48-57  end      on the hit the 48 s film's end: a capsule blooms round "Book your demo." and shrinks into the
                       marsadnasl.com capsule; the mark; "Book your demo · احجز عرضك التجريبي"
    Truth: the object types, their links (Arabic labels and API names), the WhatsApp note and its customer (the app's
    search row), the file names, the page screenshots and the executed action's text are the app's own (site kit,
-   site_pages/). Renderings: the rings of icons, the tiered drawing (how Marsad works, drawn), the isometric icons, the
-   lens pads, the cables, the action's pill and its path. */
+   site_pages/); the parts floating out of the pages are the screenshots' own pixels. Renderings: the rings of icons, the
+   tiered drawing (how Marsad works, drawn), the isometric icons, the lens pads, the cables, the glass slabs and their
+   reflections, the empty slots the floating parts leave in the pages (films/ontology-main-theme/pages/*_base.png), the
+   action's pill and its path. */
 const B=M.B, S8=M.S8, S16=M.S16, ez=M.ez, P=M.P, st=M.st, lerp=M.lerp, FQ=M.FQ;
 const f1=x=>(+x).toFixed(1), f2=x=>(+x).toFixed(2), f3=x=>(+x).toFixed(3);
 const dec=(t,a,b)=>ez.dec(P(t,a,b)), io=(t,a,b)=>ez.ioC(P(t,a,b)), inc=(t,a,b)=>ez.inC(P(t,a,b));
@@ -163,27 +167,37 @@ M.track(t=>{
 jt({at:B(0.25),out:K_TURN,y:812,size:70,step:S16,words:["Your","company's","data","is",{t:'everywhere.',g:1}],ar:'بيانات شركتك مبعثرة في كل مكان.',arSize:40,fade:[B(7.2),B(7.9)]});
 
 /* ================= the drawing: tiers in perspective (films/ontology-foundry's), one camera ================= */
-const PIT=36*Math.PI/180, CP=Math.cos(PIT), SP=Math.sin(PIT), FOC=1150, SC={x:960,y:520};
+const FOC=1150, SC={x:960,y:520};
 const Z1=1250, Z2=2500, TH=34;
-function camOf(T,D){return {C:{x:T.x,y:T.y-D*CP,z:T.z+D*SP}};}
-function pj(c,x,y,z){const vx=x-c.C.x,vy=y-c.C.y,vz=z-c.C.z,fw=vy*CP-vz*SP,up=vy*SP+vz*CP,s=FOC/fw;return {x:SC.x+vx*s,y:SC.y-up*s,s};}
-const NEAR=90, fwOf=(c,p)=>(p[1]-c.C.y)*CP-(p[2]-c.C.z)*SP;
+function camOf(T,D,yw=0,pt=36){const a=pt*Math.PI/180,b=yw*Math.PI/180,cp=Math.cos(a),sp=Math.sin(a),cy=Math.cos(b),sy=Math.sin(b);
+  return {C:{x:T.x+D*cp*sy,y:T.y-D*cp*cy,z:T.z+D*sp},cp,sp,cy,sy};}      // pitched down, and turned round the target by the yaw
+function pj(c,x,y,z){const dx=x-c.C.x,dy=y-c.C.y,vz=z-c.C.z,vx=dx*c.cy+dy*c.sy,vy=dy*c.cy-dx*c.sy,fw=vy*c.cp-vz*c.sp,up=vy*c.sp+vz*c.cp,s=FOC/fw;
+  return {x:SC.x+vx*s,y:SC.y-up*s,s};}
+const NEAR=90, fwOf=(c,p)=>((p[1]-c.C.y)*c.cy-(p[0]-c.C.x)*c.sy)*c.cp-(p[2]-c.C.z)*c.sp;
 function clipPj(c,P3){const out=[];for(let i=0;i<P3.length;i++){const a=P3[i],b=P3[(i+1)%P3.length],fa=fwOf(c,a),fb=fwOf(c,b);
     if(fa>=NEAR)out.push(a);if((fa>=NEAR)!==(fb>=NEAR)){const u=(NEAR-fa)/(fb-fa);out.push([lerp(a[0],b[0],u),lerp(a[1],b[1],u),lerp(a[2],b[2],u)]);}}
   return out.map(p=>pj(c,p[0],p[1],p[2]));}
-const CAMK=[   // time, target, distance: drifts and cranes, each eased in and out
+const CAMK=[   // time, target, distance, yaw, pitch: drifts, cranes and circles, each eased in and out
   [K_TURN,{x:100,y:300,z:150},1380],[B(15),{x:-60,y:300,z:150},1380],
   [B(17),{x:-200,y:380,z:Z1+60},1550],[B(23),{x:200,y:380,z:Z1+60},1550],
-  [B(25),{x:120,y:330,z:Z2+80},1650],[B(31.25),{x:-60,y:330,z:Z2+80},1650],
-  [B(33.75),{x:0,y:350,z:Z1+260},4750],[K_END,{x:0,y:350,z:Z1+260},4450],[B(49),{x:0,y:350,z:Z1+260},5500]];
+  [B(25),{x:0,y:270,z:Z2+250},2150,-8,25],[B(31.25),{x:-10,y:270,z:Z2+230},1820,7,23],
+  [B(33.75),{x:0,y:350,z:Z1+450},5200],[K_END,{x:0,y:350,z:Z1+450},4900],[B(49),{x:0,y:350,z:Z1+450},6000]];
 function camAt(t){let k=0;while(k<CAMK.length-2&&t>=CAMK[k+1][0])k++;
-  const [ta,Ta,Da]=CAMK[k],[tb,Tb,Db]=CAMK[k+1], u=ez.ioC(P(t,ta,tb));
-  return camOf({x:lerp(Ta.x,Tb.x,u),y:lerp(Ta.y,Tb.y,u),z:lerp(Ta.z,Tb.z,u)},lerp(Da,Db,u));}
+  const [ta,Ta,Da,Ya=0,Pa=36]=CAMK[k],[tb,Tb,Db,Yb=0,Pb=36]=CAMK[k+1], u=ez.ioC(P(t,ta,tb));
+  return camOf({x:lerp(Ta.x,Tb.x,u),y:lerp(Ta.y,Tb.y,u),z:lerp(Ta.z,Tb.z,u)},lerp(Da,Db,u),lerp(Ya,Yb,u),lerp(Pa,Pb,u));}
 
 const TIER0=[{k:'sys',x0:-1300,x1:-120,y0:0,y1:560},{k:'files',x0:120,x1:1300,y0:0,y1:560}];
 const TIER1={x0:-1400,x1:1400,y0:0,y1:760};
-const TIER2=[{k:'pulse',x0:-1500,x1:-540,img:'pulse',ar:'نبض الأعمال',en:'BUSINESS PULSE'},{k:'dec',x0:-480,x1:480,img:'decisions',ar:'القرارات',en:'DECISIONS'},
-  {k:'ai',x0:540,x1:1500,img:'assistant',ar:'مساعد مرصد الذكي',en:'ASSISTANT'}].map(p=>({...p,y0:0,y1:620}));
+/* the top tier: each page stands on its plate as a glass slab and turns to face the middle; its parts (the screenshot's
+   own pixels: [x, y, w, h, corner radius, how far it floats out, has a shadow]) float out of it */
+const TIER2=[{k:'pulse',x0:-1500,x1:-540,img:'pulse',ang:22,hx:-930,ar:'نبض الأعمال',en:'BUSINESS PULSE',
+    parts:[[184,640,1534,118,16,60,0],[184,776,1534,118,16,95,0],[184,912,1534,118,16,130,0],[183,326,236,71,14,120,1]]},
+  {k:'dec',x0:-480,x1:480,img:'decisions',ang:0,hx:0,ar:'القرارات',en:'DECISIONS',
+    parts:[[58,405,331,138,16,75,0],[415,405,331,138,16,75,0],[772,405,331,138,16,75,0],[1129,405,331,138,16,75,0]]},
+  {k:'ai',x0:540,x1:1500,img:'assistant',ang:-22,hx:930,ar:'مساعد مرصد الذكي',en:'ASSISTANT',
+    parts:[[187,963,789,70,14,55,0],[127,692,398,96,16,85,0],[547,692,397,96,16,85,0],[1064,376,371,62,12,100,1],[490,418,92,92,20,135,0]]}]
+  .map(p=>({...p,y0:0,y1:700}));
+const DONE=[58,687,1402,214,16];                                  // Decisions' "Action executed" card: it floats out on the action
 const SRCS=[{ic:'db',x:-920,y:300,lb:'Odoo',cls:''},{ic:'chat',x:-480,y:300,lb:'واتساب',cls:' ar'},
   {ic:'xlsx',x:340,y:300,lb:'invoices_q3.xlsx',cls:''},{ic:'csv',x:720,y:300,lb:'branch_returns.csv',cls:''},{ic:'pdf',x:1100,y:300,lb:'po_2291.pdf',cls:''}].map((o,i)=>({...o,z:0,t0:B(8.9)+i*S16}));
 const OBJ=[{k:'cust',ic:'store',ar:'عميل',en:'Customer',x:0,y:380,h:62},{k:'inv',ic:'doc',ar:'فاتورة',en:'Invoice',x:660,y:210,h:84},
@@ -194,20 +208,24 @@ const OK={};OBJ.forEach(o=>OK[o.k]=o);
 const LNK=[['cust','inv','صادرة إلى','billed_to'],['inv','line','تحتوي بند','has_line'],['prod','line','المنتج','line_product'],
   ['cust','note','يذكر','mentions',0.55],['cust','emp','مدير الحساب','account_manager',0.6],['cust','city','يقع في','located_in']].map((l,j)=>({a:OK[l[0]],b:OK[l[1]],ar:l[2],en:l[3],f:l[4]??0.5,t0:B(18.5)+j*S16}));
 
-/* the layers, painted bottom tier first */
+/* the layers, painted bottom tier first; the slabs' reflections lie on the top tier's plates, the slabs stand over them */
 const DG=M.el('div','om-lay',null,SCN);
-const S0=svgEl(DG), H0=M.el('div','om-lay',null,DG), SA=svgEl(DG), S1=svgEl(DG), H1=M.el('div','om-lay',null,DG), SB=svgEl(DG), S2=svgEl(DG), H2=M.el('div','om-lay',null,DG), S3=svgEl(DG), H3=M.el('div','om-lay',null,DG);
+const S0=svgEl(DG), H0=M.el('div','om-lay',null,DG), SA=svgEl(DG), S1=svgEl(DG), H1=M.el('div','om-lay',null,DG), SB=svgEl(DG), S2=svgEl(DG),
+  R2=M.el('div','om-lay',null,DG), K2=M.el('div','om-lay om-iso',null,DG), H2=M.el('div','om-lay',null,DG), S3=svgEl(DG), H3=M.el('div','om-lay',null,DG);
 S0.innerHTML=`<defs><linearGradient id="omBand" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3A1670"/><stop offset="1" stop-color="#0B0718"/></linearGradient>`+
   `<radialGradient id="omPad" cx="0.5" cy="0.5" r="0.5">${RIM.map(([s,c])=>`<stop offset="${s}" stop-color="${c}"/>`).join('')}</radialGradient></defs>`;
 function plateEls(svg){return {glow:sv(svg,'polygon',{fill:'none',stroke:'rgba(206,64,240,0.3)','stroke-width':7,'stroke-linejoin':'round'}),
   top:sv(svg,'polygon',{fill:'rgba(18,10,36,0.9)',stroke:'#D8B4FF','stroke-width':1.6,'stroke-linejoin':'round'}),
-  front:sv(svg,'polygon',{fill:'url(#omBand)',stroke:'#D8B4FF','stroke-width':1.6,'stroke-linejoin':'round'})};}
+  front:sv(svg,'polygon',{fill:'url(#omBand)',stroke:'#D8B4FF','stroke-width':1.6,'stroke-linejoin':'round'}),
+  side:sv(svg,'polygon',{fill:'url(#omBand)',stroke:'#D8B4FF','stroke-width':1.6,'stroke-linejoin':'round'})};}
 const seesTop=(c,z)=>c.C.z>z+10;
-function drawPlate(c,pl,p,z){
+const pts2=A=>A.length>2?pts(A.map(q=>[q.x,q.y])):'';
+function drawPlate(c,pl,p,z){                                     // the top (or the underside), the front edge and the side edge in view
   const zf=seesTop(c,z)?z:z-TH, F=clipPj(c,[[p.x0,p.y0,zf],[p.x1,p.y0,zf],[p.x1,p.y1,zf],[p.x0,p.y1,zf]]),
-    E=clipPj(c,[[p.x0,p.y0,z],[p.x1,p.y0,z],[p.x1,p.y0,z-TH],[p.x0,p.y0,z-TH]]);
-  const fp=F.length>2?pts(F.map(q=>[q.x,q.y])):'';pl.top.setAttribute('points',fp);pl.glow.setAttribute('points',fp);
-  pl.front.setAttribute('points',E.length>2?pts(E.map(q=>[q.x,q.y])):'');}
+    E=clipPj(c,[[p.x0,p.y0,z],[p.x1,p.y0,z],[p.x1,p.y0,z-TH],[p.x0,p.y0,z-TH]]),
+    xs=c.C.x<p.x0?p.x0:c.C.x>p.x1?p.x1:null, Sd=xs===null?[]:clipPj(c,[[xs,p.y0,z],[xs,p.y1,z],[xs,p.y1,z-TH],[xs,p.y0,z-TH]]);
+  const fp=pts2(F);pl.top.setAttribute('points',fp);pl.glow.setAttribute('points',fp);
+  pl.front.setAttribute('points',pts2(E));pl.side.setAttribute('points',pts2(Sd));return F;}
 const P0=TIER0.map(p=>plateEls(S0)), P1=plateEls(S1), P2=TIER2.map(p=>plateEls(S2));
 
 const PR=128;
@@ -231,14 +249,37 @@ const CARD=M.el('div','om-lb om-card','<div class="r1"><span class="pl cat">مل
   '<div class="r2"><span class="pl src">واتساب</span></div>',H1);
 const CARDL=sv(S1,'polyline',{fill:'none',stroke:'#E3C9FF','stroke-width':1.6});
 
-TIER2.forEach(p=>{const src=`site_pages/${p.img}.png`;p.img=M.el('img','om-scr',null,H2);p.img.src=src;});
-TIER2.forEach((p,i)=>{p.lbl=M.el('div','om-lb om-tier',`<span>${p.en}</span><span class="sep">·</span><span class="ar">${p.ar}</span>`,H2);p.t0=B(25)+i*S8;});
-const IW=948, IH=530;
-TIER2.forEach(p=>st(p.img,{width:IW+'px',height:IH+'px'}));
-function homog(q){const [x0,y0]=[q[0].x,q[0].y],[x1,y1]=[q[1].x,q[1].y],[x2,y2]=[q[2].x,q[2].y],[x3,y3]=[q[3].x,q[3].y];
+/* the slabs: a hinge on the plate; e runs 0 (the page lying on the plate) to 1 (standing, leaning back TILT degrees, turned
+   by ang to face the middle, the side ones sliding in to hx); local coordinates a (across), b (up the page), c (out of it: 0 the back face, ST the page) */
+const NW=1896, NH=1060, SW=880, SBZ=14, SH=2*SBZ+(SW-2*SBZ)*NH/NW, ST=24, HY=190, TILT=12;
+function slabF(p,e){const a=p.ang*e*Math.PI/180, ph=lerp(90,TILT,e)*Math.PI/180, sa=Math.sin(a), ca=Math.cos(a), sp=Math.sin(ph), cp=Math.cos(ph);
+  return {O:[lerp((p.x0+p.x1)/2,p.hx,e),HY,Z2],u:[ca,sa,0],v:[-sa*sp,ca*sp,cp],n:[sa*cp,-ca*cp,sp]};}
+const L3=(F,a,b,c)=>[F.O[0]+F.u[0]*a+F.v[0]*b+F.n[0]*c,F.O[1]+F.u[1]*a+F.v[1]*b+F.n[1]*c,F.O[2]+F.v[2]*b+F.n[2]*c];
+const SXl=X=>-SW/2+SBZ+X/NW*(SW-2*SBZ), SYl=Y=>SH-SBZ-Y/NH*(SH-2*SBZ);     // a screenshot pixel -> the slab's a, b
+const FACES=[   // corners as (a, b, c) in 0/1, and the outward normal in (u, v, n); a convex box: only faces turned to the camera are drawn
+  {q:[[0,1,0],[1,1,0],[1,1,1],[0,1,1]],nn:[0,1,0],fill:'#3E1A78'},{q:[[0,0,1],[1,0,1],[1,0,0],[0,0,0]],nn:[0,-1,0],fill:'#1C0B3A'},
+  {q:[[0,1,0],[0,1,1],[0,0,1],[0,0,0]],nn:[-1,0,0],fill:'#2A1256'},{q:[[1,1,1],[1,1,0],[1,0,0],[1,0,1]],nn:[1,0,0],fill:'#2A1256'},
+  {q:[[1,1,0],[0,1,0],[0,0,0],[1,0,0]],nn:[0,0,-1],fill:'#120824'},{q:[[0,1,1],[1,1,1],[1,0,1],[0,0,1]],nn:[0,0,1],fill:'#150B2B',front:1}];
+function homog(q,W,H){const [x0,y0]=[q[0].x,q[0].y],[x1,y1]=[q[1].x,q[1].y],[x2,y2]=[q[2].x,q[2].y],[x3,y3]=[q[3].x,q[3].y];
   const dx1=x1-x2,dx2=x3-x2,dy1=y1-y2,dy2=y3-y2,sx=x0-x1+x2-x3,sy=y0-y1+y2-y3,den=dx1*dy2-dx2*dy1;
   const gg=(sx*dy2-dx2*sy)/den,h=(dx1*sy-sx*dy1)/den,a=x1-x0+gg*x1,b=x3-x0+h*x3,d=y1-y0+gg*y1,e=y3-y0+h*y3;
-  return `matrix3d(${[a/IW,d/IW,0,gg/IW,b/IH,e/IH,0,h/IH,0,0,1,0,x0,y0,0,1].map(v=>(+v).toFixed(6)).join(',')})`;}
+  const m=[a/W,d/W,0,gg/W,b/H,e/H,0,h/H,0,0,1,0,x0,y0,0,1];
+  return m.every(Number.isFinite)?`matrix3d(${m.map(v=>(+v).toFixed(6)).join(',')})`:null;}
+const quad=(c,F,a0,b0,a1,b1,cc)=>[L3(F,a0,b1,cc),L3(F,a1,b1,cc),L3(F,a1,b0,cc),L3(F,a0,b0,cc)].map(P=>pj(c,P[0],P[1],P[2]));   // TL TR BR BL
+TIER2.forEach((p,i)=>{
+  const src=`site_pages/${p.img}.png`, base=`films/ontology-main-theme/pages/${p.img}_base.png`;
+  p.rw=M.el('div','om-lay',null,R2);p.rimg=M.el('img','om-refl',null,p.rw);p.rimg.src=base;              // the reflection on the plate
+  p.box=M.el('div','om-lay',null,K2);p.svg=svgEl(p.box);
+  p.glow=sv(p.svg,'polygon',{fill:'none',stroke:'rgba(214,80,245,0.4)','stroke-width':12,'stroke-linejoin':'round'});
+  p.faces=FACES.map(f=>({...f,el:sv(p.svg,'polygon',{fill:f.fill,stroke:f.front?'#F2E2FF':'rgba(216,180,255,0.85)','stroke-width':f.front?1.8:1.3,'stroke-linejoin':'round'})}));
+  p.scr=M.el('img','om-scr3',null,p.box);p.scr.src=base;
+  const part=(r,cls)=>{const e=M.el('div','om-part'+(cls||''),null,p.box);
+    st(e,{width:r[2]+'px',height:r[3]+'px',borderRadius:r[4]+'px',backgroundImage:`url(${src})`,backgroundPosition:`${-r[0]}px ${-r[1]}px`});return e;};
+  p.pts=[...p.parts].sort((a,b)=>a[5]-b[5]).map((r,k)=>({r,el:part(r),tl:B(25)+i*S8+0.75+k*S16}));
+  if(p.k==='dec')p.done={r:DONE,el:part(DONE,' done')};
+  p.lbl=M.el('div','om-lb om-tier',`<span>${p.en}</span><span class="sep">·</span><span class="ar">${p.ar}</span>`,H2);
+  p.ta=B(24)+i*S16;p.t0=B(25)+i*S8;                              // it shows up lying on the plate, then stands up
+});
 
 /* the cables: glowing dashed lines, each with a light running up it now and then */
 function bundle(svg,n,lo,hi){const out=[];for(let k=0;k<n;k++){const u=(k+0.5)/n;
@@ -264,10 +305,31 @@ function drawCable(c,cb,t){let L=[cb.lo.x,cb.lo.y,cb.lo.z],H=[cb.hi.x,cb.hi.y,cb
 const ACTG=sv(S3,'path',{fill:'none',stroke:'rgba(222,13,255,0.35)','stroke-width':9,'stroke-linecap':'round'});
 const ACTL=sv(S3,'path',{fill:'none',stroke:'#FF9BF0','stroke-width':3,'stroke-linecap':'round'});
 const ACT=M.el('div','om-lb om-act','<span>إعادة التوريد</span><span class="en">Restock</span>',H3);
-const TOAST=M.el('div','om-lb om-toast','<span>✓</span><span>تم تنفيذ الإجراء</span><span class="en">PO-2291</span>',H3);
 const T_A0=B(26.25), T_A1=B(27.75), T_TO=B(28);
 
 const place=(e,x,y,s,o)=>{e.style.display=o>0.002?'':'none';if(o>0.002)st(e,{opacity:f3(o),transform:`translate(${f1(x)}px,${f1(y)}px) translate(-50%,-50%) scale(${f3(s)})`});};
+const setTf=(e,tf)=>{if(tf){e.style.transform=tf;e.style.visibility='';}else e.style.visibility='hidden';};
+function drawSlab(c,p,t,onT2){                                    // one page on the top tier, standing up off its plate
+  const vis=onT2?dec(t,p.ta,p.ta+0.45):0;p.box.style.display=p.rw.style.display=vis>0.002?'':'none';if(vis<=0.002)return null;
+  const e=io(t,p.t0,p.t0+0.8), F=slabF(p,e), C=[c.C.x,c.C.y,c.C.z];p.box.style.opacity=f3(vis);
+  const at=(k)=>L3(F,k[0]?SW/2:-SW/2,k[1]?SH:0,k[2]?ST:0);
+  p.faces.forEach(f=>{const nw=[0,1,2].map(j=>f.nn[0]*F.u[j]+f.nn[1]*F.v[j]+f.nn[2]*F.n[j]), P0=at(f.q[0]),
+      seen=nw[0]*(C[0]-P0[0])+nw[1]*(C[1]-P0[1])+nw[2]*(C[2]-P0[2])>0;
+    const Q=seen?f.q.map(k=>{const P=at(k);return pj(c,P[0],P[1],P[2]);}):[];f.el.setAttribute('points',pts2(Q));
+    if(f.front)p.glow.setAttribute('points',pts2(Q));});
+  setTf(p.scr,homog(quad(c,F,-SW/2+SBZ,SBZ,SW/2-SBZ,SH-SBZ,ST+0.5),NW,NH));
+  p.pts.forEach(o=>{const l=dec(t,o.tl,o.tl+0.6), r=o.r, d=ST+1+r[5]*l;
+    setTf(o.el,homog(quad(c,F,SXl(r[0]),SYl(r[1]+r[3]),SXl(r[0]+r[2]),SYl(r[1]),d),r[2],r[3]));
+    o.el.style.boxShadow=(r[6]?'0 8px 22px rgba(118,40,200,0.35),':'')+`0 0 0 ${f1(2.5*l)}px rgba(236,205,255,${f3(0.95*l)}),0 ${f1(26*l)}px ${f1(60*l)}px rgba(30,4,70,${f3(0.4*l)}),0 0 ${f1(40*l)}px rgba(206,64,240,${f3(0.35*l)})`;});
+  if(p.done){const l=dec(t,T_TO,T_TO+0.55)*(1-io(t,B(31.5),B(33))), r=p.done.r, sc=1+0.1*l, cx=SXl(r[0]+r[2]/2), cy=SYl(r[1]+r[3]/2),
+      hw=(SXl(r[0]+r[2])-SXl(r[0]))/2*sc, hh=(SYl(r[1])-SYl(r[1]+r[3]))/2*sc;
+    setTf(p.done.el,homog(quad(c,F,cx-hw,cy-hh+60*l,cx+hw,cy+hh+60*l,ST+1+190*l),r[2],r[3]));
+    p.done.el.style.boxShadow=`0 0 0 ${f1(3*l)}px rgba(150,236,190,${f3(0.95*l)}),0 0 ${f1(80*l)}px ${f1(16*l)}px rgba(60,220,140,${f3(0.5*l)}),0 ${f1(40*l)}px ${f1(90*l)}px rgba(6,30,18,${f3(0.35*l)})`;}
+  // its reflection on the plate: the page mirrored in the plate's top, fading away from the hinge
+  const M3=P=>pj(c,P[0],P[1],2*Z2-P[2]), q=[L3(F,-SW/2+SBZ,SH-SBZ,ST),L3(F,SW/2-SBZ,SH-SBZ,ST),L3(F,SW/2-SBZ,SBZ,ST),L3(F,-SW/2+SBZ,SBZ,ST)].map(M3);
+  setTf(p.rimg,homog(q,NW,NH));p.rimg.style.opacity=f3(0.24*e*e);
+  return {F,depth:fwOf(c,L3(F,0,SH/2,ST/2))};
+}
 M.track(t=>{
   const on=t>=K_TURN+0.2&&t<K_END+0.8;if(!show(DG,on))return;
   const c=camAt(t);DG.style.opacity=f3(dec(t,K_TURN+0.25,K_TURN+0.9)*(1-P(t,B(42),B(43.2))));
@@ -279,30 +341,32 @@ M.track(t=>{
   CA.forEach(cb=>drawCable(c,cb,t));
   drawPlate(c,P1,TIER1,Z1);
   const onT1=seesTop(c,Z1);[LK1,...OBJ.map(o=>o.pad),...OBJ.map(o=>o.g)].forEach(e=>e.style.display=onT1?'':'none');
+  const lb1=1-P(t,B(24.5),B(25.25))*(1-P(t,B(32),B(33)));      // the ontology's names step back under the pages (the frame's foot cuts them)
   LNK.forEach(l=>{const a=pj(c,l.a.x,l.a.y,Z1),b=pj(c,l.b.x,l.b.y,Z1),p=dec(t,l.t0,l.t0+0.45);
     [l.gl,l.ln].forEach(e=>{e.setAttribute('x1',f1(a.x));e.setAttribute('y1',f1(a.y));e.setAttribute('x2',f1(lerp(a.x,b.x,p)));e.setAttribute('y2',f1(lerp(a.y,b.y,p)));e.setAttribute('opacity',p>0?'1':'0');});
     const u=((t-l.t0)*0.5)%1, lon=t>l.t0+0.6;l.lt.style.display=lon?'':'none';
     if(lon){l.lt.setAttribute('cx',f1(lerp(a.x,b.x,u)));l.lt.setAttribute('cy',f1(lerp(a.y,b.y,u)));l.lt.setAttribute('opacity',f3(Math.min(1,u/0.12,(1-u)/0.12)));}
-    const m=pj(c,lerp(l.a.x,l.b.x,l.f),lerp(l.a.y,l.b.y,l.f),Z1);place(l.pl,m.x,m.y,m.s*1.55,onT1?dec(t,l.t0+0.25,l.t0+0.6):0);});
+    const m=pj(c,lerp(l.a.x,l.b.x,l.f),lerp(l.a.y,l.b.y,l.f),Z1);place(l.pl,m.x,m.y,m.s*1.55,onT1?lb1*dec(t,l.t0+0.25,l.t0+0.6):0);});
   OBJ.forEach(o=>{const q=pj(c,o.x,o.y,Z1),p=dec(t,o.t0,o.t0+0.4);o.pad.setAttribute('d',padPath(c,o.x,o.y,Z1,PR));o.pad.setAttribute('opacity',f3(P(t,o.t0-0.2,o.t0)));
     o.g.setAttribute('transform',`translate(${f1(q.x)} ${f1(q.y)}) scale(${f3(q.s*ICS)}) scale(1 ${f3(0.2+0.8*p)})`);o.g.setAttribute('opacity',f3(P(t,o.t0,o.t0+0.15)));
-    const lq=pj(c,o.x,o.y,Z1+o.h*ICS+80);place(o.lb,lq.x,lq.y-12*q.s*1.6,q.s*1.6,onT1?dec(t,o.t0+0.15,o.t0+0.5):0);});
+    const lq=pj(c,o.x,o.y,Z1+o.h*ICS+80);place(o.lb,lq.x,lq.y-12*q.s*1.6,q.s*1.6,onT1?(o.k==='prod'?1:lb1)*dec(t,o.t0+0.15,o.t0+0.5):0);});
   const t1=pj(c,720,-40,Z1-TH);place(TL1,t1.x,t1.y+30*t1.s*1.7,t1.s*1.7,dec(t,B(17),B(17)+0.5));
   { const nt=OK.note, q=pj(c,-300,1000,Z1+120), a=pj(c,nt.x+40,nt.y,Z1+160), pc=(onT1?1:0)*dec(t,B(19.75),B(19.75)+0.5)*(1-P(t,B(23.5),B(24.25)));
     place(CARD,q.x,q.y,q.s*1.45,pc);
     CARDL.setAttribute('points',pts([[a.x,a.y],[q.x-160*q.s*1.45,q.y+50*q.s*1.45]]));CARDL.setAttribute('opacity',f3(pc)); }
   CB.forEach(cb=>drawCable(c,cb,t));
   const onT2=seesTop(c,Z2);
-  TIER2.forEach((p,i)=>{drawPlate(c,P2[i],p,Z2);
-    const m=40, q=[pj(c,p.x0+m,p.y1-m,Z2),pj(c,p.x1-m,p.y1-m,Z2),pj(c,p.x1-m,p.y0+m,Z2),pj(c,p.x0+m,p.y0+m,Z2)];
-    const ps=onT2?dec(t,p.t0,p.t0+0.5):0;p.img.style.display=ps>0.002?'':'none';if(ps>0.002){p.img.style.transform=homog(q);p.img.style.opacity=f3(ps);}
-    const lq=pj(c,(p.x0+p.x1)/2,p.y1+30,Z2);place(p.lbl,lq.x,lq.y-26*lq.s*1.7,lq.s*1.7,onT2?dec(t,p.t0,p.t0+0.5):0);});
-  const pa=P(t,T_A0,T_A1), pr=OK.prod, A0=pj(c,pr.x,pr.y,Z1+150), D=TIER2[1], A1=pj(c,(D.x0+D.x1)/2+120,D.y0,Z2-TH-60);
-  if(t>=T_A0&&t<K_END){const e=ez.sin(pa),n=24;let d='';for(let k=0;k<=n;k++){const u=e*k/n,x=lerp(A0.x,A1.x,u*u*(3-2*u)),y=lerp(A0.y,A1.y,u);d+=(k?'L':'M')+f1(x)+' '+f1(y);}
-    [ACTG,ACTL].forEach(el=>{el.setAttribute('d',d);el.style.display='';el.setAttribute('opacity',f3(1-P(t,T_TO+0.6,T_TO+1.4)));});
-    const x=lerp(A0.x,A1.x,e*e*(3-2*e)),y=lerp(A0.y,A1.y,e);place(ACT,x,y,Math.max(0.55,A0.s*1.6),dec(t,T_A0,T_A0+0.25)*(1-P(t,T_TO,T_TO+0.3)));}
+  const SL=TIER2.map((p,i)=>{const F2=drawPlate(c,P2[i],p,Z2);p.rw.style.clipPath=F2.length>2?`polygon(${F2.map(q=>f1(q.x)+'px '+f1(q.y)+'px').join(',')})`:'none';
+    return drawSlab(c,p,t,onT2);});
+  TIER2.map((p,i)=>({p,s:SL[i]})).filter(o=>o.s).sort((a,b)=>b.s.depth-a.s.depth).forEach((o,k)=>o.p.box.style.zIndex=String(k+1));   // the far slab first
+  TIER2.forEach((p,i)=>{const s=SL[i];if(!s){place(p.lbl,0,0,1,0);return;}
+    const P=L3(s.F,0,SH+64,ST), lq=pj(c,P[0],P[1],P[2]);place(p.lbl,lq.x,lq.y,lq.s*1.45,dec(t,p.t0+0.3,p.t0+0.8));});
+  const pa=P(t,T_A0,T_A1), pr=OK.prod, A0=pj(c,pr.x,pr.y,Z1+150), D=TIER2[1];
+  if(t>=T_A0&&t<K_END&&SL[1]){const r=DONE, E3=L3(SL[1].F,SXl(r[0]+r[2]/2),SYl(r[1]+r[3]/2),ST+2), A1=pj(c,E3[0],E3[1],E3[2]);
+    const e=ez.sin(pa),n=24;let d='';for(let k=0;k<=n;k++){const u=e*k/n,x=lerp(A0.x,A1.x,u*u*(3-2*u)),y=lerp(A0.y,A1.y,u);d+=(k?'L':'M')+f1(x)+' '+f1(y);}
+    [ACTG,ACTL].forEach(el=>{el.setAttribute('d',d);el.style.display='';el.setAttribute('opacity',f3(1-P(t,T_TO+0.3,T_TO+1.1)));});
+    const x=lerp(A0.x,A1.x,e*e*(3-2*e)),y=lerp(A0.y,A1.y,e);place(ACT,x,y,Math.max(0.6,A0.s*1.6),dec(t,T_A0,T_A0+0.25)*(1-P(t,T_TO,T_TO+0.3)));}
   else{ACTG.style.display=ACTL.style.display=ACT.style.display='none';}
-  const tp=pj(c,(D.x0+D.x1)/2,230,Z2+90);place(TOAST,tp.x,tp.y,Math.max(0.5,tp.s*1.7),dec(t,T_TO,T_TO+0.35));
 });
 
 /* the lines of the drawing's shots (the 48 s film's type) */

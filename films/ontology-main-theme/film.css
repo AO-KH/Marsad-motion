@@ -42,15 +42,16 @@
 .om-card .pl.cat{background:#F1E9FA;color:#5909B4;}
 .om-card .pl.src{background:#F3F3F3;color:#52505A;border:1px solid #E5E4E9;}
 
-/* the app's pages on the top tier: a glowing rim */
-.om-scr{transform-origin:0 0;display:block;box-shadow:0 0 0 3px rgba(255,190,248,0.9),0 0 40px 8px rgba(206,64,240,0.5),0 0 110px 20px rgba(122,40,220,0.32);}
+/* the app's pages on the top tier, standing as glass slabs: the page (its own size, mapped onto the slab's face), the parts
+   that float out of it, and its reflection on the plate */
+.om-iso{isolation:isolate;}
+.om-scr3,.om-refl{transform-origin:0 0;display:block;width:1896px;height:1060px;}
+.om-refl{-webkit-mask-image:linear-gradient(to top,#000 0%,rgba(0,0,0,0) 48%);mask-image:linear-gradient(to top,#000 0%,rgba(0,0,0,0) 48%);}
+.om-part{transform-origin:0 0;background-repeat:no-repeat;background-size:1896px 1060px;}
 .om-act{display:flex;align-items:center;gap:10px;height:50px;padding:0 22px;border-radius:25px;direction:rtl;
   background:linear-gradient(90deg,#5F0DB4,#8E32C3 52%,#BC59D1);font:600 23px 'PlexAR';color:#fff;
   box-shadow:0 0 0 1.5px rgba(255,200,250,0.6),0 0 30px rgba(222,13,255,0.55);}
 .om-act .en{font:500 18px 'Inter';color:rgba(255,255,255,0.8);direction:ltr;}
-.om-toast{display:flex;align-items:center;gap:12px;padding:14px 22px;border-radius:16px;background:linear-gradient(160deg,#F1FAF5,#E2F4E9);
-  border:2px solid #A6DCBF;direction:rtl;font:700 24px 'PlexAR';color:#0B8447;box-shadow:0 0 34px rgba(60,220,140,0.45);}
-.om-toast .en{font:500 15px 'JBMono';letter-spacing:0.12em;color:#3E9A6C;direction:ltr;}
 
 /* the end (the 48 s film's): the URL in a glowing capsule, the mark, "Book your demo" */
 .jcap{position:absolute;left:0;top:0;border-radius:999px;background:#07050F;display:flex;align-items:center;justify-content:center;

@@ -222,9 +222,21 @@ The client chose the 48 s film's look (`films/style-jupiter`) as Marsad's main t
   - The icons use dark violet faces, light lavender lines and violet and pink accents. The same set glows in the opening's rings, with one `drop-shadow` on the whole layer.
   - Cables and links are glowing lavender dashes, each with a light running along it now and then (a point on the cubic, never on the beat).
   - Labels are the 48 s film's chips: dark violet, a glowing edge, JBMono or IBM Plex Sans Arabic.
-  - Real app parts (the WhatsApp note as the search shows it, the pages, the toast) stay white and get glowing rims.
+  - Real app parts (the WhatsApp note as the search shows it, the pages) stay white and get glowing rims. The pages now stand as glass slabs (next section).
   - Under the whole stack there is a horizon lens.
 - **The end:** the 48 s film's capsule, with its steps compressed to fit a 30 s film: the bloom on the hit, the shrink 2.75 beats later, then the mark, the line and the footer. "Book your demo" is still on screen for the last 2.3 s or more.
+
+## App pages in 3D: standing glass slabs (the ontology film's top tier)
+
+The client looked at the pages lying flat on the top tier and asked to "make this 3d". `films/ontology-main-theme` now stands them up. The recipe works for any page shown inside a perspective drawing:
+- **A real camera.** `camOf(target, distance, yaw, pitch)` and `pj` turn the camera round the target (yaw) as well as pitching it; `CAMK` keys carry both (defaults 0° and 36°). The act shot circles from −8° to +7°, pitches 25°→23° and pushes in (2150→1820). Everything drawn with `pj` stays true, and back-face culling needs the camera's position, which `camOf` returns.
+- **A slab is a box on a hinge.** Its back-bottom edge is the hinge on the plate; `e` runs from 0 (the page lying on the plate, as before) to 1 (standing, leaning back 12°, turned by `ang` to face the middle, the side ones sliding in to `hx`). Local coordinates are a (across), b (up the page) and c (out of it). Draw only the faces turned to the camera (a convex box needs no other sorting): a dark front bezel with a bright rim over a wide soft glow stroke, a lighter top, darker sides. The three slabs stand in an arc (±22°), so the side ones face the middle and the labels stay in frame.
+- **The page on the face.** Map the screenshot at its own size (1896×1060 CSS px) onto the face's inner quad with `homog(q, w, h)` (a `matrix3d` homography). A natural-size element scaled down stays sharp.
+- **Parts float out.** Each part is a `div` whose background is the same screenshot (`background-size: 1896px 1060px`, `background-position: -x -y`), mapped onto a quad parallel to the face and moved out along its normal (60–135 units), staggered after the slab stands. In the page underneath, blank the part's slot with the page's own colour (`pages/*_base.png`, including the part's shadow): flush, the part covers its slot exactly; lifted, it leaves an empty slot and the parallax shows the depth. Without the blanking you get a ghost of every part. Give lifted parts a rim and a soft shadow that grow with the lift.
+- **The payoff lifts furthest.** Decisions' real "Action executed · PO-2291" card replaces the invented toast: on the action it lifts 190 units, grows 10% and glows green. It settles back during the pull-back so the stack reads clean.
+- **A reflection** of each page lies on the plate: the same image mapped onto the quad mirrored in the plate's plane (`z → 2·Z2 − z`), masked to fade away from the hinge, clipped to the plate's top (`clip-path` in screen pixels on a wrapper), at about 24% opacity.
+- **Layering.** Each slab is its own container (svg faces, page, parts), sorted by depth each frame and isolated (`isolation: isolate`) so their z-indexes cannot rise over the labels. Plates also draw the side edge the camera sees.
+- **Keep the frame clean.** With the camera lower and closer, the ontology's names fall to the frame's foot and get cut: fade them out under the pages and back in for the pull-back (keep the one the action starts from).
 
 ## Its sound
 

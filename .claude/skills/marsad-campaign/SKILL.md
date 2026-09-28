@@ -49,6 +49,7 @@ Each rule comes from the client, in their own words, or from a delivered film. A
   - The theme: near-black (`#06050E`) with drifting dust; lenses with dark bodies and rims running indigo, violet, magenta and pink; white Inter (medium) type whose words blur in, with grey and gradient words and the Arabic in IBM Plex Sans Arabic under it; the app's parts with glowing rims; chips in dark violet with glowing edges; the glowing capsule end.
   - `films/ontology-main-theme` is the worked example. `references/launch-style.md` says how a film in another style is ported to it.
   - The light app look above still holds for the app's own pages, which keep their own styling inside the dark frame.
+  - **Pages in 3D, not lying flat.** Shown app pages lying flat on the ontology film's top tier, the client asked to "make this 3d". Stand pages up as glass slabs (bezel, thickness, a reflection), let their real parts float out of them, and circle the camera so the depth shows (`references/launch-style.md`, "App pages in 3D").
 - **Famous sources, ending connected.** "get only the famous ones": SAP, Salesforce, Oracle, Excel, Shopify, QuickBooks, PDF and CSV (`K.TILES`). "the scattered data should be … connected to marsad at the end".
 - **A big, living logo.** "make marsad logo bigger". "when the logo appear the transition look static".
   - Build the reveal on the beats: sources absorbed one per 16th, the mark easing in, a soft punch.
