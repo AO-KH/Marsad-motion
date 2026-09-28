@@ -10,7 +10,7 @@ This skill is the standard way to make a Marsad campaign film: a 30–90 s brand
 - **What to take from the 63 s film:** the shape of the story, the beat-grid discipline and the look.
 - **What not to take:** its motion. It predates the client's later corrections, so motion follows the 54 s film (v4, `film54_src/`) and CLAUDE.md: calm, and no shaking.
 - **How new films are built:** on the demo engine (`engine/engine.js`) plus a small film kit (`films/kit/`). That gives them real app pages, motion blur, review stills, the edge checker, QA, and a voiceover-and-effects mix.
-- **The worked example:** `films/brand-together-30/`, a 30 s film made with this skill. Copy it to start a new film.
+- **The worked examples:** `films/brand-together-30/`, a 30 s film with a voiceover, and `films/coffee-story-45/`, a 45 s film with captions only that tells one product's story in film-space object cards and one real app page. Copy the closer one to start a new film.
 
 Read these as you reach them:
 - `references/film-anatomy.md`: the 63 s film scene by scene, what to keep and what not to copy, the calm 54 s variant, and beat maps for 30, 45 and 60 s films. Read it before storyboarding.
@@ -74,6 +74,8 @@ Each rule comes from the client, in their own words, or from a delivered film. A
   - Use real states and the app's exact UI text. Sample data is fictional but plausible.
   - Show no names, workspace names or badges from real accounts, and no future features.
   - Never say "unhackable", "blockchain" or "certified".
+  - Take product claims from the client's own documentation. The Marsad User Manual v1.0 (March 2026), which the client gave as "what you need to know about marsad", covers objects, links, governed actions and approvals, notifications, and the audit trail kept for 7 years. It isn't in the repo, so ask the client for it when it isn't at hand. Its screenshots show an older UI: show the site kit's pages instead.
+  - A concept the site kit has no page for (an object's links, its history) can be drawn in film space, in the app's card style, with the manual's names. Call it a rendering, not a screen, when you deliver.
   - List everything you invented in the delivery message, so the client can confirm it before the film is used.
 - **Final renders have motion blur, and QA passes.** `build_demo.sh` does both. A `SUB=1` draft is never delivered.
 

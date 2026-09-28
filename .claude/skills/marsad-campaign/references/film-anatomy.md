@@ -101,6 +101,18 @@ In every map, the app window leaves about a beat before the end card (`M.app({ou
 
 The 4-beat reveal needs its hold. When the window came in on k14, the connected hub was cut short and the mark crossed the page title. Give the turn 8 beats (k8–16).
 
+**A 45 s example, `films/coffee-story-45/`** (captions only). Stylish from song beat k20: the film's phrases start on k4, k20 and k36. The downbeat of k20 drops out (a breath), k35 is a one-beat stop, k52–58 is the breakdown, and k61 is the drop.
+
+| Beats | Scene |
+|---|---|
+| k0–8 | **Hook.** One product's object card, alone; its stock fills in. |
+| k8–20 | **Links.** Four linked objects, one per beat from k8, each after its link grows from the side already on screen; data points travel the links. |
+| k20–35 | **Tension.** On the breath (k20) the links clear and orders flow into the card during a slow push in; the last, big one takes the stock below its limit on k28 (a 1.2% punch); the alert goes out on k30–31. |
+| k35–36 | **The stop.** The scene clears in the one-beat stop, and one small carrier (the in-app alert) crosses the empty stage into the window's bell. |
+| k36–51 | **Proof in the app.** The window rises on k36 on Decisions; the recommendation, dimmed around, a callout; one click on k48; the window leaves on k51. |
+| k52–60 | **Trust, in the breakdown.** The object's card comes back with its history. |
+| k61–71 | **End card on the drop.** |
+
 ## Open questions the client hasn't settled
 
 Say which way you went when you deliver:

@@ -181,7 +181,7 @@ right).
   view and the window's entrance: fly a scene element onto the app (the mark into the window's logo).
 - The film kit (`films/kit/`, included automatically for `films/`): `K.TILES` and `K.tile(n)` (the eight famous
   sources as glass tiles, class `k-tile m-glass`), `K.mark(w)` (the Marsad mark), `K.glow(w)` (its glow for a
-  reveal), and the `k-say` statement style. `films/brand-together-30/` is a worked example.
+  reveal), and the `k-say` statement style. `films/brand-together-30/` and `films/coffee-story-45/` are worked examples.
 Everything must be a pure function of `t` (no timers, no randomness except the seeded `mulberry`). Motion blur
 renders sub-frames around each frame. Anything that changes in steps (a number, typed text, a label swap) must use
 the frame's time `Math.round(t*30)/30`, or it ghosts; `count`, `text`, `type` and `toggle` already do.

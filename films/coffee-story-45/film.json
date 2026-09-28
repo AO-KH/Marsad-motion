@@ -1,0 +1,22 @@
+{
+  "title": "Marsad — The story of one coffee (45 s brand ad)",
+  "duration": 45.3,
+  "formats": ["16x9"],
+  "music": {"file": "fit/stylish.mp3", "bpm": 93.99, "downbeat": 0.041, "start": 12.808, "fade_in": 0.3, "fade_out": 2.5},
+  "sfx": [
+    {"type": "pop", "beats": [8, 9, 10, 11], "gain": -5},
+    {"type": "tick", "beats": [22, 23, 23.75, 24.5, 25, 25.5, 26], "gain": -7},
+    {"type": "thump", "beat": 28, "gain": -2},
+    {"type": "ping", "beat": 28.25, "gain": -3},
+    {"type": "blip", "beats": [30, 30.5, 31], "gain": -6},
+    {"type": "whoosh", "beat": 36, "gain": -2},
+    {"type": "pop", "beat": 37, "gain": -7},
+    {"type": "click", "beat": 48},
+    {"type": "chime", "beat": 48.25},
+    {"type": "tick", "beat": 49, "gain": -6},
+    {"type": "swell", "beat": 52, "gain": -4},
+    {"type": "blip", "beat": 55.5, "gain": -7},
+    {"type": "riser", "beat": 61},
+    {"type": "bloom", "beat": 61}
+  ]
+}

@@ -1,0 +1,72 @@
+/* films/coffee-story-45: the coffee's object card, its links, the order stream, the alert, the notification chips and the
+   history card. Film-space renderings of the manual's concepts in the app's own card style (white card, soft border,
+   purple glow); glass is for the icon tiles only. */
+.cs-card,.cs-hist,.cs-node{position:absolute;left:0;top:0;background:#fff;border:1.5px solid #E5E4E9;border-radius:26px;
+  box-shadow:0 30px 60px rgba(60,30,120,0.13),0 0 60px rgba(142,50,195,0.15);transform-origin:50% 50%;direction:rtl;}
+.cs-card>*,.cs-hist>*,.cs-node>*{position:absolute;}
+/* glass icon tiles */
+.cs-card .gi,.cs-hist .gi{right:28px;top:28px;width:80px;height:80px;border-radius:24px;display:flex;align-items:center;justify-content:center;}
+.cs-node .gi{right:16px;top:16px;width:64px;height:64px;border-radius:19px;display:flex;align-items:center;justify-content:center;}
+.cs-card .gi .ic,.cs-hist .gi .ic,.cs-node .gi .ic{position:relative;z-index:1;}
+/* the coffee's card */
+.cs-card .nm,.cs-hist .nm{right:128px;top:22px;font:700 30px/1.4 'PlexAR';color:var(--ink);white-space:nowrap;}
+.cs-card .en,.cs-hist .en{right:128px;top:68px;font:500 18px/1.2 'Inter';color:var(--meta);white-space:nowrap;direction:ltr;}
+.cs-card .pl,.cs-hist .pl{right:128px;top:100px;display:flex;gap:10px;direction:rtl;}
+.cs-card .al{left:24px;top:-19px;}   /* a badge on the card's top edge, clear of the name */
+.cs-card .dv,.cs-hist .dv{left:28px;right:28px;top:156px;height:1.5px;background:#EEEDF2;}
+.cs-card .sr{right:28px;top:170px;display:flex;align-items:baseline;gap:14px;direction:rtl;}
+.cs-card .sr .lb{font:500 21px 'PlexAR';color:var(--body);}
+.cs-card .sr .n{font:700 44px/1.1 'Inter';letter-spacing:-0.02em;color:var(--ink);direction:ltr;}
+.cs-card .lm{left:28px;top:186px;font:500 19px 'PlexAR';color:var(--meta);white-space:nowrap;}
+.cs-card .lm b{font:700 21px 'Inter';color:var(--body);}
+.cs-card .bar{left:28px;right:28px;top:236px;height:14px;border-radius:7px;background:#F1EEF6;overflow:hidden;}
+.cs-card .bar i{position:absolute;right:0;top:0;height:100%;border-radius:7px;}
+.cs-card .bar .fl{background:linear-gradient(270deg,#5F0DB4,#8E32C3 55%,#BC59D1);}
+.cs-card .bar .fr{background:linear-gradient(270deg,#A8131C,#E0484F);opacity:0;}
+.cs-card .mk{left:0;top:227px;width:3px;height:32px;border-radius:2px;background:#52505A;}
+.cs-card .dl{top:178px;font:700 26px 'Inter';color:#A8131C;direction:ltr;opacity:0;white-space:nowrap;}
+/* the linked objects */
+.cs-node{width:350px;height:96px;border-radius:22px;}
+.cs-node .nt{right:96px;top:14px;font:700 22px/1.45 'PlexAR';color:var(--ink);white-space:nowrap;}
+.cs-node .ne{right:96px;top:54px;font:500 15px/1.2 'Inter';color:var(--meta);white-space:nowrap;letter-spacing:0.02em;}
+.cs-ghost{position:absolute;left:0;top:0;width:350px;height:96px;border-radius:22px;background:#fff;border:1.5px solid #E5E4E9;
+  box-shadow:0 14px 30px rgba(60,30,120,0.08);}
+.cs-lines{position:absolute;left:0;top:0;overflow:visible;}
+.cs-lines line{filter:drop-shadow(0 0 4px rgba(188,89,209,0.45));}
+.cs-dots{filter:drop-shadow(0 0 6px rgba(188,89,209,0.95));}
+.cs-lbl{position:absolute;left:0;top:0;display:inline-flex;align-items:center;gap:7px;height:32px;padding:0 13px;border-radius:16px;
+  background:#fff;border:1.5px solid #E2D2F5;white-space:nowrap;box-shadow:0 6px 16px rgba(60,30,120,0.08);direction:rtl;}
+.cs-lbl .a{font:600 16px 'PlexAR';color:#6011B5;}
+.cs-lbl .s{font:500 13px 'Inter';color:#B7A6CF;}
+.cs-lbl .e{font:500 14px 'Inter';color:var(--meta);direction:ltr;}
+/* the order stream */
+.cs-chip{position:absolute;left:0;top:0;height:46px;display:inline-flex;align-items:center;gap:10px;padding:0 16px 0 12px;border-radius:23px;
+  background:#fff;border:1.5px solid #E2D2F5;box-shadow:0 10px 24px rgba(60,30,120,0.12),0 0 24px rgba(142,50,195,0.14);direction:ltr;white-space:nowrap;}
+.cs-chip .id{font:600 16px 'JBMono';color:var(--ink);letter-spacing:0.02em;}
+.cs-chip .q{font:700 17px 'Inter';color:#A8131C;}
+/* the alert going out */
+.cs-note{position:absolute;left:0;top:0;height:54px;display:inline-flex;align-items:center;gap:10px;padding:0 20px 0 16px;border-radius:27px;
+  background:#fff;border:1.5px solid #E5E4E9;box-shadow:0 12px 28px rgba(60,30,120,0.12),0 0 30px rgba(142,50,195,0.14);direction:rtl;white-space:nowrap;}
+.cs-note span{font:600 18px 'PlexAR';color:var(--ink);}
+/* the history card */
+.cs-hist{width:720px;height:560px;}
+.cs-hist .ht{right:28px;top:176px;display:flex;align-items:center;gap:10px;direction:rtl;}
+.cs-hist .ht span{font:700 23px 'PlexAR';color:#6011B5;}
+.cs-hist .ht em{font:500 15px 'Inter';font-style:normal;color:var(--meta);letter-spacing:0.02em;}
+.cs-hist .rows{left:28px;right:28px;top:222px;}
+.cs-hist .row{position:relative;height:64px;border-top:1.5px solid #F0EFF4;display:flex;align-items:center;gap:18px;direction:rtl;}
+.cs-hist .row:first-child{border-top:none;}
+.cs-hist .who{width:196px;display:flex;align-items:center;gap:10px;flex:none;}
+.cs-hist .who span:last-child{font:500 17px 'PlexAR';color:var(--body);white-space:nowrap;}
+.cs-hist .av{width:34px;height:34px;border-radius:11px;display:flex;align-items:center;justify-content:center;flex:none;}
+.cs-hist .av.od{background:#F4EEF3;color:#714B67;font:700 10.5px 'Inter';letter-spacing:0.01em;}
+.cs-hist .av.mk{background:#F1E9FA;}
+.cs-hist .av.mk img{width:22px;display:block;}
+.cs-hist .av.us{background:#F1E9FA;}
+.cs-hist .wt{flex:1;font:600 20px 'PlexAR';color:var(--ink);white-space:nowrap;}
+.cs-hist .tm{font:500 16px 'JBMono';color:var(--meta);letter-spacing:0.04em;direction:ltr;}
+.cs-hist .lock{left:28px;bottom:24px;display:inline-flex;align-items:center;gap:9px;height:40px;padding:0 16px;border-radius:20px;
+  background:#F4F3F7;border:1px solid #E5E4E9;direction:rtl;}
+.cs-hist .lock span{font:600 16px 'PlexAR';color:var(--body);white-space:nowrap;}
+/* the in-app alert that flies into the window's bell */
+.cs-fly{position:absolute;left:0;top:0;transform-origin:50% 50%;}
