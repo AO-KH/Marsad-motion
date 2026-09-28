@@ -64,6 +64,50 @@ Copy the helpers (`kt`, `gwrap`, `T3`, the mesh stage) from the newer one: its `
 - **The problem looks dull:** the waiting chat has a grey edge (`gwrap(..., 'dull')`) and no glow. Only Marsad's parts glow.
 - **Pitch away:** the graph group tilts back (`rotateX` 58°) and rises out of frame as the next part rises in.
 
+## Two other reference grammars: the style samples
+
+The client asked to see the film in the styles of two more references, Lovable (`02_Lovable.mp4`) and Jupiter Exchange
+(`03_JupiterExchange.mp4`). `films/style-lovable` and `films/style-jupiter` are about 28 s each. They tell the 63 s
+film's story on one "Movement" cut, `edit` `[[24, 58], [134, 146]]`: the groove starts on k8, the two-beat silence is
+k36–37, and the hit is k38. Build a new style as a sample of this kind before applying it to a full film.
+
+**Both styles:** they cut hard, a shot per 2–6 beats.
+- List the cut times in `window.CUTS`, so `render_mb.js` keeps every frame's blur samples on one side of a cut.
+- Switch each shot with `t >= cut`.
+
+**Lovable:**
+- **Stage:** a half-size canvas, scaled up by CSS. Big radial blobs on black: blue `#2F5BFF`, violet, the Marsad magenta `#DE0DFF`, pink, orange.
+  - A black linear fade covers part of it. Each shot sets the fade's direction: diagonal for logos and type, from the top for the card.
+  - The UI close-ups sit on pale lavender instead.
+- **The prompt card:** dark, 1500 × 840, radius 72.
+  - The question types at 108 px bold, about 20 characters a second.
+  - The newest word is in a gradient. Split it only at spaces, so the Arabic letters keep joining.
+  - The English follows in grey. Below it: a "+", a source chip and a white send button.
+- **The hand:** a white cartoon hand (SVG); its fingertip is the hotspot.
+  - A press scales it to 0.9, with a pink radial glow at the tap.
+  - Push the camera in *before* the click. A fast zoom after it strobes with 4 blur samples.
+- **UI close-ups:** real site-kit parts, big. The Decisions statuses as a list, like the reference's Inbox and Priority list (the middle row is a white pill with a gradient edge). The Decisions card at ×1.25–1.6.
+- **Type shots:** 170 px bold white words on the gradient; cut out hard.
+- **The collage:** the ten `site_pages/*.png` fly in from z +1000 into a cluster. They sit in a `preserve-3d` group that turns slowly.
+- **The logo:** in white (`filter: brightness(0) invert(1)` on the mark). Small in the music's silence, big on the hit, then the URL and "Book your demo".
+
+**Jupiter:**
+- **Lenses:** painted on the canvas with a two-circle radial gradient. The inner point sits off-centre, so the rim is widest on the side facing away from it.
+  - The body is dark, then indigo, violet, magenta, and pink-white at the edge (Jupiter's own lenses run navy, teal, lime).
+  - An outer glow ring surrounds each lens; the drawing order makes the overlaps.
+- **Lens variants:**
+  - **Horizon:** a huge lens below the frame.
+  - **Hero:** a lens larger than the frame.
+  - **Dome:** a lens above a carousel on a wide arc (centre 960, −1300; radius 2250); each tile is rotated by θ − 90°.
+  - **Bright lens:** a cream body with dark type.
+  - **Rings:** transparent bodies, blended with `screen`.
+  - **Two joined lenses:** draw both, then both bodies again at 0.9 r over the inner rims, so only the outline glows.
+  - **Capsule:** the joined lenses squash into a CSS capsule, whose glowing rim is made of inset box-shadows.
+- **Type:** Inter 500, white, with grey (`.dim`) and gradient (`.g`) words. Words blur in where they will stand.
+- **The hero:** a small word above left, the big word, and the Arabic below right. Two grey copies trail the big word's slide and stay as a slight extrude.
+- **UI shots:** a real page in perspective with a glowing rim (box-shadow), pulling back and tilting up.
+  - The Decisions card lies flat by the time the plain arrow cursor clicks, so the click point is exact.
+
 ## Its sound
 
 - The music is HoliznaCC0 "Movement" (CC0), as in `coffee-launch`. The client tried "Oxforf by Night" (v2) and went back to it.

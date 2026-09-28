@@ -1,0 +1,16 @@
+{
+  "title": "Marsad — style sample: Lovable",
+  "duration": 28.55,
+  "formats": ["16x9"],
+  "music": {"file": "fit/holizna-movement.mp3", "bpm": 96.67, "downbeat": 0.218, "edit": [[24, 58], [134, 146]], "fade_out": 2.4, "true_peak": -3},
+  "sfx": [
+    {"file": "fit/sfx/glass-swipe.wav", "beat": 3.5, "gain": -10},
+    {"file": "fit/sfx/cinematic-start.wav", "beat": 8, "gain": -2},
+    {"file": "fit/sfx/glass-swipe.wav", "beat": 14, "gain": -8},
+    {"file": "fit/sfx/cinematic-swipe.wav", "beat": 20, "gain": -8},
+    {"file": "fit/sfx/glass-swipe.wav", "beat": 22, "gain": -10},
+    {"file": "fit/sfx/cinematic-swipe.wav", "beat": 28, "gain": -6},
+    {"file": "fit/sfx/glass-swipe.wav", "beat": 31.5, "gain": -10},
+    {"file": "fit/sfx/cinematic-wake.wav", "beat": 38, "gain": -1}
+  ]
+}
