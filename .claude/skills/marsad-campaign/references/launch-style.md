@@ -67,11 +67,17 @@ Copy the helpers (`kt`, `gwrap`, `T3`, the mesh stage) from the newer one: its `
 ## Two other reference grammars: the style samples
 
 The client asked to see the film in the styles of two more references, Lovable (`02_Lovable.mp4`) and Jupiter Exchange
-(`03_JupiterExchange.mp4`). `films/style-lovable` and `films/style-jupiter` are about 28 s each. They tell the 63 s
-film's story on one "Movement" cut, `edit` `[[24, 58], [134, 146]]`: the groove starts on k8, the two-beat silence is
-k36–37, and the hit is k38. Build a new style as a sample of this kind before applying it to a full film.
+(`03_JupiterExchange.mp4`). `films/style-lovable` (28.6 s) tells the 63 s film's story on a short "Movement" cut,
+`edit` `[[24, 58], [134, 146]]`: the groove starts on k8, the two-beat silence is k36–37, and the hit is k38. Build a new
+style as a sample of this kind before applying it to a full film.
 
-**Both styles:** they cut hard, a shot per 2–6 beats.
+The client then asked for the Jupiter one **slower and with more detail**. `films/style-jupiter` v2 is 53.4 s:
+- It uses film63-launch's cut without song beats 80–95, `edit` `[[16, 80], [128, 150]]`: the groove starts on k16, the silence is k72–73, the hit is k74.
+- Scenes run 4–10 beats, not 2, and follow the 63 s film's scenes and lines.
+- Every frame carries more: dust on the dark, the sources and real file names adrift, the waiting chat, the tiles flying into the mark, a lens bursting out of it with orbits, the Knowledge Map turning inside the dome, a real recommendation, the Decisions counters, six defence rings with their layers, the Assistant answering.
+- Read this as the client's taste: calmer shots with more to look at, not faster cuts.
+
+**Both styles:** they cut hard, a shot per 2–6 beats in the short samples.
 - List the cut times in `window.CUTS`, so `render_mb.js` keeps every frame's blur samples on one side of a cut.
 - Switch each shot with `t >= cut`.
 
@@ -107,6 +113,12 @@ k36–37, and the hit is k38. Build a new style as a sample of this kind before 
 - **The hero:** a small word above left, the big word, and the Arabic below right. Two grey copies trail the big word's slide and stay as a slight extrude.
 - **UI shots:** a real page in perspective with a glowing rim (box-shadow), pulling back and tilting up.
   - The Decisions card lies flat by the time the plain arrow cursor clicks, so the click point is exact.
+- **Added in v2:**
+  - **The old way is grey:** the lens palette mixes stop by stop into a grey one (`mixPal`) while the waiting chat is on.
+  - **The turn:** on the hit a lens bursts out of the mark (its radius 40 → 1010 px, ease-out) and covers the grey ones. Two thin orbits, each with a running light, circle it.
+  - **Dust:** 170 fine specks drift up and twinkle at 0.1–0.3 Hz (never on the beat).
+  - **The model:** the carousel's tiles rise into the dome; the Knowledge Map's nodes turn on a projected ellipse around the mark, with lights running along the links.
+  - **Defence rings:** canvas strokes with `shadowBlur` (two of them dashed and turning), with a light sweeping the outer ring and faint ring rows below.
 
 ## Its sound
 

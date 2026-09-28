@@ -1,60 +1,128 @@
-/* films/style-jupiter: a style sample of the Marsad film in the grammar of Jupiter Exchange's launch video
-   (ref 03_JupiterExchange.mp4): near-black, big glowing lenses (dark bodies, bright rims; here in Marsad's violet and
-   magenta), medium-weight white type with grey and gradient words, fast cuts, the app's UI in perspective, a curved
-   carousel under a glowing dome, ring patterns, two lenses joined, a glowing URL capsule, the mark. */
+/* films/style-jupiter (v2): the Marsad film in the grammar of Jupiter Exchange's launch video (ref 03_JupiterExchange.mp4),
+   at a slower pace and with more in each frame: near-black with drifting dust; big glowing lenses (dark bodies, bright
+   rims; here in Marsad's violet and magenta); medium-weight white type with grey and gradient words; the app's parts in
+   perspective with glowing rims; a carousel under a glowing dome; rings; two lenses joining; a glowing URL capsule. */
 #bg{visibility:hidden;}
 .jp-stage{position:absolute;left:0;top:0;width:1920px;height:1080px;overflow:hidden;background:#06050E;}
 .jp-stage canvas{position:absolute;left:0;top:0;}
 .jp-shot{position:absolute;left:0;top:0;width:1920px;height:1080px;transform-origin:0 0;}
-.jp-3d{position:absolute;left:0;top:0;width:1920px;height:1080px;perspective:1500px;perspective-origin:50% 42%;}
+.jp-3d{position:absolute;left:0;top:0;width:1920px;height:1080px;perspective:1600px;perspective-origin:50% 45%;}
 .jp-3d>*{position:absolute;left:0;top:0;transform-origin:50% 50%;}
+.jp-svg{position:absolute;left:0;top:0;overflow:visible;}
 
 /* type: medium weight, white; grey words (.dim) and gradient words (.g); the Arabic line under it */
 .jt{position:absolute;left:0;width:1920px;text-align:center;pointer-events:none;}
-.jt .en{font:500 76px/1.12 'Inter';letter-spacing:-0.025em;color:#F4F1FA;white-space:nowrap;}
+.jt .en{font:500 76px/1.14 'Inter';letter-spacing:-0.025em;color:#F4F1FA;white-space:nowrap;}
 .jt .w{display:inline-block;margin:0 0.13em;will-change:transform,filter,opacity;}
 .jt .dim{color:#8C889B;}
 .jt .g{background:linear-gradient(90deg,#DE0DFF,#F29BFF 70%,#FFD9FA);-webkit-background-clip:text;background-clip:text;color:transparent;padding:0 0.04em;}
 .jt .ar{font:500 40px/1.5 'PlexAR';color:rgba(244,241,250,0.72);direction:rtl;white-space:nowrap;margin-top:14px;}
+.jt.left{text-align:left;}
+.jt.left .w{margin:0 0.26em 0 0;}
+.jt.left .ar{text-align:left;}
 .jt.dark .en{color:#17121F;}
 .jt.dark .ar{color:rgba(23,18,31,0.72);}
 
-/* the hero: "Meet" / Marsad (with its grey echo) / «تعرّف على مرصد.» */
+/* k0-16: the sources, and the company's files, adrift */
+.jf{position:absolute;left:0;top:0;display:inline-flex;align-items:center;gap:10px;height:48px;padding:0 20px 0 16px;border-radius:24px;
+  background:rgba(22,13,40,0.78);border:1.5px solid rgba(214,160,255,0.38);box-shadow:0 0 22px rgba(160,60,230,0.22);
+  font:500 20px 'JBMono';color:rgba(240,230,255,0.88);white-space:nowrap;}
+/* k8-16: the waiting team chat: dark, grey, no glow */
+.ch-card{position:absolute;left:0;top:0;background:#15111E;border-radius:28px;box-shadow:0 0 0 1.5px rgba(255,255,255,0.14),0 34px 80px rgba(0,0,0,0.55);}
+.ch-card>*{position:absolute;}
+.ch-card .hd{left:36px;top:30px;display:flex;align-items:center;gap:12px;font:600 17px 'JBMono';letter-spacing:0.12em;color:rgba(255,255,255,0.5);white-space:nowrap;}
+.ch-card .hd i{width:10px;height:10px;border-radius:50%;background:#6E6A77;}
+.ch-card .q{left:36px;top:92px;padding:20px 28px;border-radius:24px 24px 24px 8px;background:#2A2535;color:#F2F0F6;font:500 30px 'Inter';white-space:nowrap;}
+.ch-card .ty{left:36px;top:196px;width:112px;height:58px;border-radius:29px;background:#221E2C;display:flex;align-items:center;justify-content:center;gap:10px;}
+.ch-card .ty i{position:relative;width:11px;height:11px;border-radius:50%;background:#8A8797;}
+.ch-card .wt{left:36px;top:296px;display:flex;align-items:center;gap:12px;font:700 24px 'JBMono';letter-spacing:0.14em;color:#F2A65A;white-space:nowrap;}
+.ch-card .wt b{color:rgba(242,166,90,0.6);font-weight:400;}
+.ch-card .wb{left:36px;right:36px;top:350px;height:10px;border-radius:5px;background:rgba(255,255,255,0.08);overflow:hidden;}
+.ch-card .wb i{position:absolute;left:0;top:0;height:100%;border-radius:5px;background:linear-gradient(90deg,#C77A2E,#F2A65A);}
+
+/* the mark, with its own glow (never a disc behind it) */
+.jmark{position:absolute;left:0;top:0;width:300px;height:229px;}
+.jmark img{position:absolute;left:0;top:0;width:100%;}
+.jmark .m{filter:drop-shadow(0 0 26px rgba(214,70,240,0.75)) drop-shadow(0 0 80px rgba(122,40,220,0.5));}
+.jmark .gl{filter:blur(26px) saturate(1.6);}
+
+/* k16-24: the hero, "Marsad" (with its grey echo) / "changes that." */
 .jh{position:absolute;left:0;top:0;width:1920px;height:1080px;}
-.jh .sm{position:absolute;font:500 76px/1 'Inter';letter-spacing:-0.02em;color:#F4F1FA;white-space:nowrap;}
-.jh .ar{position:absolute;font:600 64px/1.3 'PlexAR';color:#F4F1FA;white-space:nowrap;direction:rtl;}
-.jh .big{position:absolute;left:0;top:0;font:600 300px/1 'Inter';letter-spacing:-0.045em;white-space:nowrap;}
+.jh .sm{position:absolute;font:500 72px/1 'Inter';letter-spacing:-0.02em;color:#F4F1FA;white-space:nowrap;}
+.jh .ar{position:absolute;font:600 48px/1.3 'PlexAR';color:rgba(244,241,250,0.8);white-space:nowrap;direction:rtl;}
+.jh .big{position:absolute;left:0;top:0;font:600 290px/1 'Inter';letter-spacing:-0.045em;white-space:nowrap;}
 .jh .big.e{color:#4E4A5C;}
 .jh .big.m{color:#F7F4FB;}
 
-/* the loop's four steps as pills; the lit one moves along */
-.jpills{position:absolute;left:0;top:0;width:1920px;display:flex;justify-content:center;gap:26px;}
-.jpill{display:inline-flex;align-items:center;gap:18px;height:110px;padding:0 42px;border-radius:55px;white-space:nowrap;
-  color:rgba(244,241,250,0.55);background:rgba(255,255,255,0);}
-.jpill .en{font:500 46px 'Inter';letter-spacing:-0.015em;}
-.jpill .ar{font:500 40px 'PlexAR';}
+/* k24-28: the loop's four steps as pills, joined by a line */
+.jpills{position:absolute;left:0;top:0;width:1920px;display:flex;justify-content:center;gap:64px;}
+.jpill{position:relative;display:inline-flex;align-items:center;gap:18px;height:104px;padding:0 40px;border-radius:52px;white-space:nowrap;
+  color:rgba(244,241,250,0.5);background:#0B0816;box-shadow:inset 0 0 0 1.5px rgba(244,241,250,0.12);}
+.jpill .en{font:500 42px 'Inter';letter-spacing:-0.015em;}
+.jpill .ar{font:500 36px 'PlexAR';}
 .jpill .ic{flex:none;}
-.jpill.on{color:#F7F4FB;background:rgba(222,13,255,0.14);box-shadow:inset 0 0 0 1.5px rgba(242,155,255,0.55),0 0 34px rgba(222,13,255,0.25);}
+.jpill.on{color:#F7F4FB;background:#1D0A33;box-shadow:inset 0 0 0 1.5px rgba(242,155,255,0.6),0 0 38px rgba(222,13,255,0.3);}
+
+/* k28-36: the Knowledge Map's objects and links (the app's own), turning inside the dome */
+.gn{position:absolute;left:0;top:0;display:flex;align-items:center;gap:12px;height:62px;padding:0 24px 0 20px;border-radius:31px;background:#fff;
+  box-shadow:0 14px 30px rgba(0,0,0,0.4),0 0 26px rgba(214,70,240,0.45);direction:rtl;white-space:nowrap;}
+.gn i{width:16px;height:16px;border-radius:50%;flex:none;}
+.gn .ar{font:700 24px 'PlexAR';color:var(--ink);}
+.gn .en{font:500 15px 'Inter';color:var(--meta);direction:ltr;}
+.gl-lb{position:absolute;left:0;top:0;padding:3px 13px 5px;border-radius:13px;background:rgba(20,10,38,0.82);border:1px solid rgba(227,166,255,0.5);
+  color:#F4E6FF;font:500 17px 'PlexAR';white-space:nowrap;direction:rtl;}
 
 /* the app's page in perspective, framed by a glowing rim */
 .jp-ui{position:absolute;left:0;top:0;width:1896px;height:1060px;border-radius:26px;overflow:hidden;background:#fff;
   box-shadow:0 0 0 3px rgba(255,190,248,0.9),0 0 40px 6px rgba(206,64,240,0.55),0 0 120px 20px rgba(122,40,220,0.35);}
 .jp-ui img{display:block;width:100%;height:100%;}
-
-/* the carousel's cards */
-.jp-card{position:absolute;left:0;top:0;}
-
-/* the Decisions card in perspective, with a glowing rim */
-.jp-dec{position:absolute;left:0;top:0;width:1402px;height:214px;background:#fff;border-radius:22px;
+/* a real card with a glowing rim */
+.jp-card{position:absolute;left:0;top:0;background:#fff;border-radius:22px;
   box-shadow:0 0 0 2.5px rgba(255,190,248,0.85),0 0 36px 4px rgba(206,64,240,0.5),0 30px 80px rgba(0,0,0,0.5);}
+.jp-card.soft{box-shadow:0 30px 70px rgba(90,30,150,0.28),0 6px 18px rgba(90,30,150,0.12);}
 .jp-cur{position:absolute;left:0;top:0;width:54px;height:54px;filter:drop-shadow(0 4px 10px rgba(0,0,0,0.5));}
 
-/* «بالعربية», huge; "Ask in Arabic." small */
+/* k52-60: the defence layers */
+.sh-tag{position:absolute;transform:translate(-50%,-50%);font:600 14px 'JBMono';letter-spacing:0.08em;color:#F4D6FF;padding:2px 8px;border-radius:7px;
+  background:rgba(20,10,40,0.72);white-space:nowrap;}
+.sh-row{position:absolute;left:1080px;height:60px;display:flex;align-items:center;gap:18px;white-space:nowrap;}
+.sh-row b{font:600 17px 'JBMono';letter-spacing:0.06em;color:#F29BFF;}
+.sh-row .en{font:500 30px 'Inter';letter-spacing:0.01em;color:#fff;}
+.sh-row .ar{font:500 25px 'PlexAR';color:rgba(255,255,255,0.7);direction:rtl;}
+
+/* k60-62.5: «بالعربية», huge; "Ask in Arabic." small */
 .jbig{position:absolute;left:0;top:0;width:1920px;height:1080px;}
 .jbig .a{position:absolute;right:170px;top:250px;font:700 330px/1.25 'PlexAR';direction:rtl;white-space:nowrap;}
 .jbig .a.g{background:linear-gradient(90deg,#8E32C3,#DE0DFF 45%,#F29BFF);-webkit-background-clip:text;background-clip:text;color:transparent;}
 .jbig .a.w{color:#F7F4FB;}
 .jbig .s{position:absolute;left:420px;top:720px;font:500 64px 'Inter';letter-spacing:-0.02em;color:#F4F1FA;white-space:nowrap;}
+
+/* k62.5-70: the Assistant (the app's AI assistant: its name, workspace filter, input and placeholder) */
+.as-card{position:absolute;left:0;top:0;width:1100px;height:590px;background:#fff;direction:rtl;border-radius:28px;
+  box-shadow:0 0 0 2.5px rgba(255,190,248,0.85),0 0 36px 4px rgba(206,64,240,0.45),0 30px 80px rgba(0,0,0,0.5);}
+.as-card>*{position:absolute;}
+.as-card .hd{right:30px;left:30px;top:24px;height:56px;display:flex;align-items:center;gap:14px;direction:rtl;}
+.as-card .bt,.as-card .av{width:52px;height:52px;border-radius:16px;background:linear-gradient(140deg,#5F0DB4,#BC59D1);display:flex;align-items:center;justify-content:center;flex:none;}
+.as-card .nm{font:700 27px 'PlexAR';color:var(--ink);white-space:nowrap;}
+.as-card .ws{margin-right:auto;height:46px;padding:0 18px;border-radius:14px;border:1.5px solid #D6D5DA;display:inline-flex;align-items:center;gap:14px;
+  font:500 18px 'PlexAR';color:var(--ink);white-space:nowrap;direction:ltr;}
+.as-card .dv{left:0;right:0;top:100px;height:1.5px;background:#EEEDF2;}
+.as-card .um{left:30px;top:128px;padding:16px 28px;border-radius:24px 24px 24px 8px;background:linear-gradient(95deg,#5F0DB4,#8E32C3 60%,#BC59D1);
+  color:#fff;font:600 25px 'PlexAR';white-space:nowrap;}
+.as-card .an{right:30px;left:30px;top:222px;display:flex;align-items:flex-start;gap:16px;direction:rtl;}
+.as-card .av{width:48px;height:48px;border-radius:15px;}
+.as-card .ac{flex:1;min-height:168px;padding:20px 28px 22px;border-radius:8px 24px 24px 24px;background:#F8F7FC;border:1.5px solid #E5E4E9;}
+.as-card .tx{font:500 26px/1.75 'PlexAR';color:var(--ink);min-height:92px;}
+.as-card .tx .hl{color:var(--pd);font:700 26px 'Inter';background:var(--pl);padding:0 8px;border-radius:8px;}
+.as-card .chip{display:inline-flex;align-items:center;gap:8px;height:38px;padding:0 16px;border-radius:19px;background:#E7F5EE;color:#0B8447;
+  font:500 17px 'PlexAR';white-space:nowrap;margin-top:10px;}
+.as-card .ir{right:30px;left:30px;bottom:26px;height:72px;}
+.as-card .in{position:absolute;right:0;left:98px;top:0;height:72px;border:1.5px solid #CECDD2;border-radius:20px;background:#fff;padding:0 28px;
+  display:flex;align-items:center;direction:rtl;white-space:nowrap;overflow:hidden;}
+.as-card .ph{font:400 22px 'PlexAR';color:#6C6A72;}
+.as-card .qq{font:600 25px 'PlexAR';color:var(--ink);}
+.as-card .caret{display:inline-block;width:2.5px;height:32px;margin-right:4px;background:#8E32C3;border-radius:2px;}
+.as-card .send{position:absolute;left:0;top:0;width:78px;height:72px;border-radius:18px;background:#C9A8E6;display:flex;align-items:center;justify-content:center;}
 
 /* the end: the URL in a glowing capsule, the mark, "Book your demo" */
 .jcap{position:absolute;left:0;top:0;border-radius:999px;background:#07050F;display:flex;align-items:center;justify-content:center;
