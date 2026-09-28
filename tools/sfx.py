@@ -16,6 +16,10 @@ Types (use them sparingly; the client asked for restrained, balanced effects):
   absorb    a short upward glide (an item absorbed; i= 0..n raises the pitch)
   air       a stereo air move for a scene transition: brightens into its accent, spreads in stereo (width=), moves from
             pan0= to pan1= (-1 left .. 1 right); reverse=True makes a swell that peaks on the beat (into a reveal)
+  swoosh    a cinematic pass-by for a cut (the whoosh of launch videos): a band of noise sweeps up from f0= to f1= Hz as
+            it swells into its accent (rise= of the way in, the cut), then falls to f2= as it fades, like something
+            passing; a low body (body=) gives it weight; it crosses the stereo field from pan0= to pan1=, fastest at the
+            accent. dur= 0.7 (soft) to 1.4 (into a reveal)
 """
 import numpy as np
 
@@ -163,9 +167,42 @@ def air(dur=0.8, f_lo=150, f_hi=3600, rise=0.45, pan0=0.0, pan1=0.0, width=0.5, 
     return norm(s), dur * rise
 
 
+def _sweep_noise(n, fc, bw, seed):
+    """noise whose band follows fc (n centre frequencies in Hz, a gaussian bw octaves wide), shaped frame by frame
+    (STFT with a Hann window at 75% overlap, weighted overlap-add)."""
+    N, H = 2048, 512
+    x = _rng(seed).standard_normal(n + N)
+    win = np.hanning(N)
+    lf = np.log2(np.maximum(np.fft.rfftfreq(N, 1 / SR), 20.0))
+    y, ws = np.zeros(n + N), np.zeros(n + N)
+    for i in range(0, n, H):
+        g = np.exp(-0.5 * ((lf - np.log2(fc[min(i + N // 2, n - 1)])) / bw) ** 2)
+        y[i:i + N] += np.fft.irfft(np.fft.rfft(x[i:i + N] * win) * g, N) * win
+        ws[i:i + N] += win ** 2
+    return y[:n] / np.maximum(ws[:n], 1e-3)
+
+
+def swoosh(dur=1.0, rise=0.62, f0=450, f1=3600, f2=800, bw=0.8, body=0.45, pan0=-0.7, pan1=0.7, width=0.4, seed=31, **_):
+    """(stereo signal n x 2, accent): a cinematic pass-by for a cut. The band sweeps up into the accent (the cut) and
+    falls after it, over a low body; the sound crosses the field from pan0 to pan1, fastest at the accent."""
+    n = int(dur * SR)
+    na = max(1, int(n * rise))
+    t = np.arange(n)
+    u1, u2 = np.clip(t / na, 0, 1), np.clip((t - na) / max(1, n - na), 0, 1)
+    fc = np.where(t < na, f0 * (f1 / f0) ** (u1 ** 1.5), f1 * (f2 / f1) ** (u2 ** 0.6))
+    e = np.where(t < na, u1 ** 2.4, (1 - u2) ** 1.8)                 # swells slowly, falls away
+    eb = np.where(t < na, u1 ** 3.0, (1 - u2) ** 2.6)                # the body: tighter round the pass
+    L, R = _sweep_noise(n, fc, bw, seed), _sweep_noise(n, fc, bw, seed + 1)
+    mid, side = norm(L + R), norm(L - R) * width
+    m = mid * e + norm(bandnoise(n, 55, 260, seed + 2)) * body * eb
+    p = pan0 + (pan1 - pan0) / (1 + np.exp(-(t - na) / (0.12 * SR)))
+    s = np.stack([(m + side * e) * np.cos((p + 1) * np.pi / 4), (m - side * e) * np.sin((p + 1) * np.pi / 4)], 1)
+    return norm(s), dur * rise
+
+
 TYPES = {'whoosh': whoosh, 'whoosh_rev': whoosh_rev, 'tick': tick, 'key': key, 'pop': pop, 'blip': blip,
          'click': click, 'ping': ping, 'chime': chime, 'thump': thump, 'riser': riser, 'swell': swell,
-         'bloom': bloom, 'absorb': absorb, 'air': air}
+         'bloom': bloom, 'absorb': absorb, 'air': air, 'swoosh': swoosh}
 
 
 def make(kind, **params):

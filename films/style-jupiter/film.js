@@ -9,7 +9,8 @@
    layers, the Assistant answering). It follows the 63 s film's story and lines. v1 (28.6 s) is in git history (80af6f8).
    The music is the client's choice (after v2).
    House rules kept: English + Arabic on every line, Western digits, no shake (punches <= 1.5%), nothing on every beat, no
-   orb behind the logo, "Book your demo" and marsadnasl.com at the end. Sound effects only on the transitions.
+   orb behind the logo, "Book your demo" and marsadnasl.com at the end. Sound effects only on the transitions: a whoosh
+   (tools/sfx.py `swoosh`) on every cut and big move, the client's ask, and the two cinematic hits (the mark, the end).
    Music: "Joyful Rhythm Walk Funk" by lightbeatsmusic (Pixabay #513936, supplied by the client; fit/lightbeats-joyful-rhythm-
    walk-funk.mp3), 115 BPM, downbeat 0.538 s. film.json "edit" (song beats): 0-15 and 8-15 (the intro, its second half
    twice), 16-47 (groove A from film k24), 64-95 (groove B, film k56), 48-63 (groove A's last phrase, ending in the
