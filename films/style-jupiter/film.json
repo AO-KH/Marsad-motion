@@ -40,14 +40,6 @@
   "sfx": [
     {
       "type": "swoosh",
-      "beat": 10,
-      "gain": -6,
-      "seed": 41,
-      "pan0": -0.2,
-      "pan1": 0.6
-    },
-    {
-      "type": "swoosh",
       "beat": 24,
       "gain": -3,
       "seed": 42,
@@ -66,37 +58,8 @@
     },
     {
       "type": "swoosh",
-      "beat": 34,
-      "gain": -3,
-      "seed": 43,
-      "pan0": -0.7,
-      "pan1": 0.7
-    },
-    {
-      "type": "swoosh",
-      "beat": 40,
-      "gain": -3,
-      "seed": 44,
-      "pan0": 0.7,
-      "pan1": -0.7
-    },
-    {
-      "type": "swoosh",
-      "beat": 44.6,
-      "gain": -9,
-      "seed": 45,
-      "dur": 0.9,
-      "rise": 0.6,
-      "f0": 380,
-      "f1": 3000,
-      "f2": 2600,
-      "pan0": 0,
-      "pan1": 0
-    },
-    {
-      "type": "swoosh",
       "beat": 50,
-      "gain": -3,
+      "gain": -5,
       "seed": 46,
       "f2": 1200,
       "pan0": 0,
@@ -104,66 +67,13 @@
     },
     {
       "type": "swoosh",
-      "beat": 56,
-      "gain": -4,
-      "seed": 47,
-      "dur": 1.1,
-      "rise": 0.7,
-      "f1": 5200,
-      "body": 0.3,
-      "pan0": -0.3,
-      "pan1": 0.3,
-      "width": 0.6
-    },
-    {
-      "type": "swoosh",
-      "beat": 60,
-      "gain": -3,
-      "seed": 48,
-      "pan0": -0.6,
-      "pan1": 0.6
-    },
-    {
-      "type": "swoosh",
       "beat": 70,
-      "gain": -3,
+      "gain": -5,
       "seed": 49,
       "f1": 3000,
       "body": 0.7,
       "pan0": 0.5,
       "pan1": -0.5
-    },
-    {
-      "type": "swoosh",
-      "beat": 80,
-      "gain": -3,
-      "seed": 50,
-      "pan0": 0.8,
-      "pan1": -0.2
-    },
-    {
-      "type": "swoosh",
-      "beat": 83,
-      "gain": -7,
-      "seed": 51,
-      "dur": 0.7,
-      "rise": 0.55,
-      "f1": 2800,
-      "body": 0.25,
-      "pan0": -0.4,
-      "pan1": 0.4
-    },
-    {
-      "type": "swoosh",
-      "beat": 96,
-      "gain": -7,
-      "seed": 52,
-      "dur": 1.0,
-      "rise": 0.5,
-      "f1": 2600,
-      "body": 0.2,
-      "pan0": 0.3,
-      "pan1": -0.3
     },
     {
       "type": "swoosh",
@@ -182,19 +92,7 @@
       "file": "fit/sfx/cinematic-wake-dsm.wav",
       "beat": 104,
       "gain": -2
-    },
-    {
-      "type": "swoosh",
-      "beat": 108.2,
-      "gain": -9,
-      "seed": 54,
-      "dur": 0.7,
-      "rise": 0.55,
-      "f1": 2800,
-      "body": 0.3,
-      "pan0": 0,
-      "pan1": 0
     }
   ],
-  "sfx_level": -20
+  "sfx_level": -23
 }
