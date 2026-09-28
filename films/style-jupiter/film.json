@@ -1,6 +1,6 @@
 {
-  "title": "Marsad — style sample: Jupiter Exchange (v2, slower; the client's funk track)",
-  "duration": 60.52,
+  "title": "Marsad — style sample: Jupiter Exchange (v2, 48 s; the client's funk track)",
+  "duration": 48.0,
   "formats": [
     "16x9"
   ],
@@ -11,19 +11,11 @@
     "edit": [
       [
         0,
-        16
-      ],
-      [
-        8,
-        16
-      ],
-      [
-        16,
         48
       ],
       [
         64,
-        96
+        80
       ],
       [
         48,
@@ -40,7 +32,7 @@
   "sfx": [
     {
       "type": "swoosh",
-      "beat": 24,
+      "beat": 16,
       "gain": -3,
       "seed": 42,
       "dur": 1.4,
@@ -53,12 +45,12 @@
     },
     {
       "file": "fit/sfx/cinematic-start-dsm.wav",
-      "beat": 24,
+      "beat": 16,
       "gain": -4
     },
     {
       "type": "swoosh",
-      "beat": 50,
+      "beat": 38,
       "gain": -5,
       "seed": 46,
       "f2": 1200,
@@ -67,7 +59,7 @@
     },
     {
       "type": "swoosh",
-      "beat": 70,
+      "beat": 56,
       "gain": -5,
       "seed": 49,
       "f1": 3000,
@@ -77,7 +69,7 @@
     },
     {
       "type": "swoosh",
-      "beat": 104,
+      "beat": 80,
       "gain": -2,
       "seed": 53,
       "dur": 1.4,
@@ -90,7 +82,7 @@
     },
     {
       "file": "fit/sfx/cinematic-wake-dsm.wav",
-      "beat": 104,
+      "beat": 80,
       "gain": -2
     }
   ],

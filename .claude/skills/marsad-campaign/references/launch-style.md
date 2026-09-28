@@ -75,7 +75,8 @@ The client then asked for the Jupiter one **slower and with more detail**. `film
 - It uses film63-launch's cut without song beats 80–95, `edit` `[[16, 80], [128, 150]]`: the groove starts on k16, the silence is k72–73, the hit is k74.
 - Scenes run 4–10 beats, not 2, and follow the 63 s film's scenes and lines.
 - Every frame carries more: dust on the dark, the sources and real file names adrift, the waiting chat, the tiles flying into the mark, a lens bursting out of it with orbits, the Knowledge Map turning inside the dome, a real recommendation, the Decisions counters, six defence rings with their layers, the Assistant answering.
-- Read this as the client's taste: calmer shots with more to look at, not faster cuts.
+- Read this as the client's taste: shots with more to look at. On pace they moved both ways. First slower (53.4 s, then 60.5 s on their funk track), then "increase the pace": 48 s, scenes of 4–10 beats at 115 BPM (2–5 s). Aim between the extremes. About 2 s shots (v1) was too fast, and 5–7 s felt slow.
+- The end: the client disliked two joined lenses (a figure-of-eight) behind "Book your demo.". It is now one wide glowing capsule (CSS, its inset glow scaled while it shrinks) that blooms on the hit and shrinks into the URL capsule. Keep text over the capsule with `z-index`.
 
 **Both styles:** they cut hard, a shot per 2–6 beats in the short samples.
 - List the cut times in `window.CUTS`, so `render_mb.js` keeps every frame's blur samples on one side of a cut.
@@ -107,7 +108,7 @@ The client then asked for the Jupiter one **slower and with more detail**. `film
   - **Dome:** a lens above a carousel on a wide arc (centre 960, −1300; radius 2250); each tile is rotated by θ − 90°.
   - **Bright lens:** a cream body with dark type.
   - **Rings:** transparent bodies, blended with `screen`.
-  - **Two joined lenses:** draw both, then both bodies again at 0.9 r over the inner rims, so only the outline glows.
+  - **Two joined lenses:** draw both, then both bodies again at 0.93 r over the inner rims, so only the outline glows. The client asked to replace this shape at the end (v2 uses a capsule).
   - **Capsule:** the joined lenses squash into a CSS capsule, whose glowing rim is made of inset box-shadows.
 - **Type:** Inter 500, white, with grey (`.dim`) and gradient (`.g`) words. Words blur in where they will stand.
 - **The hero:** a small word above left, the big word, and the Arabic below right. Two grey copies trail the big word's slide and stay as a slight extrude.
