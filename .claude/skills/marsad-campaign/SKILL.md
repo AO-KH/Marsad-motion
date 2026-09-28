@@ -16,7 +16,7 @@ Read these as you reach them:
 - `references/film-anatomy.md`: the 63 s film scene by scene, what to keep and what not to copy, the calm 54 s variant, and beat maps for 30, 45 and 60 s films. Read it before storyboarding.
 - `references/audio.md`: the music's map, the voiceover, the sound effects and the mix. Read it before writing the audio in `film.json`.
 - `references/quality-bar.md`: the review checklist and the defects already hit, with their fixes. Read it before reviewing stills.
-- `references/launch-style.md`: the client's launch-video references (dark stage, kinetic type, UI parts blown up in 3D, one big click, zoom-through) and how `films/coffee-launch/` builds them. Read it when a brief asks for "a launch video", "like these references", or a look beyond the light house style.
+- `references/launch-style.md`: the client's launch-video references (dark stage, kinetic type, UI parts blown up in 3D, one big click, zoom-through) and how `films/coffee-launch/` and `films/film63-launch/` build them. Read it when a brief asks for "a launch video", "like these references", or a look beyond the light house style.
 
 Out of scope:
 - product demos and walkthroughs (the `marsad-demo` skill);

@@ -27,6 +27,15 @@ Each build writes the pages to `build/`, fits the music to `out/<slug>-music.wav
 `render_mb.js` renders four sub-frames per frame and `tools/blend.py` averages them. This takes about 8 minutes per
 format for 60 s. `SUB=1 ./build_demo.sh <slug>` makes a quick draft without blur, about 4× faster.
 
+To fix a few seconds after a full build, re-render only those frames and re-mux:
+
+```bash
+python3 tools/make_demo.py <slug>
+node render_mb.js 4 build/<slug>-16x9.html frames/<slug>-16x9 4 400 450   # frames 400-449 (30 fps), into the same folder
+python3 tools/blend.py frames/<slug>-16x9
+ONLY=audio ./build_demo.sh <slug>                                         # re-mux the MP4 and run QA on the frames
+```
+
 Start a new demo by copying the closest example:
 
 ```bash
@@ -259,7 +268,8 @@ section if the demo is longer than the track, fades in and out, and normalises t
   (multiples of 4) inside the steady part, so the beat grid stays aligned.
 - `edit`: `[[a, b], [c, d], ...]` plays those sections of the track in order instead of one run from `start`
   (beats counted from `downbeat`), so a track's silence or drop can land where the video needs it. Film beat 0 is
-  beat `a`; cut at the same place in a phrase on both sides. `films/coffee-launch/film.json` is an example.
+  beat `a`; cut at the same place in a phrase on both sides. `films/coffee-launch/film.json` and
+  `films/film63-launch/film.json` are examples.
 - A new track, or a sound file for `"sfx"`, needs a licence that allows commercial use and editing, confirmed on
   its own page: record it in `fit/CREDITS.md`.
 - Known tracks:

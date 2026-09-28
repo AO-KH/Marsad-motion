@@ -1,15 +1,18 @@
 // Render a film or demo page with motion blur: each 30 fps frame is S sub-frames spread over a 180° shutter (1/60 s),
 // written to <outdir>/sub/; then `python3 tools/blend.py <outdir>` averages them into <outdir>/f_%04d.jpg.
 // A page that cuts sets window.CUTS (times of its hard cuts); sub-frames never reach across one, so cuts stay clean.
-// Length from window.DURATION, size from window.STAGE_W/H.  usage: node render_mb.js <workers> <page.html> <outdir> [S=4]
+// Length from window.DURATION, size from window.STAGE_W/H.  usage: node render_mb.js <workers> <page.html> <outdir> [S=4] [from to]
+// With a frame range [from, to), only those frames are rendered, into <outdir>/sub/ (the folder is kept): re-render a few frames,
+// blend them, and they replace their old f_<frame>.jpg.
 const { chromium } = require('playwright');
 const path = require('path'), fs = require('fs');
 const CHROME = process.env.CHROMIUM_PATH || (fs.existsSync('/opt/pw-browsers/chromium') ? '/opt/pw-browsers/chromium' : undefined);
 (async () => {
-  const [w = '4', file, outdir, s = '4'] = process.argv.slice(2);
+  const [w = '4', file, outdir, s = '4', from, to] = process.argv.slice(2);
   const WK = parseInt(w), S = parseInt(s), FPS = 30, OPEN = 1 / 60;
   const out = path.join(__dirname, outdir), sub = path.join(out, 'sub');
-  fs.rmSync(out, { recursive: true, force: true }); fs.mkdirSync(sub, { recursive: true });
+  if (from === undefined) fs.rmSync(out, { recursive: true, force: true });
+  fs.mkdirSync(sub, { recursive: true });
   const browser = await chromium.launch({ executablePath: CHROME, args: ['--force-color-profile=srgb', '--disable-lcd-text', '--hide-scrollbars'] });
   const t0 = Date.now(); let N = 0;
   await Promise.all([...Array(WK).keys()].map(async k => {
@@ -23,7 +26,8 @@ const CHROME = process.env.CHROMIUM_PATH || (fs.existsSync('/opt/pw-browsers/chr
     if (vw !== 1920 || vh !== 1080) await page.setViewportSize({ width: vw, height: vh });
     await page.waitForTimeout(300);
     N = Math.round(dur * FPS);
-    for (let i = k; i < N; i += WK) {
+    const A = from === undefined ? 0 : parseInt(from), Z = to === undefined ? N : Math.min(N, parseInt(to));
+    for (let i = A + k; i < Z; i += WK) {
       const tc = i / FPS;
       const lo = Math.max(0, ...cuts.filter(c => c <= tc + 1e-6)), hi = Math.min(dur, ...cuts.filter(c => c > tc + 1e-6)) - 1e-4;
       for (let j = 0; j < S; j++) {

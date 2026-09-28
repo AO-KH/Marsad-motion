@@ -5,7 +5,11 @@ The client pointed to a collection of launch videos from X:
 - 22 films, including Google Pomelli, Lovable, Figma, Polymarket, Jupiter, Axiom, Logan K's Google AI Studio "custom URLs", azatsol's omnipair "New Market View" and Pump.fun;
 - the post's own clip opens two of them in full: azatsol's and Logan K's. Treat those two as the closest to what the client wants.
 
-`films/coffee-launch/` recreates the coffee story in this style. Copy its helpers (`kt`, `gwrap`, `T3`, the mesh stage) for the next film in it.
+Two films are built in this style:
+- `films/coffee-launch/` recreates the coffee story (48 s).
+- `films/film63-launch/` recreates the 63 s launch film (63 s). It keeps the original's story and lines, has no voiceover, and adds the moves below.
+
+Copy the helpers (`kt`, `gwrap`, `T3`, the mesh stage) from the newer one: its `kt` also takes line breaks (`'\n'`), a left-aligned column (`align:'left'`, `x`, `w`) and one start time per word (`ats`).
 
 ## What the references share
 
@@ -50,6 +54,15 @@ The client pointed to a collection of launch videos from X:
   - Scale the old element about its point of interest while that point glides to where the new element sits.
   - Fade the old one out only once the points meet.
   - Match the sizes: the card's 44 px figure × scale = the hero's 260 px × its opening scale.
+
+## Moves added by film63-launch
+
+- **Fly through the logo:** scale the mark about an empty point inside it (the V notch of the M, at 0.483, 0.295 of the image) while that point glides to the stage centre. The arms sweep past the camera and the next scene opens behind them. It is the mark itself, so no orb is involved.
+- **A turning graph that stays upright:** do not tilt a CSS 3D plane (its chips tilt with it). Project each node yourself: angle `a` on an ellipse, `x = cx + Rx·cos(a+θ)`, `y = cy + Ry·sin(a+θ)`, depth `z = −D·sin(a+θ)`, scale `f/(f+z)`, and z-order by depth. Turn θ slowly.
+- **Camera moves on groups of parts:** to zoom by `Z` about a point `F` that glides to `T`, place every part at `T + (p − F)·Z` with scale `s·Z`. The parts stay separate 3D elements, and the stats row and the card move as one shot.
+- **A carousel swing between two parts:** the old part slides out to one side with `rotateY` +35°, and the new one swings in from the other side with −35°, both blurred in motion.
+- **The problem looks dull:** the waiting chat has a grey edge (`gwrap(..., 'dull')`) and no glow. Only Marsad's parts glow.
+- **Pitch away:** the graph group tilts back (`rotateX` 58°) and rises out of frame as the next part rises in.
 
 ## Still the house rules
 

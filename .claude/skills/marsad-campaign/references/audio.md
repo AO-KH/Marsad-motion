@@ -25,6 +25,7 @@
     - Each later section starts 30 ms early for the crossfade, so its first beat lands on the join at full level: the grid runs straight through.
     - Cut where the pattern repeats: the same position in a 4-bar phrase on both sides (for example song beat 86 → 134 in `holizna-movement.mp3`, both 6 beats into a 16-beat row).
     - `films/coffee-launch/` uses `[[24, 86], [134, 150]]`: the end of the stripped intro and groove A, then the end of groove B, its two-beat silence and the hit after it (the logo).
+    - `films/film63-launch/` uses `[[16, 96], [128, 150]]` for 63 s: half the stripped intro (the problem), groove A from film beat 16 (the turn), the last two bars of groove B, the silence and the hit. The join skips two whole 16-beat rows, so it is inaudible, and the logo lands at 55.9 s, where the 63 s film's drop was.
 - **No time-stretch, ever:** the client asked for the track as it is. To fit a length, choose `start` and the film's scene lengths instead.
 
 **Stylish, section by section** (beat k at `0.041 + 0.638366·k` s):

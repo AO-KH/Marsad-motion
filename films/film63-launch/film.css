@@ -1,0 +1,129 @@
+/* films/film63-launch: the 63 s launch film in the launch-video grammar of the client's references
+   (notes.apoorv.xyz/launch-videos), as films/coffee-launch: a dark stage with a slow purple mesh gradient, kinetic bilingual
+   type, the app's real parts floating in 3D with a glowing gradient edge, one big cursor click, a logo + URL end card. */
+#bg{visibility:hidden;}                                   /* the engine's light background: this film paints its own */
+.cl-stage{position:absolute;left:0;top:0;width:1920px;height:1080px;overflow:hidden;}
+.cl-stage canvas{position:absolute;left:0;top:0;}
+.cl-lo,.cl-hi,.cl-3d,.cl-g,.cl-sh{position:absolute;left:0;top:0;width:1920px;height:1080px;}
+.cl-3d{perspective:1900px;perspective-origin:50% 44%;}
+.cl-3d>*{position:absolute;left:0;top:0;transform-origin:50% 50%;}
+.cl-svg{position:absolute;left:0;top:0;overflow:visible;}
+
+/* kinetic type: EN words build one by one; the Arabic line follows */
+.kt{position:absolute;left:0;width:1920px;text-align:center;pointer-events:none;}
+.kt .en{font:800 120px/1.08 'Inter';letter-spacing:-0.04em;color:#fff;white-space:nowrap;}
+.kt .w{display:inline-block;margin:0 0.13em;will-change:transform,filter,opacity;}
+.kt .g{background:linear-gradient(95deg,#E7D4FF 0%,#DE0DFF 38%,#BC59D1 62%,#8E6BFF 100%);-webkit-background-clip:text;background-clip:text;
+  color:transparent;padding:0 0.04em;}
+.kt .ar{font:600 54px/1.5 'PlexAR';color:rgba(255,255,255,0.78);direction:rtl;white-space:nowrap;margin-top:18px;}
+.kt.left{text-align:left;}
+.kt.left .w{margin:0 0.26em 0 0;}
+
+/* a glowing gradient edge around a floating UI part (the angle turns slowly, never on the beat) */
+.gw{position:absolute;left:0;top:0;--a:0deg;border-radius:30px;transform-style:preserve-3d;}
+.gw>.gb{position:absolute;inset:-10px;width:auto;height:auto;border-radius:40px;
+  background:conic-gradient(from var(--a),#5F0DB4,#DE0DFF,#7A6CFF,#BC59D1,#5F0DB4);filter:blur(26px);opacity:0.72;}
+.gw>.gr{position:absolute;inset:-2px;border-radius:32px;background:conic-gradient(from var(--a),#8E32C3,#FF6BF3,#8FA2FF,#E3A6FF,#8E32C3);}
+.gw>.gi{position:absolute;inset:0;border-radius:30px;overflow:hidden;}
+.gw.dull>.gb{display:none;}
+.gw.dull>.gr{background:rgba(255,255,255,0.16);}
+.cl-plain{border-radius:22px;box-shadow:0 24px 50px rgba(0,0,0,0.42),0 0 30px rgba(188,89,209,0.22);}
+
+/* k8-14 the waiting team chat: dark, grey, no glow */
+.ch-card{position:absolute;left:0;top:0;background:#15111E;}
+.ch-card>*{position:absolute;}
+.ch-card .hd{left:36px;top:30px;display:flex;align-items:center;gap:12px;font:600 17px 'JBMono';letter-spacing:0.12em;color:rgba(255,255,255,0.5);white-space:nowrap;}
+.ch-card .hd i{width:10px;height:10px;border-radius:50%;background:#6E6A77;}
+.ch-card .q{left:36px;top:92px;padding:20px 28px;border-radius:24px 24px 24px 8px;background:#2A2535;color:#F2F0F6;font:500 30px 'Inter';white-space:nowrap;}
+.ch-card .ty{left:36px;top:196px;width:112px;height:58px;border-radius:29px;background:#221E2C;display:flex;align-items:center;justify-content:center;gap:10px;}
+.ch-card .ty i{position:relative;width:11px;height:11px;border-radius:50%;background:#8A8797;}
+.ch-card .wt{left:36px;top:296px;display:flex;align-items:center;gap:12px;font:700 24px 'JBMono';letter-spacing:0.14em;color:#F2A65A;white-space:nowrap;}
+.ch-card .wt b{color:rgba(242,166,90,0.6);font-weight:400;}
+.ch-card .wb{left:36px;right:36px;top:350px;height:10px;border-radius:5px;background:rgba(255,255,255,0.08);overflow:hidden;}
+.ch-card .wb i{position:absolute;left:0;top:0;height:100%;border-radius:5px;background:linear-gradient(90deg,#C77A2E,#F2A65A);}
+
+/* the mark (k16) and the model's heart (k32): the official M with its own glow; never a disc behind it */
+.cl-mk{position:absolute;}
+.cl-mk img,.cl-hub img,.cl-core img{position:absolute;left:0;top:0;width:100%;}
+.cl-mk .m,.cl-hub .m,.cl-core .m{filter:drop-shadow(0 0 26px rgba(188,89,209,0.8)) drop-shadow(0 0 80px rgba(142,50,195,0.5));}
+.cl-mk .gl,.cl-hub .gl,.cl-core .gl{filter:blur(26px) saturate(1.6);}
+.cl-hub{position:absolute;left:0;top:0;width:150px;height:115px;}
+.cl-core{position:absolute;width:140px;height:107px;transform-origin:50% 50%;}
+
+/* k24-32 the loop */
+.ft-tile{position:absolute;left:0;top:0;background:#fff;}
+.ft-tile .gl{left:27px;top:27px;width:96px;height:96px;border-radius:28px;display:flex;align-items:center;justify-content:center;}
+.ft-tile .gl .ic{position:relative;z-index:1;}
+.ft-lb{position:absolute;text-align:center;white-space:nowrap;}
+.ft-lb .en{font:800 60px/1.1 'Inter';letter-spacing:-0.035em;color:#fff;}
+.ft-lb .ar{font:600 32px/1.5 'PlexAR';color:rgba(255,255,255,0.75);direction:rtl;margin-top:4px;}
+
+/* k32-44 the model */
+.cl-g{transform-origin:960px 566px;}
+.cl-g .k-tile{left:0;top:0;transform-origin:50% 50%;}
+.gn{position:absolute;left:0;top:0;display:flex;align-items:center;gap:12px;height:64px;padding:0 24px 0 20px;border-radius:32px;background:#fff;
+  box-shadow:0 14px 30px rgba(0,0,0,0.35),0 0 26px rgba(188,89,209,0.42);direction:rtl;white-space:nowrap;}
+.gn i{width:16px;height:16px;border-radius:50%;flex:none;}
+.gn .ar{font:700 25px 'PlexAR';color:var(--ink);}
+.gn .en{font:500 15px 'Inter';color:var(--meta);direction:ltr;}
+.gl-lb{position:absolute;left:0;top:0;padding:3px 13px 5px;border-radius:13px;background:rgba(22,12,42,0.78);border:1px solid rgba(227,166,255,0.5);
+  color:#F4E6FF;font:500 17px 'PlexAR';white-space:nowrap;direction:rtl;}
+
+/* k44-56 Business Pulse */
+.ptag{position:absolute;left:0;top:0;display:inline-flex;align-items:center;gap:12px;height:52px;padding:0 24px;border-radius:26px;
+  background:rgba(255,255,255,0.07);border:1.5px solid rgba(227,166,255,0.6);box-shadow:0 0 26px rgba(188,89,209,0.35);white-space:nowrap;}
+.ptag .ar{font:600 22px 'PlexAR';color:#fff;}
+.ptag .en{font:600 18px 'Inter';color:rgba(255,255,255,0.7);letter-spacing:0.02em;}
+
+/* the cursor */
+.cur{position:absolute;left:0;top:0;width:70px;height:70px;filter:drop-shadow(0 6px 14px rgba(0,0,0,0.45)) drop-shadow(0 0 18px rgba(188,89,209,0.55));}
+.ring{position:absolute;left:0;top:0;border-radius:50%;border:3px solid rgba(255,255,255,0.9);}
+
+/* k68-75 the shield */
+.sh-tag{position:absolute;transform:translate(-50%,-50%);font:600 13px 'JBMono';letter-spacing:0.08em;color:#F4D6FF;padding:2px 7px;border-radius:7px;
+  background:rgba(20,10,40,0.66);white-space:nowrap;}
+.sh-row{position:absolute;left:1060px;height:56px;display:flex;align-items:center;gap:18px;white-space:nowrap;}
+.sh-row b{font:600 17px 'JBMono';letter-spacing:0.06em;color:#F29BFF;}
+.sh-row .en{font:700 29px 'Inter';letter-spacing:0.01em;color:#fff;}
+.sh-row .ar{font:500 25px 'PlexAR';color:rgba(255,255,255,0.7);direction:rtl;}
+
+/* k75-86 the Assistant (the app's AI assistant: its name, workspace filter, input and placeholder) */
+.as-card{position:absolute;left:0;top:0;background:#fff;direction:rtl;}
+.as-card>*{position:absolute;}
+.as-card .hd{right:30px;left:30px;top:24px;height:56px;display:flex;align-items:center;gap:14px;direction:rtl;}
+.as-card .bt,.as-card .av{width:52px;height:52px;border-radius:16px;background:linear-gradient(140deg,#5F0DB4,#BC59D1);display:flex;align-items:center;justify-content:center;flex:none;}
+.as-card .nm{font:700 27px 'PlexAR';color:var(--ink);white-space:nowrap;}
+.as-card .ws{margin-right:auto;height:46px;padding:0 18px;border-radius:14px;border:1.5px solid #D6D5DA;display:inline-flex;align-items:center;gap:14px;
+  font:500 18px 'PlexAR';color:var(--ink);white-space:nowrap;direction:ltr;}
+.as-card .dv{left:0;right:0;top:100px;height:1.5px;background:#EEEDF2;}
+.as-card .um{left:30px;top:128px;padding:16px 28px;border-radius:24px 24px 24px 8px;background:linear-gradient(95deg,#5F0DB4,#8E32C3 60%,#BC59D1);
+  color:#fff;font:600 25px 'PlexAR';white-space:nowrap;}
+.as-card .an{right:30px;left:30px;top:222px;display:flex;align-items:flex-start;gap:16px;direction:rtl;}
+.as-card .av{width:48px;height:48px;border-radius:15px;}
+.as-card .ac{flex:1;min-height:168px;padding:20px 28px 22px;border-radius:8px 24px 24px 24px;background:#F8F7FC;border:1.5px solid #E5E4E9;}
+.as-card .tx{font:500 26px/1.75 'PlexAR';color:var(--ink);min-height:92px;}
+.as-card .tx .hl{color:var(--pd);font:700 26px 'Inter';background:var(--pl);padding:0 8px;border-radius:8px;box-shadow:0 0 16px rgba(188,89,209,0.45);}
+.as-card .chip{display:inline-flex;align-items:center;gap:8px;height:38px;padding:0 16px;border-radius:19px;background:#E7F5EE;color:#0B8447;
+  font:500 17px 'PlexAR';white-space:nowrap;margin-top:10px;}
+.as-card .ir{right:30px;left:30px;bottom:26px;height:72px;}
+.as-card .in{position:absolute;right:0;left:98px;top:0;height:72px;border:1.5px solid #CECDD2;border-radius:20px;background:#fff;padding:0 28px;
+  display:flex;align-items:center;direction:rtl;white-space:nowrap;overflow:hidden;}
+.as-card .ph{font:400 22px 'PlexAR';color:#6C6A72;}
+.as-card .qq{font:600 25px 'PlexAR';color:var(--ink);}
+.as-card .caret{display:inline-block;width:2.5px;height:32px;margin-right:4px;background:#8E32C3;border-radius:2px;}
+.as-card .send{position:absolute;left:0;top:0;width:78px;height:72px;border-radius:18px;background:#C9A8E6;display:flex;align-items:center;justify-content:center;}
+
+/* the end card */
+.end{position:absolute;left:0;top:0;width:1920px;height:1080px;}
+.end .mk,.end .gl{position:absolute;left:840px;top:262px;width:240px;}
+.end .mk{filter:drop-shadow(0 0 26px rgba(188,89,209,0.8)) drop-shadow(0 0 80px rgba(142,50,195,0.55));}
+.end .gl{filter:blur(28px) saturate(1.6);}
+.end .wm{position:absolute;left:750px;top:482px;width:420px;}
+.end .cta{position:absolute;left:0;top:676px;width:1920px;display:flex;justify-content:center;gap:22px;}
+.end .url{display:inline-flex;align-items:center;height:76px;padding:0 38px;border-radius:38px;font:600 28px 'JBMono';letter-spacing:0.06em;color:#fff;
+  background:rgba(255,255,255,0.06);border:1.5px solid rgba(227,166,255,0.8);box-shadow:0 0 34px rgba(188,89,209,0.55),inset 0 0 18px rgba(188,89,209,0.25);}
+.end .book{display:inline-flex;align-items:center;gap:14px;height:76px;padding:0 40px;border-radius:38px;color:#fff;font:700 27px 'Inter';
+  background:linear-gradient(90deg,#5F0DB4,#8E32C3 52%,#BC59D1);box-shadow:0 0 40px rgba(188,89,209,0.6);}
+.end .book .ar{font:600 25px 'PlexAR';}
+.end .book .sep{color:rgba(255,255,255,0.55);}
+.end .ft{position:absolute;left:0;top:958px;width:1920px;text-align:center;font:600 17px 'JBMono';letter-spacing:0.32em;color:#fff;}
