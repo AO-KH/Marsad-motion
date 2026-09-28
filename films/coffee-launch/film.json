@@ -1,0 +1,20 @@
+{
+  "title": "Marsad — The story of one coffee (launch cut)",
+  "duration": 48.4,
+  "formats": ["16x9"],
+  "music": {"file": "fit/holizna-movement.mp3", "bpm": 96.67, "downbeat": 0.218, "edit": [[24, 86], [134, 150]], "fade_out": 2.4, "true_peak": -3},
+  "sfx": [
+    {"file": "fit/sfx/glass-open.wav", "beat": 8, "gain": -3},
+    {"file": "fit/sfx/glass-connect.wav", "beats": [16.6, 19, 21.4], "gain": -5},
+    {"file": "fit/sfx/glass-progress-step.wav", "beats": [29, 30, 31, 31.5, 32, 33, 34], "gain": -9},
+    {"file": "fit/sfx/cinematic-warning.wav", "beat": 36, "gain": -1},
+    {"file": "fit/sfx/glass-notification.wav", "beat": 37.2, "gain": -4},
+    {"file": "fit/sfx/glass-send.wav", "beats": [37.7, 38.2], "gain": -7},
+    {"file": "fit/sfx/glass-open.wav", "beat": 40, "gain": -5},
+    {"file": "fit/sfx/glass-press.wav", "beat": 48, "gain": 0},
+    {"file": "fit/sfx/glass-success.wav", "beat": 48.25, "gain": -2},
+    {"file": "fit/sfx/glass-checkpoint.wav", "beat": 53, "gain": -7},
+    {"file": "fit/sfx/cinematic-lock.wav", "beat": 57, "gain": -3},
+    {"file": "fit/sfx/cinematic-wake.wav", "beat": 66, "gain": -1}
+  ]
+}

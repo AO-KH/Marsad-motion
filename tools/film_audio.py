@@ -12,6 +12,9 @@ film.json (or demo.json) may add, next to "music":
   "sfx": [{"type": "whoosh", "beat": 8}, {"type": "tick", "beats": [0.5, 0.75, 1]}, {"type": "chime", "beat": 31.25,
          "gain": -3}, ...]   Types and their parameters: tools/sfx.py. A cue's accent lands on its beat. Keep them
          few and quiet: the client asked for restrained effects.
+         A cue can be a sound file instead of a type: {"file": "fit/sfx/glass-press.wav", "beat": 48, "gain": -3}.
+         Its peak is set to -3 dBFS, then "gain" applies; its attack lands on the beat ("accent": seconds into the
+         file to use another point, e.g. the swell's peak). Licensed files only: record each one in fit/CREDITS.md.
 Levels, then the whole mix is normalised to -14 LUFS / -1.5 dBTP by music_fit.py:
   VO -16 LUFS with its peaks limited to 12 dB over that; music -20 LUFS with VO (-16 without), ducked by up to 8 dB
   while the voice speaks;
@@ -178,6 +181,28 @@ def duck_env(x):
 
 
 # ---------------- effects ----------------
+_FILES = {}
+
+
+def sfx_file(path, accent=None):
+    """A sound file as an effect: mono at SR, peak -3 dBFS. Its accent (the point that lands on the beat) is its
+    attack, where the envelope first reaches 30% of its peak, unless `accent` gives seconds into the file."""
+    key = (path, accent)
+    if key not in _FILES:
+        raw = subprocess.run(['ffmpeg', '-loglevel', 'error', '-i', os.path.join(ROOT, path), '-ac', '1', '-ar', str(SR),
+                              '-f', 'f32le', '-'], capture_output=True, check=True).stdout
+        x = np.frombuffer(raw, np.float32).astype(np.float64)
+        x = x / (np.abs(x).max() + 1e-12) * 10 ** (-3 / 20)
+        if accent is None:
+            k = int(0.004 * SR)
+            e = np.convolve(np.abs(x), np.ones(k) / k, 'same')
+            acc = float(np.argmax(e >= 0.3 * e.max())) / SR
+        else:
+            acc = float(accent)
+        _FILES[key] = (x, acc)
+    return _FILES[key]
+
+
 def sfx_stem(cues, n, when, report):
     x = np.zeros((n, 2))
     count = 0
@@ -186,7 +211,10 @@ def sfx_stem(cues, n, when, report):
         times = [when({'beat': k}) for k in beats] if beats else [when(c)]
         params = {k: v for k, v in c.items() if k not in ('type', 'beat', 'beats', 'at', 'gain', 'pan')}
         for j, t in enumerate(times):
-            s, acc = SFX.make(c['type'], **({**params, 'i': j} if c['type'] == 'absorb' else params))
+            if c.get('file'):
+                s, acc = sfx_file(c['file'], c.get('accent'))
+            else:
+                s, acc = SFX.make(c['type'], **({**params, 'i': j} if c['type'] == 'absorb' else params))
             s = s * 10 ** (float(c.get('gain', 0)) / 20)
             pan = float(c.get('pan', 0))
             i0 = int(round((t - acc) * SR))

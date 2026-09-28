@@ -21,6 +21,10 @@
     - A film that starts mid-song can take `"fade_in": 0.3` to soften the first frame. Starting mid-groove, at full level, also works as a hook.
   - `fade_out` is in seconds, at the end.
   - `loop: [a, b]` repeats beats a..b if the film outruns the track (DEMOS.md §7).
+  - `edit: [[a, b], [c, d], ...]` plays those sections of the track in order (beats from `downbeat`; `start` is ignored), so a track's own intro, groove, silence and drop can be put where the film's scenes need them, without a time-stretch.
+    - Each later section starts 30 ms early for the crossfade, so its first beat lands on the join at full level: the grid runs straight through.
+    - Cut where the pattern repeats: the same position in a 4-bar phrase on both sides (for example song beat 86 → 134 in `holizna-movement.mp3`, both 6 beats into a 16-beat row).
+    - `films/coffee-launch/` uses `[[24, 86], [134, 150]]`: the end of the stripped intro and groove A, then the end of groove B, its two-beat silence and the hit after it (the logo).
 - **No time-stretch, ever:** the client asked for the track as it is. To fit a length, choose `start` and the film's scene lengths instead.
 
 **Stylish, section by section** (beat k at `0.041 + 0.638366·k` s):
@@ -72,6 +76,12 @@ The anatomy turns this into start points for 30, 45 and 60 s films.
 ```
 
 Each cue's accent lands on its beat: a whoosh peaks there, and a riser ends there. `gain` is in dB; `pan` runs from −1 to 1. `tools/sfx.py` builds them all from the launch film's sound design, seeded, so every build sounds the same.
+
+**Sound files instead of synthesized types:** `{"file": "fit/sfx/glass-press.wav", "beat": 48, "gain": 0}`.
+- Its peak is set to −3 dBFS, then `gain` applies. Its attack lands on the beat, or `accent` seconds into the file.
+- `fit/sfx/` holds CC0 UI sounds (romainsimon/uisfx, the "glass" and "cinematic" packs): `connect`, `notification`, `send`, `success`, `open`, `press`, `progress-step`, `checkpoint`, `select`, `warning`, `wake`, `lock`, `start`.
+- The tonal ones were moved by a semitone onto C minor for `holizna-movement.mp3`. With a track in another key, re-tune them (`ffmpeg -af asetrate=44100*2^(n/12),aresample=48000`) so a chime never clashes with the music.
+- Record every file in `fit/CREDITS.md`.
 
 | Type | Use it for |
 |---|---|

@@ -9,7 +9,13 @@ demo.json "music":
   start     where the video starts in the track (s); pick a downbeat so M.B(0) lands at 0
   loop      optional [a, b]: beats counted from `downbeat`. When the track is too short, the section a..b is
             repeated (inserted after its first play) until the video is covered. Whole bars keep the grid intact.
+  edit      optional [[a, b], [c, d], ...]: play these sections of the track in order (beats counted from
+            `downbeat`; `start` is ignored), crossfaded over 30 ms at each join. Cut on bar lines, so the film's beat
+            grid runs straight through: a section from the track's groove, then its breakdown, then its drop, shaped
+            to the film's scenes without a time-stretch. Film beat 0 is beat a of the first section.
   fade_in   seconds (default 0)       fade_out  seconds at the end (default 2.5)
+  true_peak the master's ceiling in dBTP (default -2). AAC can add up to 1.5 dB on bass-heavy tracks: if QA's
+            true peak on the MP4 is over -1, use -3
 No "music" block (or file: null) gives silence.
 A film's "vo" and "sfx" (film.json) are mixed in by tools/film_audio.py before the loudness normalisation.
 """
@@ -40,11 +46,11 @@ def splice(parts, xf):
     return out
 
 
-def loudnorm(x, out):
+def loudnorm(x, out, tp=-2.0):
     with tempfile.TemporaryDirectory() as td:
         raw = os.path.join(td, 'mix.wav')
         write_wav(raw, x)
-        af = 'loudnorm=I=-14:TP=-2:LRA=11'           # -2 dBTP: AAC encoding adds up to ~0.6 dB, the MP4 stays under -1
+        af = f'loudnorm=I=-14:TP={tp:g}:LRA=11'      # -2 dBTP: AAC adds about 0.6 dB; bass-heavy tracks up to 1.5 dB ("true_peak": -3)
         r = subprocess.run(['ffmpeg', '-hide_banner', '-nostats', '-i', raw, '-af', af + ':print_format=json', '-f', 'null', '-'],
                            capture_output=True, text=True).stderr
         j = json.loads(r[r.rindex('{'):r.rindex('}') + 1])
@@ -85,7 +91,20 @@ def main():
     x = decode(src)
     s0 = int(round(float(m.get('start', 0)) * SR))
     parts = [x[s0:]]
-    if len(parts[0]) < n and m.get('loop'):
+    if m.get('edit'):
+        beat = 60.0 / float(m['bpm'])
+        at = lambda k: int(round((float(m['downbeat']) + k * beat) * SR))
+        parts, xf = [], int(0.03 * SR)
+        for q, (a_, b_) in enumerate(m['edit']):
+            i, j = at(a_), min(at(b_), len(x))
+            if not 0 <= i < j:
+                sys.exit(f'edit section {[a_, b_]} is outside the track')
+            # each later section starts 30 ms early (the crossfade), so its first beat lands exactly on the join at full
+            # level: the grid runs straight through and the downbeat after a cut keeps its attack
+            parts.append(x[max(0, i - xf) if q else i:j])
+        print('edit: ' + ' + '.join(f'{a_}-{b_}' for a_, b_ in m['edit']) +
+              f' ({sum(len(p_) for p_ in parts) / SR:.1f} s of track)')
+    elif len(parts[0]) < n and m.get('loop'):
         beat = 60.0 / float(m['bpm'])
         a, b = (int(round((float(m['downbeat']) + k * beat) * SR)) for k in m['loop'])
         if not (s0 <= a < b <= len(x)):
@@ -95,7 +114,7 @@ def main():
             parts.append(x[a:b])
         parts.append(x[b:])
         print(f'loop: beats {m["loop"][0]}-{m["loop"][1]} repeated {len(parts) - 2}x')
-    y = splice(parts, int(0.02 * SR))
+    y = splice(parts, int((0.03 if m.get('edit') else 0.02) * SR))
     if len(y) < n:
         print(f'warning: the track covers {len(y) / SR:.1f} s of {dur:.1f} s; the rest is silence (add a "loop")')
         y = np.concatenate([y, np.zeros((n - len(y), 2), np.float32)])
@@ -108,7 +127,7 @@ def main():
     if extra:
         import film_audio
         y = film_audio.mix(slug, meta, y)
-    loudnorm(y, out)
+    loudnorm(y, out, float(m.get('true_peak', -2)))
     print(f'{os.path.relpath(src, ROOT)} {m.get("start", 0)}s -> {dur:.2f}s{" + vo/sfx" if extra else ""}, -14 LUFS ->',
           os.path.relpath(out, ROOT))
 

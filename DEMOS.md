@@ -257,6 +257,11 @@ section if the demo is longer than the track, fades in and out, and normalises t
   on a downbeat.
 - `loop` (beats counted from `downbeat`) is only needed when the demo is longer than the track; use whole bars
   (multiples of 4) inside the steady part, so the beat grid stays aligned.
+- `edit`: `[[a, b], [c, d], ...]` plays those sections of the track in order instead of one run from `start`
+  (beats counted from `downbeat`), so a track's silence or drop can land where the video needs it. Film beat 0 is
+  beat `a`; cut at the same place in a phrase on both sides. `films/coffee-launch/film.json` is an example.
+- A new track, or a sound file for `"sfx"`, needs a licence that allows commercial use and editing, confirmed on
+  its own page: record it in `fit/CREDITS.md`.
 - Known tracks:
 
   | File | Length | BPM | Downbeat | Shape |
@@ -264,6 +269,7 @@ section if the demo is longer than the track, fades in and out, and normalises t
   | `fit/product-video.mp3` (SoundSurfer "Product Video") | 117 s | 88.0 | 0.016 | k0–3 intro, groove k4–67 (phrases start on k4, k20, k36, k52), a stop on k70–71, quiet breakdown k72–87, build k88–99, drop on k100, groove to the end on k164 (111.8 s). The kick is on beat 4 of the bar |
   | `fit/stylish.mp3` (SoundSurfer "Stylish") | 75 s | 94.0 | 0.041 | k0–3 near silence, k4–7 build, k8–71 groove, k72–79 quiet breakdown, groove from k80 |
   | `fit/music54.m4a` (from the old 54 s cut) | 54 s | 95.96 | 0.03 | k0–15 quiet intro, drums from k16 (10 s), breakdown k48–79, drums back k80 |
+  | `fit/holizna-movement.mp3` (HoliznaCC0 "Movement", CC0) | 173 s | 96.67 | 0.218 | 4-bar rows of 16 beats. k0–31 stripped intro (bass and kick, no hats), k32–95 groove A, k96–135 groove B (brighter hats), a two-beat silence on k136–137, stripped k138–175, groove A again from k176, groove B from k240, ends k272. C minor |
 
   `product-video.mp3` covers walkthroughs up to about 1:50 without a loop; beyond that, `"loop": [100, 164]` repeats
   its second groove. For `stylish.mp3`, `"loop": [8, 72]`.

@@ -16,6 +16,7 @@ Read these as you reach them:
 - `references/film-anatomy.md`: the 63 s film scene by scene, what to keep and what not to copy, the calm 54 s variant, and beat maps for 30, 45 and 60 s films. Read it before storyboarding.
 - `references/audio.md`: the music's map, the voiceover, the sound effects and the mix. Read it before writing the audio in `film.json`.
 - `references/quality-bar.md`: the review checklist and the defects already hit, with their fixes. Read it before reviewing stills.
+- `references/launch-style.md`: the client's launch-video references (dark stage, kinetic type, UI parts blown up in 3D, one big click, zoom-through) and how `films/coffee-launch/` builds them. Read it when a brief asks for "a launch video", "like these references", or a look beyond the light house style.
 
 Out of scope:
 - product demos and walkthroughs (the `marsad-demo` skill);
@@ -89,6 +90,9 @@ Get these in one short round, asking only for what you can't infer:
 2. **Their storyboard or script,** if they have one. It is the master.
 3. **Length: 30–90 s.** A 30 s film holds about 5 scenes, and a 60 s film about 9.
 4. **Music:** the client's track or one they approved. The launch film's track is `fit/stylish.mp3` (94 BPM). Paid ads need the licence.
+   - A new track must be free for commercial use and editing: CC0 or the site's own commercial licence, confirmed on the track's own page. Record it in `fit/CREDITS.md`.
+   - Collections can mislabel. A "CC0" corpus held a track whose own tags said CC BY-NC-ND. NC or ND is never usable.
+   - `fit/holizna-movement.mp3` (HoliznaCC0, CC0, 96.67 BPM, C minor) is the launch cut's track.
 5. **Voice:** captions only, or captions plus the English voiceover.
 6. **The product moments to show:** site-kit pages (DEMOS.md §6.1), or screenshots of new screens to rebuild in `pages.js`.
 7. **Format:** a 16:9 (1920×1080) master, like both brand films. Make a 9:16 version only when asked, and recompose it rather than crop it.

@@ -60,6 +60,8 @@ def grid(meta):
         return None, 0.0
     bpm = float(m['bpm'])
     bar = 4 * 60.0 / bpm
+    if m.get('edit'):                                              # the film starts on beat a of the first section
+        return bpm, round(((-float(m['edit'][0][0])) % 4) * 60.0 / bpm, 5)
     phase = (float(m.get('downbeat', 0.0)) - float(m.get('start', 0.0))) % bar
     if bar - phase < 0.02:                                        # start sits a hair after a downbeat (rounding)
         good = float(m.get('start', 0.0)) - (bar - phase)
