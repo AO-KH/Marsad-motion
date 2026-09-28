@@ -1,0 +1,73 @@
+/* films/ontology-foundry: the 30 s ontology film after the client's two new references: Palantir Foundry's ontology
+   animation (a technical line drawing of stacked plates on light grey, dashed cables flowing between them, objects on
+   pads joined by labelled pills, a white frame with a side label and a title typed into a box at the bottom left) and
+   Ringwriter by Edoardo Lunardi (monospace text on concentric turning rings with dotted guides, letters dropping out).
+   Here in Marsad's purples, with the app's own objects, links, records and pages. */
+#bg{visibility:hidden;}
+.fd-page{position:absolute;left:0;top:0;width:1920px;height:1080px;background:#FFFFFF;}
+.fd-cvs{position:absolute;left:0;top:0;width:1920px;height:1080px;overflow:hidden;}
+.fd-cvs>*{position:absolute;left:0;top:0;}
+.fd-bgc{width:1920px;height:1080px;}
+.fd-svg{position:absolute;left:0;top:0;overflow:visible;}
+.fd-lay{width:1920px;height:1080px;}
+.fd-lay>*{position:absolute;left:0;top:0;}
+
+/* the frame: its border, the side strip (the mark and a turned label) and the title box */
+.fd-strip-m{position:absolute;left:23px;top:38px;width:42px;}
+.fd-side{position:absolute;left:0;top:0;transform-origin:0 0;white-space:nowrap;font:500 16px 'Inter';letter-spacing:0.14em;color:#1C1B20;
+  display:flex;align-items:center;gap:14px;}
+.fd-side .ar{font:500 17px 'PlexAR';letter-spacing:0;}
+.fd-side .ar2{font:500 17px 'PlexAR';letter-spacing:0;direction:rtl;}
+.fd-side .arw{font:400 18px 'Inter';letter-spacing:0;color:#8E32C3;}
+.fd-tt{position:absolute;left:124px;top:836px;width:780px;pointer-events:none;}
+.fd-tt .en{font:350 50px/1.14 'Inter';letter-spacing:-0.025em;color:#141318;white-space:nowrap;}
+.fd-tt .ar{font:400 40px/1.55 'PlexAR';color:#141318;direction:rtl;white-space:nowrap;display:inline-block;margin-top:10px;}
+.fd-tt .nw{color:#A6A2B0;}
+
+/* the hook: rings of the company's raw data */
+.fd-ring text{fill:rgba(255,255,255,0.88);}
+
+/* the diagram's labels: sources, object types, link names, tier names */
+.fd-lb{white-space:nowrap;transform-origin:50% 50%;}
+.fd-src{height:40px;padding:0 16px;border-radius:20px;background:#FFFFFF;border:1.5px solid #1E1D22;display:flex;align-items:center;gap:8px;
+  font:500 19px 'JBMono';color:#1E1D22;direction:ltr;}
+.fd-src.ar{font:500 20px 'PlexAR';direction:rtl;}
+.fd-ty{display:flex;align-items:center;gap:9px;direction:rtl;font:600 25px 'PlexAR';color:#1A1920;}
+.fd-ty .en{font:500 20px 'Inter';color:#6F6B7A;direction:ltr;}
+.fd-pill{height:46px;padding:0 20px;border-radius:23px;background:#E4D2F8;display:flex;align-items:center;gap:10px;direction:rtl;
+  font:500 23px 'PlexAR';color:#241337;}
+.fd-pill .en{font:500 17px 'JBMono';color:#6B4B8F;direction:ltr;}
+.fd-tier{font:500 26px 'Inter';letter-spacing:0.12em;color:#1C1B20;display:flex;align-items:center;gap:16px;}
+.fd-tier .ar{font:500 26px 'PlexAR';letter-spacing:0;}
+.fd-tier .sep{color:#B3AFBD;}
+
+/* the record card beside the invoice type, like Foundry's asset card */
+.fd-card{width:360px;padding:18px 22px 20px;border-radius:12px;background:#FFFFFF;border:2px solid #1E1D22;direction:rtl;
+  box-shadow:0 12px 30px rgba(30,20,60,0.10);}
+.fd-card .hd{display:flex;justify-content:space-between;align-items:center;font:700 22px 'PlexAR';color:#1E1D22;}
+.fd-card .hd .k{font:500 16px 'Inter';letter-spacing:0.12em;color:#8E32C3;direction:ltr;}
+.fd-card .msg{margin-top:12px;padding:12px 16px;border-radius:14px 14px 4px 14px;background:#E9DDF8;font:500 24px 'PlexAR';color:#1E1D22;white-space:nowrap;}
+.fd-card .rw{display:flex;justify-content:space-between;align-items:center;margin-top:12px;padding-top:12px;border-top:1.5px solid #E6E3EC;
+  font:500 22px 'PlexAR';color:#1E1D22;}
+.fd-card .rw .k{font:500 16px 'Inter';letter-spacing:0.08em;color:#8A8594;direction:ltr;}
+.fd-card .rw .n{font-family:'Inter';font-weight:600;}
+
+/* the top tier's screens (the app's own pages) and the action */
+.fd-scr{transform-origin:0 0;border-radius:0;display:block;}
+.fd-act{height:48px;padding:0 20px;border-radius:24px;background:#E4D2F8;display:flex;align-items:center;gap:10px;direction:rtl;
+  font:500 23px 'PlexAR';color:#241337;box-shadow:0 10px 24px rgba(80,30,140,0.18);}
+.fd-act .en{font:500 18px 'Inter';color:#6B4B8F;direction:ltr;}
+.fd-toast{padding:14px 22px;border-radius:14px;background:#EAF7EF;border:2px solid #0B8447;display:flex;align-items:center;gap:12px;direction:rtl;
+  font:700 24px 'PlexAR';color:#0B8447;box-shadow:0 12px 28px rgba(11,132,71,0.18);}
+.fd-toast .en{font:500 15px 'JBMono';letter-spacing:0.12em;color:#3E9A6C;direction:ltr;}
+
+/* the end: the logo on the light canvas, the URL and "Book your demo" */
+.fd-logo{position:absolute;left:0;top:0;}
+.fd-logo img{position:absolute;display:block;}
+.fd-logo .wm{filter:brightness(0);opacity:0.92;}
+.fd-cta{position:absolute;left:0;top:0;display:flex;gap:22px;}
+.fd-cta .url{display:inline-flex;align-items:center;height:80px;padding:0 40px;border-radius:40px;font:600 29px 'Inter';letter-spacing:0.01em;color:#141318;
+  border:2px solid #141318;background:#FFFFFF;}
+.fd-cta .book{display:inline-flex;align-items:center;gap:14px;height:80px;padding:0 42px;border-radius:40px;background:#141318;color:#FFFFFF;font:600 29px 'Inter';}
+.fd-cta .book .ar{font:600 27px 'PlexAR';}
+.fd-cta .book .sep{color:rgba(255,255,255,0.45);}

@@ -159,6 +159,53 @@ For the 30 s ontology campaign ("it is ok to use another style"), `films/ontolog
 - **Keep the cards clear of the headline** in any shot where a group box surrounds them. The box's edge through the headline looks broken.
 - **Check peak speeds.** An `ioC` ease peaks at 3× the average speed, and a 1680 px marquee over 0.78 s peaked at about 215 px a frame. Use `ez.sin` (peak 1.57×) and more time: 1.3 s gives about 68 px a frame.
 
+## A fourth grammar: Palantir Foundry's ontology animation, with Ringwriter
+
+After the Figma cut, the client sent two more references for the ontology film:
+- Palantir Foundry's ontology animation, the hero of palantir.com/platforms/foundry (`Hydrate_Ontology_General_V3.mp4`, 41 s, no sound).
+- "Ringwriter" by Edoardo Lunardi (8 s, shared by @kombaiselects).
+
+`films/ontology-foundry` uses both. It keeps the Figma cut's music, length and landmarks.
+
+**What Foundry's film does:**
+- **Frame:** a white frame round a light-grey canvas. A side strip holds the logo and a turned label ("Palantir Foundry → Powered by the Ontology"). A white box cut into the canvas's bottom left carries a title typed letter by letter, the newest letter grey.
+- **Plates:** a technical line drawing in perspective. Plates with hatched front edges stand in tiers:
+  - data and models at the bottom;
+  - the ontology in the middle;
+  - analytics, workflows and integrations on top.
+- **Cables:** bundles of dashed cables curve up between the tiers and flow.
+- **The ontology plate:** isometric objects on pads, joined by dashed links with mint pill labels, and an asset card with a live number.
+- **Actions:** action pills rise on curved lines to the top tier.
+- **Camera:** it cranes from tier to tier and ends on the whole stack. It is calm, and nothing cuts.
+
+**What Ringwriter does:**
+- Charcoal ground.
+- Monospace capitals set on concentric rings with dotted guides; the type grows with the radius.
+- The rings turn and letters drop out and return.
+- A "CLICK & HOLD" pointer label.
+
+**How we build it:**
+- **Perspective:**
+  - Project with no yaw: `pj(c, x, y, z)` with pitch 36°, a focal length and a target plus distance for the camera.
+  - Y is depth: small y is the front, near the camera.
+  - Camera keys are eased with `ioC`, and each segment is a drift or a crane.
+- **Plates and near clipping:**
+  - When the camera is above a plate, draw its top face; when it is below, draw its underside. Always draw its hatched front band, a screen-space SVG pattern.
+  - Clip every polygon, and every cable's end, to the part in front of the camera (`clipPj`, `NEAR`). Without it, a tier above and behind the camera projects as giant white wedges.
+  - When the camera is below a tier, hide that tier's objects, labels and screens.
+- **Icons:** 30° isometric art (`I(x, y, z)`), with boxes and art laid on their faces by an affine `matrix` for each face (`onXF`, `onYF`). They stand on the plate as billboards, scaled by the projection. Strokes use `vector-effect: non-scaling-stroke`.
+- **Real pages on plates:** a CSS `matrix3d` homography maps a screenshot's box onto the plate's projected quad (`homog`).
+- **Labels:**
+  - Screen-aligned HTML at projected points, scaled by about 1.6 × the projection scale.
+  - Put type names above the icons; link names sit on the links. With both at plate level, they collide.
+  - Put a record's card in the empty sky above the plate's back, with a callout line to its object.
+- **Titles:** the English types a letter every 0.024 s with the newest letter grey, and the Arabic types a word per 16th with the newest word grey. The font shrinks to fit the box.
+- **The hook's rings:** SVG `textPath` on circles, one word per `tspan`, so Arabic keeps its joins. Words drop out through `fill-opacity`.
+
+**Lessons:**
+- **Turn every ring the same way.** Rings turning in opposite directions, fast in the spin into the centre, trip `tools/qa.py`'s shake check (motion reverses across quadrants).
+- **Keep the camera above a tier to show its objects.** In a close-up of a lower tier, the tier above is overhead: show its underside and edge, as Foundry does.
+
 ## Its sound
 
 - The music is HoliznaCC0 "Movement" (CC0), as in `coffee-launch`. The client tried "Oxforf by Night" (v2) and went back to it.
