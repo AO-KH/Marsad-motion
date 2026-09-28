@@ -25,7 +25,7 @@
     - Each later section starts 30 ms early for the crossfade, so its first beat lands on the join at full level: the grid runs straight through.
     - Cut where the pattern repeats: the same position in a 4-bar phrase on both sides (for example song beat 86 → 134 in `holizna-movement.mp3`, both 6 beats into a 16-beat row).
     - `films/coffee-launch/` uses `[[24, 86], [134, 150]]`: the end of the stripped intro and groove A, then the end of groove B, its two-beat silence and the hit after it (the logo).
-  - `stops: [[a, b], ...]` (video beats) silences the music from beat a to beat b; it comes back in time on b, where the track would have been. It gives any track the stop-then-hit that "Movement" has built in: `films/film63-launch/` stops "Oxforf by Night" on k88–91 for the breath and brings it back on the logo (k92). Put the logo on a downbeat (a beat divisible by 4), so the music comes back on beat 1 of a bar.
+  - `stops: [[a, b], ...]` (video beats) silences the music from beat a to beat b; it comes back in time on b, where the track would have been. It gives any track the stop-then-hit that "Movement" has built in: v2 of `films/film63-launch/` stopped "Oxforf by Night" on k88–91 for the breath and brought it back on the logo (k92). Put the logo on a downbeat (a beat divisible by 4), so the music comes back on beat 1 of a bar.
     - `films/film63-launch/` uses `[[16, 96], [128, 150]]` for 63 s: half the stripped intro (the problem), groove A from film beat 16 (the turn), the last two bars of groove B, the silence and the hit. The join skips two whole 16-beat rows, so it is inaudible, and the logo lands at 55.9 s, where the 63 s film's drop was.
 - **No time-stretch, ever:** the client asked for the track as it is. To fit a length, choose `start` and the film's scene lengths instead.
 
@@ -102,9 +102,10 @@ Each cue's accent lands on its beat: a whoosh peaks there, and a riser ends ther
 **Restraint:** the client twice asked for fewer and quieter effects. A 30 s film needs about 10–20 hits. Don't score every tile. Nothing hums or hisses under the mix.
 
 **Effects only on the transitions** (the client, 2026-09-28, choosing the 63 s launch cut's sound): after hearing three UI palettes, the client asked for none of them and for effects on the scene transitions only.
-- `films/film63-launch/film.json` is the model: an `air` move on each change of scene (a zoom-through, a pitch away, a carousel swing, a card leaving), a reversed `air` swell into the two reveals (the mark, the logo) with a soft `thump` under each, and nothing on clicks, typing, chips or counts.
-- `air` is stereo: `dur`, `rise` (where its accent sits, 0–1), `pan0` → `pan1` (a sideways move: 0.7 → −0.7 for a part leaving to the left), `width`, `f_hi` (brighter for the big move), `reverse` (a swell), `seed` (one per cue, so they don't all sound alike). Place the accent on the fastest moment of the move.
-- With so few effects, raise them: `"sfx_level": -20` (the default −25 is for films with many small hits).
+- `films/film63-launch/film.json` is the model: a swipe (`fit/sfx/glass-swipe.wav`, `cinematic-swipe.wav`) on each change of scene (a zoom-through, a pitch away, a carousel swing, a card leaving) and the cinematic hits on the two reveals (`cinematic-start` on the mark, `cinematic-wake` on the logo), and nothing on clicks, typing, chips or counts. The client kept these sounds after trying synthesized `air` whooshes (v2).
+- The effects keep the level they had with the UI sounds (the default −25 LUFS measures the same within 0.2 dB), so there is no need to raise them.
+- `air` (synthesized, stereo) is still there for a film that wants its own whooshes: `dur`, `rise` (where its accent sits, 0–1), `pan0` → `pan1` (a sideways move: 0.7 → −0.7 for a part leaving to the left), `width`, `f_hi` (brighter for the big move), `reverse` (a swell), `seed` (one per cue, so they don't all sound alike). Place the accent on the fastest moment of the move.
+- `"sfx_level"` sets the effects' loudness (default −25 LUFS); raise it only when the transitions get lost under the music.
 - Ask before scoring UI events again.
 
 ## The mix

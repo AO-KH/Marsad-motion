@@ -271,7 +271,7 @@ section if the demo is longer than the track, fades in and out, and normalises t
   beat `a`; cut at the same place in a phrase on both sides. `films/coffee-launch/film.json` and
   `films/film63-launch/film.json` are examples.
 - `stops`: `[[a, b], ...]` in the video's beats: the music drops out on beat a and comes back, in time, on beat b
-  (`films/film63-launch`: a silent breath before the logo).
+  (v2 of `films/film63-launch`: a silent breath before the logo).
 - The master keeps the music's dynamics: one linear gain to −14 LUFS, then a limiter on a 4× oversampled copy (the
   true-peak ceiling). The old two-pass `loudnorm` flattened quiet intros and drops whenever the gain didn't fit.
 - A new track, or a sound file for `"sfx"`, needs a licence that allows commercial use and editing, confirmed on

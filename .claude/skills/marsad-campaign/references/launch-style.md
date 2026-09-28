@@ -66,8 +66,8 @@ Copy the helpers (`kt`, `gwrap`, `T3`, the mesh stage) from the newer one: its `
 
 ## Its sound
 
-- The music is Koi-discovery "Oxforf by Night" (CC0, 96.67 BPM), which the client picked from three samples fitted to the film. A `stop` makes the breath silent, and the music returns with the logo.
-- The client wants effects **only on the transitions**: stereo `air` moves on the scene changes and a swell into each reveal. The UI itself (clicks, typing, chips) makes no sound. See `references/audio.md`.
+- The music is HoliznaCC0 "Movement" (CC0), as in `coffee-launch`. The client tried "Oxforf by Night" (v2) and went back to it.
+- The client wants effects **only on the transitions**: a swipe on each scene change and the cinematic hits on the two reveals (the mark, the logo). The UI itself (clicks, typing, chips) makes no sound. See `references/audio.md`.
 
 ## Still the house rules
 

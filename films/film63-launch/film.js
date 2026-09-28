@@ -4,12 +4,11 @@
    one cursor click, a logo + URL end card. The story and the lines are the 63 s film's own. Kept from the house rules:
    English + Arabic on every line, Western digits, real app text on real parts, no shake (punches <= 1.5%), nothing on
    every beat, no orb behind the logo, "Book your demo" and marsadnasl.com. No voiceover: the words are on screen, as in
-   the references. Sound effects only on the scene transitions (the client's choice): stereo air moves, and a swell into
-   the two reveals (the mark, the logo); the UI itself makes no sound.
-   Music: Koi-discovery "Oxforf by Night" (fit/koi-discovery-oxforf-by-night.mp3, CC0, 96.67 BPM, E minor; chosen by the
-   client from three samples), cut with film.json "edit": song beats 56-63 (the quiet intro), then 88-183 (the end of its
-   build, the beat arriving on film k16, the groove). Film beat k = song k+56 up to k7, then song k+80. A "stop" on k88-91
-   silences it for the breath; it comes back on k92 with the logo. B(k) = k x 0.6207 s; 104 beats, 64.55 s.
+   the references. Sound effects only on the scene transitions (the client's choice, v3): swipes on the scene changes,
+   the cinematic hits on the mark (k16) and the logo (k90); the UI itself (clicks, typing, chips) makes no sound.
+   Music: HoliznaCC0 "Movement" (fit/holizna-movement.mp3, CC0, 96.67 BPM, C minor), cut with film.json "edit": song beats
+   16-95 (the second half of the stripped intro, then groove A) and 128-149 (the last two bars of groove B, its two-beat
+   silence on 136-137, the stripped groove after it). Film beat k = song k+16 up to k79, then song k+48. B(k) = k x 0.6207 s.
      k0-8    sources   the eight famous tiles float scattered in depth; "Your company's data is everywhere."
      k8-14   waiting   a team chat waits for an answer (a dull card: no glow); "When you need a quick answer, your system
                        makes you wait."
@@ -24,10 +23,10 @@
                        k64 (a hit): executed, PO-2291, approved 0 -> 1; "Decision to action. Nothing in between."
      k68-75  shield    six defence rings snap in around the mark, with their layers; "Defense in depth. Sovereign.
                        PDPL-compliant."
-     k75-88  ask       the Assistant: an Arabic question typed and sent, the answer streamed word by word with its source
+     k75-86  ask       the Assistant: an Arabic question typed and sent, the answer streamed word by word with its source
                        chip; "Ask in Arabic." then "The answer comes from your original data."
-     k88-92  breath    black and silent (the music's stop); "One operational nervous system."
-     k92-104 end       on the music's return: the mark, the wordmark, marsadnasl.com, "Book your demo"
+     k86-90  breath    black; "One operational nervous system." held through the music's two-beat silence (k88-89)
+     k90-102 end       on the hit after the silence: the mark, the wordmark, marsadnasl.com, "Book your demo"
    Truth: the Business Pulse rows, the Decisions counters, card and toast, the Knowledge Map's objects and link names, and
    the Assistant's name, input and placeholder are the app's own (site kit). The team chat, the question and its answer,
    the six layers and the tiles flying into the mark are the 63 s film's renderings. */
@@ -54,7 +53,7 @@ const BLOBS=[   // colour, radius, centre and a slow drift (period in seconds); 
   {c:'188,89,209',r:620, x:960,  y:560, ax:90, ay:70, px:23,py:31,k:0.42},
 ];
 const LIGHT=[[0,0.3],[B(7),0.3],[B(8.4),0.16],[B(13.6),0.16],[B(16),0.95],[B(22),0.9],[B(24.2),0.8],[B(44),0.8],[B(45),0.66],
-  [B(67.4),0.66],[B(68.4),0.8],[B(74.4),0.8],[B(75.4),0.62],[B(87.8),0.62],[B(88.8),0.07],[B(91.9),0.07],[B(92.05),0.35],[B(93.2),0.95],[B(120),0.95]];
+  [B(67.4),0.66],[B(68.4),0.8],[B(74.4),0.8],[B(75.4),0.62],[B(85.8),0.62],[B(86.8),0.07],[B(89.9),0.07],[B(90.05),0.35],[B(91.2),0.95],[B(120),0.95]];
 function light(t){for(let i=1;i<LIGHT.length;i++)if(t<=LIGHT[i][0]){const [a,va]=LIGHT[i-1],[b,vb]=LIGHT[i];return lerp(va,vb,ez.ioC(P(t,a,b)));}return LIGHT[LIGHT.length-1][1];}
 M.track(t=>{
   const I=light(t);
@@ -398,7 +397,7 @@ M.track(t=>{
 kt({at:B(68.5),out:B(74.2),y:62,size:56,words:['Defense','in','depth.','Sovereign.',{t:'PDPL-compliant.',g:1}],
   ar:'دفاع متعدد الطبقات — بنية سيادية متوافقة مع نظام حماية البيانات الشخصية.',arSize:30,step:S16*1.5});
 
-/* ================= k75-88 Ask in Arabic: the Assistant; a question typed and sent, the answer streamed from the data ================= */
+/* ================= k75-86 Ask in Arabic: the Assistant; a question typed and sent, the answer streamed from the data ================= */
 const Q='لماذا انخفضت مبيعات الرياض هذا الأسبوع؟';
 const ANS=['انخفضت','المبيعات','§','بسبب','نفاد','المخزون','في','ثلاثة','فروع','—','تم','إنشاء','طلبات','التوريد','تلقائيًا.'];
 const ask=M.el('div','as-card',
@@ -413,7 +412,7 @@ st(ask,{width:'1100px',height:'590px'});
 const ASK=gwrap(ask,1100,590,28);
 const aUM=ask.querySelector('.um'),aAN=ask.querySelector('.an'),aTX=ask.querySelector('.tx'),aCH=ask.querySelector('.chip'),
   aPH=ask.querySelector('.ph'),aQQ=ask.querySelector('.qq'),aCa=ask.querySelector('.caret'),aSend=ask.querySelector('.send');
-const T_AIN=B(75), T_TYPE=B(76), T_SEND=B(78.5), T_POST=B(78.75), T_ANS=B(79.25), T_W=B(79.5), T_CHIP=B(83.25), T_AOUT=B(87.6);
+const T_AIN=B(75), T_TYPE=B(76), T_SEND=B(78.5), T_POST=B(78.75), T_ANS=B(79.25), T_W=B(79.5), T_CHIP=B(83.25), T_AOUT=B(85.6);
 let lastTx='';
 M.track(t=>{
   const on=t>=T_AIN-0.02&&t<T_AOUT+0.7;ASK.style.display=on?'':'none';if(!on)return;
@@ -434,26 +433,26 @@ M.track(t=>{
   const pc=dec(t,T_CHIP,T_CHIP+0.5);st(aCH,{opacity:f3(pc),transform:`scale(${f3(0.94+0.06*pc)})`});
 });
 kt({at:B(75.5),out:B(81.6),y:62,size:72,words:['Ask','in',{t:'Arabic.',g:1}],ar:'اسأل بالعربية.',arSize:38});
-kt({at:B(82),out:B(87.6),y:62,size:56,words:['The','answer','comes','from','your',{t:'original',g:1},{t:'data.',g:1}],ar:'الإجابة من بياناتك الأصلية.',arSize:32,step:S16});
+kt({at:B(82),out:B(85.6),y:62,size:56,words:['The','answer','comes','from','your',{t:'original',g:1},{t:'data.',g:1}],ar:'الإجابة من بياناتك الأصلية.',arSize:32,step:S16});
 
-/* ================= k88-92 the breath: black, the line held through the music's stop ================= */
-kt({at:B(88.5),out:B(91.3),y:392,size:104,words:['One','operational','nervous',{t:'system.',g:1}],ar:'جهاز عصبي تشغيلي واحد لشركتك.',step:S16*1.5});
+/* ================= k86-90 the breath: black, the line held through the music's two-beat silence ================= */
+kt({at:B(86.5),out:B(89.3),y:392,size:104,words:['One','operational','nervous',{t:'system.',g:1}],ar:'جهاز عصبي تشغيلي واحد لشركتك.',step:S16*1.5});
 
-/* ================= k92-104 the end card, on the music's return ================= */
+/* ================= k90-102 the end card, on the hit after the silence ================= */
 const end=M.el('div','end',`<img class="gl" src="assets_logo_m.png"><img class="mk" src="assets_logo_m.png">`+
   `<img class="wm" src="assets_logo_wordmark_white.png">`+
   `<div class="cta"><span class="url">marsadnasl.com</span><span class="book"><span>Book your demo</span><span class="sep">·</span><span class="ar">احجز عرضك التجريبي</span></span></div>`+
   `<div class="ft">NASL TECHNOLOGIES&nbsp;&nbsp;·&nbsp;&nbsp;RIYADH</div>`,HI);
 const eMk=end.querySelector('.mk'),eGl=end.querySelector('.gl'),eWm=end.querySelector('.wm'),eUrl=end.querySelector('.url'),eBook=end.querySelector('.book'),eFt=end.querySelector('.ft');
-const T_END=B(92);
+const T_END=B(90);
 M.track(t=>{
   const on=t>=T_END-0.02;end.style.display=on?'':'none';if(!on)return;
   // the mark lands on the hit: in over 0.75 s, a 3% overshoot, its own glow blooms and settles (no disc behind it)
   const p=P(t,T_END,T_END+0.75), sc=0.86+0.14*ez.dec(p)+0.03*Math.sin(Math.PI*Math.min(1,p*1.3))*(p<1?1:0);
   st(eMk,{opacity:f3(ez.dec(Math.min(1,p*1.6))),transform:`scale(${f3(sc)})`});
   st(eGl,{opacity:f3(0.9*dec(t,T_END,T_END+0.3)*(1-0.55*io(t,T_END+0.4,T_END+2.0))),transform:`scale(${f3(sc*1.02)})`});
-  const pw=dec(t,B(92.8),B(92.8)+0.9);st(eWm,{opacity:f3(pw),transform:`translateY(${f1((1-pw)*16)}px)`});
-  const pu=dec(t,B(94),B(94)+0.8),pb=dec(t,B(94.5),B(94.5)+0.8),pf=dec(t,B(95.5),B(95.5)+0.9);
+  const pw=dec(t,B(90.8),B(90.8)+0.9);st(eWm,{opacity:f3(pw),transform:`translateY(${f1((1-pw)*16)}px)`});
+  const pu=dec(t,B(92),B(92)+0.8),pb=dec(t,B(92.5),B(92.5)+0.8),pf=dec(t,B(93.5),B(93.5)+0.9);
   st(eUrl,{opacity:f3(pu),transform:`translateY(${f1((1-pu)*18)}px) scale(${f3(0.95+0.05*pu)})`});
   st(eBook,{opacity:f3(pb),transform:`translateY(${f1((1-pb)*18)}px) scale(${f3(0.95+0.05*pb)})`});
   st(eFt,{opacity:f3(0.55*pf),transform:`translateY(${f1((1-pf)*10)}px)`});
