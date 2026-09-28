@@ -1,0 +1,14 @@
+{
+  "title": "Marsad — the ontology (30 s campaign film, in the grammar of Figma's launch video)",
+  "duration": 29.7,
+  "formats": ["16x9"],
+  "music": {"file": "fit/lightbeats-joyful-rhythm-walk-funk.mp3", "bpm": 115, "downbeat": 0.538, "edit": [[8, 48], [56, 73]], "fade_out": 2.2, "true_peak": -3},
+  "sfx": [
+    {"type": "swoosh", "beat": 8, "gain": -5, "seed": 61, "pan0": -0.6, "pan1": 0.6},
+    {"file": "fit/sfx/cinematic-start-dsm.wav", "beat": 8, "gain": -7},
+    {"type": "swoosh", "beat": 32, "gain": -7, "seed": 64, "f1": 3000, "body": 0.6, "pan0": 0.4, "pan1": -0.4},
+    {"type": "swoosh", "beat": 48, "gain": -3, "seed": 67, "dur": 1.4, "rise": 0.75, "f1": 4200, "body": 0.6, "pan0": 0, "pan1": 0, "width": 0.55},
+    {"file": "fit/sfx/cinematic-wake-dsm.wav", "beat": 48, "gain": -2}
+  ],
+  "sfx_level": -23
+}

@@ -121,6 +121,44 @@ The client then asked for the Jupiter one **slower and with more detail**. `film
   - **The model:** the carousel's tiles rise into the dome; the Knowledge Map's nodes turn on a projected ellipse around the mark, with lights running along the links.
   - **Defence rings:** canvas strokes with `shadowBlur` (two of them dashed and turning), with a light sweeping the outer ring and faint ring rows below.
 
+## A third grammar: Figma (the ontology film)
+
+For the 30 s ontology campaign ("it is ok to use another style"), `films/ontology-30` uses Figma's launch video
+(`10_figma.mp4`). It suits a film about objects and links, and it brings back the light house style.
+
+**What Figma's film does:**
+- **Stage:** a flat pale canvas (blue-grey), sometimes white, one full-bleed brand-colour shot, and a black end.
+- **Headlines:** top left, about 110 px, medium weight. They type in word by word; the newest word is in the accent colour and a caret follows it.
+- **Canvas grammar:** a black arrow cursor, a marquee, selection boxes with square white handles, coloured name tags, and connectors between frames.
+- **The end:** the headline in a selection box, then the logo with squares at its corners.
+
+**How we build it:**
+- **One world, one camera.** Everything on the canvas lives in world coordinates inside one `transform-origin: 0 0` div. `camT` zooms by `Z` about the world point `F`, which sits at the screen point `S`.
+  - Each shot is a camera setting. Shots cut hard (`window.CUTS`), and the objects keep their places across the cut.
+  - The Knowledge Map's dot grid is painted on a canvas from the same camera. The dots keep their size and fade when they get dense.
+- **Records:** the app's sample data (the search page's invoices, customers, the invoice line and the WhatsApp note) laid out as white cards, each with a source pill in the app's style. List them as renderings.
+- **The marquee:**
+  - It grows in world space from a fixed corner, and the cursor holds its moving corner.
+  - Compute when it first touches each card by inverting its ease. At that moment the card gets a hover ring and straightens from its tilt.
+  - On release, one group box with handles surrounds all the cards, and each card has its own outline.
+- **Types:** one per 8th. The outline turns to the type's colour (the app's Knowledge Map colours) and a tag pops above the card's top-right corner.
+  - The tag uses `translate(right, top) translateX(-100%)` with `transform-origin: 100% 100%`, so it needs no measuring.
+- **Links:**
+  - Each link is an SVG cubic path in world coordinates, drawn on with `stroke-dasharray`, with a dot at its start and an arrowhead at its end.
+  - Its name sits at the curve's midpoint: the app's Arabic label and the API name (`صادرة إلى · billed_to`).
+  - Anchor vertical links on the cards' left quarter, clear of the tags at the top right.
+- **Follow:** light one object and dim the rest to 0.22. A double-click on it sends a light along each of its links, and each neighbour brightens as its light arrives, like the Knowledge Map's explore mode.
+- **Headlines (`hl`):**
+  - Words are spans that switch `visibility`, so the line never reflows. They change on `FQ(t)`, so motion blur never ghosts them.
+  - The caret is absolutely placed after the newest word. Measure it only once its shot is shown; a hidden parent measures 0.
+  - The Arabic starts one 8th after the English starts (not after it ends), so both read for 3 s or more in a 4 s shot.
+- **The end:** on the break, the headline sits at the top in a selection box. On the hit, the box moves down to the logo landing under it; nothing else moves.
+
+**Lessons:**
+- **Keep the scattered layout close to the final one.** In the first cut, two cards crossed the whole screen on their way into formation. That looked messy, and `tools/qa.py` counted a shake because different quadrants moved in opposite directions. Scatter each card near where it will stand, with a tilt, so the tidy-up is short.
+- **Keep the cards clear of the headline** in any shot where a group box surrounds them. The box's edge through the headline looks broken.
+- **Check peak speeds.** An `ioC` ease peaks at 3× the average speed, and a 1680 px marquee over 0.78 s peaked at about 215 px a frame. Use `ez.sin` (peak 1.57×) and more time: 1.3 s gives about 68 px a frame.
+
 ## Its sound
 
 - The music is HoliznaCC0 "Movement" (CC0), as in `coffee-launch`. The client tried "Oxforf by Night" (v2) and went back to it.
