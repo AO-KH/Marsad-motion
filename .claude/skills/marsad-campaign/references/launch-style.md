@@ -200,7 +200,11 @@ After the Figma cut, the client sent two more references for the ontology film:
   - Put type names above the icons; link names sit on the links. With both at plate level, they collide.
   - Put a record's card in the empty sky above the plate's back, with a callout line to its object.
 - **Titles:** the English types a letter every 0.024 s with the newest letter grey, and the Arabic types a word per 16th with the newest word grey. The font shrinks to fit the box.
-- **The hook's rings:** SVG `textPath` on circles, one word per `tspan`, so Arabic keeps its joins. Words drop out through `fill-opacity`.
+- **The hook's rings:** the client asked for icons, not words, in the opening.
+  - The rings carry the drawing's own isometric icons, redrawn light on dark with a second palette (`iconArt(k, true)`).
+  - Each icon kind is one `<g>` in `<defs>`, placed by `<use>` elements that stay upright.
+  - They grow ring by ring, land with a small pop, and drop out now and then like Ringwriter's letters.
+  - The first cut set words on the rings (commit 2449aa3): SVG `textPath` on circles, one word per `tspan` so Arabic keeps its joins, words dropping out through `fill-opacity`.
 
 **Lessons:**
 - **Turn every ring the same way.** Rings turning in opposite directions, fast in the spin into the centre, trip `tools/qa.py`'s shake check (motion reverses across quadrants).

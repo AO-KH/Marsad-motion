@@ -6,14 +6,16 @@
    edges stacked in tiers (data at the bottom, the ontology in the middle, what runs on it on top), bundles of dashed
    cables flowing up between the tiers, isometric objects on pads joined by dashed links with pill labels, a record's
    card beside its type, an action rising from the ontology to the top; a calm camera that cranes from tier to tier.
-   From Ringwriter: the opening, monospace text set on concentric turning rings with dotted guides, words dropping out.
+   From Ringwriter: the opening, concentric turning rings with dotted guides, their items dropping out and returning;
+   here the rings carry icons of the company's data (at the client's request) instead of Ringwriter's letters.
    Here in Marsad's purples, with the app's own objects, link names, records, files and pages.
    House rules kept: English + Arabic on every line, Western digits, no shake (punches <= 1.5%), nothing on every beat, no
    orb behind the logo, "Book your demo" and marsadnasl.com at the end. Sound effects on three transitions only.
    Music: the client's "Joyful Rhythm Walk Funk" (lightbeatsmusic, Pixabay #513936), 115 BPM; the same edit as
    films/ontology-30: song beats 8-47 then 56-72 (the break on film k44-47, the hit on k48). B(k) = k x 0.5217 s.
-     k0-8    hook     the dark canvas: rings of the company's raw data (invoice numbers, customers, amounts, a WhatsApp
-                      message, file names) build out from the centre and turn; "Your company's data is everywhere."
+     k0-8    hook     the dark canvas: rings of icons of the company's data (Odoo's database, WhatsApp, spreadsheets,
+                      PDFs, invoices, customers, products, notes...) build out from the centre and turn; "Your company's data
+                      is everywhere."
                       From k6.75 the rings spin into the centre.
      k8-16   connect  (the groove, a cut to the light canvas) the bottom tier: two plates of sources, Odoo and WhatsApp,
                       and the company's files; cables start flowing up; "Connect your sources."
@@ -26,7 +28,7 @@
                       marsadnasl.com and "Book your demo · احجز عرضك التجريبي"
    Truth: the object types, their links (Arabic labels and API names), the records (INV-10477, INV-10482, the two
    customers, the invoice line, the WhatsApp note), the file names, the page screenshots and the executed action's text
-   are the app's own (site kit, site_pages/). Renderings: the rings, the tiered drawing (sources, ontology, pages: how
+   are the app's own (site kit, site_pages/). Renderings: the rings of icons, the tiered drawing (sources, ontology, pages: how
    Marsad works, drawn), the isometric icons, the record card's layout, the cables, the action's pill and its path. */
 const B=M.B, S8=M.S8, S16=M.S16, ez=M.ez, P=M.P, st=M.st, lerp=M.lerp, FQ=M.FQ;
 const f1=x=>(+x).toFixed(1), f2=x=>(+x).toFixed(2), f3=x=>(+x).toFixed(3);
@@ -48,67 +50,12 @@ const CVS=M.el('div','fd-cvs',null,BGL);CVS.style.clipPath=`polygon(${CVP.map(p=
 const CBG=M.el('div','fd-bgc',null,CVS);
 M.track(t=>{CBG.style.background=t<K_TURN?'#1E1E20':'#F1F0F4';});
 
-/* ================= k0-8 the hook: rings of the company's raw data ================= */
-const HK=svgEl(CVS);const RC={x:1150,y:420};
-const DATA=['INV-10477','متاجر الواحة','8,920 ر.س','INV-10482','مؤسسة الريان التجارية','12,450 ر.س','بند 3','زيت زيتون 5 لتر','640 ر.س',
-  '«الفاتورة تأخرت أسبوعًا»','invoices_q3.xlsx','branch_returns.csv','po_2291.pdf','suppliers_2025.xlsx','Odoo','واتساب'];
-const rnd=M.mulberry(4242);
-const RINGS=[...Array(16).keys()].map(i=>{
-  const r=46+34*i+1.9*i*i, fs=10+1.75*i, id='rp'+i;
-  sv(HK,'path',{id,d:`M${f1(RC.x-r)} ${RC.y} a${f1(r)} ${f1(r)} 0 1 1 ${f1(2*r)} 0 a${f1(r)} ${f1(r)} 0 1 1 ${f1(-2*r)} 0`,fill:'none'});
-  const g=sv(HK,'g',{class:'fd-ring'});
-  sv(g,'circle',{cx:RC.x,cy:RC.y,r:f1(r-fs*0.95),fill:'none',stroke:'rgba(255,255,255,0.22)','stroke-width':1.4,'stroke-dasharray':'0.1 9','stroke-linecap':'round'});
-  const tx=sv(g,'text',{'font-size':f1(fs),'font-family':"'JBMono','PlexAR'",'font-weight':500,'letter-spacing':f2(fs*0.06)});
-  const tp=sv(tx,'textPath',{href:'#'+id});
-  const L=2*Math.PI*r, words=[];let est=0,k=(i*5)%DATA.length;
-  while(est<L*0.97){const w=DATA[k%DATA.length];const span=sv(tp,'tspan',{});span.textContent=(words.length?'  ·  ':'')+w;
-    words.push({e:span,ph:rnd()*20,sp:0.35+rnd()*0.5,on:rnd()});est+=(w.length+5)*fs*0.62;k++;}
-  return {i,r,fs,g,words,w0:(6+rnd()*5)*(1.5-i/20),a0:rnd()*360,t0:B(0.1)+i*0.075};     // all one way, the inner rings faster
-});
-M.track(t=>{
-  if(!show(HK,t<K_TURN))return;
-  const pc=inc(t,B(6.75),K_TURN);                                  // the spin into the centre
-  for(const R of RINGS){
-    const ang=R.a0+R.w0*t+300*pc*pc, sc=1-0.93*pc;
-    R.g.setAttribute('transform',`rotate(${f2(ang)} ${RC.x} ${RC.y}) translate(${f1(RC.x*(1-sc))} ${f1(RC.y*(1-sc))}) scale(${f3(sc)})`);
-    R.g.setAttribute('opacity',f3(1-0.7*pc));
-    const q=FQ(t);
-    for(const w of R.words){                                          // words land over half a second, then drop out now and then
-      const land=R.t0+w.on*0.55, a=q>=land&&(Math.sin(q*w.sp*6.283+w.ph)>-0.93||q<land+0.6);
-      const v=a?'1':'0';if(w.v!==v){w.e.setAttribute('fill-opacity',v);w.v=v;}
-    }
-  }
-});
-
-/* ================= the drawing: tiers in perspective, one camera ================= */
-const PIT=36*Math.PI/180, CP=Math.cos(PIT), SP=Math.sin(PIT), FOC=1150, SC={x:1150,y:470};
-const Z1=1250, Z2=2500, TH=34;
-function camOf(T,D){return {C:{x:T.x,y:T.y-D*CP,z:T.z+D*SP}};}
-function pj(c,x,y,z){const vx=x-c.C.x,vy=y-c.C.y,vz=z-c.C.z,fw=vy*CP-vz*SP,up=vy*SP+vz*CP,s=FOC/fw;return {x:SC.x+vx*s,y:SC.y-up*s,s};}
-const NEAR=90, fwOf=(c,p)=>(p[1]-c.C.y)*CP-(p[2]-c.C.z)*SP;
-function clipPj(c,P3){            // a 3D polygon clipped to the part in front of the camera, projected
-  const out=[];for(let i=0;i<P3.length;i++){const a=P3[i],b=P3[(i+1)%P3.length],fa=fwOf(c,a),fb=fwOf(c,b);
-    if(fa>=NEAR)out.push(a);if((fa>=NEAR)!==(fb>=NEAR)){const u=(NEAR-fa)/(fb-fa);out.push([lerp(a[0],b[0],u),lerp(a[1],b[1],u),lerp(a[2],b[2],u)]);}}
-  return out.map(p=>pj(c,p[0],p[1],p[2]));}
-const CAMK=[   // time, target, distance: drifts and cranes, each eased in and out
-  [K_TURN,{x:260,y:300,z:60},1500],[B(15),{x:60,y:300,z:60},1500],
-  [B(17),{x:-220,y:380,z:Z1+60},1550],[B(23),{x:260,y:380,z:Z1+60},1550],
-  [B(25),{x:160,y:330,z:Z2+80},1650],[B(31.25),{x:-80,y:330,z:Z2+80},1650],
-  [B(33.75),{x:0,y:350,z:Z1+180},4750],[K_END,{x:0,y:350,z:Z1+180},4450],[B(49),{x:0,y:350,z:Z1+180},5500]];
-function camAt(t){
-  let k=0;while(k<CAMK.length-2&&t>=CAMK[k+1][0])k++;
-  const [ta,Ta,Da]=CAMK[k],[tb,Tb,Db]=CAMK[k+1], u=ez.ioC(P(t,ta,tb));
-  return camOf({x:lerp(Ta.x,Tb.x,u),y:lerp(Ta.y,Tb.y,u),z:lerp(Ta.z,Tb.z,u)},lerp(Da,Db,u));
-}
-
-/* the tiers */
-const TIER0=[{k:'sys',x0:-1300,x1:-120,y0:0,y1:560},{k:'files',x0:120,x1:1300,y0:0,y1:560}];
-const TIER1={x0:-1400,x1:1400,y0:0,y1:760};
-const TIER2=[{k:'pulse',x0:-1500,x1:-540,img:'pulse',ar:'نبض الأعمال',en:'BUSINESS PULSE'},{k:'dec',x0:-480,x1:480,img:'decisions',ar:'القرارات',en:'DECISIONS'},
-  {k:'ai',x0:540,x1:1500,img:'assistant',ar:'مساعد مرصد الذكي',en:'ASSISTANT'}].map(p=>({...p,y0:0,y1:620}));
-
-/* the isometric icons, drawn in the reference's line style (a 30-degree isometric; units ~ world units / 1.9) */
-const INK='#1E1D22', W0='#FFFFFF', W1='#EFEDF3', W2='#DDD9E5', AC='#C8A1F0', AC2='#8E32C3', ACL='#E6D6F8';
+/* the isometric icons, drawn in the reference's line style (a 30-degree isometric); the hook shows them light on dark */
+let INK,W0,W1,W2,AC,AC2,ACL;                                           // ink, faces (light to dark), accents
+const PAL_L=['#1E1D22','#FFFFFF','#EFEDF3','#DDD9E5','#C8A1F0','#8E32C3','#E6D6F8'];   // on the light drawing
+const PAL_D=['#E4E0EC','#36333D','#2B2931','#222027','#A77CEB','#D2B2FF','#46355F'];   // light lines on the dark hook
+const usePal=p=>{[INK,W0,W1,W2,AC,AC2,ACL]=p;};usePal(PAL_L);
+const iconArt=(k,dark)=>{usePal(dark?PAL_D:PAL_L);const a=ICON[k]();usePal(PAL_L);return a;};
 const I=(x,y,z)=>[(x-y)*0.866,(x+y)*0.5-z];
 const pts=a=>a.map(p=>f1(p[0])+','+f1(p[1])).join(' ');
 const poly=(a,fill)=>`<polygon points="${pts(a)}" fill="${fill}"/>`;
@@ -141,6 +88,67 @@ const ICON={
   pdf: ()=>sheet(76,rect(8,8,26,12,'#C8322B')+`<text x="21" y="17.5" font-size="8" font-family="Inter" font-weight="700" fill="#fff" text-anchor="middle">PDF</text>`+LINES(4,30)),
 };
 const ICS=2.3;                         // icon art unit -> world units
+
+/* ================= k0-8 the hook: rings of icons, the company's data (after Ringwriter) ================= */
+// Its sources (Odoo's database, WhatsApp, the company's spreadsheets and PDFs) and its records (invoices, invoice lines,
+// customers, products, employees, cities, notes), light on the dark canvas, on concentric turning rings with dotted
+// guides; each one lands, then drops out now and then, the way Ringwriter's letters do. The icons stay upright.
+const HK=svgEl(CVS);const RC={x:1150,y:420};
+const KINDS=['db','chat','xlsx','doc','store','csv','note','box','pdf','line','person','city'];
+const HDEF=sv(HK,'defs',{});
+KINDS.forEach(k=>{const g=sv(HDEF,'g',{id:'hi_'+k});g.innerHTML=iconArt(k,true);g.querySelectorAll('*').forEach(e=>e.setAttribute('vector-effect','non-scaling-stroke'));});
+const rnd=M.mulberry(4242);
+const RINGS=[...Array(8).keys()].map(i=>{
+  const r=70+92*i+7*i*i, sz=0.3+0.105*i, n=Math.max(8,Math.floor(2*Math.PI*r/(110*sz*1.35)));
+  const g=sv(HK,'g',{});
+  const rg=r-(i?(92+14*i)*0.5:40);                                  // a dotted guide between this ring and the one inside it
+  sv(g,'circle',{cx:RC.x,cy:RC.y,r:f1(rg),fill:'none',stroke:'rgba(255,255,255,0.2)','stroke-width':1.4,'stroke-dasharray':'0.1 9','stroke-linecap':'round'});
+  const items=[...Array(n).keys()].map(j=>({j,e:sv(g,'use',{href:'#hi_'+KINDS[(i*5+j*7)%KINDS.length],stroke:'#E4E0EC','stroke-width':1.3,'stroke-linejoin':'round','stroke-linecap':'round'}),
+    on:rnd(),ph:rnd()*20,sp:0.3+rnd()*0.45}));
+  return {i,r,sz,n,g,items,w0:(6+rnd()*5)*(1.5-i/12),a0:rnd()*360,t0:B(0.1)+i*0.12};   // all one way, the inner rings faster
+});
+M.track(t=>{
+  if(!show(HK,t<K_TURN))return;
+  const pc=inc(t,B(6.75),K_TURN), sc=1-0.93*pc, q=FQ(t);           // the spin into the centre
+  for(const R of RINGS){
+    const a0=(R.a0+R.w0*t+300*pc*pc)*Math.PI/180;
+    R.g.setAttribute('opacity',f3(1-0.7*pc));
+    for(const it of R.items){
+      const land=R.t0+it.on*0.5, on=q>=land&&(Math.sin(q*it.sp*6.283+it.ph)>-0.9||q<land+0.7);
+      if(!on){if(it.v!==0){it.e.setAttribute('opacity','0');it.v=0;}continue;}
+      if(it.v!==1){it.e.setAttribute('opacity','1');it.v=1;}
+      const a=a0+2*Math.PI*it.j/R.n, pop=0.6+0.4*dec(t,land,land+0.25), s=R.sz*sc*pop;
+      it.e.setAttribute('transform',`translate(${f1(RC.x+R.r*sc*Math.cos(a))} ${f1(RC.y+R.r*sc*Math.sin(a)+30*s)}) scale(${f3(s)})`);
+    }
+  }
+});
+
+/* ================= the drawing: tiers in perspective, one camera ================= */
+const PIT=36*Math.PI/180, CP=Math.cos(PIT), SP=Math.sin(PIT), FOC=1150, SC={x:1150,y:470};
+const Z1=1250, Z2=2500, TH=34;
+function camOf(T,D){return {C:{x:T.x,y:T.y-D*CP,z:T.z+D*SP}};}
+function pj(c,x,y,z){const vx=x-c.C.x,vy=y-c.C.y,vz=z-c.C.z,fw=vy*CP-vz*SP,up=vy*SP+vz*CP,s=FOC/fw;return {x:SC.x+vx*s,y:SC.y-up*s,s};}
+const NEAR=90, fwOf=(c,p)=>(p[1]-c.C.y)*CP-(p[2]-c.C.z)*SP;
+function clipPj(c,P3){            // a 3D polygon clipped to the part in front of the camera, projected
+  const out=[];for(let i=0;i<P3.length;i++){const a=P3[i],b=P3[(i+1)%P3.length],fa=fwOf(c,a),fb=fwOf(c,b);
+    if(fa>=NEAR)out.push(a);if((fa>=NEAR)!==(fb>=NEAR)){const u=(NEAR-fa)/(fb-fa);out.push([lerp(a[0],b[0],u),lerp(a[1],b[1],u),lerp(a[2],b[2],u)]);}}
+  return out.map(p=>pj(c,p[0],p[1],p[2]));}
+const CAMK=[   // time, target, distance: drifts and cranes, each eased in and out
+  [K_TURN,{x:260,y:300,z:60},1500],[B(15),{x:60,y:300,z:60},1500],
+  [B(17),{x:-220,y:380,z:Z1+60},1550],[B(23),{x:260,y:380,z:Z1+60},1550],
+  [B(25),{x:160,y:330,z:Z2+80},1650],[B(31.25),{x:-80,y:330,z:Z2+80},1650],
+  [B(33.75),{x:0,y:350,z:Z1+180},4750],[K_END,{x:0,y:350,z:Z1+180},4450],[B(49),{x:0,y:350,z:Z1+180},5500]];
+function camAt(t){
+  let k=0;while(k<CAMK.length-2&&t>=CAMK[k+1][0])k++;
+  const [ta,Ta,Da]=CAMK[k],[tb,Tb,Db]=CAMK[k+1], u=ez.ioC(P(t,ta,tb));
+  return camOf({x:lerp(Ta.x,Tb.x,u),y:lerp(Ta.y,Tb.y,u),z:lerp(Ta.z,Tb.z,u)},lerp(Da,Db,u));
+}
+
+/* the tiers */
+const TIER0=[{k:'sys',x0:-1300,x1:-120,y0:0,y1:560},{k:'files',x0:120,x1:1300,y0:0,y1:560}];
+const TIER1={x0:-1400,x1:1400,y0:0,y1:760};
+const TIER2=[{k:'pulse',x0:-1500,x1:-540,img:'pulse',ar:'نبض الأعمال',en:'BUSINESS PULSE'},{k:'dec',x0:-480,x1:480,img:'decisions',ar:'القرارات',en:'DECISIONS'},
+  {k:'ai',x0:540,x1:1500,img:'assistant',ar:'مساعد مرصد الذكي',en:'ASSISTANT'}].map(p=>({...p,y0:0,y1:620}));
 
 /* what stands on the tiers */
 const SRCS=[{ic:'db',x:-920,y:300,lb:'Odoo',cls:''},{ic:'chat',x:-480,y:300,lb:'واتساب',cls:' ar'},
