@@ -1,18 +1,19 @@
 {
-  "title": "Marsad — style sample: Jupiter Exchange (v2, slower)",
-  "duration": 53.37,
+  "title": "Marsad — style sample: Jupiter Exchange (v2, slower; the client's funk track)",
+  "duration": 60.52,
   "formats": ["16x9"],
-  "music": {"file": "fit/holizna-movement.mp3", "bpm": 96.67, "downbeat": 0.218, "edit": [[16, 80], [128, 150]], "fade_out": 2.4, "true_peak": -3},
+  "music": {"file": "fit/lightbeats-joyful-rhythm-walk-funk.mp3", "bpm": 115, "downbeat": 0.538,
+            "edit": [[0, 16], [8, 16], [16, 48], [64, 96], [48, 64], [64, 76]], "fade_out": 2.4, "true_peak": -3},
   "sfx": [
-    {"file": "fit/sfx/glass-swipe.wav", "beat": 8, "gain": -13},
-    {"file": "fit/sfx/cinematic-start.wav", "beat": 16, "gain": -2},
-    {"file": "fit/sfx/glass-swipe.wav", "beat": 24, "gain": -10},
-    {"file": "fit/sfx/glass-swipe.wav", "beat": 28, "gain": -10},
-    {"file": "fit/sfx/cinematic-swipe.wav", "beat": 36, "gain": -8},
-    {"file": "fit/sfx/glass-swipe.wav", "beat": 44, "gain": -10},
-    {"file": "fit/sfx/cinematic-swipe.wav", "beat": 52, "gain": -8},
+    {"file": "fit/sfx/glass-swipe.wav", "beat": 10, "gain": -13},
+    {"file": "fit/sfx/cinematic-start-dsm.wav", "beat": 24, "gain": -2},
+    {"file": "fit/sfx/glass-swipe.wav", "beat": 34, "gain": -10},
+    {"file": "fit/sfx/glass-swipe.wav", "beat": 40, "gain": -10},
+    {"file": "fit/sfx/cinematic-swipe.wav", "beat": 50, "gain": -8},
     {"file": "fit/sfx/glass-swipe.wav", "beat": 60, "gain": -10},
-    {"file": "fit/sfx/glass-swipe.wav", "beat": 70, "gain": -12},
-    {"file": "fit/sfx/cinematic-wake.wav", "beat": 74, "gain": -1}
+    {"file": "fit/sfx/cinematic-swipe.wav", "beat": 70, "gain": -8},
+    {"file": "fit/sfx/glass-swipe.wav", "beat": 80, "gain": -10},
+    {"file": "fit/sfx/glass-swipe.wav", "beat": 96, "gain": -12},
+    {"file": "fit/sfx/cinematic-wake-dsm.wav", "beat": 104, "gain": -1}
   ]
 }

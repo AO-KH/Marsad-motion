@@ -285,6 +285,7 @@ section if the demo is longer than the track, fades in and out, and normalises t
   | `fit/music54.m4a` (from the old 54 s cut) | 54 s | 95.96 | 0.03 | k0–15 quiet intro, drums from k16 (10 s), breakdown k48–79, drums back k80 |
   | `fit/koi-discovery-oxforf-by-night.mp3` (Koi-discovery "Oxforf by Night", CC0) | 227 s | 96.67 | 0.466 | k0–63 a quiet intro (about 6 dB under the groove), k64–95 the build, the full groove from k96 to about k340, then the outro. No stop of its own: use `stops`. E minor |
   | `fit/holizna-movement.mp3` (HoliznaCC0 "Movement", CC0) | 173 s | 96.67 | 0.218 | 4-bar rows of 16 beats. k0–31 stripped intro (bass and kick, no hats), k32–95 groove A, k96–135 groove B (brighter hats), a two-beat silence on k136–137, stripped k138–175, groove A again from k176, groove B from k240, ends k272. C minor |
+  | `fit/lightbeats-joyful-rhythm-walk-funk.mp3` (lightbeatsmusic "Joyful Rhythm Walk Funk", Pixabay) | 138 s | 115.0 | 0.538 | Funk. 4-bar rows of 16 beats. k0–15 intro (bass, no hats, about 7 dB under the groove), k16–59 groove A, a one-bar break on k60–63 (the bass drops out, about 15 dB down: the track's own stop before a hit), k64–95 groove B (busier hats), k96–127 breakdown without bass, k128–159 groove C, k160–223 the full groove, k224–255 outro, one last hit on k256. Films: `style-jupiter` v2 |
 
   `product-video.mp3` covers walkthroughs up to about 1:50 without a loop; beyond that, `"loop": [100, 164]` repeats
   its second groove. For `stylish.mp3`, `"loop": [8, 72]`.

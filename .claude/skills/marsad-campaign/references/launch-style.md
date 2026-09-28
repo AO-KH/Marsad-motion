@@ -123,6 +123,8 @@ The client then asked for the Jupiter one **slower and with more detail**. `film
 ## Its sound
 
 - The music is HoliznaCC0 "Movement" (CC0), as in `coffee-launch`. The client tried "Oxforf by Night" (v2) and went back to it.
+- For the Jupiter style sample the client then supplied their own track, lightbeatsmusic "Joyful Rhythm Walk Funk" (Pixabay, 115 BPM; its map is in DEMOS.md). Its intro is only 16 beats, so the edit plays the intro's second half twice. Its own one-bar break (k60–63) is the stop before the logo's hit.
+- **Moving a film to a track with another tempo:** keep the scene lengths in seconds. Map the old scene boundaries onto the new beats, one scene at a time, rather than keeping the beat numbers (at 115 BPM the same beats run 16% faster). Then line up the landmarks (the groove's start, the stop and the hit) with the new track's sections.
 - The client wants effects **only on the transitions**: a swipe on each scene change and the cinematic hits on the two reveals (the mark, the logo). The UI itself (clicks, typing, chips) makes no sound. See `references/audio.md`.
 
 ## Still the house rules
