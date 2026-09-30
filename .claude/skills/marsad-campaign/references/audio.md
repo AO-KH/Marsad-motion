@@ -1,131 +1,110 @@
-# Music, voiceover, sound effects and the mix
+# Music, effects, the mix, and an optional voice
 
-`film.json` holds a film's audio next to its picture. `./build_demo.sh <slug>` builds it:
-1. `tools/music_fit.py` fits the music.
-2. `tools/film_audio.py` adds the voiceover and the effects.
-3. The whole mix is mastered to −14 LUFS / −2 dBTP: one linear gain, then a limiter on a 4× oversampled copy, so the music keeps its own dynamics (see "The mix").
+`film.json` holds a film's audio. `./build_demo.sh <slug>` builds it:
+1. `tools/music_fit.py` fits the music: the `edit`, with no time-stretch.
+2. `tools/film_audio.py` adds the effects (and a voice, if any).
+3. The mix is mastered to −14 LUFS with one linear gain, then a limiter on a 4× oversampled copy, so the track keeps its own dynamics.
 
-## Music
+## The music: the client's funk track
 
-```json
-"music": {"file": "fit/stylish.mp3", "bpm": 93.99, "downbeat": 0.041, "start": 28.129, "fade_out": 2.5}
-```
+The client supplied it for the 48 s film ("use this music"), and both approved films use it.
 
-- **Which track:** the client's track, or one they approved. For paid ads, get the licence. The launch film's track is `fit/stylish.mp3` (SoundSurfer "Stylish"). `fit/product-video.mp3` is the demos' track.
-- **A new track:** run `python3 tools/beats.py <file>` first. It prints the tempo, four downbeat candidates and a loudness bar per bar.
-  - Sections start on a downbeat, so confirm the downbeat against a section change before trusting it.
-  - Then run `--downbeat <s> --beats A-B`. The map is numbered from your downbeat, not its guess, and prints beat by beat: one-beat stops, drops and hits show up there.
-- **Fields:**
-  - `start` is a downbeat, so beat 0 of the film is a downbeat and `M.B(k)` lines up with the music.
-    - Give it to the millisecond: `tools/make_demo.py` warns when a rounded value slips the grid by a bar.
-    - A film that starts mid-song can take `"fade_in": 0.3` to soften the first frame. Starting mid-groove, at full level, also works as a hook.
-  - `fade_out` is in seconds, at the end.
-  - `loop: [a, b]` repeats beats a..b if the film outruns the track (DEMOS.md §7).
-  - `edit: [[a, b], [c, d], ...]` plays those sections of the track in order (beats from `downbeat`; `start` is ignored), so a track's own intro, groove, silence and drop can be put where the film's scenes need them, without a time-stretch.
-    - Each later section starts 30 ms early for the crossfade, so its first beat lands on the join at full level: the grid runs straight through.
-    - Cut where the pattern repeats: the same position in a 4-bar phrase on both sides (for example song beat 86 → 134 in `holizna-movement.mp3`, both 6 beats into a 16-beat row).
-    - `films/coffee-launch/` uses `[[24, 86], [134, 150]]`: the end of the stripped intro and groove A, then the end of groove B, its two-beat silence and the hit after it (the logo).
-  - `stops: [[a, b], ...]` (video beats) silences the music from beat a to beat b; it comes back in time on b, where the track would have been. It gives any track the stop-then-hit that "Movement" has built in: v2 of `films/film63-launch/` stopped "Oxforf by Night" on k88–91 for the breath and brought it back on the logo (k92). Put the logo on a downbeat (a beat divisible by 4), so the music comes back on beat 1 of a bar.
-    - `films/film63-launch/` uses `[[16, 96], [128, 150]]` for 63 s: half the stripped intro (the problem), groove A from film beat 16 (the turn), the last two bars of groove B, the silence and the hit. The join skips two whole 16-beat rows, so it is inaudible, and the logo lands at 55.9 s, where the 63 s film's drop was.
-- **No time-stretch, ever:** the client asked for the track as it is. To fit a length, choose `start` and the film's scene lengths instead.
+- **The track:** lightbeatsmusic "Joyful Rhythm Walk Funk", Pixabay music 513936, `fit/lightbeats-joyful-rhythm-walk-funk.mp3`.
+  - Licence: the Pixabay Content License, recorded in `fit/CREDITS.md`. Pixabay's pages answer 403 to the build container, so the licence page was not opened from here.
+  - 115 BPM, downbeat 0.538 s, key D# minor, 138 s long.
+- **Its sections** (song beats; rows of 16 beats):
 
-**Stylish, section by section** (beat k at `0.041 + 0.638366·k` s):
+| Song beats | Section | Use |
+|---|---|---|
+| k0–15 | Intro: bass, no hats, about 7 dB under the groove | The hook and the problem |
+| k16–59 | Groove A | The turn on k16; the story's shots |
+| k60–63 | The one-bar break: the bass drops out, about 15 dB down | A held line: the track's own stop before a hit |
+| k64–95 | Groove B: busier hats | After the break: the hit on k64 (the end), or a lift for a proof |
+| k96–127 | Breakdown without bass | A quiet moment, if a long film needs one |
+| k128–159 | Groove C | — |
+| k160–223 | The full groove | — |
+| k224–255, k256 | Outro, one last hit | — |
 
-| Song beats | Time (s) | Section | Good for |
-|---|---|---|---|
-| k0–3 | 0.0–2.6 | near silence | a cold open, the first source tiles |
-| k4–7 | 2.6–5.1 | build | the problem building up |
-| k8–71 | 5.1–45.4 | groove | friction, the reveal, the promise, the proofs |
-| k55, k95 | 35.2, 60.7 | a one-beat stop, the last beat of a bar | a hit right after it: the reveal on the next bar line (k12 in the 30 s map) |
-| k72–78 | 46.0–50.0 | breakdown, quietest | one close moment: a click, a question, a typed Arabic prompt |
-| k79–80 | 50.5–51.1 | the lift | anticipation (a `riser` ending on k81) |
-| k81 | 51.7 | the drop, on beat 2 of its bar | the logo and the end card (`bloom`) |
-| k82–112 | 52.4–71.5 | full, then fading | the end card's hold |
-
-The anatomy turns this into start points for 30, 45 and 60 s films.
-
-## Voiceover
+- **The block, as in the 30 s film:**
 
 ```json
-"vo": {"voice": 6, "lines": [
-  {"id": "vo1", "text": "Your company's data is everywhere.", "beat": 1, "max": 2.6},
-  {"id": "vo5", "text": "Marsad. Book your demo at marsad nasl dot com.", "beat": 38.5, "max": 3.6}]}
+"music": {"file": "fit/lightbeats-joyful-rhythm-walk-funk.mp3", "bpm": 115, "downbeat": 0.538,
+          "edit": [[8, 48], [56, 73]], "fade_out": 2.2, "true_peak": -3}
 ```
 
-- **The voice:** voice 6 is Kokoro "Michael", the English voice the client chose after rejecting robotic ones. Don't change it without asking. There is no approved Arabic voice.
-  - Its takes have sharp consonant peaks, about 20 dB over its loudness. The mix limits them to 12 dB, transparently. Without that, the master was squashed and missed the true-peak bar after AAC.
-- **Timing:**
-  - Each line's first syllable lands on its `beat` (or at `at` seconds).
-  - A take longer than `max` is spoken again, faster, up to 3 times and never beyond 1.15×. Past that it sounds rushed, so cut words or give the line more beats.
-  - `speed` sets a starting pace, and `gain` (dB) nudges one line.
-- **Writing for the voice:**
-  - About 2.5 words per second at speed 1.0, so a 2.5 s slot holds 5–7 words.
-  - One line per scene, and it can be shorter than the caption. The caption carries the Arabic and the detail.
-  - Spell out URLs and odd words the way they are said: "marsad nasl dot com", "P D P L".
-  - Leave at least one beat between lines, and keep the drop free for the logo's sound: speak the last line after it.
-- **Checking:** `python3 tools/film_audio.py <slug>` speaks the lines (cached in `out/<slug>-vo/`, re-spoken only when a line changes; older takes are removed). It prints each line's start and end, and flags:
-  - `OVER max`: the line is still too long. Cut words, or give it more beats.
-  - `OVERLAPS the next line`: move the next line later, or this one earlier.
-  - `RUNS PAST the end`: move it earlier, or lengthen the film.
-- **Captions:** they must still tell the whole story, because many viewers watch muted.
+- **`edit`** plays those song sections in order (beats from `downbeat`). `the-two-films.md` has the tested maps for 30, 44, 48 and 60 s.
+  - Each later section starts 30 ms early for a crossfade, so its first beat lands on the join at full level.
+  - Start the first section on a bar line (a song beat divisible by 4), so film beat 0 is a downbeat.
+  - A section can end a few beats into a phrase to fit the film's length; the fade covers it.
+- **`true_peak: -3`:** the track is bass-heavy, and AAC adds up to 1.5 dB to its peaks. Without it the MP4's true peak fails QA.
+- **`fade_out`** 2.2–2.4 s at the end.
+- **No time-stretch, ever.** To fit a length, change the edit and the scene lengths.
 
-## Sound effects
+**Another track** only if the client supplies or approves it:
+- Its licence must allow commercial use and editing (CC0, or the site's own commercial licence), confirmed on the track's own page, and recorded in `fit/CREDITS.md`. Collections mislabel: NC or ND is never usable.
+- Map it with `python3 tools/beats.py <file>` (the tempo, downbeat candidates, a loudness bar per bar). Confirm the downbeat against a section change, then run `--downbeat <s> --beats A-B` for a beat-by-beat map with its stops and hits.
+- **Moving a film to another tempo:** keep the scene lengths in seconds and map the scene boundaries onto the new beats one by one. Then line up the landmarks: the groove's start, the stop and the hit.
+- `stops: [[a, b]]` (film beats) silences any track from a to b and brings it back in time. It gives a track without its own break the stop-then-hit.
+
+## Effects: the transitions only
+
+The client asked for whooshes ("add whoosh sfx") and then for fewer ("reduce it dont put it at everything"). The approved pattern:
+
+| Where | Cue | Values |
+|---|---|---|
+| The turn (the groove's first beat) | `swoosh` + `fit/sfx/cinematic-start-dsm.wav` | swoosh `gain` −3, `dur` 1.4, `rise` 0.75, `f1` 4200, `body` 0.6, `pan0`/`pan1` 0, `width` 0.55; the hit at −4 |
+| One or two big mid-film moves (a flyover, a swing, a pull-back) | `swoosh` alone | `gain` −5 to −6, `dur` 1.0 (default), `f1` 3000, `body` 0.6–0.7, or `f2` 1200 for a darker tail; pan it the way the picture moves (0.5 → −0.5) |
+| The end (the hit) | `swoosh` + `fit/sfx/cinematic-wake-dsm.wav` | as the turn's, `gain` −2; the hit at −2 |
+
+- **Counts:** three cues in a 30 s film (turn, one move, end), four in a 48 s film (turn, two moves, end).
+- **Levels:** `"sfx_level": -23`. The two hits sit about 8 dB under the groove, and the mid-film whooshes about 16 dB under.
+- **Nothing on** clicks, typing, chips, counters or pages landing. Ask before scoring UI events again.
+- **`swoosh`** (tools/sfx.py) is a synthesized stereo pass-by.
+  - A noise band sweeps up from `f0` to `f1` into its accent (at `rise` of its length, placed on the beat) and falls to `f2`, over a low body (`body`).
+  - It crosses the field from `pan0` to `pan1`, fastest at the accent.
+  - Give each cue its own `seed`, so no two sound alike.
+- **The `-dsm` hits** are the CC0 "cinematic" pack's `start` and `wake` (romainsimon/uisfx), re-tuned to the track's key (D# minor) by +1 and −1 semitone with rubberband. With another track, re-tune the originals to its key the same way (ffmpeg's `asetrate=48000*2^(n/12),aresample=48000` also works but changes their length), and record the change in `fit/CREDITS.md`.
+- **Recorded whooshes found so far were no use:** OpenGameArt's CC0 "Swishes" are sword swings, and its longer whooshes are CC-BY.
 
 ```json
-"sfx": [{"type": "whoosh", "beat": 8}, {"type": "absorb", "beats": [9, 9.25, 9.5, 9.75]},
-        {"type": "thump", "beat": 11}, {"type": "click", "beat": 31}, {"type": "chime", "beat": 31.25},
-        {"type": "riser", "beat": 37}, {"type": "bloom", "beat": 37}]
+"sfx": [
+  {"type": "swoosh", "beat": 8, "gain": -3, "seed": 81, "dur": 1.4, "rise": 0.75, "f1": 4200, "body": 0.6, "pan0": 0, "pan1": 0, "width": 0.55},
+  {"file": "fit/sfx/cinematic-start-dsm.wav", "beat": 8, "gain": -4},
+  {"type": "swoosh", "beat": 32, "gain": -6, "seed": 84, "f1": 3000, "body": 0.6, "pan0": 0.3, "pan1": -0.3},
+  {"type": "swoosh", "beat": 48, "gain": -2, "seed": 87, "dur": 1.4, "rise": 0.75, "f1": 4200, "body": 0.6, "pan0": 0, "pan1": 0, "width": 0.55},
+  {"file": "fit/sfx/cinematic-wake-dsm.wav", "beat": 48, "gain": -2}
+],
+"sfx_level": -23
 ```
-
-Each cue's accent lands on its beat: a whoosh peaks there, and a riser ends there. `gain` is in dB; `pan` runs from −1 to 1. `tools/sfx.py` builds them all from the launch film's sound design, seeded, so every build sounds the same.
-
-**Sound files instead of synthesized types:** `{"file": "fit/sfx/glass-press.wav", "beat": 48, "gain": 0}`.
-- Its peak is set to −3 dBFS, then `gain` applies. Its attack lands on the beat, or `accent` seconds into the file.
-- `fit/sfx/` holds CC0 UI sounds (romainsimon/uisfx, the "glass" and "cinematic" packs): `connect`, `notification`, `send`, `success`, `open`, `press`, `progress-step`, `checkpoint`, `select`, `warning`, `wake`, `lock`, `start`.
-- The tonal ones were moved by a semitone onto C minor for `holizna-movement.mp3`. With a track in another key, re-tune them (`ffmpeg -af asetrate=44100*2^(n/12),aresample=48000`) so a chime never clashes with the music.
-- Record every file in `fit/CREDITS.md`.
-
-| Type | Use it for |
-|---|---|
-| `whoosh` | an element or the window gliding into a new scene (not every move) |
-| `whoosh_rev` | a swell into a reveal |
-| `absorb` | sources flying into the mark, one per 16th (`beats`; the pitch rises through the list) |
-| `tick` / `key` | counts and typing (quiet; `gain` −6) |
-| `pop` / `blip` | a chip or a pill appearing |
-| `click` | the cursor pressing a button, on the click's beat |
-| `chime` | a success: an approval, a toast (a quarter beat after the click) |
-| `thump` | a landing: the mark settling |
-| `riser` | the lift into a drop (it ends on the drop) |
-| `swell` | a soft change of scene |
-| `bloom` | the logo on the drop: a low boom, a shimmer and a D minor chord that now fades out properly |
-
-**Restraint:** the client twice asked for fewer and quieter effects. A 30 s film needs about 10–20 hits. Don't score every tile. Nothing hums or hisses under the mix.
-
-**Effects only on the transitions** (the client, 2026-09-28, choosing the 63 s launch cut's sound): after hearing three UI palettes, the client asked for none of them and for effects on the scene transitions only.
-- `films/film63-launch/film.json` is the model: a swipe (`fit/sfx/glass-swipe.wav`, `cinematic-swipe.wav`) on each change of scene (a zoom-through, a pitch away, a carousel swing, a card leaving) and the cinematic hits on the two reveals (`cinematic-start` on the mark, `cinematic-wake` on the logo), and nothing on clicks, typing, chips or counts. The client kept these sounds after trying synthesized `air` whooshes (v2).
-- The effects keep the level they had with the UI sounds (the default −25 LUFS measures the same within 0.2 dB), so there is no need to raise them.
-- `swoosh` (synthesized, stereo) is the whoosh the client asked for on the Jupiter style sample (`films/style-jupiter/film.json`): a cinematic pass-by. A noise band sweeps up from `f0` to `f1` into the accent (the cut, `rise` of the way in) and falls to `f2` after it, over a low body (`body`), crossing the field from `pan0` to `pan1`, fastest at the accent. The client first had one on every cut and big move (14). They then asked for fewer and quieter ones, so there are four: into the two reveals (with their cinematic hits) and on two big mid-film moves. Don't put a whoosh on every cut. Sizes used: a cut `dur` 1.0; into a reveal `dur` 1.4, `rise` 0.75, `f1` 4200, `body` 0.6; soft `dur` 0.7, `f1` 2800. Give each cue its own `seed`, and point its pan the way the picture moves. A 30 s film takes three: `films/ontology-30` has one on the turn (k8, with `cinematic-start-dsm` at −7, panned left to right like the marquee), a quiet one on the cut to the model (k32, −7) and the reveal on the logo's hit (k48, with `cinematic-wake-dsm`). At `sfx_level` −23 the two into the reveals sit about 8 dB under the groove, and the two mid-film ones (gain −5) about 16 dB under. Recorded whooshes found so far were no use: OpenGameArt's CC0 "Swishes" pack (artisticdude) is sword swings of 0.1–0.2 s, and its longer whooshes are CC-BY or BY-SA.
-- `air` (synthesized, stereo) is still there for a film that wants its own whooshes: `dur`, `rise` (where its accent sits, 0–1), `pan0` → `pan1` (a sideways move: 0.7 → −0.7 for a part leaving to the left), `width`, `f_hi` (brighter for the big move), `reverse` (a swell), `seed` (one per cue, so they don't all sound alike). Place the accent on the fastest moment of the move.
-- `"sfx_level"` sets the effects' loudness (default −25 LUFS); raise it only when the transitions get lost under the music.
-- Ask before scoring UI events again.
 
 ## The mix
 
-`tools/film_audio.py` sets the levels, and `tools/music_fit.py` normalises the result:
-
 | Stem | Level | Notes |
 |---|---|---|
-| Voiceover | −16 LUFS | 80 Hz high-pass, 8 ms fades, trimmed to the first syllable, peaks limited to 12 dB over its level |
-| Music | −20 LUFS with a voiceover, −16 without | ducked by up to 8 dB while the voice speaks (80 ms attack, 350 ms release) |
-| Effects | −25 LUFS (`sfx_level` in film.json to change it) | ducked a little under the voice |
-| Master | −14 LUFS integrated, −2 dBTP | one linear gain, then a limiter on a 4× oversampled copy (the true-peak ceiling), the same for demos. AAC adds up to about 0.6 dB, so the MP4 stays under −1 dBTP. It replaced a two-pass `loudnorm`, which fell back to its dynamic mode whenever the gain would break the ceiling and flattened quiet intros, stops and drops |
+| Music | −16 LUFS without a voice, −20 with one | ducked by up to 8 dB under a voice |
+| Effects | `sfx_level` (−23 in the main theme; the house default is −25) | ducked a little under a voice |
+| Voice (optional) | −16 LUFS | 80 Hz high-pass, peaks limited to 12 dB over its level |
+| Master | −14 LUFS, −2 dBTP (`true_peak` −3 for the funk track) | one linear gain, then an oversampled limiter |
 
-**To check it:** read the report the build prints.
-- Each voice line's times, and the effects count.
-- `levels`: each stem's measured loudness and its target, and the mix's peak-to-loudness ratio. Above 15 dB, the master gets limited by more than 3 dB; lower the loudest cue's `gain`.
+- **Check it** on the report the build prints: each stem's level and target, the effects count, and the peak-to-loudness ratio. Above 15 dB the master gets limited hard, so lower the loudest cue's `gain`.
+- **QA measures the MP4:** `audio -14.0 LUFS, true peak -2.1 dBTP OK`. It fails outside −14 ± 1.5 LUFS or above −1 dBTP.
+- **After an audio-only change** (a cue, a gain, the edit's fade), run `ONLY=audio ./build_demo.sh <slug> 16x9`. It re-mixes, re-muxes and re-checks on the frames already rendered.
+- **Nothing hums or hisses** under the mix: the bed is the track alone.
 
-QA measures the MP4 itself: `audio -14.1 LUFS, true peak -1.8 dBTP OK`. It fails outside −14 ± 1.5 LUFS or above −1 dBTP.
+## A voice, only when asked
 
-After an audio-only change (a line, a cue, a gain), `ONLY=audio ./build_demo.sh <slug>` re-mixes, re-muxes and re-checks on the frames already rendered, in about 1.5 min.
+Neither approved film has a voice; the lines carry the story. If the client asks for one:
 
-If the voice sounds buried or the effects stick out, adjust a line's or a cue's `gain` rather than the house levels. If the whole balance is wrong for a track, change `LEVEL` in `tools/film_audio.py` and say so in the commit.
+```json
+"vo": {"voice": 6, "lines": [{"id": "vo1", "text": "Your company's data is everywhere.", "beat": 1, "max": 2.6}]}
+```
+
+- **The voice:** Kokoro "Michael" (voice 6), the English voice the client chose after rejecting robotic ones.
+  - It needs `pip install sherpa-onnx` and the `kokoro-en-v0_19/` model folder in the repo root (the download line is in `tools/make_vo.py`).
+  - The folder is gitignored; never commit it.
+  - There is no approved Arabic voice.
+- **Timing:**
+  - A line's first syllable lands on its `beat`. A take longer than `max` is re-spoken up to 1.15× faster; past that, cut words.
+  - About 2.5 words a second.
+  - Keep the hit free for the end's sound, and speak the call to action after it.
+- **Checking:** `python3 tools/film_audio.py <slug>` speaks and times the lines and flags any over `max`, overlapping the next, or running past the end.

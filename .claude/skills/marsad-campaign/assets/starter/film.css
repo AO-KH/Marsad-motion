@@ -1,0 +1,45 @@
+/* films/<slug>: a campaign film in Marsad's main theme (the 48 s film's, films/style-jupiter): near-black with drifting
+   dust; lenses with dark bodies and bright rims (indigo, violet, magenta, pink); white Inter (medium) type with grey and
+   gradient words, the Arabic in IBM Plex Sans Arabic under it; the app's parts in 3D with glowing rims; the capsule end. */
+#bg{visibility:hidden;}
+.mt-stage{position:absolute;left:0;top:0;width:1920px;height:1080px;overflow:hidden;background:#06050E;}
+.mt-stage canvas{position:absolute;left:0;top:0;}
+.mt-shot{position:absolute;left:0;top:0;width:1920px;height:1080px;}
+.mt-3d{position:absolute;left:0;top:0;width:1920px;height:1080px;perspective:1600px;perspective-origin:50% 45%;}
+.mt-3d>*{position:absolute;left:0;top:0;transform-origin:50% 50%;}
+
+/* type: medium weight, white; grey words (.dim) and gradient words (.g); the Arabic line under it */
+.jt{position:absolute;left:0;width:1920px;text-align:center;pointer-events:none;}
+.jt .en{font:500 76px/1.14 'Inter';letter-spacing:-0.025em;color:#F4F1FA;white-space:nowrap;}
+.jt .w{display:inline-block;margin:0 0.13em;will-change:transform,filter,opacity;}
+.jt .dim{color:#8C889B;}
+.jt .g{background:linear-gradient(90deg,#DE0DFF,#F29BFF 70%,#FFD9FA);-webkit-background-clip:text;background-clip:text;color:transparent;padding:0 0.04em;}
+.jt .ar{font:500 40px/1.5 'PlexAR';color:rgba(244,241,250,0.72);direction:rtl;white-space:nowrap;margin-top:14px;}
+.jt.left{text-align:left;}
+.jt.left .w{margin:0 0.26em 0 0;}
+.jt.left .ar{text-align:left;}
+.jt.dark .en{color:#17121F;}
+.jt.dark .ar{color:rgba(23,18,31,0.72);}
+
+/* the mark, with its own glow (never a disc behind it) */
+.jmark{position:absolute;left:0;top:0;width:300px;height:229px;}
+.jmark img{position:absolute;left:0;top:0;width:100%;}
+.jmark .m{filter:drop-shadow(0 0 26px rgba(214,70,240,0.75)) drop-shadow(0 0 80px rgba(122,40,220,0.5));}
+.jmark .gl{filter:blur(26px) saturate(1.6);}
+
+/* a real page (a site_pages/ screenshot, at its own size) with a glowing rim; .p3d lets its parts float out of it */
+.mt-page{width:1896px;height:1060px;border-radius:26px;background:#fff center/100% 100% no-repeat;
+  box-shadow:0 0 0 3px rgba(255,190,248,0.9),0 0 40px 6px rgba(206,64,240,0.55),0 0 120px 20px rgba(122,40,220,0.35);}
+.mt-page.p3d{transform-style:preserve-3d;}
+.mt-part{position:absolute;background-repeat:no-repeat;background-size:1896px 1060px;transform-origin:50% 50%;}
+
+/* the end: the URL in a glowing capsule, the mark, "Book your demo" */
+.jcap{position:absolute;left:0;top:0;border-radius:999px;background:#07050F;display:flex;align-items:center;justify-content:center;
+  box-shadow:inset 0 0 0 2px rgba(255,215,250,0.95),inset 0 0 16px 5px rgba(214,70,240,0.85),inset 0 0 46px 14px rgba(110,30,200,0.55),
+    0 0 26px 3px rgba(214,70,240,0.5),0 0 70px 10px rgba(122,40,220,0.3);}
+.jcap span{font:500 50px 'Inter';letter-spacing:-0.01em;color:#F7F4FB;white-space:nowrap;}
+.jmk{position:absolute;left:0;top:0;width:190px;filter:drop-shadow(0 0 22px rgba(214,70,240,0.7)) drop-shadow(0 0 60px rgba(122,40,220,0.45));}
+.jbook{position:absolute;left:0;width:1920px;text-align:center;font:500 36px 'Inter';color:rgba(244,241,250,0.85);white-space:nowrap;}
+.jbook .ar{font:500 34px 'PlexAR';}
+.jbook .sep{color:rgba(244,241,250,0.4);margin:0 14px;}
+.jft{position:absolute;left:0;top:976px;width:1920px;text-align:center;font:600 17px 'JBMono';letter-spacing:0.32em;color:#F4F1FA;}
