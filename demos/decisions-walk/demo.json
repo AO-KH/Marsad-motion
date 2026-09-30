@@ -1,0 +1,21 @@
+{
+  "title": "Decisions: approve a recommendation (walkthrough, new method)",
+  "duration": 43.8,
+  "formats": ["16x9"],
+  "kit": "walk",
+  "music": {"file": "fit/lightbeats-joyful-rhythm-walk-funk.mp3",
+    "bpm": 115,
+    "downbeat": 0.538,
+    "edit": [[8, 48], [64, 80], [48, 64], [64, 76]],
+    "fade_out": 2.2,
+    "true_peak": -3},
+  "sfx": [
+    {"type": "swoosh", "beat": 8, "gain": -3, "seed": 81, "dur": 1.4, "rise": 0.75, "f1": 4200, "body": 0.6, "pan0": 0, "pan1": 0, "width": 0.55},
+    {"file": "fit/sfx/cinematic-start-dsm.wav", "beat": 8, "gain": -4},
+    {"type": "swoosh", "beat": 41, "gain": -6, "seed": 84, "f1": 3000, "body": 0.6, "pan0": 0.4, "pan1": -0.3},
+    {"type": "swoosh", "beat": 59, "gain": -6, "seed": 86, "f1": 3000, "f2": 1200, "body": 0.7, "pan0": 0, "pan1": -0.4},
+    {"type": "swoosh", "beat": 72, "gain": -2, "seed": 87, "dur": 1.4, "rise": 0.75, "f1": 4200, "body": 0.6, "pan0": 0, "pan1": 0, "width": 0.55},
+    {"file": "fit/sfx/cinematic-wake-dsm.wav", "beat": 72, "gain": -2}
+  ],
+  "sfx_level": -23
+}

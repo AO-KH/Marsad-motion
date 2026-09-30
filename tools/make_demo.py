@@ -7,6 +7,8 @@ A demo folder holds:
   demo.json   title, duration (s), formats, music {file, bpm, downbeat, start, loop, fade_in, fade_out}
   demo.js     the timeline, written against the engine API (engine/engine.js); ends with M.start()
   demo.css    optional extra styles        pages.js  optional custom pages (M.definePage)
+  "kit": "walk" in demo.json loads a kit from demos/kit/ (walk.js and walk.css) between the engine and demo.js: the
+  walkthrough method (M.walk; see demos/kit/walk.js)
 Campaign films use the same engine and tools: films/<slug>/ holds film.json, film.js, film.css and pages.js (the
 same roles), and film.json may add "vo" and "sfx" (tools/film_audio.py mixes them). <slug> is looked up in demos/
 first, then films/.
@@ -80,6 +82,13 @@ def page(slug, d, meta, fmt):
     extra_css = ('<link rel="stylesheet" href="films/kit/kit.css">\n' if film else '') + \
                 (f'<link rel="stylesheet" href="{rel}/{os.path.basename(css)}">\n' if css else '')
     pages_js = f'<script src="{rel}/pages.js"></script>\n' if os.path.isfile(os.path.join(d, 'pages.js')) else ''
+    kit = meta.get('kit')                          # a demo kit: demos/kit/<kit>.js (+ .css), e.g. the walkthrough method
+    if kit:
+        if not os.path.isfile(os.path.join(ROOT, 'demos', 'kit', f'{kit}.js')):
+            sys.exit(f'no demos/kit/{kit}.js (the "kit" in {rel}/demo.json)')
+        if os.path.isfile(os.path.join(ROOT, 'demos', 'kit', f'{kit}.css')):
+            extra_css = f'<link rel="stylesheet" href="demos/kit/{kit}.css">\n' + extra_css
+        pages_js = f'<script src="demos/kit/{kit}.js"></script>\n' + pages_js
     return f'''<!DOCTYPE html>
 <html>
 <head>

@@ -190,7 +190,7 @@ function app(o){
     else if(window.SK&&SK.PAGES[key])html=SK.PAGES[key]();
     else throw new Error(`M.app: unknown page "${key}" (site kit: ${window.SK?Object.keys(SK.PAGES).join(', '):'-'}; or M.definePage)`);
     if(window.SK&&!(c&&c.img))for(const [k] of SK.TABS){const ch=SK.chrome(k);if(html.includes(ch)){html=html.replace(ch,'');tab=tab||k;break;}}
-    const e=el('div','m-page',html,site);st(e,{width:w+'px',height:h+'px',visibility:'hidden'});
+    const e=el('div','m-page',html,site);e.dataset.key=key;st(e,{width:w+'px',height:h+'px',visibility:'hidden'});
     if(tab&&!chrome){chrome=el('div','m-page m-chrome',SK.chrome(tab),site);st(chrome,{width:w+'px'});
       chUL=chrome.querySelector('.sk-ul');chTabs=[...chrome.querySelectorAll('.sk-tab')];}
     if(chrome)site.appendChild(chrome);                                // the shared top bar stays above every page

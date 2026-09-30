@@ -1,15 +1,30 @@
 # Marsad demo videos — the guide
 
-This repo can turn a short script into a Marsad product demo video, rendered in **16:9 (1920×1080)** and
-**9:16 (1080×1920)** from the same source. Two kinds are supported:
+This repo turns a short script into a Marsad product video.
 
-- **Short feature demos** (about 20–60 s): a title, the real app in action, one bilingual caption per idea,
-  and an end card. Example: [`demos/pulse-short/`](demos/pulse-short/demo.js).
-- **Step-by-step walkthroughs** (about 45 s – 3 min): numbered steps with a progress rail, the cursor
-  clicking through a workflow, highlights and callouts. Example:
-  [`demos/decisions-walkthrough/`](demos/decisions-walkthrough/demo.js).
+**Walkthroughs, the method since September 2026.** The client gives a feature of the SaaS and gets a video that
+explains it by using the real app. The method takes Benji Taylor's "Live Studio" walkthrough and the launch videos at
+notes.apoorv.xyz/launch-videos as its reference ("take these video for the walk through and take them as reference
+… keep the marsad and NASL theme").
 
-There is no voiceover: music and bilingual English/Arabic captions carry the story.
+- **On screen:** the real app in a window on Marsad's main-theme stage (dark, lenses, dust), and a camera that dives
+  onto each click. The app's own states change.
+- **The lines:** one step line at a time, English · Arabic, in a dark capsule.
+- **The 3D:** the parts that prove the feature float out of the page.
+- **The ending:** the benefit on the stage, then the capsule end.
+- **The format:** the client's funk track, 16:9, 30 s or 44 s.
+- **Where it lives:** the machinery is the walkthrough kit (`demos/kit/walk.js`, `walk.css`; §5.1), and a
+  walkthrough's `demo.js` holds only its steps.
+- **The reference** is [`demos/decisions-walk/`](demos/decisions-walk/demo.js), the first sample, sent for the
+  client's approval.
+- **The procedure** is the `marsad-demo` skill.
+
+**The earlier light-style videos** (short feature demos and step walkthroughs with a progress rail, in 16:9 and 9:16)
+are the previous method: [`demos/pulse-short/`](demos/pulse-short/demo.js) and
+[`demos/decisions-walkthrough/`](demos/decisions-walkthrough/demo.js) are its references. The rest of this guide
+still describes the engine they share.
+
+There is no voiceover: music and bilingual English/Arabic lines carry the story.
 
 The two finished ads (the 63 s campaign film and the 54 s "Know. Watch. Decide.") are separate; see
 [`HANDOFF.md`](HANDOFF.md). New videos use the demo engine described here.
@@ -18,8 +33,9 @@ The two finished ads (the 63 s campaign film and the 54 s "Know. Watch. Decide."
 
 ```bash
 npm install                                   # once (playwright; Chromium: see README for Windows)
-./build_demo.sh pulse-short                   # -> out/pulse-short-16x9.mp4 and out/pulse-short-9x16.mp4
-./build_demo.sh decisions-walkthrough 9x16    # one format only
+JOBS=6 ./build_demo.sh decisions-walk 16x9    # a walkthrough (the kit): -> out/decisions-walk-16x9.mp4
+python3 tools/fast_ranges.py decisions-walk --run   # then 16 sub-frames on its fast camera moves, re-mux, QA
+./build_demo.sh pulse-short                   # a light-style demo: -> out/pulse-short-16x9.mp4 and -9x16.mp4
 ```
 
 Each build writes the pages to `build/`, fits the music to `out/<slug>-music.wav`, renders the frames to
@@ -110,6 +126,9 @@ These come from the client's feedback on the campaign films. The engine's defaul
 | `tools/stills.py` | Review stills in both formats at given times or beats, tiled into one labelled sheet per format |
 | `tools/cutcheck.js` | Text sliced by the app window's edge during holds, with the nearest clean view centre |
 | `render_mb.js`, `tools/blend.py` | Motion blur: four sub-frames per frame over a 180° shutter, then averaged (shared with the films) |
+| `demos/kit/walk.js`, `walk.css` | The walkthrough kit (`M.walk`, §5.1): the stage, the intro, the 3D camera, the pointer's hand, floating parts, the step capsule, the exit, the benefit and the capsule end. A demo loads it with `"kit": "walk"` in `demo.json` |
+| `tools/rects.js` | Natural positions of elements on a demo's pages (`node tools/rects.js <slug> '#btnOK' 'text:…'`), to aim the camera |
+| `tools/fast_ranges.py` | The fast moves of a render; `--run` re-renders them with 16 sub-frames, blends, re-muxes and re-checks |
 | `films/<slug>/film.json`, `film.js` | A campaign film (the `marsad-campaign` skill): the same roles as `demo.json`/`demo.js`; the tools find a slug in `demos/`, then `films/` |
 | `films/kit/kit.js`, `kit.css` | The film kit: the famous source tiles, the Marsad mark, big bilingual statements (included for `films/` only) |
 | `tools/film_audio.py`, `tools/sfx.py` | A film's voiceover (Kokoro "Michael") and synthesized sound effects, mixed under or over the music by `music_fit.py` |
@@ -194,6 +213,28 @@ right).
 Everything must be a pure function of `t` (no timers, no randomness except the seeded `mulberry`). Motion blur
 renders sub-frames around each frame. Anything that changes in steps (a number, typed text, a label swap) must use
 the frame's time `Math.round(t*30)/30`, or it ghosts; `count`, `text`, `type` and `toggle` already do.
+
+### 5.1 The walkthrough kit
+
+`"kit": "walk"` in `demo.json` loads `demos/kit/walk.js` and `walk.css` before `demo.js` (the full API is in the
+kit's header):
+
+```js
+const W = M.walk({map:'44', page:'pulse',          // map '44' (43.8 s) or '30' (29.7 s): demo.json's music edit must match
+  intro:{kicker:'Introducing', name:'Decisions.', ar:'تعرّف على القرارات'},
+  steps:[{at:B(8.5), en:'Open Decisions', ar:'افتح صفحة القرارات'}, …],     // the capsule: one line per step
+  benefit:{words:['From','recommendation','to',{t:'action.',g:1}], ar:'من التوصية إلى التنفيذ.'},
+  times:{exit:58}});                                // optional: move a timing (beats)
+const {app, cam, lift, NP} = W;                     // app: the M.app API; app.click also shows a hand
+cam(t, {at:NP(x,y) | selector | 'text:…', dx, dy, z, rx, ry, ox, oy}, {dur, ease, hop, push});   // or cam(t,'page')
+lift(target, a, b, {glow:'green'|'violet', depth, up, down, hide:[…], display});   // a part floats out of the page
+```
+
+The camera moves the window's layer in 3D. z 1 is the whole window; dives go to 2.5–4. A zoom turns about the point
+that stays put on screen. `hop` pulls back mid-move on long pans, and `push` keeps the camera creeping in after it
+arrives. The kit adds the entrance (the window rises in on its back from k4.5 and lands on k8), the exit, the
+benefit line through the track's break, and the capsule end on the hit. The skill's `references/method.md` has the
+numbers (zooms, tilts, timings) and the two music maps with their sound effects.
 
 ## 6. Pages and screens
 
@@ -324,7 +365,8 @@ target, nothing cut off in 9:16.
 
 | Demo | Kind | Length | Music | Notes |
 |---|---|---|---|---|
-| [`pulse-short`](demos/pulse-short/demo.js) | Short feature demo (**the reference**) | 30 s | `product-video.mp3` | Business Pulse: the daily advisor switches on, new findings, a stock alert with highlight and callout. v2 (2026-09-25): Western digits (18%), the click on the switch not its label, clean edges (the alert whole in 9:16), motion blur |
+| [`decisions-walk`](demos/decisions-walk/demo.js) | Walkthrough, the new method (**the reference**, the kit's first use) | 43.8 s, 16:9 | the funk track, 44 s map | Decisions: approve a recommendation, in 5 steps, starting on Business Pulse. Open Decisions (a hand clicks the tab) → read the recommendation → check its confidence and source (both float out) → approve on k40 (the executed card floats out) → the counters change. Sent 2026-09-30 as the sample of the new method. It uses the site kit's existing pages and data. The renderings are the stage, the rim, the pointer, the floating parts with their recesses and shadows, and the capsule |
+| [`pulse-short`](demos/pulse-short/demo.js) | Short feature demo, the light style (the previous method's reference) | 30 s | `product-video.mp3` | Business Pulse: the daily advisor switches on, new findings, a stock alert with highlight and callout. v2 (2026-09-25): Western digits (18%), the click on the switch not its label, clean edges (the alert whole in 9:16), motion blur |
 | [`search-walkthrough`](demos/search-walkthrough/demo.js) | Walkthrough, 3 steps (the skill's test run) | 41 s | `product-video.mp3` | Search across all your data: open Search from the Data sidebar, type «فاتورة», results from Odoo, WhatsApp and files. `pages.js` rebuilds the search page. **To confirm with the client before use:** the files result row and its pills are invented, and the route through the Data sidebar |
 | [`ontology-walkthrough`](demos/ontology-walkthrough/demo.js) | Walkthrough, 4 steps | 52 s | `product-video.mp3` | Your ontology at a glance: open the Knowledge Map from the Data sidebar, switch to «مخطط الأنطولوجيا», read a type and a link, select مشروع to open its details panel (a project holds many files and sits in one section). `pages.js` rebuilds the real page from the client's HTML snapshot (2026-09-27). **To confirm with the client before use:** the page opening in Explore mode, the graph's zoom (130%) and position, the panel showing only after a click, the links drawn in the brand colour when nothing is selected, the look-alike icons, and the empty search page the video starts on |
-| [`decisions-walkthrough`](demos/decisions-walkthrough/demo.js) | Walkthrough (**the reference**) | 60 s | `product-video.mp3` | Approve a recommendation in 5 steps: open Decisions, pick, check confidence and source, approve, counters update. v2 (2026-09-25): closer tab click with the label visible, callouts clear of content, readable 9:16 framing, Western digits, motion blur. v3 (same day): every hold clean in `tools/cutcheck.js`, glide out as the new page fades in |
+| [`decisions-walkthrough`](demos/decisions-walkthrough/demo.js) | Walkthrough, the light style (the previous method's reference) | 60 s | `product-video.mp3` | Approve a recommendation in 5 steps: open Decisions, pick, check confidence and source, approve, counters update. v2 (2026-09-25): closer tab click with the label visible, callouts clear of content, readable 9:16 framing, Western digits, motion blur. v3 (same day): every hold clean in `tools/cutcheck.js`, glide out as the new page fades in |

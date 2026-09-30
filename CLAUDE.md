@@ -6,10 +6,14 @@ and muxed with ffmpeg.
 
 ## What's here
 
-- **Product demo videos** (the ongoing work): `engine/`, `demos/`, `tools/`, `build_demo.sh`. Read
-  [`DEMOS.md`](DEMOS.md). To make one, follow the `marsad-demo` skill
-  (`.claude/skills/marsad-demo/SKILL.md`), which is the baseline for all demo work. Its references hold the
-  reference walkthrough's anatomy and the quality checklist.
+- **Walkthroughs** (the ongoing work): the client gives a feature of the SaaS, and a video explains it by using the
+  real app. `engine/`, `demos/`, `tools/`, `build_demo.sh`; read [`DEMOS.md`](DEMOS.md).
+  - Follow the `marsad-demo` skill (`.claude/skills/marsad-demo/SKILL.md`).
+  - The method (since September 2026) is Benji Taylor's walkthrough grammar in Marsad's main theme, built with the
+    walkthrough kit (`demos/kit/walk.js`).
+  - The reference is `demos/decisions-walk/`. The skill's references hold the feature brief, the method's numbers
+    and the quality checklist.
+  - The earlier light-style demos in `demos/` are the previous method.
   - `skills/marsad-demo.skill` and `.zip` are its installable copies for a Claude account.
   - Rebuild them with `python3 tools/package_skill.py` whenever the skill changes.
 - **New campaign films** (brand, launch and feature ads, 30–90 s) are made in Marsad's main theme, the look of the
@@ -28,15 +32,25 @@ and muxed with ffmpeg.
 
 ## The client's rules (each one was an explicit correction; apply them everywhere)
 
-- Demos: the web app's light UI with a soft purple glow; glass icons; real app pages; the logo end card.
+- Walkthroughs (the client's request, September 2026: "take these video for the walk through and take them as
+  reference … keep the marsad and NASL theme"): Benji Taylor's walkthrough grammar in Marsad's main theme.
+  - The real app, with its light UI, in a window on the main theme's dark stage.
+  - One continuous camera that dives onto each click and pulls back.
+  - A hand clicks, and the app's own states change.
+  - One step line at a time, English · Arabic, in a dark capsule.
+  - The part that proves the feature floats out in 3D.
+  - The benefit line, then the capsule end, on the client's funk track; 16:9.
+  - The sample (`demos/decisions-walk`) awaits the client's verdict.
+  - The earlier light-style demos (a steps rail, the logo end card, 16:9 and 9:16) are the previous method.
 - Campaign films: Marsad's main theme, the 48 s film's ("the theme of 48 second video is good"): a near-black stage
   with glowing lenses and dust, white type blurring in with the Arabic under it, the app's real pages and parts in 3D
   ("make this 3d") with glowing rims, the client's funk track, whooshes on the transitions only, and the capsule end.
 - Bilingual: every line of text in English and Arabic.
 - Calm pace: entrances 0.6–1.0 s on a decelerating ease, camera glides of 1–1.5 s, nothing pops.
-- No shaking (camera shake, wiggles, bobbing, overshoot), no pulsing to the beat, no camera cuts in demos (campaign
-  films in the main theme cut on the beat, as the 48 s film does).
-- Demos: music and captions only, no voiceover. Formats 16:9 and 9:16.
+- No shaking (camera shake, wiggles, bobbing, overshoot) and no pulsing to the beat. Walkthroughs have one continuous
+  camera; the only cut is on the end's hit. Campaign films in the main theme cut on the beat, as the 48 s film does.
+- Demos and walkthroughs: music and on-screen lines only, no voiceover. Walkthroughs are 16:9; the light-style
+  demos were made in 16:9 and 9:16.
 - Campaign films: a 16:9 master; the captions carry the story (it must read with the sound off); an English
   voiceover is optional and uses Kokoro "Michael", the voice the client chose ("this is so robotic voice" ruled the
   others out). The end says "Book your demo · احجز عرضك التجريبي" and marsadnasl.com.

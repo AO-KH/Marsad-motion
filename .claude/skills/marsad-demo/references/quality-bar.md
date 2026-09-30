@@ -1,75 +1,67 @@
 # The quality bar
 
-A demo is ready when every point below holds in **both** formats. Check it on the stills from `tools/stills.py`
-(every step's start, action, result and hold), then on the QA contact sheet of the final render.
+A walkthrough is ready when every point below holds.
+1. Check the stills from `tools/stills.py`: each step's dive, action and result, every float, the exit, the benefit
+   and the end.
+2. Check the draft's 3 fps contact sheet for the motion.
+3. Check the final's QA sheet.
 
-## Checklist, per still
+## Checklist
 
-**Subject and framing**
-- [ ] What the caption talks about is in frame, near the centre, and readable. In 9:16 the subject's main text
-      reads at about 25 px or more (card titles at scale ≈ 1.1, body text ≈ 1.3); small pills get a callout.
-- [ ] Nothing important is cut by the window edge: page titles, the card being discussed, the button being
-      clicked. Arabic pages read from the right, so keep the right side.
-- [ ] `node tools/cutcheck.js <slug>` prints `clean` for both formats: no hold where the edge slices a line of
-      text (a sliver of the tab row, half a title, a label cut mid-word). Long body lines running off the side are
-      notes, and fine unless they are the subject.
-- [ ] The checker only sees text. Glance at the window edges on the stills for cards, icons and injected
-      elements. A sliver of a card at the edge (a lone red dot, a strip of a button) is just as sloppy: frame it
-      whole, or leave it out.
-- [ ] 9:16: no key text in the platform bands (top ~220 px, bottom ~320 px). The engine's layout already respects
-      this, so only custom overlays can break it.
+**The story**
+- [ ] Each step's line matches what the camera shows while it is up. The action and its result are on screen and
+      readable.
+- [ ] The key action (the approve, the send, the generate) lands on the strong beat (k40 on the 44 s map). Its
+      proof floats out.
+- [ ] The last step shows the outcome, and the benefit line says what the feature gives.
 
-**Cursor and clicks**
-- [ ] The cursor tip lands beside or under the label it clicks, never on the word (`{ax, ay}`).
-- [ ] The cursor arrives in the second before the click and leaves after the result (`cursorOut`); it never
-      parks over the result.
+**Truth**
+- [ ] The pages and their text are the app's own. The feature does only what the client described.
+- [ ] Everything invented, and every rendering, is listed in the delivery message. Say what came from the site
+      kit's existing data.
 
-**Callouts and highlights**
-- [ ] Every callout box sits clear of titles, buttons and numbers. Move it with `side`, `gap`, `dx`/`dy`.
-- [ ] Every callout points at its target the whole time it is visible, and ends before the view moves on.
-- [ ] At most two callouts per step. A highlight ring hugs its element (`pad` 8–12).
+**Framing**
+- [ ] The subject's text reads at 30 px or more on screen.
+- [ ] Nothing that matters is under the capsule (below y 900). The pointer lands below or beside a label, never on
+      it.
+- [ ] No line the viewer must read is cut by the frame.
+- [ ] At a zoom-in, empty stage covers no more than about a quarter of the frame.
+- [ ] No frame is mostly empty white: sparse subjects are zoomed, tilted or floated.
 
-**Text**
-- [ ] Every caption, step, title and callout has English and Arabic, both natural.
-- [ ] Western digits in captions, callouts and the rail («ثقة 80%», «الخطوة 3 من 5»).
-- [ ] No caption is clipped, and no line is left with one word (9:16 captions balance their lines).
-- [ ] No two captions overlap: each ends at least 0.5 s before the next starts.
-- [ ] Product text on screen is the app's real text. Anything you had to invent (because the site kit lacks it and
-      nobody could send a screenshot) is listed in the delivery message for the client to confirm.
+**The camera**
+- [ ] Moves are continuous; the only cut is on the end hit.
+- [ ] No hold stands dead: the push keeps it alive, and a step changes framing every 2–3 s.
+- [ ] No pan at z ≥ 3 without a hop, because it strobes.
+- [ ] Tilts stay at 14° or less, and are 0 while reading.
+- [ ] 3D shows: the entrance, a tilt on the big moves, and one to three floats. There are no floats on every step.
 
-**Motion (on the render, not the stills)**
-- [ ] Glides are smooth and 1–1.5 s long; entrances ease out over 0.6–1.0 s; nothing pops, bounces or shakes.
-- [ ] No glide slides much more than one window width at high zoom (it strobes, even with motion blur).
-- [ ] Every action lands on a beat or an 8th; nothing repeats on every beat.
-- [ ] QA prints `RESULT PASS` (pulse ≤ 1.15, shake 0), and the contact sheet looks like the stills.
-- [ ] The final render has motion blur (the default `SUB=4`). A `SUB=1` draft is never delivered.
+**Text and timing**
+- [ ] Every line is in English and Arabic, both natural, with Western digits.
+- [ ] Each step line holds 3 s or more.
+- [ ] The intro's name and the benefit line read in full before they go.
+- [ ] State changes snap like the app's (`show` dur 0.45). Numbers and typed text step once per frame (the
+      engine's `count`, `text` and `type` do).
+
+**Sound and QA**
+- [ ] There are four effect moments or fewer (44 s), all on transitions, with no UI sounds.
+- [ ] QA prints `RESULT PASS`: pulse ≤ 1.15, shake 0, −14 LUFS ± 1.5, true peak ≤ −1 dBTP.
+- [ ] The final has motion blur, and `tools/fast_ranges.py --run` was run on it.
 
 ## Defects we have hit, and the fixes
 
 | Symptom | Cause | Fix |
 |---|---|---|
-| The clicked tab's name is hidden under the cursor | The click aimed at the element's centre | `app.click(t, target, {ax:0.2, ay:0.95})`: the tip lands under the start of the label |
-| A callout box covers the card title | `side:'top'` on a pill that sits under the title | `side:'bottom', gap:20, dx:-340`: below and to the left, clear of the buttons |
-| 9:16 text too small to read | Focusing a wide card with the default `fill` shrinks it to fit a 1000 px window | Give 9:16 its own `scale` (≥ 1.0) and `dx` toward the part that matters; pan to the rest |
-| 9:16 close-up shows unrelated rows | The view is centred on a small target near the top of the page | Add `dy` to centre on the card. The view can't pass the page's bottom edge, so accept some context above |
-| Arabic digits don't match the app (٨٠٪ next to 80%) | Arabic-Indic digits in a caption or callout | Western digits in captions and callouts; the rail does this itself |
-| A caption leaves one word alone on its second line (9:16) | Plain wrapping | The engine balances 9:16 caption lines (`text-wrap: balance`); keep captions short anyway |
-| Two captions on screen at once | A caption's 0.5 s fade overlapped the next | End each caption ≥ 0.5 s before the next (`out: next - 0.5`; `M.steps` does this) |
-| A callout pointing at nothing | The view moved while the callout was up | End the callout before the focus that moves away. Callouts also fade by themselves off-window |
-| Numbers look doubled (a ghost 39 behind 38) | Motion blur averaged sub-frames with different values | `app.count`, `app.text`, `app.type` and `app.toggle` step once per frame. Custom `M.track` text should use `Math.round(t*30)/30` |
-| A sliver of the tab row or half a page title at the window's top edge | The view's edge falls through a line of text; the eye misses it on stills | `node tools/cutcheck.js <slug>`: it lists the hold and prints the nearest clean view centre; focus on `{x, y, w:0, h:0}` with that scale |
-| After a click opens a page, its title is cut while the zoomed view holds | Holding the close-up that suited the old page | Glide out to the new page as it fades in (+3.5), not 2 s later |
-| The cursor floats over the purple background | The view panned away from where the cursor was parked | The engine now fades a cursor that leaves the window; still call `cursorOut` when a step is done with it |
-| A zoom doesn't go as close as asked | Older engine capped `scale` at 1.3 (16:9) / 1.6 (9:16) | An explicit `scale` is now used as given (up to 2.5); `max` still caps a `fill`-computed zoom |
-| The field lights up before the click | `app.type` lights the field 0.5 s before the first letter | Type from the beat after the click (+4 when the click is on +3) |
-| A title leaves one word alone on its second line (9:16) | Titles weren't balanced | The engine balances 9:16 titles and captions (`text-wrap: balance`) |
-| A long pan shows a title as 3–4 separate copies | A fast slide at 2× zoom moves too far per frame for 4 sub-frames | Shorter pans: pull back a little, or move in two steps; or build with `SUB=8` |
-| A callout's dot sits on the first word of an Arabic line | The target is a right-aligned text block, so its right edge is where the text starts | Point at the row or element that holds the text; the dot lands beside it (`demos/ontology-walkthrough`, step 4) |
-| A callout box beside a side panel runs past the 9:16 window | A panel shown at a readable size leaves only ~300 px beside it | Keep those callouts to about 16 characters per line ("Holds many files"), or place them over free space |
-| A result, route or label the site kit doesn't have | The feature is only partly in the site kit | Ask for a screenshot. If there is none, rebuild the page in `pages.js` with the fewest changes, and list what you invented when you deliver |
-| Glass icons flicker or double their glow | Chromium backdrop-root changes during fades | Keep the `.gk` base layer (`M.GLASS(...)` adds it); don't strip it |
-| A title's Arabic line is invisible | A child selector matched a nested element | Style engine parts with `:scope>`-level selectors and `m-` prefixed classes |
-| A pill renders as three boxes | A `span` rule matched spans nested inside the pill | Scope styles to the pill's own class, not `span` |
-| Shake flagged by QA | Something moved back and forth (bobbing, overshoot, a wiggle) | Remove it. Demos have no shake; the engine has no shake effect |
-| Pulse flagged by QA | Something changes on every beat | Keep one-off events on beats; nothing repeats per beat |
-| The music's grid is off by a beat | The wrong downbeat candidate | `tools/beats.py` prints four; section changes start on the real one. Check by ear |
+| A floating pill showed a square halo | `'text:'` found the pill's wrapper, which holds the same text | The kit's `lift` (and `tools/rects.js`) steps down to the single child with the same text. Do the same in any hand-made clone |
+| The step number sat high in its chip | A `font` shorthand after `line-height` reset it to normal | Put the line height in the shorthand: `font:600 26px/56px 'Inter'` |
+| A lone pill in a wide empty card left the frame mostly white | Framing a small thing in empty space | Zoom closer (z 3.9), turn the empty side away (`ry` 12), and float it out |
+| The new card ghosted over the old one after a click | `app.show` at its 0.8 s default | `dur: 0.45`, like an app's own snap |
+| NaN in the stage; the page stopped rendering | An option name (`benefit`, the line) clashed with a timing key | Timing overrides go in `times: {…}` |
+| The pointer turned into a hand while still far off | The hand started 0.55 s before the click | The kit starts it 0.3 s before (`hand` in the click options changes it) |
+| A reading shot looked static | A 2.6 s hold with a tiny drift | Dive close on the line (the whole title at z 3.5), then reveal its card (z 2.7, `sin`, 2.4 s) |
+| A subject was centred but half the frame was sidebar and margin | The camera's centre was set on the subject's start, not its middle | Centre the middle (`tools/rects.js` prints it). Put a reading start near the right third |
+| The clicked tab's name was hidden under the pointer | The click aimed at the element's centre | `{ax: 0.35, ay: 0.92}`: the fingertip lands under the label |
+| Numbers looked doubled in motion blur | Sub-frames averaged two values | `app.count`, `app.text`, `app.type` step per frame; custom text uses `M.FQ(t)` |
+| A fast zoom showed steps | Four sub-frames can't cover a big move | `python3 tools/fast_ranges.py <slug> --run`: 16 sub-frames on the fast ranges |
+| A floating part looked flat | It rose straight at the camera | Tilt while it floats (rx 7, ry −10), so the gap and its shadow show |
+| An element or label the site kit lacks | The feature is only partly in the site kit | Ask for the front end (HTML best, or 3× screenshots). Otherwise rebuild the page in `pages.js` with the fewest changes, and list what you invented |
+| Opacity on a 3D group flattened it | Opacity, filters or `overflow` on a `preserve-3d` element flatten its children | The kit turns the window's `preserve-3d` on only while something floats, and never fades a 3D group |
