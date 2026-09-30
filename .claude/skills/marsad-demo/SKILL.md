@@ -1,6 +1,6 @@
 ---
 name: marsad-demo
-description: Make or change a Marsad walkthrough, a video that explains one feature of the Marsad web app (مرصد) by using it on screen. It follows Marsad's walkthrough method, Benji Taylor's launch-walkthrough grammar (a camera that dives onto each click in the real app) in Marsad's main theme (a dark stage of stars, bilingual type, the capsule end), on the client's launch track, built with the walkthrough kit in the AO-KH/Marsad-motion repo. Use this skill whenever someone asks for a walkthrough, demo, tutorial, how-to, explainer, onboarding clip, feature or product video, or a short feature clip that shows Marsad screens or a Marsad workflow; whenever they describe a feature of their SaaS to explain or send front-end pages or screenshots for a video; and to edit, retime, reframe, translate or re-render an existing walkthrough, even if they never say "demo".
+description: Make or change a Marsad walkthrough, a video that explains one feature of the Marsad web app (مرصد) by using it on screen. It follows Marsad's walkthrough method, Benji Taylor's launch-walkthrough grammar (a camera that dives onto each click in the real app) in Marsad's main theme (a clean dark stage, bilingual type, the capsule end), on the client's launch track, built with the walkthrough kit in the AO-KH/Marsad-motion repo. Use this skill whenever someone asks for a walkthrough, demo, tutorial, how-to, explainer, onboarding clip, feature or product video, or a short feature clip that shows Marsad screens or a Marsad workflow; whenever they describe a feature of their SaaS to explain or send front-end pages or screenshots for a video; and to edit, retime, reframe, translate or re-render an existing walkthrough, even if they never say "demo".
 ---
 
 # Marsad walkthroughs: one feature, explained by using it
@@ -11,10 +11,11 @@ walk through and take them as reference [Benji Taylor's Live Studio walkthrough,
 notes.apoorv.xyz] keep the marsad and NASL theme … i will give you feature of my saas and you make a walkthrough to
 explain the feature". What is on screen:
 
-- **The app as it is**, in a window floating on Marsad's dark stage, a field of stars ("replace it with stars").
+- **The app as it is**, in a window floating on Marsad's dark stage, with soft violet glows and nothing else (no
+  lens circles, no stars: the client took both out).
 - **A camera that dives** onto each thing to read or click (2.5–4×), then pulls back for context. It never rests.
-- **Real clicks.** The pointer clicks (a hand over what it clicks), and the app's own states change: pages, cards,
-  numbers, typed text.
+- **Real clicks, heard.** The pointer clicks (a hand over what it clicks) with a soft click sound, and the app's
+  own states change: pages, cards, numbers, typed text.
 - **One short step line at a time**, English · Arabic, in a dark capsule at the foot of the frame.
 - **The main theme's 3D.** The window rises in on its back, tilts on the big moves, and the part that proves a step
   floats out of the page, glowing.
@@ -55,8 +56,8 @@ Each rule is a client correction or a lesson from a delivered video.
 - **Truth.** The app's pages and its exact text; the feature's behaviour only as the client describes it.
   - Never show a feature, flow, label or number the product doesn't have.
   - Sample data is fictional but plausible, with no real customer names.
-  - List every rendering and invented item when you deliver, so the client can confirm it. The stage, its stars and
-    glows, the rim, the pointer, the floating parts and the capsule are renderings; a row or label you had to add is
+  - List every rendering and invented item when you deliver, so the client can confirm it. The stage and its glows,
+    the rim, the pointer, the floating parts and the capsule are renderings; a row or label you had to add is
     invented.
 - **Bilingual, Western digits.** Every line in English and Arabic; digits 0–9 in both, as in the app («ثقة 80%»).
   Write the Arabic as its own sentence: step lines use the imperative (افتح، اختر، راجع، اعتمد).
@@ -70,8 +71,10 @@ Each rule is a client correction or a lesson from a delivered video.
 - **3D, never flat** ("make this 3d"). The window rises in on its back and tilts on big moves. The one or two parts
   that prove the feature float out of the page, glowing.
 - **Lines hold 3 s or more.** A step is 8–12 beats (4–6 s) with one line.
-- **Effects on the transitions only** ("reduce it dont put it at everything"). That means 4 cues in 44 s, and no
-  click or UI sounds.
+- **Sound effects: whooshes on the transitions, and a click on every click.** "Reduce it dont put it at everything"
+  limits the whooshes: 4 moments in a walkthrough. "Add sfx for the click" adds one soft click per click
+  (`glass-press-am.wav`), timed in the music's silence just before a hit, with the result landing on the hit
+  (`method.md` §5). No other UI sounds.
 - **Samples before big changes.** When a feature needs a new kind of shot, send stills or a short sample first.
 - **Final renders get motion blur,** plus 16-sample passes on the fast moves (§6). A `SUB=1` draft is never
   delivered.

@@ -7,6 +7,7 @@
   "sfx": [
     {"type": "swoosh", "beat": 8, "gain": -3, "seed": 81, "dur": 1.4, "rise": 0.75, "f1": 4200, "body": 0.6, "pan0": 0, "pan1": 0, "width": 0.55},
     {"file": "fit/sfx/cinematic-start-am.wav", "beat": 8, "gain": -6},
+    {"file": "fit/sfx/glass-press-am.wav", "beats": [9.8, 31.8], "gain": -5},
     {"type": "swoosh", "beat": 33.25, "gain": -6, "seed": 84, "f1": 3000, "body": 0.6, "pan0": 0.4, "pan1": -0.3},
     {"type": "swoosh", "beat": 49.5, "gain": -6, "seed": 86, "f1": 3000, "f2": 1200, "body": 0.7, "pan0": 0, "pan1": -0.4},
     {"type": "swoosh", "beat": 60, "gain": -2, "seed": 87, "dur": 1.4, "rise": 0.75, "f1": 4200, "body": 0.6, "pan0": 0, "pan1": 0, "width": 0.55},

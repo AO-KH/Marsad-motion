@@ -43,7 +43,8 @@ A walkthrough is ready when every point below holds.
       engine's `count`, `text` and `type` do).
 
 **Sound and QA**
-- [ ] There are four effect moments or fewer (44 s), all on transitions, with no UI sounds.
+- [ ] Whooshes: four moments or fewer, all on transitions. Every click has its click sound, heard: at least +6 dB
+      over the music at that moment. No other UI sounds.
 - [ ] QA prints `RESULT PASS`: pulse ≤ 1.15, shake 0, −14 LUFS ± 1.5, true peak ≤ −1 dBTP.
 - [ ] The final has motion blur, and `tools/fast_ranges.py --run` was run on it.
 
@@ -65,4 +66,5 @@ A walkthrough is ready when every point below holds.
 | A floating part looked flat | It rose straight at the camera | Tilt while it floats (rx 7, ry −10), so the gap and its shadow show |
 | An element or label the site kit lacks | The feature is only partly in the site kit | Ask for the front end (HTML best, or 3× screenshots). Otherwise rebuild the page in `pages.js` with the fewest changes, and list what you invented |
 | The whoosh-hits sounded off-key over a new track | The `cinematic-*-dsm` hits are tuned to the funk track (D# minor) | Estimate the new track's key, then re-tune the hits with rubberband (the `-am` pair is A minor, for the launch track). Name the key in `fit/CREDITS.md` |
+| A click sound was buried (−11 dB under the music) | It fell on the track's pickup sound, 150 ms before the hit | Move the click into the bar's silence (the launch track: +1.5–2 beats), and let the result land on the hit. Check it: mix with and without the click cue (`tools/music_fit.py`), subtract, and compare the click's RMS with the music's over 120 ms |
 | Opacity on a 3D group flattened it | Opacity, filters or `overflow` on a `preserve-3d` element flatten its children | The kit turns the window's `preserve-3d` on only while something floats, and never fades a 3D group |

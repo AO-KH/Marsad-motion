@@ -45,8 +45,8 @@ give you feature of my saas and you make a walkthrough to explain the feature".
 - type on the stage for the intro and the outro.
 
 **What Marsad's theme changes:**
-- **The stage** is the main theme's near-black (the 48 s film, `films/style-jupiter`). Its lenses became a field of
-  stars at the client's request (§2).
+- **The stage** is the main theme's near-black (the 48 s film, `films/style-jupiter`), without its lenses: only soft
+  glows, at the client's request (§2).
 - **The type** is the theme's `jt`: words blur in, a gradient on the key word, the Arabic under it.
 - **The window** gets the theme's glowing rim.
 - **The app's parts** float out in 3D.
@@ -57,14 +57,12 @@ line in English and Arabic. Benji needs no words; a feature explainer does.
 
 ## 2. What is on screen
 
-- **Stage** (`#06050E`): a field of stars. The client asked for it: "change the bubbles … and replace it with
-  stars" (the lens circles of the first sample).
-  - About 560 stars drift slowly outward, as if flying forward. They sit in three depths that shift 3–10% with the
-    camera; the nearest 26 are four-point stars with a violet glow.
-  - Each star twinkles on its own slow clock (2.4–6.6 s), never on the beat.
-  - Soft violet glows, never circles: two in the sky, a horizon under the window during the steps, a glow behind the
-    benefit line, and a haze under the capsule at the end.
-  - The first sample's lenses and dust are gone from the walkthrough kit. The campaign films keep their lenses.
+- **Stage** (`#06050E`): near black, with soft violet glows and nothing else. The app is the only thing on it,
+  as in Benji's.
+  - The glows are never circles: two in the sky, a horizon under the window during the steps, a glow behind the
+    benefit line, and a haze under the capsule at the end. They drift 2% with the camera.
+  - The client took out the first sample's lens circles ("change the bubbles … replace it with stars"), then the
+    stars ("remove the stars"). No lenses, stars or dust in walkthroughs; the campaign films keep their lenses.
 - **Window:** the engine's `M.app` window, 1360×760 at stage (280, 150). It shows the whole 1896×1060 page at
   0.717. Its rim is the theme's (`demos/kit/walk.css`); the light UI's turning beam and click ripple are off.
 - **Pointer:**
@@ -142,11 +140,18 @@ dive reads as going into the thing, not as a slide.
 
 - **Clicks:** `app.click(t, target, {ax, ay, lead, dur})`.
   - Aim at the lower part of the label (`ay` 0.7–0.92), so the hand never covers it.
-  - The glide takes `lead` 1.1–1.5 s and `dur` 1.0–1.2 s.
+  - The glide takes `lead` 0.85–1.5 s and `dur` 0.75–1.2 s. The camera arrives before the hand presses.
   - Bring the pointer in first with `app.cursor(t, NP(x, y), {dur: 0.15})`, from inside the frame's lower right.
-  - Land the key click on a strong beat. On the 44 s map that's k40, where groove B comes in.
-- **Page changes:** `app.page(click + 0.25 s, key)`. Pull back to the whole page about 0.9 s later; the new page is
-  the result.
+  - **Every click is heard** (the client: "add sfx for the click"). Put a click cue in `demo.json` at the click's
+    beat: `{"file": "fit/sfx/glass-press-am.wav", "beats": [9.8, 31.8], "gain": -5}` in the reference. One cue lists
+    every click.
+  - **Put the click in a silence.** Measure the music in the 400 ms before the hit (method in `quality-bar.md`). On
+    the launch track each groove bar is silent at +1.5–2 beats. A click there reads +8 to +19 dB over the music; the
+    same click under a pickup sound was buried at −11 dB.
+  - **The result lands on the hit that follows.** The page change, the card or the toast comes 0.15–0.7 s after the
+    click, on the beat.
+- **Page changes:** `app.page(hit, key)`, from 0.25 to 0.7 s after the click. Pull back to the whole page about
+  1.1 s later; the new page is the result.
 - **State changes:**
   - `app.show(t, sel, {from:'none', scale:0.97, dur:0.45})`: a card appears. At 0.45 s it snaps like the app;
     0.8 s ghosts.
@@ -201,7 +206,7 @@ action." / «من التوصية إلى التنفيذ.». Put the gradient on t
 |---|---|---|
 | k0–8 | the drum bar, twice | the intro; the window rises from k4.5 |
 | k8 | the groove's big hit | the window lands; whoosh + hit |
-| k8–48 | the groove | steps: clicks and dives on downbeats and +2.5s (the reference clicks on k10.5 and k32) |
+| k8–48 | the groove | steps: clicks and dives on downbeats and +2.5s (the reference clicks on k9.8 and k31.8, in the silences, with results on k10.5 and k32) |
 | k48–52 | the groove's last bar | the exit, with a whoosh |
 | k52–60 | the breakdown | the benefit line |
 | k60–68 | the hit, the groove back | the capsule end |
@@ -211,6 +216,7 @@ action." / «من التوصية إلى التنفيذ.». Put the gradient on t
 "sfx": [
   {"type": "swoosh", "beat": 8, "gain": -3, "seed": 81, "dur": 1.4, "rise": 0.75, "f1": 4200, "body": 0.6, "pan0": 0, "pan1": 0, "width": 0.55},
   {"file": "fit/sfx/cinematic-start-am.wav", "beat": 8, "gain": -6},
+  {"file": "fit/sfx/glass-press-am.wav", "beats": [9.8, 31.8], "gain": -5},
   {"type": "swoosh", "beat": 33.25, "gain": -6, "seed": 84, "f1": 3000, "body": 0.6, "pan0": 0.4, "pan1": -0.3},
   {"type": "swoosh", "beat": 49.5, "gain": -6, "seed": 86, "f1": 3000, "f2": 1200, "body": 0.7, "pan0": 0, "pan1": -0.4},
   {"type": "swoosh", "beat": 60, "gain": -2, "seed": 87, "dur": 1.4, "rise": 0.75, "f1": 4200, "body": 0.6, "pan0": 0, "pan1": 0, "width": 0.55},
@@ -219,6 +225,8 @@ action." / «من التوصية إلى التنفيذ.». Put the gradient on t
 "sfx_level": -23
 ```
 
+- **The clicks:** `glass-press-am.wav` is the glass pack's press, tuned from G# to A (5% faster, which keeps its
+  attack). List one beat per click.
 - **Hits in the track's key.** The `-am` hits are tuned to A minor. The `-dsm` ones belong to the funk track (D#
   minor), a tritone away, and would clash.
 - **The track is very dynamic.** Its hits come between silences, so `music_fit.py` warns that the master is limited
@@ -276,12 +284,12 @@ Business Pulse page. The first cut (on the funk track, with lenses) is in the gi
 
 | Beats | Line | Camera | Action and result |
 |---|---|---|---|
-| k0–7 | "Introducing / Decisions." «تعرّف على القرارات» | — | stars; from k4.5 the window rises on its back |
+| k0–7 | "Introducing / Decisions." «تعرّف على القرارات» | — | the dark stage; from k4.5 the window rises on its back |
 | k8 | — | lands flat, z 1 | the groove's big hit: whoosh + hit, punch 1.2% |
-| k8.5–14.5 | 1 · Open Decisions | dives onto the tabs (NP(1400,230), z 2.7); pulls back to the page (z 1.06, rx 4, ry −5) at k12 | the hand clicks «القرارات» on k10.5; the page opens (k10.75) |
+| k8.5–14.5 | 1 · Open Decisions | dives onto the tabs (NP(1400,230), z 2.7) from k8.2; pulls back to the page (z 1.06, rx 4, ry −5) at k12 | the hand clicks «القرارات» in the bar's silence (k9.8, click sound); the page opens on the hit (k10.5) |
 | k14.5–20 | 2 · Read the recommendation | the whole title, large (z 3.5); a slow reveal of the card (z 2.7) from k16.5 | — |
 | k20–28 | 3 · Check its confidence and source | the pills (z 3.6); across with a hop to «المخزون · Odoo» (z 3.9, ry 12) on k24 | «ثقة 80%» floats out, green (k21–24.3); the source floats out, violet (k25.25–28) |
-| k28–38.5 | 4 · Approve it | the buttons (z 2.8, hop); back out to the card, tilted (z 1.5, rx 7, ry −10) at k32.75 | the hand clicks «موافقة» on k32, right after a silence; «تم تنفيذ الإجراء» appears (0.45 s) and floats out, green (k33.5–38.5) |
+| k28–38.5 | 4 · Approve it | the buttons (z 2.8, hop); back out to the card, tilted (z 1.5, rx 7, ry −10) at k32.75 | the hand clicks «موافقة» in the silence 150 ms before k32 (k31.8, click sound); «تم تنفيذ الإجراء» appears on the hit (k32, 0.45 s) and floats out, green (k33.5–38.5) |
 | k38.5–47.5 | 5 · It's recorded right away | the counters (z 2.25); closer (z 2.9) at k42.5; the whole page at k44.5 | approved 0 → 1, under review 6 → 5, and the filter tabs (k40.5); a soft green ring on "approved" |
 | k48–52 | — | the exit | whoosh |
 | k52–60 | "From recommendation to action." | — | over the breakdown |
