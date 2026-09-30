@@ -100,6 +100,10 @@ body.f9x16 .m-rail .st .lay{font-size:28px;}
 /* the site kit root: pages live in natural coordinates (1896x1060 for site-kit pages) and are scaled by the view */
 .site.m-site{width:0;height:0;overflow:visible;background:none;}
 .site .m-page{position:absolute;left:0;top:0;background:#fff;overflow:hidden;}
+/* a real app screen (tools/app_snap.js): the page box is the screen's viewport (fixed dialogs sit in it), and .rx-scope
+   starts from a clean slate like a new document (the page's hiding still passes through), with the window's scroll */
+.site .m-page.rx-page{contain:layout;background:none;}
+.site .m-page.rx-page>.rx-scope{all:initial;visibility:inherit;display:block;position:absolute;left:0;top:0;width:100%;height:100%;overflow:hidden;}
 .site .m-chrome{height:170px;background:none;overflow:visible;z-index:5;}
 .site .m-ring{position:absolute;border:3px solid #8E32C3;border-radius:18px;opacity:0;pointer-events:none;z-index:20;
   box-shadow:0 0 0 7px rgba(142,50,195,0.13),0 0 34px rgba(188,89,209,0.50),inset 0 0 18px rgba(188,89,209,0.18);}

@@ -7,6 +7,8 @@ A demo folder holds:
   demo.json   title, duration (s), formats, music {file, bpm, downbeat, start, loop, fade_in, fade_out}
   demo.js     the timeline, written against the engine API (engine/engine.js); ends with M.start()
   demo.css    optional extra styles        pages.js  optional custom pages (M.definePage)
+  app/        optional: the real app's screens, frozen by tools/app_snap.js (app/pages.js and app/app.css are loaded
+              before the demo's own pages.js and demo.css)
   "kit": "walk" in demo.json loads a kit from demos/kit/ (walk.js and walk.css) between the engine and demo.js: the
   walkthrough method (M.walk; see demos/kit/walk.js)
 Campaign films use the same engine and tools: films/<slug>/ holds film.json, film.js, film.css and pages.js (the
@@ -82,6 +84,10 @@ def page(slug, d, meta, fmt):
     extra_css = ('<link rel="stylesheet" href="films/kit/kit.css">\n' if film else '') + \
                 (f'<link rel="stylesheet" href="{rel}/{os.path.basename(css)}">\n' if css else '')
     pages_js = f'<script src="{rel}/pages.js"></script>\n' if os.path.isfile(os.path.join(d, 'pages.js')) else ''
+    if os.path.isfile(os.path.join(d, 'app', 'pages.js')):         # the real app's screens (tools/app_snap.js)
+        pages_js = f'<script src="{rel}/app/pages.js"></script>\n' + pages_js
+    if os.path.isfile(os.path.join(d, 'app', 'app.css')):
+        extra_css = f'<link rel="stylesheet" href="{rel}/app/app.css">\n' + extra_css
     kit = meta.get('kit')                          # a demo kit: demos/kit/<kit>.js (+ .css), e.g. the walkthrough method
     if kit:
         if not os.path.isfile(os.path.join(ROOT, 'demos', 'kit', f'{kit}.js')):

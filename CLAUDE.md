@@ -11,8 +11,13 @@ and muxed with ffmpeg.
   - Follow the `marsad-demo` skill (`.claude/skills/marsad-demo/SKILL.md`).
   - The method (since September 2026) is Benji Taylor's walkthrough grammar in Marsad's main theme, built with the
     walkthrough kit (`demos/kit/walk.js`).
-  - The reference is `demos/decisions-walk/`. The skill's references hold the feature brief, the method's numbers
-    and the quality checklist.
+  - Walkthroughs show **the real app's screens**: the client sent their front end (2026-09-30: "this is marsad
+    front end", a zip of the Next.js monorepo; not in this repo, unzip it anywhere). `tools/app_snap.js` runs it
+    with sample data and freezes each state a walkthrough needs into `demos/<slug>/app/` (DEMOS.md §6.0). The site
+    kit stays for the ads and for screens the front end doesn't have.
+  - The reference is `demos/decisions-real/` (on the real screens); `demos/decisions-walk/` is the same walkthrough
+    on the site kit, from before the front end arrived. The skill's references hold the feature brief, the method's
+    numbers and the quality checklist.
   - The earlier light-style demos in `demos/` are the previous method.
   - `skills/marsad-demo.skill` and `.zip` are its installable copies for a Claude account.
   - Rebuild them with `python3 tools/package_skill.py` whenever the skill changes.
@@ -43,10 +48,13 @@ and muxed with ffmpeg.
   - The benefit line, then the capsule end; 16:9.
   - The music is the client's launch track ("use this music": `fit/monume-product-launch-review.mp3`, the kit's
     `launch` map). Any tonal hit is re-tuned to the track's key.
-  - Every click is heard ("add sfx for the click"): a soft click (`fit/sfx/glass-press-am.wav`) in the music's silence
-    just before a hit, with the result on the hit. Whooshes stay on the transitions only; there are no other UI
-    sounds.
-  - The sample (`demos/decisions-walk`) awaits the client's verdict.
+  - Every click is heard ("add sfx for the click"), with the client's mouse click ("use this click sound":
+    `fit/sfx/mouse-click.mp3`, since 2026-09-30). One click per bar at most, in the bar's silence (+1.5–2 beats on
+    the launch track), heard at least 6 dB over the music; the result lands on the bar's +2.5 hit. Whooshes stay on
+    the transitions only; there are no other UI sounds.
+  - The app's own screens and states, captured from the client's front end: its text, its dialogs, its messages.
+    Sample data is plausible and listed at delivery, like anything typed or shown out of the app's order.
+  - The sample on the real screens (`demos/decisions-real`) awaits the client's verdict.
   - The earlier light-style demos (a steps rail, the logo end card, 16:9 and 9:16) are the previous method.
 - Campaign films: Marsad's main theme, the 48 s film's ("the theme of 48 second video is good"): a near-black stage
   with glowing lenses and dust, white type blurring in with the Arabic under it, the app's real pages and parts in 3D

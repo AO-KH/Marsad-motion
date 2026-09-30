@@ -2,7 +2,7 @@
    Natural coordinate space: 1896 x 1060 (recording width). Scale the .site root to place it. */
 .site{position:absolute;left:0;top:0;width:1896px;height:1060px;background:#FFFFFF;overflow:hidden;
   font-family:'PlexAR','Inter',sans-serif;color:#1A191E;direction:rtl;transform-origin:0 0;}
-.site *{position:relative;box-sizing:border-box;}
+.site :where(:not(.rx-scope *)){position:relative;box-sizing:border-box;}   /* not inside a real app screen (.rx-scope) */
 .site .abs{position:absolute;}
 .site svg.ic{display:block;flex:0 0 auto;}
 

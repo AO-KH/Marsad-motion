@@ -130,6 +130,9 @@ These come from the client's feedback on the campaign films. The engine's defaul
 | `demos/kit/walk.js`, `walk.css` | The walkthrough kit (`M.walk`, §5.1): the stage, the intro, the 3D camera, the pointer's hand, floating parts, the step capsule, the exit, the benefit and the capsule end. A demo loads it with `"kit": "walk"` in `demo.json` |
 | `tools/rects.js` | Natural positions of elements on a demo's pages (`node tools/rects.js <slug> '#btnOK' 'text:…'`), to aim the camera |
 | `tools/fast_ranges.py` | The fast moves of a render; `--run` re-renders them with 16 sub-frames, blends, re-muxes and re-checks |
+| `tools/app_snap.js`, `tools/app/` | The real app's screens (§6.0): runs the client's front end with sample data (`app/env.js`) and freezes the states in `demos/<slug>/app/capture.js` into `app/pages.js`, `app.css` and `icons.woff2` (`app/serialize.js`), checking each against the live app |
+| `tools/subset_icons.py` | Cuts Material Symbols down to the icons a demo's screens use (fonttools); `app_snap.js` runs it |
+| `demos/<slug>/app/` | A demo's captured screens: `capture.js` (written by hand) and the three files the tool writes |
 | `films/<slug>/film.json`, `film.js` | A campaign film (the `marsad-campaign` skill): the same roles as `demo.json`/`demo.js`; the tools find a slug in `demos/`, then `films/` |
 | `films/kit/kit.js`, `kit.css` | The film kit: the famous source tiles, the Marsad mark, big bilingual statements (included for `films/` only) |
 | `tools/film_audio.py`, `tools/sfx.py` | A film's voiceover (Kokoro "Michael") and synthesized sound effects, mixed under or over the music by `music_fit.py` |
@@ -228,8 +231,11 @@ const W = M.walk({map:'launch', page:'pulse',      // map 'launch' (51 s), or th
   times:{exit:58}});                                // optional: move a timing (beats)
 const {app, cam, lift, NP} = W;                     // app: the M.app API; app.click also shows a hand
 cam(t, {at:NP(x,y) | selector | 'text:…', dx, dy, z, rx, ry, ox, oy}, {dur, ease, hop, push});   // or cam(t,'page')
-lift(target, a, b, {glow:'green'|'violet', depth, up, down, hide:[…], display});   // a part floats out of the page
+lift(target, a, b, {glow:'green'|'violet', depth, up, down, hide:[…], display, exact});   // a part floats out of the page
 ```
+
+`lift` steps down from a wrapper to its only child with the same text (so `'text:'` lifts the pill, not its row);
+`exact: true` lifts the element itself (a whole card).
 
 The camera moves the window's layer in 3D. z 1 is the whole window; dives go to 2.5–4. A zoom turns about the point
 that stays put on screen. `hop` pulls back mid-move on long pans, and `push` keeps the camera creeping in after it
@@ -238,6 +244,49 @@ benefit line through the track's break, and the capsule end on the hit. The skil
 numbers (zooms, tilts, timings) and the two music maps with their sound effects.
 
 ## 6. Pages and screens
+
+### 6.0 The real app's screens (the client's front end)
+
+The client sent Marsad's front end (2026-09-30: "this is marsad front end", a zip of their Nx monorepo: the Next.js
+app in `apps/web`, the feature libraries in `libs/web/*`). It is **not in this repo**; unzip it anywhere. It runs here
+with no backend: `tools/app/env.js` signs a demo user in, answers every API call from sample data, and serves the
+fonts locally. `tools/app_snap.js` drives it through the states a walkthrough needs and freezes each one into static
+HTML + CSS that the engine animates like its own pages: the app's own markup, CSS and text, sharp at any zoom.
+
+```bash
+cd <marsad-frontend> && npm ci                     # once (a few minutes); then, or let --fe do both:
+cd apps/web && npx next dev --port 3000            # leave it running
+node tools/app_snap.js <slug>                      # or: node tools/app_snap.js <slug> --fe <marsad-frontend>
+```
+
+`demos/<slug>/app/capture.js` says what to capture (the full format is in the tool's header):
+- `viewport`: `{width: 1440, height: 805}`, the demo window's shape. The window shows it at 0.944 (site-kit pages:
+  1896×1060 at 0.717), so the app's 14 px text reads at 30 px from z 2.3.
+- `routes`: the sample data, `[method, /path/, body | (reqBody, path) => body]`; functions can keep state (after the
+  approve call, the list comes back approved). Sign-in, org, workspace, rights (an admin) and the bell are answered
+  already. Calls nothing answers print as `NEW` (answered `{}`): give the ones a screen needs data.
+- `states`: `{key, url, run, tag, wait}` in order, in one tab. `run` drives the app with Playwright (click, fill,
+  scroll) and `tag` marks elements `data-w="name"` for `demo.js` (`'[data-w=approve]'`); tags stay on an element
+  while the app keeps it.
+
+It writes `demos/<slug>/app/pages.js` (one `M.definePage(key, {app: true, …})` per state; `make_demo.py` loads it),
+`app.css` (the fonts and the app's rules, scoped to `.rx-scope`) and `icons.woff2` (only the icons the screens use:
+Material Symbols Outlined, Apache 2.0, subset by `tools/subset_icons.py`). It checks each snapshot against the live
+app and prints the share of pixels that differ (`build/<slug>-app/<key>.diff.png`): under 0.7% is sub-pixel text
+edges; more means something did not come across (an image, a font, a style).
+
+In `demo.js` the states are pages: `W.walk({page: 'home'})`, `app.page(t, 'confirm')`. Changes the app makes in place
+(a dialog opening, a field taking the focus) are best captured as their own state, then swapped on the beat
+(`app.page(t, key, {dur: 0.1–0.35})`). On the captured screens:
+- text fields are `div[data-rx-field]` with the app's placeholder in `.ph`: `app.type` types into them (its caret
+  and the field's `rx-focus` class come on while typing);
+- the app's `:hover`, `:focus` and `:active` styles apply when an element has the class `rx-hover`, `rx-focus` or
+  `rx-active` (`demos/decisions-real/demo.js` has `hover()` and `press()` helpers);
+- scrolled boxes keep their scroll; there are no CSS animations; a `<canvas>` (a chart) becomes a still image;
+- dialogs that are `position: fixed` sit in the page's own viewport, as in the app.
+
+The engine keeps the site kit's and the app's styles apart (`.site :where(:not(.rx-scope *))`, and `.rx-scope`
+starts from `all: initial`), and the kit's `lift` wraps a floated copy in the same scope.
 
 ### 6.1 Site-kit pages
 
@@ -367,7 +416,8 @@ target, nothing cut off in 9:16.
 
 | Demo | Kind | Length | Music | Notes |
 |---|---|---|---|---|
-| [`decisions-walk`](demos/decisions-walk/demo.js) | Walkthrough, the new method (**the reference**, the kit's first use) | 51.0 s, 16:9 | `monume-product-launch-review.mp3`, the launch map | Decisions: approve a recommendation, in 5 steps, starting on Business Pulse. Open Decisions (a hand clicks the tab) → read the recommendation → check its confidence and source (both float out) → approve (the click is heard in the silence just before a hit; the executed card appears on the hit and floats out) → the counters change. It uses the site kit's existing pages and data. v1 (2026-09-30): the funk track, 43.8 s, lenses. v2 (same day): the client asked for stars instead of the bubbles (the lenses) and for their launch track, so the timing moved onto the new track (80 BPM; the benefit over its breakdown) and the whoosh-hits were re-tuned to its key. v3 (same day): "remove the stars and add sfx for the click": the stage is dark with soft glows only, and each click has a soft click sound (glass-press-am) in the track's silence just before a hit, with its result on the hit. The renderings are the stage and its glows, the rim, the pointer, the floating parts with their recesses and shadows, and the capsule |
+| [`decisions-real`](demos/decisions-real/demo.js) | Walkthrough, the new method on **the real app's screens** (**the reference**; the first use of `tools/app_snap.js`) | 51.0 s, 16:9 | `monume-product-launch-review.mp3`, the launch map; clicks: `mouse-click.mp3` | Decisions: approve a recommendation, in 5 steps, from the Home page: open Decisions (the top bar's tab) → read the recommendation (its title, then the AI's reasoning) → check its confidence and source («ثقة 80%», «مستند · Odoo», both float out) → approve it with a reason (the app's own confirm dialog: a click in the reason field, the reason typed, «تأكيد الموافقة») → «تم بنجاح», and the card, now «موافق» and «نُفِّذ الإجراء», floats out while the counts move. Six captured states: `home`, `decisions`, `confirm`, `focus`, `done`, `after`. v1 (2026-09-30), after the client sent the front end; their mouse click ("use this click sound") replaced the glass press. Four clicks, one per bar, each at the bar's +1.8 (its silence), +12 dB over the music, the result on the +2.5 hit. Sample data: the three recommendations of the client's screen recording, with the source set to «مستند · Odoo» and the Odoo action awaiting approval; the counts 6 / 0 / 1. Invented: the reason typed; the counts are shown moving after the dialog closes (the app updates them behind it). Renderings: the stage and its glows, the rim, the camera, the pointer with its hover and press, the floating parts with their recesses and shadows, the capsule |
+| [`decisions-walk`](demos/decisions-walk/demo.js) | Walkthrough, the new method on the site kit's pages (the kit's first use; before the front end arrived) | 51.0 s, 16:9 | `monume-product-launch-review.mp3`, the launch map | Decisions: approve a recommendation, in 5 steps, starting on Business Pulse. Open Decisions (a hand clicks the tab) → read the recommendation → check its confidence and source (both float out) → approve (the click is heard in the silence just before a hit; the executed card appears on the hit and floats out) → the counters change. It uses the site kit's existing pages and data. v1 (2026-09-30): the funk track, 43.8 s, lenses. v2 (same day): the client asked for stars instead of the bubbles (the lenses) and for their launch track, so the timing moved onto the new track (80 BPM; the benefit over its breakdown) and the whoosh-hits were re-tuned to its key. v3 (same day): "remove the stars and add sfx for the click": the stage is dark with soft glows only, and each click has a soft click sound (glass-press-am) in the track's silence just before a hit, with its result on the hit. The renderings are the stage and its glows, the rim, the pointer, the floating parts with their recesses and shadows, and the capsule |
 | [`pulse-short`](demos/pulse-short/demo.js) | Short feature demo, the light style (the previous method's reference) | 30 s | `product-video.mp3` | Business Pulse: the daily advisor switches on, new findings, a stock alert with highlight and callout. v2 (2026-09-25): Western digits (18%), the click on the switch not its label, clean edges (the alert whole in 9:16), motion blur |
 | [`search-walkthrough`](demos/search-walkthrough/demo.js) | Walkthrough, 3 steps (the skill's test run) | 41 s | `product-video.mp3` | Search across all your data: open Search from the Data sidebar, type «فاتورة», results from Odoo, WhatsApp and files. `pages.js` rebuilds the search page. **To confirm with the client before use:** the files result row and its pills are invented, and the route through the Data sidebar |
 | [`ontology-walkthrough`](demos/ontology-walkthrough/demo.js) | Walkthrough, 4 steps | 52 s | `product-video.mp3` | Your ontology at a glance: open the Knowledge Map from the Data sidebar, switch to «مخطط الأنطولوجيا», read a type and a link, select مشروع to open its details panel (a project holds many files and sits in one section). `pages.js` rebuilds the real page from the client's HTML snapshot (2026-09-27). **To confirm with the client before use:** the page opening in Explore mode, the graph's zoom (130%) and position, the panel showing only after a click, the links drawn in the brand colour when nothing is selected, the look-alike icons, and the empty search page the video starts on |

@@ -11,12 +11,15 @@ A walkthrough is ready when every point below holds.
 **The story**
 - [ ] Each step's line matches what the camera shows while it is up. The action and its result are on screen and
       readable.
-- [ ] The key action (the approve, the send, the generate) lands on the strong beat (k40 on the 44 s map). Its
-      proof floats out.
+- [ ] The key action (the approve, the send, the generate) is clicked in a bar's silence and answered on its hit.
+      Its proof floats out.
 - [ ] The last step shows the outcome, and the benefit line says what the feature gives.
 
 **Truth**
-- [ ] The pages and their text are the app's own. The feature does only what the client described.
+- [ ] The screens are the app's own, captured from its front end; each state's check read under 0.7% (sub-pixel
+      text edges), or you looked at its diff and know why. The feature does only what the client described and
+      the app itself does with the sample data.
+- [ ] No call a screen needs was answered `{}` (the capture prints them as `NEW`).
 - [ ] Everything invented, and every rendering, is listed in the delivery message. Say what came from the site
       kit's existing data.
 
@@ -43,8 +46,8 @@ A walkthrough is ready when every point below holds.
       engine's `count`, `text` and `type` do).
 
 **Sound and QA**
-- [ ] Whooshes: four moments or fewer, all on transitions. Every click has its click sound, heard: at least +6 dB
-      over the music at that moment. No other UI sounds.
+- [ ] Whooshes: four moments or fewer, all on transitions. Every click has its click sound (the client's
+      `mouse-click.mp3`), one per bar at its +1.8, heard at least +6 dB over the music. No other UI sounds.
 - [ ] QA prints `RESULT PASS`: pulse ≤ 1.15, shake 0, −14 LUFS ± 1.5, true peak ≤ −1 dBTP.
 - [ ] The final has motion blur, and `tools/fast_ranges.py --run` was run on it.
 
@@ -64,7 +67,15 @@ A walkthrough is ready when every point below holds.
 | Numbers looked doubled in motion blur | Sub-frames averaged two values | `app.count`, `app.text`, `app.type` step per frame; custom text uses `M.FQ(t)` |
 | A fast zoom showed steps | Four sub-frames can't cover a big move | `python3 tools/fast_ranges.py <slug> --run`: 16 sub-frames on the fast ranges |
 | A floating part looked flat | It rose straight at the camera | Tilt while it floats (rx 7, ry −10), so the gap and its shadow show |
-| An element or label the site kit lacks | The feature is only partly in the site kit | Ask for the front end (HTML best, or 3× screenshots). Otherwise rebuild the page in `pages.js` with the fewest changes, and list what you invented |
+| An element or label the site kit lacks | The feature is only partly in the site kit | Capture the real screen from the client's front end (`tools/app_snap.js`). Only for a screen the front end lacks, rebuild it in `pages.js` with the fewest changes, and list what you invented |
 | The whoosh-hits sounded off-key over a new track | The `cinematic-*-dsm` hits are tuned to the funk track (D# minor) | Estimate the new track's key, then re-tune the hits with rubberband (the `-am` pair is A minor, for the launch track). Name the key in `fit/CREDITS.md` |
 | A click sound was buried (−11 dB under the music) | It fell on the track's pickup sound, 150 ms before the hit | Move the click into the bar's silence (the launch track: +1.5–2 beats), and let the result land on the hit. Check it: mix with and without the click cue (`tools/music_fit.py`), subtract, and compare the click's RMS with the music's over 120 ms |
 | Opacity on a 3D group flattened it | Opacity, filters or `overflow` on a `preserve-3d` element flatten its children | The kit turns the window's `preserve-3d` on only while something floats, and never fades a 3D group |
+| QA flagged a shake on a long move | A `hop` dips the zoom mid-pan; with a big turn swing (ry +10 → −12) the motion reverses in every quadrant between two frames | Two moves instead: back out to context, then ease in (eased ends meet at rest, so nothing reverses at speed). No `hop` on real screens' short pans |
+| The hand stopped beside the button it clicked | An `app.cursor` key later than the click's glide start (click − lead) overrode the glide | Bring the pointer in before the glide starts: `app.cursor(t)` with t < click − lead |
+| Two clicks were buried (−6 and −22 dB under the music) | Clicks at a bar's +3.8: some bars are loud there (a lead-in to the downbeat) | One click per bar, at +1.8 in its silence; a flow with a dialog takes a bar per click. Measure each: mix with and without the click cue, subtract, compare over 120 ms |
+| The client's click read only +5 dB | A short click normalised to its peak carries little energy at the old gain (−5) | Gain +1: +12 dB over the music in the silences |
+| A captured screen lost its layout in the engine (tried before the fix) | The site kit's `.site *{position: relative}` reached the app's elements | The engine keeps them apart (`.site :where(:not(.rx-scope *))`, `.rx-scope{all: initial}`); `app.css` is scoped with `@scope (.rx-scope)` |
+| A captured dialog filled nothing | `position: fixed` resolved against the transformed window (0×0) | The engine gives each captured page `contain: layout`, so it is the dialog's viewport, as the browser window was |
+| Typing into a captured textarea showed nothing | A `<textarea>` can't hold the engine's typed spans | The tool turns fields into `div[data-rx-field]` sized and styled as they were, with the placeholder in `.ph` |
+| A tight frame on a card's buttons was mostly empty card | RTL: the buttons sit at the card's far left, its text at the right | Frame the whole card, then ease in toward the buttons (z 2.35, ry −8) for the click |

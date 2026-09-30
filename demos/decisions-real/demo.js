@@ -1,9 +1,3 @@
-/* STARTER: a copy of the reference walkthrough (demos/decisions-real, on the real app's screens). Copy this folder to
-   demos/<slug>/, then: write app/capture.js for your feature (its sample data, its states, its tags) and run
-   node tools/app_snap.js <slug> --fe <marsad-frontend>; change the title in demo.json and list every click's beat in
-   the click cue (mouse-click.mp3: one click per bar, at its +1.8); here, change the intro, the steps, the benefit and
-   the camera moves (aim with node tools/rects.js <slug> …). Keep the map in M.walk the same as demo.json's music.
-   Replace this header with your own beat map, truth notes, sample data and renderings. */
 /* Decisions: approve a recommendation. The walkthrough method (demos/kit/walk.js) on the real app's screens: the client's
    front end run with sample data and frozen by tools/app_snap.js (demos/decisions-real/app/). 16:9, 51.0 s, on the
    client's launch track (map 'launch': Monume "Product Launch Review", 80 BPM). B(k) = k x 0.75 s. Each groove bar

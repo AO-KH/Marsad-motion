@@ -163,7 +163,9 @@ function steps(o){
 
 /* ---------------- custom pages and site-kit fixes ---------------- */
 const CUSTOM={};
-// M.definePage(key,{html,tab,w,h}) for a page built from site-kit pieces, or {img:'demos/x/shots/a.png',w,h} for a screenshot
+// M.definePage(key,{html,tab,w,h}) for a page built from site-kit pieces, {img:'demos/x/shots/a.png',w,h} for a screenshot, or
+// {app:true,html,w,h} for a screen of the real app frozen by tools/app_snap.js (demos/<slug>/app/pages.js writes these; its
+// app.css styles them inside .rx-scope)
 function definePage(key,spec){CUSTOM[key]=spec;}
 const FIX={decisions:e=>{const t=e.querySelector('#toast');if(t){t.dataset.disp='flex';t.style.display='none';}}};
 
@@ -179,7 +181,7 @@ function app(o){
   const beamS=el('div','m-beam soft',null,win),beam=el('div','m-beam',null,win);
   const rip=el('div','m-rip',null,win);
   const cur=el('div','m-cursor',CURSOR,win);
-  const PG={},PSEQ=[],VSEQ=[],CUR=[],OUTS=[],CLK=[];
+  const PG={},PSEQ=[],VSEQ=[],CUR=[],OUTS=[],CLK=[],SCROLLED=[];
   let chrome=null,chUL=null,chTabs=[];
 
   function page(key){
@@ -189,8 +191,10 @@ function app(o){
     else if(c){html=typeof c.html==='function'?c.html():c.html;w=c.w||w;h=c.h||h;tab=c.tab||null;}
     else if(window.SK&&SK.PAGES[key])html=SK.PAGES[key]();
     else throw new Error(`M.app: unknown page "${key}" (site kit: ${window.SK?Object.keys(SK.PAGES).join(', '):'-'}; or M.definePage)`);
-    if(window.SK&&!(c&&c.img))for(const [k] of SK.TABS){const ch=SK.chrome(k);if(html.includes(ch)){html=html.replace(ch,'');tab=tab||k;break;}}
-    const e=el('div','m-page',html,site);e.dataset.key=key;st(e,{width:w+'px',height:h+'px',visibility:'hidden'});
+    const real=!!(c&&c.app);                                           // a real app screen: its own top bar, its own CSS
+    if(window.SK&&!(c&&c.img)&&!real)for(const [k] of SK.TABS){const ch=SK.chrome(k);if(html.includes(ch)){html=html.replace(ch,'');tab=tab||k;break;}}
+    const e=el('div','m-page'+(real?' rx-page':''),html,site);e.dataset.key=key;st(e,{width:w+'px',height:h+'px',visibility:'hidden'});
+    if(real)SCROLLED.push(...e.querySelectorAll('[data-rx-scroll]'));  // scrolled boxes keep their scroll (set each frame)
     if(tab&&!chrome){chrome=el('div','m-page m-chrome',SK.chrome(tab),site);st(chrome,{width:w+'px'});
       chUL=chrome.querySelector('.sk-ul');chTabs=[...chrome.querySelectorAll('.sk-tab')];}
     if(chrome)site.appendChild(chrome);                                // the shared top bar stays above every page
@@ -252,6 +256,7 @@ function app(o){
 
   PRE.push(t=>{
     const on=t>=at-0.02&&t<out+0.8;win.style.display=on?'':'none';WOFF.vis=on;if(!on)return;
+    for(const n of SCROLLED){const [x,y]=n.dataset.rxScroll.split(',');if(n.scrollLeft!==+x)n.scrollLeft=+x;if(n.scrollTop!==+y)n.scrollTop=+y;}
     const p=ez.dec(P(t,at,at+0.9)),x=ez.inC(P(t,out,out+0.7));
     WOFF={y:(1-p)*36-x*14,s:(0.965+0.035*p)*(1-0.02*x),vis:true};
     st(win,{opacity:f3(p*(1-x)),transform:`translateY(${f2(WOFF.y)}px) scale(${f3(WOFF.s)})`});
@@ -329,7 +334,7 @@ function app(o){
           e._mt=el('span','m-typed');e._mc=el('span','m-caret');if(e._ph)e._ph.after(e._mt,e._mc);else e.append(e._mt,e._mc);}
         const q=FQ(tt),cleared=opt.clearAt!=null&&q>=opt.clearAt,n=q<t||cleared?0:Math.min(text.length,Math.floor((q-t)*cps)+1);
         e._mt.textContent=text.slice(0,n);if(e._ph)e._ph.style.display=n>0?'none':'';
-        const act=tt>=t-0.5&&!cleared;e._mc.style.opacity=act?1:0;e.classList.toggle('focus',act);});
+        const act=tt>=t-0.5&&!cleared;e._mc.style.opacity=act?1:0;e.classList.toggle('focus',act);e.classList.toggle('rx-focus',act);});
       return api;},
     show(t,spec,opt={}){vis(t,spec,'show',opt);return api;},
     hide(t,spec,opt={}){vis(t,spec,'hide',opt);return api;},

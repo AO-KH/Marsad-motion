@@ -63,8 +63,9 @@ line in English and Arabic. Benji needs no words; a feature explainer does.
     benefit line, and a haze under the capsule at the end. They drift 2% with the camera.
   - The client took out the first sample's lens circles ("change the bubbles … replace it with stars"), then the
     stars ("remove the stars"). No lenses, stars or dust in walkthroughs; the campaign films keep their lenses.
-- **Window:** the engine's `M.app` window, 1360×760 at stage (280, 150). It shows the whole 1896×1060 page at
-  0.717. Its rim is the theme's (`demos/kit/walk.css`); the light UI's turning beam and click ripple are off.
+- **Window:** the engine's `M.app` window, 1360×760 at stage (280, 150). It shows a real screen (captured at
+  1440×805) at 0.944, or a site-kit page (1896×1060) at 0.717. Its rim is the theme's (`demos/kit/walk.css`); the
+  light UI's turning beam and click ripple are off.
 - **Pointer:**
   - It is the app's arrow, which becomes a hand from 0.3 s before a click until 0.85 s after (`app.click` adds it).
   - It keeps about one size on screen: it scales by z^−0.5 as the camera zooms.
@@ -90,15 +91,15 @@ dive reads as going into the thing, not as a slide.
 - `rx`, `ry`: tilts in degrees. Positive `ry` turns the right side away.
 - `ox`, `oy`: a screen offset.
 
-**Zoom levels in use:**
+**Zoom levels in use** (real screens, 1440 wide; site-kit pages need about 1.3× these):
 
 | z | Shows | Use |
 |---|---|---|
 | 0.62 | the window, small and tilted | the exit (the kit's) |
-| 1.0–1.06 | the whole page | context; after a page opens |
-| 1.5 | a whole wide card (1400 natural px) | a result that fills a card; a floating card |
-| 2.2–2.9 | a group: two stat cards, half a card | reading a group; numbers changing |
-| 3.5–4.2 | a line of text, a pill, a pair of buttons | the thing itself |
+| 1.0–1.04 | the whole page | context; after a page opens |
+| 1.45–1.75 | a whole card (1120 natural px) | a result that fills a card; a floating card; the context before a click |
+| 2.0–2.4 | a group: the top bar and the welcome, two stat cards, a dialog | reading a group; a dialog; numbers changing |
+| 2.75–3.6 | a line of text, a pill row, a button column | the thing itself |
 
 **Tilts:**
 - 0 while reading;
@@ -124,8 +125,9 @@ dive reads as going into the thing, not as a slide.
 
 - **Measure, then choose.** `node tools/rects.js <slug> <targets…>` prints each target's natural rect, its centre
   (for `NP`), and the z at which it fills 80% of the width.
-- **Text size.** Site-kit body text is 16–21 natural px: at z 3 that's 34–45 px on screen. A 28 px title reaches
-  60 px. Aim for 30 px or more on the subject.
+- **Text size.** The real app's body text is 14 px and its card titles 16 px: at z 2.3 that's 30 and 35 px on
+  screen, at z 3 40 and 45 px. Site-kit body text is 16–21 natural px (at z 3, 34–45 px). Aim for 30 px or more on
+  the subject.
 - **Keep the capsule clear.** It covers y 946–1030. Centre the subject at or above the middle, so nothing that
   matters goes below y 900.
 - **Whole lines.** A 627 natural px title fits whole at z 3.5 (1575 px on screen). Cutting a line the viewer must
@@ -135,30 +137,42 @@ dive reads as going into the thing, not as a slide.
 - **Sparse subjects.** A lone pill in a wide empty card leaves the frame mostly white. Zoom closer (z about 4),
   turn the empty side away (ry 12), and float the pill out. Or frame it with its neighbours.
 - **RTL.** The app reads from the right, so reading moves go right to left, and a title's start is its right end.
+  A card's buttons sit at its far left, with its text at the right: a tight frame on the buttons is mostly empty
+  card. Frame the whole card as the step starts (z 1.75), then ease in toward the buttons (z 2.35) for the click.
 
 ## 5. Actions, states and floating parts
 
 - **Clicks:** `app.click(t, target, {ax, ay, lead, dur})`.
   - Aim at the lower part of the label (`ay` 0.7–0.92), so the hand never covers it.
-  - The glide takes `lead` 0.85–1.5 s and `dur` 0.75–1.2 s. The camera arrives before the hand presses.
-  - Bring the pointer in first with `app.cursor(t, NP(x, y), {dur: 0.15})`, from inside the frame's lower right.
-  - **Every click is heard** (the client: "add sfx for the click"). Put a click cue in `demo.json` at the click's
-    beat: `{"file": "fit/sfx/glass-press-am.wav", "beats": [9.8, 31.8], "gain": -5}` in the reference. One cue lists
-    every click.
-  - **Put the click in a silence.** Measure the music in the 400 ms before the hit (method in `quality-bar.md`). On
-    the launch track each groove bar is silent at +1.5–2 beats. A click there reads +8 to +19 dB over the music; the
-    same click under a pickup sound was buried at −11 dB.
-  - **The result lands on the hit that follows.** The page change, the card or the toast comes 0.15–0.7 s after the
-    click, on the beat.
-- **Page changes:** `app.page(hit, key)`, from 0.25 to 0.7 s after the click. Pull back to the whole page about
-  1.1 s later; the new page is the result.
+  - The glide takes `lead` 0.8–1.1 s and `dur` 0.7–0.9 s. The camera arrives before the hand presses.
+  - Bring the pointer in first with `app.cursor(t, NP(x, y), {dur: 0.15–0.2})`, from inside the frame's lower
+    right, **before** the click's glide starts (t < click − lead): a later cursor key wins, and the hand ends up
+    beside the button.
+  - The app's own hover and press: the `hover(a, b, target)` and `press(t, target)` helpers in
+    `demos/decisions-real/demo.js` set `.rx-hover` (the app's `:hover` rules) while the hand is on it, and dip the
+    button by 5% under the click.
+  - **Every click is heard** (the client: "add sfx for the click"), with the client's mouse click ("use this click
+    sound"): `{"file": "fit/sfx/mouse-click.mp3", "beats": [9.8, 29.8, 33.8, 37.8], "gain": 1}` in the reference.
+    One cue lists every click.
+  - **One click per bar, in its silence.** On the launch track each groove bar is quiet from +1.25 to +2.25 beats
+    (−34 to −45 dB) and hits at +2.5. Click at +1.8; the result lands on +2.5. The rest of a bar is not reliably
+    quiet: at +3.8 before some downbeats the music is at −12 dB, and a click there was buried at −22 dB. Check each
+    click at +6 dB or more (`quality-bar.md`); at gain +1 the reference's read +12 dB.
+  - **The result lands on the hit that follows.** The page change, the dialog, the message or the typing comes on
+    the +2.5 hit, 0.5 s after the click.
+- **Page changes and the app's states:** each is a captured state, swapped with `app.page(hit, key, {dur})`: 0.35 s
+  for a new page, 0.2 s for a dialog or a message (the app shows them at once), 0.1 s for a field taking the focus
+  (at the click itself). Pull back to the whole page about 1.1 s after a new page; it is the result. Keep the app's
+  own timings: its «تم بنجاح» stays 2 s, then its refreshed page.
 - **State changes:**
   - `app.show(t, sel, {from:'none', scale:0.97, dur:0.45})`: a card appears. At 0.45 s it snaps like the app;
     0.8 s ghosts.
   - `app.count` and `app.text`: numbers and labels.
-  - `app.type`: typing, at 14 characters a second.
+  - `app.type`: typing, at 14–18 characters a second. On a real screen, type into the captured field of the
+    state where it has the focus (`div[data-rx-field]`: its placeholder hides, the caret shows).
   - `app.toggle`, and `app.set` for anything else, such as a button's press.
-- **Floating parts:** `lift(spec, a, b, {glow, depth, up, down, hide, display})`.
+- **Floating parts:** `lift(spec, a, b, {glow, depth, up, down, hide, display, exact})`. `exact: true` lifts a whole
+  card (without it, `lift` steps down into a wrapper's only child).
   - The part rises off the page over the recess it leaves, with its shadow falling on the page, then settles back
     by b and hands over to the real one.
   - `depth`: 30 for a pill, 60 for a card.
@@ -206,7 +220,7 @@ action." / «من التوصية إلى التنفيذ.». Put the gradient on t
 |---|---|---|
 | k0–8 | the drum bar, twice | the intro; the window rises from k4.5 |
 | k8 | the groove's big hit | the window lands; whoosh + hit |
-| k8–48 | the groove | steps: clicks and dives on downbeats and +2.5s (the reference clicks on k9.8 and k31.8, in the silences, with results on k10.5 and k32) |
+| k8–48 | the groove | steps: dives on downbeats and +2.5s; clicks at a bar's +1.8, results on its +2.5 (the reference clicks on k9.8, 29.8, 33.8 and 37.8) |
 | k48–52 | the groove's last bar | the exit, with a whoosh |
 | k52–60 | the breakdown | the benefit line |
 | k60–68 | the hit, the groove back | the capsule end |
@@ -216,8 +230,8 @@ action." / «من التوصية إلى التنفيذ.». Put the gradient on t
 "sfx": [
   {"type": "swoosh", "beat": 8, "gain": -3, "seed": 81, "dur": 1.4, "rise": 0.75, "f1": 4200, "body": 0.6, "pan0": 0, "pan1": 0, "width": 0.55},
   {"file": "fit/sfx/cinematic-start-am.wav", "beat": 8, "gain": -6},
-  {"file": "fit/sfx/glass-press-am.wav", "beats": [9.8, 31.8], "gain": -5},
-  {"type": "swoosh", "beat": 33.25, "gain": -6, "seed": 84, "f1": 3000, "body": 0.6, "pan0": 0.4, "pan1": -0.3},
+  {"file": "fit/sfx/mouse-click.mp3", "beats": [9.8, 29.8, 33.8, 37.8], "gain": 1},
+  {"type": "swoosh", "beat": 41, "gain": -6, "seed": 84, "f1": 3000, "body": 0.6, "pan0": 0.4, "pan1": -0.3},
   {"type": "swoosh", "beat": 49.5, "gain": -6, "seed": 86, "f1": 3000, "f2": 1200, "body": 0.7, "pan0": 0, "pan1": -0.4},
   {"type": "swoosh", "beat": 60, "gain": -2, "seed": 87, "dur": 1.4, "rise": 0.75, "f1": 4200, "body": 0.6, "pan0": 0, "pan1": 0, "width": 0.55},
   {"file": "fit/sfx/cinematic-wake-am.wav", "beat": 60, "gain": -4}
@@ -225,8 +239,10 @@ action." / «من التوصية إلى التنفيذ.». Put the gradient on t
 "sfx_level": -23
 ```
 
-- **The clicks:** `glass-press-am.wav` is the glass pack's press, tuned from G# to A (5% faster, which keeps its
-  attack). List one beat per click.
+- **The clicks:** `mouse-click.mp3` is the client's (a press and release, 0.37 s), used as supplied: it is noise
+  with a short ring near 845 Hz, close enough to the track's A. List one beat per click. (Before it,
+  `glass-press-am.wav`, the glass pack's press tuned from G# to A.)
+- **The k41 whoosh** marks the pull-back after the app's message closes; move it onto your own biggest pull-back.
 - **Hits in the track's key.** The `-am` hits are tuned to A minor. The `-dsm` ones belong to the funk track (D#
   minor), a tritone away, and would clash.
 - **The track is very dynamic.** Its hits come between silences, so `music_fit.py` warns that the master is limited
@@ -279,18 +295,20 @@ pull-back (gain −6), and the k48 pair (as the k72 pair above).
 
 ## 8. The reference, beat by beat
 
-`demos/decisions-walk/`: "Decisions: approve a recommendation", on the launch map (80 BPM, 51 s). It starts on the
-Business Pulse page. The first cut (on the funk track, with lenses) is in the git history.
+`demos/decisions-real/`: "Decisions: approve a recommendation", on the real app's screens (six captured states:
+`home`, `decisions`, `confirm`, `focus`, `done`, `after`), on the launch map (80 BPM, 51 s). It starts on the Home
+page. `demos/decisions-walk/` is the same walkthrough on the site kit (clicks on k9.8 and k31.8, the executed card
+floating on k33.5).
 
 | Beats | Line | Camera | Action and result |
 |---|---|---|---|
-| k0–7 | "Introducing / Decisions." «تعرّف على القرارات» | — | the dark stage; from k4.5 the window rises on its back |
+| k0–7 | "Introducing / Decisions." «تعرّف على القرارات» | — | the dark stage; from k4.5 the window rises on its back (the Home page) |
 | k8 | — | lands flat, z 1 | the groove's big hit: whoosh + hit, punch 1.2% |
-| k8.5–14.5 | 1 · Open Decisions | dives onto the tabs (NP(1400,230), z 2.7) from k8.2; pulls back to the page (z 1.06, rx 4, ry −5) at k12 | the hand clicks «القرارات» in the bar's silence (k9.8, click sound); the page opens on the hit (k10.5) |
-| k14.5–20 | 2 · Read the recommendation | the whole title, large (z 3.5); a slow reveal of the card (z 2.7) from k16.5 | — |
-| k20–28 | 3 · Check its confidence and source | the pills (z 3.6); across with a hop to «المخزون · Odoo» (z 3.9, ry 12) on k24 | «ثقة 80%» floats out, green (k21–24.3); the source floats out, violet (k25.25–28) |
-| k28–38.5 | 4 · Approve it | the buttons (z 2.8, hop); back out to the card, tilted (z 1.5, rx 7, ry −10) at k32.75 | the hand clicks «موافقة» in the silence 150 ms before k32 (k31.8, click sound); «تم تنفيذ الإجراء» appears on the hit (k32, 0.45 s) and floats out, green (k33.5–38.5) |
-| k38.5–47.5 | 5 · It's recorded right away | the counters (z 2.25); closer (z 2.9) at k42.5; the whole page at k44.5 | approved 0 → 1, under review 6 → 5, and the filter tabs (k40.5); a soft green ring on "approved" |
+| k8.5–14.5 | 1 · Open Decisions | onto the top bar, the welcome and its search (NP(930,286), z 2.0, rx 2, ry −4) from k8.2; back to the page (z 1.04, rx 4, ry −5) at k12 | the hand clicks «القرارات» (k9.8, click) with the tab's hover; the Decisions page on the hit (k10.5) |
+| k14.5–20 | 2 · Read the recommendation | the title (NP(952,527), z 3.0); a slow reveal of the card and the AI's reasoning (z 2.25, `sin`, 2.4 s) from k16.5 | — |
+| k20–28 | 3 · Check its confidence and source | the pill row (z 3.3, ry 3); a small turn (z 3.6, rx 4, ry 10) at k24 | «ثقة 80%» floats out, green (k21–24.3); «مستند · Odoo» floats out, violet (k25.25–28) |
+| k28–38.5 | 4 · Approve it, with a reason | back out to the whole card (z 1.75, ry −6) from k27.3; in toward its buttons (z 2.35, ry −8) from k28.85; the dialog (z 2.3) from k30.3; closer (z 2.75) from k34.2 | «موافقة» (k29.8, click; hover and press) → the app's confirm dialog on the hit (k30.5) → a click in the reason field (k33.8), which takes the focus → the reason typed from the hit (k34.5, 18 cps) → «تأكيد الموافقة» (k37.8, click) |
+| k38.5–47.5 | 5 · Approved, and the Odoo action runs | the message (z 3.0) from k38.4; back out, tilted (z 1.45, rx 7, ry −10) as it closes (k41.2, whoosh); the whole page at k45.2 | «تم بنجاح» on the hit (k38.5), for the app's 2 s; the page, the card «موافق» and «نُفِّذ الإجراء», floats out, green (k41.9–45.4); the counts move on the hit (k42.5: 6 → 5, 0 → 1), a soft green ring on "approved" |
 | k48–52 | — | the exit | whoosh |
 | k52–60 | "From recommendation to action." | — | over the breakdown |
 | k60–68 | the capsule end | cut | the hit brings the groove back: whoosh + hit, punch 1.5% |

@@ -15,16 +15,18 @@
        this much mid-move), push (0.012: once there, keep creeping in, per second)}
        A zoom turns about a fixed point, so a dive reads as going into the thing, not as a slide;
      the pointer: W.app.click() also turns the arrow into a hand just before the click. Each click gets a click sound
-       in demo.json's sfx (fit/sfx/glass-press-am.wav at the click's beat): time the click in the track's silence just
-       before a hit, and let the result land on the hit;
-     W.lift(spec,a,b,{glow:'violet'|'green', depth, up, down, hide:[specs], display}): a part of the page floats out of
+       in demo.json's sfx (fit/sfx/mouse-click.mp3, the client's, at the click's beat): one click per bar, at its +1.8
+       (the bar's silence on the launch track), with the result on its +2.5 hit;
+     W.lift(spec,a,b,{glow:'violet'|'green', depth, up, down, hide:[specs], display, exact}): a part of the page floats out of
        it (the theme's 3D), glowing, over the recess it leaves, and settles back into place by b;
      the step capsule: one line per step ({at, en, ar}), English · Arabic, at the foot of the frame, until capOut;
      the exit (the window tilts away and fades), the benefit line on the stage held through the track's break, and the
        capsule end on the hit (Book your demo, marsadnasl.com, the mark).
    It returns {app, cam, lift, NP, jt, K}: K holds the map's times in seconds (land, capOut, exit, benefit, hit, end);
    o.times ({exit: 57, capOut: 56.5, ...}, in beats) moves any of them.
-   The steps then use W.app like any M.app (click, page, type, show, hide, count, text, set) and W.cam / W.lift.
+   The steps then use W.app like any M.app (click, page, type, show, hide, count, text, set) and W.cam / W.lift. The pages
+   are the real app's screens, captured by tools/app_snap.js into the demo's app/ folder (DEMOS.md §6.0), or site-kit
+   pages.
    Maps (demo.json's music block must use the same track and edit):
      'launch'  the client's launch track, fit/monume-product-launch-review.mp3 (80 BPM, downbeat 0.012), edit
                [[0,4],[0,48],[88,104]], 51.0 s: the drum bar twice (k0-8), steps on the groove k8-48 (accents on each
@@ -114,13 +116,25 @@ M.walk=function(o){
   const LIFTS=[];
   function lift(spec,a,b,lo={}){
     let orig=app.el(spec,a);
-    while(orig.children.length===1&&orig.children[0].textContent===orig.textContent)orig=orig.children[0];   // 'text:' finds a pill's wrapper first
+    if(!lo.exact)while(orig.children.length===1&&orig.children[0].textContent===orig.textContent)orig=orig.children[0];   // 'text:' finds a pill's wrapper first ({exact:true}: lift the element itself, e.g. a card)
     const R=app.rect(orig),cs=getComputedStyle(orig),rad=lo.radius??(parseFloat(cs.borderTopLeftRadius)||12);
     const box=cls=>{const e=M.el('div',cls,null,LB);st(e,{position:'absolute',left:R.x+'px',top:R.y+'px',width:R.w+'px',height:R.h+'px',borderRadius:rad+'px'});return e;};
     const slot=box('wk-slot'),shd=box('wk-shd'),w=box('wk-lw'),cl=orig.cloneNode(true);cl.removeAttribute('id');
     st(cl,{position:'absolute',left:'0px',top:'0px',right:'auto',bottom:'auto',margin:'0px',width:R.w+'px',height:R.h+'px',direction:cs.direction,
       display:lo.display||orig.dataset.disp||(cs.display==='none'?'block':cs.display),opacity:'1',transform:'none',visibility:'visible'});
-    w.appendChild(cl);
+    let host=w;
+    const scope=orig.closest('.rx-scope');
+    if(scope){   // a real app screen: its styles apply inside .rx-scope > .rx-html > .rx-body, so the copy goes in boxless copies
+      const hs=scope.firstElementChild,bs=hs.firstElementChild;   // of those three, with the type its real ancestors gave it
+      const s0=M.el('div','rx-scope',null,w),s1=M.el('div',hs.className,null,s0),s2=M.el('div',bs.className,null,s1);
+      ['dir','lang'].forEach(k=>{if(hs.hasAttribute(k))s1.setAttribute(k,hs.getAttribute(k));});
+      [s0,s1,s2].forEach(e=>{e.style.display='contents';});
+      const pc=getComputedStyle(orig.parentElement);
+      for(const p of ['color','font-family','font-size','font-weight','font-style','line-height','letter-spacing','text-align','white-space','direction','-webkit-font-smoothing'])
+        s2.style.setProperty(p,pc.getPropertyValue(p));
+      host=s2;
+    }
+    host.appendChild(cl);
     const hide=[orig].concat((lo.hide||[]).map(q=>app.el(q,a)));
     const [c1,c2]=GLOW[lo.glow||'violet'],up=lo.up??0.8,down=lo.down??0.7,depth=lo.depth??30;
     LIFTS.push([a,b]);
