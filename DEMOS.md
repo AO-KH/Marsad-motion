@@ -7,12 +7,13 @@ explains it by using the real app. The method takes Benji Taylor's "Live Studio"
 notes.apoorv.xyz/launch-videos as its reference ("take these video for the walk through and take them as reference
 … keep the marsad and NASL theme").
 
-- **On screen:** the real app in a window on Marsad's main-theme stage (dark, lenses, dust), and a camera that dives
-  onto each click. The app's own states change.
+- **On screen:** the real app in a window on Marsad's main-theme stage (dark, with a field of stars), and a camera
+  that dives onto each click. The app's own states change.
 - **The lines:** one step line at a time, English · Arabic, in a dark capsule.
 - **The 3D:** the parts that prove the feature float out of the page.
 - **The ending:** the benefit on the stage, then the capsule end.
-- **The format:** the client's funk track, 16:9, 30 s or 44 s.
+- **The format:** the client's launch track (Monume, "Product Launch Review"), 16:9, 51 s; the funk track's 30 s
+  and 44 s maps also work.
 - **Where it lives:** the machinery is the walkthrough kit (`demos/kit/walk.js`, `walk.css`; §5.1), and a
   walkthrough's `demo.js` holds only its steps.
 - **The reference** is [`demos/decisions-walk/`](demos/decisions-walk/demo.js), the first sample, sent for the
@@ -220,7 +221,7 @@ the frame's time `Math.round(t*30)/30`, or it ghosts; `count`, `text`, `type` an
 kit's header):
 
 ```js
-const W = M.walk({map:'44', page:'pulse',          // map '44' (43.8 s) or '30' (29.7 s): demo.json's music edit must match
+const W = M.walk({map:'launch', page:'pulse',      // map 'launch' (51 s), or the funk track's '44' / '30': demo.json's music must match
   intro:{kicker:'Introducing', name:'Decisions.', ar:'تعرّف على القرارات'},
   steps:[{at:B(8.5), en:'Open Decisions', ar:'افتح صفحة القرارات'}, …],     // the capsule: one line per step
   benefit:{words:['From','recommendation','to',{t:'action.',g:1}], ar:'من التوصية إلى التنفيذ.'},
@@ -326,6 +327,7 @@ section if the demo is longer than the track, fades in and out, and normalises t
   | `fit/music54.m4a` (from the old 54 s cut) | 54 s | 95.96 | 0.03 | k0–15 quiet intro, drums from k16 (10 s), breakdown k48–79, drums back k80 |
   | `fit/koi-discovery-oxforf-by-night.mp3` (Koi-discovery "Oxforf by Night", CC0) | 227 s | 96.67 | 0.466 | k0–63 a quiet intro (about 6 dB under the groove), k64–95 the build, the full groove from k96 to about k340, then the outro. No stop of its own: use `stops`. E minor |
   | `fit/holizna-movement.mp3` (HoliznaCC0 "Movement", CC0) | 173 s | 96.67 | 0.218 | 4-bar rows of 16 beats. k0–31 stripped intro (bass and kick, no hats), k32–95 groove A, k96–135 groove B (brighter hats), a two-beat silence on k136–137, stripped k138–175, groove A again from k176, groove B from k240, ends k272. C minor |
+  | `fit/monume-product-launch-review.mp3` (Monume "Product Launch Review", Pixabay; the walkthroughs' track) | 133 s | 80.0 | 0.012 | A half-time 160 feel, A minor. Bars of 3 s: k0–3 drums only, the groove from a big hit on k4 (3.0 s), a quiet breakdown without drums k80–95 (60–72 s), the groove back with a big hit on k96, the outro from k160 (120 s). Each groove bar hits on its downbeat and on +2.5, after a silence at +1.5–2. The walkthrough kit's `launch` map: `[[0,4],[0,48],[88,104]]`, 51 s |
   | `fit/lightbeats-joyful-rhythm-walk-funk.mp3` (lightbeatsmusic "Joyful Rhythm Walk Funk", Pixabay) | 138 s | 115.0 | 0.538 | Funk. 4-bar rows of 16 beats. k0–15 intro (bass, no hats, about 7 dB under the groove), k16–59 groove A, a one-bar break on k60–63 (the bass drops out, about 15 dB down: the track's own stop before a hit), k64–95 groove B (busier hats), k96–127 breakdown without bass, k128–159 groove C, k160–223 the full groove, k224–255 outro, one last hit on k256. Films: `style-jupiter` v2 |
 
   `product-video.mp3` covers walkthroughs up to about 1:50 without a loop; beyond that, `"loop": [100, 164]` repeats
@@ -365,7 +367,7 @@ target, nothing cut off in 9:16.
 
 | Demo | Kind | Length | Music | Notes |
 |---|---|---|---|---|
-| [`decisions-walk`](demos/decisions-walk/demo.js) | Walkthrough, the new method (**the reference**, the kit's first use) | 43.8 s, 16:9 | the funk track, 44 s map | Decisions: approve a recommendation, in 5 steps, starting on Business Pulse. Open Decisions (a hand clicks the tab) → read the recommendation → check its confidence and source (both float out) → approve on k40 (the executed card floats out) → the counters change. Sent 2026-09-30 as the sample of the new method. It uses the site kit's existing pages and data. The renderings are the stage, the rim, the pointer, the floating parts with their recesses and shadows, and the capsule |
+| [`decisions-walk`](demos/decisions-walk/demo.js) | Walkthrough, the new method (**the reference**, the kit's first use) | 51.0 s, 16:9 | `monume-product-launch-review.mp3`, the launch map | Decisions: approve a recommendation, in 5 steps, starting on Business Pulse. Open Decisions (a hand clicks the tab) → read the recommendation → check its confidence and source (both float out) → approve (the click lands on a hit right after a silence; the executed card floats out) → the counters change. It uses the site kit's existing pages and data. v1 (2026-09-30): the funk track, 43.8 s, lenses. v2 (same day): the client asked for stars instead of the bubbles (the lenses) and for their launch track, so the stage is a starfield, the timing is on the new track (80 BPM; the benefit over its breakdown) and the whoosh-hits are re-tuned to its key. The renderings are the stage with its stars and glows, the rim, the pointer, the floating parts with their recesses and shadows, and the capsule |
 | [`pulse-short`](demos/pulse-short/demo.js) | Short feature demo, the light style (the previous method's reference) | 30 s | `product-video.mp3` | Business Pulse: the daily advisor switches on, new findings, a stock alert with highlight and callout. v2 (2026-09-25): Western digits (18%), the click on the switch not its label, clean edges (the alert whole in 9:16), motion blur |
 | [`search-walkthrough`](demos/search-walkthrough/demo.js) | Walkthrough, 3 steps (the skill's test run) | 41 s | `product-video.mp3` | Search across all your data: open Search from the Data sidebar, type «فاتورة», results from Odoo, WhatsApp and files. `pages.js` rebuilds the search page. **To confirm with the client before use:** the files result row and its pills are invented, and the route through the Data sidebar |
 | [`ontology-walkthrough`](demos/ontology-walkthrough/demo.js) | Walkthrough, 4 steps | 52 s | `product-video.mp3` | Your ontology at a glance: open the Knowledge Map from the Data sidebar, switch to «مخطط الأنطولوجيا», read a type and a link, select مشروع to open its details panel (a project holds many files and sits in one section). `pages.js` rebuilds the real page from the client's HTML snapshot (2026-09-27). **To confirm with the client before use:** the page opening in Explore mode, the graph's zoom (130%) and position, the panel showing only after a click, the links drawn in the brand colour when nothing is selected, the look-alike icons, and the empty search page the video starts on |

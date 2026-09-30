@@ -4,8 +4,9 @@
    film's, films/style-jupiter). 16:9. A demo gets the kit with "kit": "walk" in demo.json (tools/make_demo.py).
 
    const W=M.walk({map, page, intro, steps, benefit}) sets up everything but the steps' moves:
-     the dark stage (lenses that drift a little with the camera, dust) and the intro: a small grey kicker, the feature's
-       name in the gradient, its Arabic under it (k0-7);
+     the dark stage (a field of stars drifting slowly outward in three depths that shift with the camera, a few bright
+       four-point stars, soft violet glows) and the intro: a small grey kicker, the feature's name in the gradient, its
+       Arabic under it (k0-7);
      the app window (M.app), rising in on its back from k4.5 and landing flat on the groove (k8);
      the camera, W.cam(t,to,o): it moves the window's layer in 3D. to: {at, dx, dy, z, rx, ry, ox, oy}
        at   what to centre: a page point W.NP(x,y) (natural px), a selector, 'text:…', {page,sel}; dx/dy nudge it (natural px)
@@ -22,9 +23,13 @@
    It returns {app, cam, lift, NP, jt, K}: K holds the map's times in seconds (land, capOut, exit, benefit, hit, end);
    o.times ({exit: 57, capOut: 56.5, ...}, in beats) moves any of them.
    The steps then use W.app like any M.app (click, page, type, show, hide, count, text, set) and W.cam / W.lift.
-   Maps (song beats of the client's funk track, 115 BPM; demo.json's music "edit" must match):
-     '44'  [[8,48],[64,80],[48,64],[64,76]]  43.8 s: steps k8-58 (groove B lifts on k40), benefit k62-72 (break k68-71), end k72
-     '30'  [[8,48],[56,73]]                  29.7 s: steps k8-38, benefit k41-48 (break k44-47), end k48 */
+   Maps (demo.json's music block must use the same track and edit):
+     'launch'  the client's launch track, fit/monume-product-launch-review.mp3 (80 BPM, downbeat 0.012), edit
+               [[0,4],[0,48],[88,104]], 51.0 s: the drum bar twice (k0-8), steps on the groove k8-48 (accents on each
+               bar's downbeat and 2.5 beats in), the exit k48, the benefit over the breakdown k52-60, the end on the hit k60
+     '44'      the funk track (115 BPM), [[8,48],[64,80],[48,64],[64,76]], 43.8 s: steps k8-58 (groove B lifts on k40),
+               the benefit k62-72 (break k68-71), the end k72
+     '30'      the funk track, [[8,48],[56,73]], 29.7 s: steps k8-38, the benefit k41-48 (break k44-47), the end k48 */
 (function(){
 'use strict';
 const {B,S8,S16,ez,P,st,lerp,FQ,clamp}=M;
@@ -33,16 +38,16 @@ const dec=(t,a,b)=>ez.dec(P(t,a,b)), io=(t,a,b)=>ez.ioC(P(t,a,b));
 const show=(e,v)=>{e.style.display=v?'':'none';return v;};
 const inShot=(t,a,b)=>t>=a&&t<b;
 const MAPS={
-  '44':{land:8,capOut:57.5,exit:58,out:60.6,benefit:62.4,hit:72,end:84},
-  '30':{land:8,capOut:37.5,exit:38,out:40.2,benefit:41.4,hit:48,end:57},
+  'launch':{land:8,capOut:47.5,exit:48,out:49.6,benefit:52.25,hit:60,end:68},   // the launch track (80 BPM), 51 s
+  '44':{land:8,capOut:57.5,exit:58,out:60.6,benefit:62.4,hit:72,end:84},        // the funk track (115 BPM), 43.8 s
+  '30':{land:8,capOut:37.5,exit:38,out:40.2,benefit:41.4,hit:48,end:57},        // the funk track, 29.7 s
 };
-const RIM=[[0,'#06050E'],[0.5,'#0A0717'],[0.7,'#150A31'],[0.82,'#2F1068'],[0.91,'#6420B8'],[0.965,'#BD3BE8'],[0.99,'#FF9BF0'],[1,'#FFD9FA']];
 const GLOW={green:['120,220,160','40,190,110'],violet:['236,205,255','206,64,240']};
 const HAND='<svg class="hand" viewBox="0 0 32 36"><path d="M11.5 1.5c1.4 0 2.5 1.1 2.5 2.5V13c.4-.9 1.3-1.5 2.3-1.5 1.1 0 2 .7 2.3 1.7.4-.8 1.3-1.4 2.3-1.4 1.2 0 2.1.8 2.4 1.9.4-.5 1-.8 1.8-.8 1.4 0 2.4 1.1 2.4 2.5V24c0 5.5-3.5 9.5-9.5 9.5h-2.5c-3.3 0-5.6-1.4-7.4-4.1L3.6 22.6c-.8-1.2-.5-2.8.7-3.5 1.1-.7 2.5-.5 3.3.5L9 21.3V4c0-1.4 1.1-2.5 2.5-2.5Z" '+
   'fill="#FFFFFF" stroke="#1A191E" stroke-width="1.7" stroke-linejoin="round"/><path d="M14 13.4v5.6M18.6 13.4v5.2M23.3 13.9v5" stroke="#1A191E" stroke-width="1.3" stroke-linecap="round" fill="none"/></svg>';
 
 M.walk=function(o){
-  const map=MAPS[o.map||'44'];if(!map)throw new Error(`M.walk: unknown map "${o.map}" (${Object.keys(MAPS).join(', ')})`);
+  const map=MAPS[o.map||'launch'];if(!map)throw new Error(`M.walk: unknown map "${o.map}" (${Object.keys(MAPS).join(', ')})`);
   const K={};for(const k in map)K[k]=B((o.times||{})[k]??map[k]);   // o.times: {exit: 57, ...} moves one (beats)
   window.CUTS=[K.hit];                            // the end cuts on the hit; everything before it is one continuous camera
 
@@ -132,31 +137,52 @@ M.walk=function(o){
     if(show(LB,on))LB.style.transform=SITE.style.transform;
   });
 
-  /* ---------------- the stage: near black, lenses (they drift a little with the camera), dust ---------------- */
-  function lens(x,y,r,lo={}){
-    const a=lo.a??1, lx=(lo.lx??0.18)*r, ly=(lo.ly??-0.2)*r, gc='206,64,240';
-    if(a<=0.002)return;
-    const og=g.createRadialGradient(x,y,r*0.97,x,y,r*1.16);og.addColorStop(0,`rgba(${gc},${f3(0.32*a)})`);og.addColorStop(1,`rgba(${gc},0)`);
-    g.fillStyle=og;g.beginPath();g.arc(x,y,r*1.16,0,2*Math.PI);g.fill();
-    const gr=g.createRadialGradient(x+lx,y+ly,0,x,y,r);for(const [s,c] of RIM)gr.addColorStop(s,c);
-    g.globalAlpha=a;g.fillStyle=gr;g.beginPath();g.arc(x,y,r,0,2*Math.PI);g.fill();g.globalAlpha=1;
-  }
+  /* ---------------- the stage: near black and a field of stars (the client: "change the bubbles … replace it with stars").
+     The stars drift slowly outward, as if flying forward, in three depths that shift with the camera; a few bright
+     four-point stars; soft violet glows, never circles. Each star twinkles on its own slow clock, never on the beat. ---------------- */
   function haze(x,y,r,c,a){if(a<=0.002)return;const gr=g.createRadialGradient(x,y,0,x,y,r);gr.addColorStop(0,`rgba(${c},${f3(a)})`);gr.addColorStop(1,`rgba(${c},0)`);
     g.fillStyle=gr;g.fillRect(0,0,1920,1080);}
-  const DUST=[];{const r=M.mulberry(77);for(let i=0;i<170;i++)DUST.push({x:r()*1920,y:r()*1080,s:0.8+r()*1.9,vx:(r()-0.35)*7,vy:-(2+r()*8),ph:r()*6.3,f:0.4+r()*0.6});}
-  function dust(t,a,px=0,py=0){for(const d of DUST){const x=((d.x+d.vx*t+px)%1940+1940)%1940-10, y=((d.y+d.vy*t+py)%1100+1100)%1100-10,
-    tw=0.55+0.45*Math.sin(t*d.f*2+d.ph);g.fillStyle=`rgba(236,214,255,${f3(a*tw*0.55)})`;g.fillRect(x,y,d.s,d.s);}}
+  function glow(x,y,rx,ry,c,a){if(a<=0.002)return;g.save();g.translate(x,y);g.scale(1,ry/rx);   // a soft elliptical glow
+    const gr=g.createRadialGradient(0,0,0,0,0,rx);gr.addColorStop(0,`rgba(${c},${f3(a)})`);gr.addColorStop(0.55,`rgba(${c},${f3(a*0.35)})`);gr.addColorStop(1,`rgba(${c},0)`);
+    g.fillStyle=gr;g.beginPath();g.arc(0,0,rx,0,2*Math.PI);g.fill();g.restore();}
+  const sprite=(n,draw)=>{const c=document.createElement('canvas');c.width=c.height=n;draw(c.getContext('2d'),n);return c;};
+  const dotOf=col=>sprite(32,(x,n)=>{const gr=x.createRadialGradient(n/2,n/2,0,n/2,n/2,n/2);
+    gr.addColorStop(0,`rgba(${col},1)`);gr.addColorStop(0.18,`rgba(${col},0.9)`);gr.addColorStop(0.42,`rgba(${col},0.22)`);gr.addColorStop(1,`rgba(${col},0)`);
+    x.fillStyle=gr;x.fillRect(0,0,n,n);});
+  const starOf=(core,halo)=>sprite(96,(x,n)=>{const h=n/2;                     // a four-point star: halo, long cross, short diagonals, core
+    const gr=x.createRadialGradient(h,h,0,h,h,h*0.62);gr.addColorStop(0,`rgba(${halo},0.55)`);gr.addColorStop(1,`rgba(${halo},0)`);x.fillStyle=gr;x.fillRect(0,0,n,n);
+    for(const [w,ang,L,o] of [[1.6,0,h*0.96,0.95],[1.6,Math.PI/2,h*0.96,0.95],[0.9,Math.PI/4,h*0.42,0.45],[0.9,-Math.PI/4,h*0.42,0.45]]){
+      x.save();x.translate(h,h);x.rotate(ang);const lg=x.createLinearGradient(-L,0,L,0);
+      lg.addColorStop(0,`rgba(${core},0)`);lg.addColorStop(0.5,`rgba(${core},${o})`);lg.addColorStop(1,`rgba(${core},0)`);x.fillStyle=lg;x.fillRect(-L,-w/2,2*L,w);x.restore();}
+    const cg=x.createRadialGradient(h,h,0,h,h,5);cg.addColorStop(0,`rgba(${core},1)`);cg.addColorStop(1,`rgba(${core},0)`);x.fillStyle=cg;x.fillRect(h-5,h-5,10,10);});
+  const DOTS=[dotOf('246,240,255'),dotOf('255,196,246'),dotOf('205,170,255')], STAR4=[starOf('255,246,255','206,64,240'),starOf('255,236,252','236,120,255')];
+  const LAYERS=[{n:380,s:[0.9,2],a:[0.35,0.85],v:0.0045,p:0.03},{n:150,s:[1.8,3.6],a:[0.55,1],v:0.008,p:0.06},{n:26,s:[30,64],a:[0.8,1],v:0.013,p:0.1,four:1}];
+  const STARS=[];{const r=M.mulberry(2024);LAYERS.forEach(L=>{for(let i=0;i<L.n;i++)STARS.push({L,th:r()*2*Math.PI,f0:r(),
+    s:L.s[0]+r()*(L.s[1]-L.s[0]),a:L.a[0]+r()*(L.a[1]-L.a[0]),tw:2.4+r()*4.2,tp:r()*6.3,k:r()<0.62?0:r()<0.5?1:2,e:0.82+r()*0.3});});}
+  function stars(t,c,a){
+    if(a<=0.002)return;
+    const lz=Math.log(c.z);
+    for(const s of STARS){
+      const L=s.L, f=(s.f0+L.v*t)%1, r=40+1240*(0.65*f+0.35*f*f), zk=1+L.p*1.6*lz;   // outward, a little faster as they near
+      const x=960+Math.cos(s.th)*r*zk-(c.cx-960)*L.p+c.ox*L.p*2.5, y=540+Math.sin(s.th)*r*s.e*zk-(c.cy-530)*L.p+c.oy*L.p*2.5;
+      if(x<-60||x>1980||y<-60||y>1140)continue;
+      const op=a*s.a*(0.72+0.28*Math.sin(2*Math.PI*t/s.tw+s.tp))*Math.min(1,f/0.12);   // twinkle; fade in near the centre
+      if(op<0.01)continue;
+      const sz=s.s*(0.75+0.5*f);g.globalAlpha=Math.min(1,op);
+      if(L.four)g.drawImage(STAR4[s.k%2],x-sz/2,y-sz/2,sz,sz);else g.drawImage(DOTS[s.k],x-sz*2,y-sz*2,sz*4,sz*4);
+    }
+    g.globalAlpha=1;
+  }
   M.track(t=>{
     const c=camAt(t);
     g.setTransform(1,0,0,1,0,0);g.globalAlpha=1;g.fillStyle='#06050E';g.fillRect(0,0,1920,1080);
-    const px=-(c.cx-960)*0.07+c.ox*0.25, py=-(c.cy-530)*0.07+c.oy*0.25;
-    const u=P(t,0,K.land), a1=dec(t,0.05,1.3)*(1-io(t,B(6.5),B(8.5)));   // the intro: three lenses adrift
-    if(a1>0.002){lens(170-110*u,700+30*u,500,{a:a1,lx:0.2,ly:-0.1});lens(1780+90*u,560-20*u,540,{a:a1,lx:-0.2,ly:-0.1});
-      lens(960+60*u,250-60*u,600*(1.05-0.08*u),{a:a1,lx:0.12,ly:-0.3});}
-    lens(960+px,1530+py,1180,{a:io(t,B(6.5),B(8.5))*(1-io(t,K.exit,K.exit+1.6)),lx:0,ly:-0.28});   // under the window
-    const v=P(t,K.exit+1,K.hit);lens(960,2600-50*v,1650,{a:0.55*io(t,K.exit+1,K.benefit+0.3)*(t<K.hit?1:0),lx:0,ly:-0.1});   // the benefit
+    const px=-(c.cx-960)*0.02+c.ox*0.05, py=-(c.cy-530)*0.02+c.oy*0.05, sky=dec(t,0.05,1.5);
+    glow(1420+px,230+py,980,520,'150,40,220',0.14*sky);                       // two soft glows in the sky
+    glow(420+px,860+py,1050,560,'222,13,255',0.07*sky);
+    glow(960+px,1210+py,1500,470,'110,30,200',0.22*io(t,B(5),B(8.5))*(1-io(t,K.exit,K.exit+1.6)));   // a horizon under the window
+    glow(960,1180-60*P(t,K.exit+1,K.hit),1500,560,'140,40,230',0.26*io(t,K.exit+1,K.benefit+0.3)*(t<K.hit?1:0));   // behind the benefit
     if(t>=K.hit)haze(960,540,1000,'150,40,220',0.16*P(t,K.hit,K.hit+0.5));   // the end: the capsule glows on its own
-    dust(t,t<K.hit?0.9:0.6,px*0.6,py*0.6);
+    stars(t,c,dec(t,0.05,1.2)*(t<K.hit?1:0.55));
   });
 
   /* ---------------- type: words blur in where they stand, the Arabic after them ---------------- */

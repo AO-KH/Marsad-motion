@@ -1,6 +1,6 @@
 ---
 name: marsad-demo
-description: Make or change a Marsad walkthrough, a video that explains one feature of the Marsad web app (مرصد) by using it on screen. It follows Marsad's walkthrough method, Benji Taylor's launch-walkthrough grammar (a camera that dives onto each click in the real app) in Marsad's main theme (a dark stage with lenses, bilingual type, the capsule end), on the client's funk track, built with the walkthrough kit in the AO-KH/Marsad-motion repo. Use this skill whenever someone asks for a walkthrough, demo, tutorial, how-to, explainer, onboarding clip, feature or product video, or a short feature clip that shows Marsad screens or a Marsad workflow; whenever they describe a feature of their SaaS to explain or send front-end pages or screenshots for a video; and to edit, retime, reframe, translate or re-render an existing walkthrough, even if they never say "demo".
+description: Make or change a Marsad walkthrough, a video that explains one feature of the Marsad web app (مرصد) by using it on screen. It follows Marsad's walkthrough method, Benji Taylor's launch-walkthrough grammar (a camera that dives onto each click in the real app) in Marsad's main theme (a dark stage of stars, bilingual type, the capsule end), on the client's launch track, built with the walkthrough kit in the AO-KH/Marsad-motion repo. Use this skill whenever someone asks for a walkthrough, demo, tutorial, how-to, explainer, onboarding clip, feature or product video, or a short feature clip that shows Marsad screens or a Marsad workflow; whenever they describe a feature of their SaaS to explain or send front-end pages or screenshots for a video; and to edit, retime, reframe, translate or re-render an existing walkthrough, even if they never say "demo".
 ---
 
 # Marsad walkthroughs: one feature, explained by using it
@@ -11,7 +11,7 @@ walk through and take them as reference [Benji Taylor's Live Studio walkthrough,
 notes.apoorv.xyz] keep the marsad and NASL theme … i will give you feature of my saas and you make a walkthrough to
 explain the feature". What is on screen:
 
-- **The app as it is**, in a window floating on Marsad's dark stage (the main theme: lenses, dust).
+- **The app as it is**, in a window floating on Marsad's dark stage, a field of stars ("replace it with stars").
 - **A camera that dives** onto each thing to read or click (2.5–4×), then pulls back for context. It never rests.
 - **Real clicks.** The pointer clicks (a hand over what it clicks), and the app's own states change: pages, cards,
   numbers, typed text.
@@ -19,7 +19,8 @@ explain the feature". What is on screen:
 - **The main theme's 3D.** The window rises in on its back, tilts on the big moves, and the part that proves a step
   floats out of the page, glowing.
 - **The feature's benefit** on the stage, then the capsule end (Book your demo, marsadnasl.com).
-- **Sound:** the client's funk track, and whooshes on the transitions only.
+- **Sound:** the client's launch track ("use this music": Monume, "Product Launch Review"), and whooshes on the
+  transitions only.
 
 The reference is `demos/decisions-walk/` ("Decisions: approve a recommendation", 44 s). The machinery is the
 walkthrough kit (`demos/kit/walk.js`, `walk.css`), so a walkthrough's `demo.js` holds only its steps. The references:
@@ -54,8 +55,8 @@ Each rule is a client correction or a lesson from a delivered video.
 - **Truth.** The app's pages and its exact text; the feature's behaviour only as the client describes it.
   - Never show a feature, flow, label or number the product doesn't have.
   - Sample data is fictional but plausible, with no real customer names.
-  - List every rendering and invented item when you deliver, so the client can confirm it. The stage, the lenses,
-    the rim, the pointer, the floating parts and the capsule are renderings; a row or label you had to add is
+  - List every rendering and invented item when you deliver, so the client can confirm it. The stage, its stars and
+    glows, the rim, the pointer, the floating parts and the capsule are renderings; a row or label you had to add is
     invented.
 - **Bilingual, Western digits.** Every line in English and Arabic; digits 0–9 in both, as in the app («ثقة 80%»).
   Write the Arabic as its own sentence: step lines use the imperative (افتح، اختر، راجع، اعتمد).
@@ -96,10 +97,12 @@ pages and data ("for now we can use the existing data"), and say so when you del
 Show the plan to the client when the brief was loose. One row per step: beats, the line (EN · AR), the camera's
 moves, and the action and its result.
 
-- **Pick the map.** The kit knows two edits of the funk track (`method.md` §7 has the tables and the sfx blocks):
-  - **44 s:** steps k8–58; groove B lifts on k40, so the key click goes there; the benefit k62–72 through the
-    break; the end k72.
-  - **30 s:** steps k8–38; the benefit k41–48; the end k48.
+- **Pick the map.** `method.md` §7 has each map's table and its music and sfx blocks.
+  - **`launch`** (the default, 51 s), the client's launch track at 80 BPM:
+    - steps k8–48, landing clicks and dives on downbeats and on "+2.5" hits that come right after a silence;
+    - the benefit over the breakdown, k52–60;
+    - the end on the hit that brings the groove back, k60.
+  - **`44`** and **`30`**: the funk track of the first sample (43.8 s and 29.7 s), if the client asks for it.
 - **Each step** has a line, a dive onto the thing, the action on a beat, and the result on screen for about 2 s.
   When the next thing is far away, pull back for context.
 - **Step 1** starts on the page the user starts from. A click into the feature shows where it lives.
@@ -115,8 +118,8 @@ python3 tools/make_demo.py <slug>
 node tools/rects.js <slug> '#btnOK' 'text:ثقة 80%'                # natural positions to aim the camera at
 ```
 
-- **`demo.json`:** set the title, `"kit": "walk"`, `duration` (43.8 or 29.7), and the map's `music` and `sfx`
-  blocks from `method.md` §7 (the edit must match the map).
+- **`demo.json`:** set the title, `"kit": "walk"`, `duration` (51.0 for `launch`; 43.8 or 29.7 for the funk maps),
+  and the map's `music` and `sfx` blocks from `method.md` §7 (the edit must match the map).
 - **`demo.js`:** set up the kit, then write the steps. The API is in the header of `demos/kit/walk.js`; the kit
   adds the entrance, the exit, the benefit and the end:
 

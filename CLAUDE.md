@@ -34,12 +34,15 @@ and muxed with ffmpeg.
 
 - Walkthroughs (the client's request, September 2026: "take these video for the walk through and take them as
   reference … keep the marsad and NASL theme"): Benji Taylor's walkthrough grammar in Marsad's main theme.
-  - The real app, with its light UI, in a window on the main theme's dark stage.
+  - The real app, with its light UI, in a window on the main theme's dark stage, a field of stars ("change the
+    bubbles … replace it with stars": no lens circles in walkthroughs).
   - One continuous camera that dives onto each click and pulls back.
   - A hand clicks, and the app's own states change.
   - One step line at a time, English · Arabic, in a dark capsule.
   - The part that proves the feature floats out in 3D.
-  - The benefit line, then the capsule end, on the client's funk track; 16:9.
+  - The benefit line, then the capsule end; 16:9.
+  - The music is the client's launch track ("use this music": `fit/monume-product-launch-review.mp3`, the kit's
+    `launch` map). Any tonal hit is re-tuned to the track's key.
   - The sample (`demos/decisions-walk`) awaits the client's verdict.
   - The earlier light-style demos (a steps rail, the logo end card, 16:9 and 9:16) are the previous method.
 - Campaign films: Marsad's main theme, the 48 s film's ("the theme of 48 second video is good"): a near-black stage

@@ -45,24 +45,26 @@ give you feature of my saas and you make a walkthrough to explain the feature".
 - type on the stage for the intro and the outro.
 
 **What Marsad's theme changes:**
-- **The stage** is the main theme's: near-black with lenses and dust (the 48 s film, `films/style-jupiter`).
+- **The stage** is the main theme's near-black (the 48 s film, `films/style-jupiter`). Its lenses became a field of
+  stars at the client's request (§2).
 - **The type** is the theme's `jt`: words blur in, a gradient on the key word, the Arabic under it.
 - **The window** gets the theme's glowing rim.
 - **The app's parts** float out in 3D.
-- **The end** is the capsule end, and the music is the client's funk track.
+- **The end** is the capsule end, and the music is the client's: their launch track (§7).
 
 **What we added** is one step line at a time, in a capsule. The client wants each feature explained, and every
 line in English and Arabic. Benji needs no words; a feature explainer does.
 
 ## 2. What is on screen
 
-- **Stage** (`#06050E`), in order:
-  - the intro: three violet lenses drift;
-  - the steps: one lens sits under the window, and its rim arcs up behind the window's sides;
-  - the benefit: a wide lens sits low behind the line;
-  - the end: a haze under the capsule.
-
-  Dust runs throughout. The lenses shift 7% with the camera, which gives depth.
+- **Stage** (`#06050E`): a field of stars. The client asked for it: "change the bubbles … and replace it with
+  stars" (the lens circles of the first sample).
+  - About 560 stars drift slowly outward, as if flying forward. They sit in three depths that shift 3–10% with the
+    camera; the nearest 26 are four-point stars with a violet glow.
+  - Each star twinkles on its own slow clock (2.4–6.6 s), never on the beat.
+  - Soft violet glows, never circles: two in the sky, a horizon under the window during the steps, a glow behind the
+    benefit line, and a haze under the capsule at the end.
+  - The first sample's lenses and dust are gone from the walkthrough kit. The campaign films keep their lenses.
 - **Window:** the engine's `M.app` window, 1360×760 at stage (280, 150). It shows the whole 1896×1060 page at
   0.717. Its rim is the theme's (`demos/kit/walk.css`); the light UI's turning beam and click ripple are off.
 - **Pointer:**
@@ -179,10 +181,51 @@ For an existing feature, "Introducing" still presents it; don't write "new" unle
 **The benefit** is one sentence of what the feature gives, held through the track's break: "From recommendation to
 action." / «من التوصية إلى التنفيذ.». Put the gradient on the last word.
 
-## 7. The two music maps, with their effects
+## 7. The music maps, with their effects
 
-The track is the client's funk track (`fit/lightbeats-joyful-rhythm-walk-funk.mp3`, 115 BPM, downbeat 0.538).
-`B(k)` = k × 0.5217 s. Its sections and licence are in the `marsad-campaign` skill's `references/audio.md`.
+**The walkthroughs' track (the default):** the client's launch track (`fit/monume-product-launch-review.mp3`: Monume,
+"Product Launch Review", Pixabay, the client's choice: "use this music"). `map:'launch'`, `"duration": 51.0`.
+- **Tempo:** 80 BPM (a half-time 160 feel), downbeat 0.012, A minor. `B(k)` = k × 0.75 s.
+- **Its sections** (bars of 3 s):
+  - song bar 0 (0–3 s): drums only;
+  - bars 1–19: the groove, from a big hit at 3.0 s;
+  - bars 20–23 (60–72 s): a quiet breakdown without drums;
+  - bar 24 (72 s): the groove comes back with a big hit;
+  - bars 40–43: the outro.
+- **Each groove bar:** it hits on its downbeat (+0), falls silent at +1.5–2, and hits again at +2.5, so a click on a
+  +2.5 or a downbeat lands right after a silence. The weaker +0.5 and +3.5 hits come about 60 ms early.
+- **The edit:** `[[0,4],[0,48],[88,104]]`. That's the drum bar twice (a 6 s intro), then the groove (bars 0–11),
+  then the last two bars of the breakdown and the returning hit.
+
+| Film beats | Music | The walkthrough |
+|---|---|---|
+| k0–8 | the drum bar, twice | the intro; the window rises from k4.5 |
+| k8 | the groove's big hit | the window lands; whoosh + hit |
+| k8–48 | the groove | steps: clicks and dives on downbeats and +2.5s (the reference clicks on k10.5 and k32) |
+| k48–52 | the groove's last bar | the exit, with a whoosh |
+| k52–60 | the breakdown | the benefit line |
+| k60–68 | the hit, the groove back | the capsule end |
+
+```json
+"music": {"file": "fit/monume-product-launch-review.mp3", "bpm": 80, "downbeat": 0.012, "edit": [[0, 4], [0, 48], [88, 104]], "fade_out": 2.2, "true_peak": -3},
+"sfx": [
+  {"type": "swoosh", "beat": 8, "gain": -3, "seed": 81, "dur": 1.4, "rise": 0.75, "f1": 4200, "body": 0.6, "pan0": 0, "pan1": 0, "width": 0.55},
+  {"file": "fit/sfx/cinematic-start-am.wav", "beat": 8, "gain": -6},
+  {"type": "swoosh", "beat": 33.25, "gain": -6, "seed": 84, "f1": 3000, "body": 0.6, "pan0": 0.4, "pan1": -0.3},
+  {"type": "swoosh", "beat": 49.5, "gain": -6, "seed": 86, "f1": 3000, "f2": 1200, "body": 0.7, "pan0": 0, "pan1": -0.4},
+  {"type": "swoosh", "beat": 60, "gain": -2, "seed": 87, "dur": 1.4, "rise": 0.75, "f1": 4200, "body": 0.6, "pan0": 0, "pan1": 0, "width": 0.55},
+  {"file": "fit/sfx/cinematic-wake-am.wav", "beat": 60, "gain": -4}
+],
+"sfx_level": -23
+```
+
+- **Hits in the track's key.** The `-am` hits are tuned to A minor. The `-dsm` ones belong to the funk track (D#
+  minor), a tritone away, and would clash.
+- **The track is very dynamic.** Its hits come between silences, so `music_fit.py` warns that the master is limited
+  by more than 3 dB. The result reads about −14.9 LUFS, within QA.
+
+**The funk track** (`fit/lightbeats-joyful-rhythm-walk-funk.mp3`, 115 BPM, downbeat 0.538; the first sample used
+it). `B(k)` = k × 0.5217 s. Its sections and licence are in the `marsad-campaign` skill's `references/audio.md`.
 
 **44 s** (`"duration": 43.8`, `map:'44'`):
 
@@ -228,17 +271,18 @@ pull-back (gain −6), and the k48 pair (as the k72 pair above).
 
 ## 8. The reference, beat by beat
 
-`demos/decisions-walk/`: "Decisions: approve a recommendation", 44 s map. It starts on the Business Pulse page.
+`demos/decisions-walk/`: "Decisions: approve a recommendation", on the launch map (80 BPM, 51 s). It starts on the
+Business Pulse page. The first cut (on the funk track, with lenses) is in the git history.
 
 | Beats | Line | Camera | Action and result |
 |---|---|---|---|
-| k0–7 | "Introducing / Decisions." «تعرّف على القرارات» | — | three lenses; from k4.5 the window rises on its back |
-| k8 | — | lands flat, z 1 | whoosh + hit, punch 1.2% |
-| k8.5–17 | 1 · Open Decisions | dives onto the tabs (NP(1400,230), z 2.7); pulls back to the page (z 1.06, rx 4, ry −5) at k12.9 | the hand clicks «القرارات» (k11.75); the page opens (k12) |
-| k17–25 | 2 · Read the recommendation | the whole title, large (z 3.5); a slow reveal of the card (z 2.7) from k19.6 | — |
-| k25–34 | 3 · Check its confidence and source | the pills (z 3.6); across with a hop to «المخزون · Odoo» (z 3.9, ry 12) at k29.25 | «ثقة 80%» floats out, green (k26–29.4); the source floats out, violet (k31–33.9) |
-| k34–46 | 4 · Approve it | the buttons (z 2.8, hop); back out to the card, tilted (z 1.5, rx 7, ry −10) at k40.6 | the hand clicks «موافقة» on k40; «تم تنفيذ الإجراء» appears (0.45 s) and floats out, green (k41.9–45.8) |
-| k46–58 | 5 · It's recorded right away | the counters (z 2.25); closer (z 2.9) at k51.5; the whole page at k54.5 | approved 0 → 1, under review 6 → 5, and the filter tabs (k48.25); a soft green ring on "approved" |
-| k58–62 | — | the exit | whoosh |
-| k62–72 | "From recommendation to action." | — | held through the break |
-| k72–84 | the capsule end | cut | whoosh + hit, punch 1.5% |
+| k0–7 | "Introducing / Decisions." «تعرّف على القرارات» | — | stars; from k4.5 the window rises on its back |
+| k8 | — | lands flat, z 1 | the groove's big hit: whoosh + hit, punch 1.2% |
+| k8.5–14.5 | 1 · Open Decisions | dives onto the tabs (NP(1400,230), z 2.7); pulls back to the page (z 1.06, rx 4, ry −5) at k12 | the hand clicks «القرارات» on k10.5; the page opens (k10.75) |
+| k14.5–20 | 2 · Read the recommendation | the whole title, large (z 3.5); a slow reveal of the card (z 2.7) from k16.5 | — |
+| k20–28 | 3 · Check its confidence and source | the pills (z 3.6); across with a hop to «المخزون · Odoo» (z 3.9, ry 12) on k24 | «ثقة 80%» floats out, green (k21–24.3); the source floats out, violet (k25.25–28) |
+| k28–38.5 | 4 · Approve it | the buttons (z 2.8, hop); back out to the card, tilted (z 1.5, rx 7, ry −10) at k32.75 | the hand clicks «موافقة» on k32, right after a silence; «تم تنفيذ الإجراء» appears (0.45 s) and floats out, green (k33.5–38.5) |
+| k38.5–47.5 | 5 · It's recorded right away | the counters (z 2.25); closer (z 2.9) at k42.5; the whole page at k44.5 | approved 0 → 1, under review 6 → 5, and the filter tabs (k40.5); a soft green ring on "approved" |
+| k48–52 | — | the exit | whoosh |
+| k52–60 | "From recommendation to action." | — | over the breakdown |
+| k60–68 | the capsule end | cut | the hit brings the groove back: whoosh + hit, punch 1.5% |

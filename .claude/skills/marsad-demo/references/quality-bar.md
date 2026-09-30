@@ -64,4 +64,5 @@ A walkthrough is ready when every point below holds.
 | A fast zoom showed steps | Four sub-frames can't cover a big move | `python3 tools/fast_ranges.py <slug> --run`: 16 sub-frames on the fast ranges |
 | A floating part looked flat | It rose straight at the camera | Tilt while it floats (rx 7, ry −10), so the gap and its shadow show |
 | An element or label the site kit lacks | The feature is only partly in the site kit | Ask for the front end (HTML best, or 3× screenshots). Otherwise rebuild the page in `pages.js` with the fewest changes, and list what you invented |
+| The whoosh-hits sounded off-key over a new track | The `cinematic-*-dsm` hits are tuned to the funk track (D# minor) | Estimate the new track's key, then re-tune the hits with rubberband (the `-am` pair is A minor, for the launch track). Name the key in `fit/CREDITS.md` |
 | Opacity on a 3D group flattened it | Opacity, filters or `overflow` on a `preserve-3d` element flatten its children | The kit turns the window's `preserve-3d` on only while something floats, and never fades a 3D group |
