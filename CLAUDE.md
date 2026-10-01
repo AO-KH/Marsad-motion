@@ -27,7 +27,9 @@ Playwright and muxed with ffmpeg.
   (`films/ontology-main-theme/`). Each is `films/<slug>/` (`film.json`, `film.js`, `film.css`), built with the demo
   engine and `build_demo.sh`. Follow the `marsad-campaign` skill (`.claude/skills/marsad-campaign/SKILL.md`) and
   start from its starter (`assets/starter/`). Sound effects (and a voice, if asked) are mixed by
-  `tools/film_audio.py`; the Kokoro voice model (`kokoro-en-v0_19/`) is downloaded, never committed.
+  `tools/film_audio.py`; the Kokoro voice model (`kokoro-en-v0_19/`) is downloaded, never committed. A film shows the
+  app's real screens as images: `tools/app_shot.js` captures them from the client's front end, in dark mode with
+  sample data, at 5× (`films/<slug>/app/capture.js`, the format of `tools/app_snap.js`).
 - **Two finished ads**: `film.html` (63 s campaign film, `./build.sh`) and `film54_src/` → `film54.html` (54 s
   "Know. Watch. Decide.", `./build54.sh`). Their history, beat maps and delivered versions are in
   [`HANDOFF.md`](HANDOFF.md). Change them only when asked.

@@ -78,3 +78,5 @@ A film is ready when every point below holds. Check it on the stills from `tools
 | A track's licence is not what its collection says | Corpora re-host files with the wrong licence | Confirm on the track's own page; NC or ND is never usable. Record it in `fit/CREDITS.md` |
 | Arabic-Indic digits next to Western ones | Copied from an older film's mock UI | Western digits in lines and overlays |
 | A stale call to action | Copied from an older film | "Book your demo · احجز عرضك التجريبي" and marsadnasl.com |
+| An empty stage for a beat after a hard cut | The shot's parts began their entrance after the cut | Start the first part's entrance on the cut itself (it can rise from depth or blur in), and the line within 0.4 s |
+| A plate of the app's screen soft in the 4K final | A small plate scaled up in 3D: Chrome rasters it at about its own size | Give the plate the size it shows (CSS width and height) and no scale-up; capture at 5× (`tools/app_shot.js`) |

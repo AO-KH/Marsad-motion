@@ -15,6 +15,10 @@ The 48 s film and the starter place each part in a `perspective: 1600px` contain
 - **A page swings in:** from the side, turned (ry −44° → −14°) and far (z −1400 → −820), then it drifts a little for the rest of the shot (the starter's Decisions).
 - **Depth of field:** a part far from the focus plane is blurred, `min(10, |z + 150| / 60)` px, and fades in from 10 px more. It drifts on slow sines (periods of 11–13 s) with a few degrees of turn. Never bob it on the beat.
 - **A card before a click** settles flat (rx and ry to 0) before the cursor lands, so the click point is exact.
+- **The app's real screens as plates** (`films/whatif-38`, from `tools/app_shot.js`):
+  - Draw a plate at the size it shows on screen: its CSS width and height are the box it fills, and its transform has no scale-up. Chrome rasters a 3D-transformed layer at about its own size, so a small plate scaled up in 3D comes out soft in the 4K final. The 5× screenshots leave room for close-ups.
+  - The app's states are its own screenshots. A panel opening is a layer with the next state's screenshot fading in over 0.12 s. Typing is one screenshot per character, stepped on `M.FQ(t)`. A result snaps in, as the app does.
+  - A part lifts off its plate as a box of the same picture (`part(plate, src, box, k, full)`), positioned by the box `shots.json` gives.
 - **A real part lifting out of its page:**
   - Make the part a child of the page element, with `transform-style: preserve-3d` on the page. Move it along the page's own normal with `translateZ(d)` (the starter lifts the executed card by 170 px and scales it 1.08, glowing green).
   - The page element can't have `overflow: hidden` (it flattens the 3D). Round it with `border-radius` on its background.

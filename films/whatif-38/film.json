@@ -1,0 +1,12 @@
+{
+  "title": "Marsad — What-if on a rule (38 s campaign film, main theme)",
+  "duration": 37.9,
+  "formats": ["16x9"],
+  "music": {"file": "fit/midnight-drift-slowed.mp3", "bpm": 110.7, "downbeat": 0.0, "edit": [[104, 112], [112, 152], [80, 88], [16, 30]], "fade_out": 2.2, "true_peak": -3},
+  "sfx": [
+    {"type": "swoosh", "beat": 8, "gain": -4, "seed": 91, "dur": 1.4, "rise": 0.75, "f1": 4200, "body": 0.6, "pan0": 0, "pan1": 0, "width": 0.55},
+    {"type": "swoosh", "beat": 32, "gain": -8, "seed": 94, "f1": 3000, "body": 0.6, "pan0": 0.5, "pan1": -0.3},
+    {"type": "swoosh", "beat": 56, "gain": -4, "seed": 97, "dur": 1.4, "rise": 0.75, "f1": 4200, "body": 0.6, "pan0": 0, "pan1": 0, "width": 0.55}
+  ],
+  "sfx_level": -23
+}
