@@ -93,14 +93,17 @@ Playwright and muxed with ffmpeg.
 - Western digits (0–9) in captions, callouts and the steps rail, in both languages, as in the app.
 - Readable on a phone: in 9:16 the subject is shown at a readable size (pan, don't shrink). The cursor and
   callouts never cover what they explain.
-- Final renders have motion blur (the default in the builds) and are 4K, 3840×2160 (`build_demo.sh` renders finals at
-  `SCALE=2`: the client found the 1080p walkthrough soft, "the resolution is bad here", 2026-10-01). Drafts (`SUB=1`,
-  1080p) are never delivered. Tilted close-ups stay sharp only because the walk kit paints the camera's zoom flat
-  (only the tilt is 3D) and the engine gives no part of an app screen a compositing layer (`flatten` in
-  `engine/engine.js`); keep both (the client: "when it zoomed to page the resolution gets bad", 2026-10-01).
-  `tools/fast_ranges.py` re-renders the fast moves at the final's own 4K scale (read from its frames): until
-  2026-10-01 it rendered them at 1080p and ffmpeg upscaled them, which softened every fast move of the 4K finals.
-  `build_demo.sh` now refuses frames of mixed sizes.
+- **Final renders are 1080p (1920×1080) with motion blur.** The client, 2026-10-01: "make 1080p videos from now on".
+  `build_demo.sh` defaults to `SCALE=1`; render 4K (`SCALE=2`, 3840×2160) only when the client asks for it. The 4K
+  finals made before that (the files named "4K" in `Videos/`) stay as they are.
+  - Drafts (`SUB=1`) are never delivered.
+  - Tilted close-ups stay sharp only because the walk kit paints the camera's zoom flat (only the tilt is 3D) and the
+    engine gives no part of an app screen a compositing layer (`flatten` in `engine/engine.js`). Keep both (the
+    client: "when it zoomed to page the resolution gets bad", 2026-10-01).
+  - `tools/fast_ranges.py` re-renders the fast moves at the final's own scale, read from its frames. `build_demo.sh`
+    refuses frames of mixed sizes.
+  - The MP4's audio is AAC at 320k without noise substitution: at 192k ffmpeg's encoder added up to 6 dB of peaks to
+    a dense, clipped track.
 
 ## Working conventions
 

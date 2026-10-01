@@ -34,24 +34,26 @@ The two finished ads (the 63 s campaign film and the 54 s "Know. Watch. Decide."
 
 ```bash
 npm install                                   # once (playwright; Chromium: see README for Windows)
-JOBS=6 ./build_demo.sh decisions-real 16x9    # a walkthrough (the kit, real screens): -> out/decisions-real-16x9.mp4 (4K)
+JOBS=6 ./build_demo.sh decisions-real 16x9    # a walkthrough (the kit, real screens): -> out/decisions-real-16x9.mp4 (1080p)
 python3 tools/fast_ranges.py decisions-real --run   # then 16 sub-frames on its fast camera moves, re-mux, QA
 ./build_demo.sh pulse-short                   # a light-style demo: -> out/pulse-short-16x9.mp4 and -9x16.mp4
 ```
 
 Each build writes the pages to `build/`, fits the music to `out/<slug>-music.wav`, renders the frames to
 `frames/<slug>-<format>/`, muxes the MP4 and runs the QA check (section 8). Final builds have motion blur:
-`render_mb.js` renders four sub-frames per frame and `tools/blend.py` averages them. Finals are **4K** (3840×2160):
-`SCALE=2` is the default, so the pages are drawn at twice the pixels (the client found 1080p soft: "the resolution is
-bad here"). They render in chunks of 150 frames, each blended before the next, and the encode keeps the MP4 under
-29 MB (crf 20, raised if needed). A 51 s 4K final, with `fast_ranges.py`, takes about 45 minutes; `SCALE=1` gives a
-1080p final in about 15. `SUB=1 ./build_demo.sh <slug>` makes a quick 1080p draft without blur, about 4× faster.
+`render_mb.js` renders four sub-frames per frame and `tools/blend.py` averages them. Finals are **1080p** (1920×1080),
+the client's choice since 2026-10-01 ("make 1080p videos from now on"): `SCALE=1` is the default. `SCALE=2` draws the
+pages at twice the pixels for a 4K final (3840×2160), only when the client asks for one; the 4K finals made before
+then keep their "4K" names in `Videos/`. Finals render in chunks of 150 frames, each blended before the next, and the
+encode keeps the MP4 under 29 MB (crf 20, raised if needed), with AAC audio at 320k. A 51 s final with
+`fast_ranges.py` takes about 15 minutes at 1080p (about 45 in 4K). `SUB=1 ./build_demo.sh <slug>` makes a quick draft
+without blur, about 4× faster.
 
 To fix a few seconds after a full build, re-render only those frames and re-mux:
 
 ```bash
 python3 tools/make_demo.py <slug>
-SCALE=2 node render_mb.js 4 build/<slug>-16x9.html frames/<slug>-16x9 4 400 450   # frames 400-449 (30 fps), 4K like the rest
+node render_mb.js 4 build/<slug>-16x9.html frames/<slug>-16x9 4 400 450   # frames 400-449 (30 fps); SCALE=2 for a 4K final
 python3 tools/blend.py frames/<slug>-16x9
 ONLY=audio ./build_demo.sh <slug>                                         # re-mux the MP4 and run QA on the frames
 ```
@@ -132,7 +134,7 @@ These come from the client's feedback on the campaign films. The engine's defaul
 | `render_mb.js`, `tools/blend.py` | Motion blur: four sub-frames per frame over a 180° shutter, then averaged (shared with the films) |
 | `demos/kit/walk.js`, `walk.css` | The walkthrough kit (`M.walk`, §5.1): the stage, the intro, the 3D camera, the pointer's hand, floating parts, the step capsule, the exit, the benefit and the capsule end. A demo loads it with `"kit": "walk"` in `demo.json` |
 | `tools/rects.js` | Natural positions of elements on a demo's pages (`node tools/rects.js <slug> '#btnOK' 'text:…'`), to aim the camera |
-| `tools/fast_ranges.py` | The fast moves of a render; `--run` re-renders them with 16 sub-frames at the final's scale (4K), blends, re-muxes and re-checks; `--ranges a-b,…` redoes given ranges |
+| `tools/fast_ranges.py` | The fast moves of a render; `--run` re-renders them with 16 sub-frames at the final's own scale (read from its frames), blends, re-muxes and re-checks; `--ranges a-b,…` redoes given ranges |
 | `tools/app_snap.js`, `tools/app/` | The real app's screens (§6.0): runs the client's front end with sample data (`app/env.js`) and freezes the states in `demos/<slug>/app/capture.js` into `app/pages.js`, `app.css` and `icons.woff2` (`app/serialize.js`), checking each against the live app |
 | `tools/app_shot.js` | The real app's screens as images, for campaign films: the same front end, sample data and `capture.js` format, saved as PNGs at 5× with crops of their parts and `shots.json` (their boxes) in `films/<slug>/pages/` |
 | `tools/subset_icons.py` | Cuts Material Symbols down to the icons a demo's screens use (fonttools); `app_snap.js` runs it |
@@ -404,6 +406,7 @@ section if the demo is longer than the track, fades in and out, and normalises t
   | `fit/monume-product-launch-review.mp3` (Monume "Product Launch Review", Pixabay; the walkthroughs' track) | 133 s | 80.0 | 0.012 | A half-time 160 feel, A minor. Bars of 3 s: k0–3 drums only, the groove from a big hit on k4 (3.0 s), a quiet breakdown without drums k80–95 (60–72 s), the groove back with a big hit on k96, the outro from k160 (120 s). Each groove bar hits on its downbeat and on +2.5, after a silence at +1.5–2. The walkthrough kit's `launch` map: `[[0,4],[0,48],[88,104]]`, 51 s |
   | `fit/lightbeats-joyful-rhythm-walk-funk.mp3` (lightbeatsmusic "Joyful Rhythm Walk Funk", Pixabay) | 138 s | 115.0 | 0.538 | Funk. 4-bar rows of 16 beats. k0–15 intro (bass, no hats, about 7 dB under the groove), k16–59 groove A, a one-bar break on k60–63 (the bass drops out, about 15 dB down: the track's own stop before a hit), k64–95 groove B (busier hats), k96–127 breakdown without bass, k128–159 groove C, k160–223 the full groove, k224–255 outro, one last hit on k256. Films: `style-jupiter` v2 |
   | `fit/moodmode-no-copyright-music.mp3` (MoodMode "No Copyright Music", Pixabay; the What-if film's track) | 136 s | 120.0 | 0.02 | Phonk, D minor, at one level from the first beat to the last: no quiet intro, no breakdown, no stop of its own. 2-bar blocks, a thin one (without the low layer) then a full one; the 808 hits on every bar line. A bright lead plays only in k192–223 (it enters on k192, the track's one big lift; 3 bars on, 1 off, twice). The thinnest bars: k224–231. `beats.py` guesses the downbeat 1.52; it is 0.02 (the sections change on k64, k96, k192, k224 and k232). Make the hits with `stops`. Film: `whatif-38` |
+  | `fit/verclub-no-copyright-music.mp3` (verclub_music "No Copyright Music", Pixabay; the What-if film's track) | 48 s | 130.0 | 0.487 | A short track with a film's shape. Phrases of 16 beats from k0 (a riser from 0.2 s into the first hit). A fill on k14–15. Groove B from k32. A big hit on k48, then a lighter breakdown. The music stops after k59 for a one-bar break (k60–63, a riser at its end). The drop on k64. A final hit on k96 that decays to silence by 48 s (end on it with an `edit`, e.g. `[96, 102]`). `beats.py` puts its grid an 8th early (0.25 s): the phrase hits are at 0.487 + 16n × 0.4615 s. Its claps made ffmpeg's AAC at 192k overshoot by 6 dB, hence the 320k encode. Film: `whatif-38` |
 
   `product-video.mp3` covers walkthroughs up to about 1:50 without a loop; beyond that, `"loop": [100, 164]` repeats
   its second groove. For `stylish.mp3`, `"loop": [8, 72]`.

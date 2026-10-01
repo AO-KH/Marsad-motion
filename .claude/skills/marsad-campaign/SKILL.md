@@ -66,6 +66,7 @@ Each rule comes from the client, in their own words, or from an approved film. A
   - A concept with no page (how the data connects, the tiers) is drawn and called a rendering. List every rendering and invented element when you deliver.
 - **A voice only when asked.** Neither approved film has one. If asked, use the English voice the client chose, Kokoro "Michael" (voice 6). There is no approved Arabic voice.
 - **Finished means motion blur and QA.** Render with motion blur, render the fast moves again with 16 samples, and make sure QA passes. A `SUB=1` draft is never delivered.
+- **Finals are 1080p.** The client asked for it on 2026-10-01: "make 1080p videos from now on". It is `build_demo.sh`'s default. Render 4K (`SCALE=2`) only when the client asks for it.
 
 ## 2. Where you work
 

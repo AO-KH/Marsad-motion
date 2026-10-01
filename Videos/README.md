@@ -39,7 +39,7 @@ The videos made before the catalogue arrived are copied as they are.
 | Business Pulse - Campaign Film (30s, 16x9) | Business Pulse recommendations | Campaign film, in the main theme | `films/pulse-30` | **Ready**, with one check: no claim conflicts. Its Business Pulse page is a rebuild, so match it against today's page. |
 | Stock Monitoring - Story Film, One Coffee (48s, 16x9) | A product's stock alert, through to the decision | Story film: one product, from its record to the approved decision | `films/coffee-launch` | **Change before use:**<br>• "Marsad alerts you." with email and WhatsApp: alerts are in the app only, and email is coming.<br>• The purchase order executed after approval (PO-2291), also sent as a WhatsApp message: switched off.<br>• The record, links and alert cards are renderings. |
 | Monitoring Rules - Social Ad (13s, 9x16) | Monitoring rule → decision with evidence → approval → Decision Passport | Vertical social ad (Arabic, organic end card) | `films/monitor` | **Ready in story:** it is the catalogue's lead story. Before release, confirm the placeholder values listed in `films/monitor/README.md`, and match its rebuilt dark-mode parts against the real dark mode. |
-| What-if on a Rule - Campaign Film (35s, 16x9, 4K) | What-if on a rule | Fast campaign film in the main theme: try a different number on a rule and see what it would do, next to what happens today, on the real app's screens | `films/whatif-38` | **Ready.** Made from the catalogue. It shows a live feature only, on the real app's screens in dark mode, with the real on-screen labels. The data is labelled sample data. Compare what should happen with what did («مطابقة مجموعتين») is not in it: it is switched off. |
+| What-if on a Rule - Campaign Film (32s, 16x9) | What-if on a rule | Fast campaign film in the main theme: try a different number on a rule and see what it would do, next to what happens today, on the real app's screens | `films/whatif-38` | **Ready.** Made from the catalogue. It shows a live feature only, on the real app's screens in dark mode, with the real on-screen labels. The data is labelled sample data. Compare what should happen with what did («مطابقة مجموعتين») is not in it: it is switched off. |
 
 ## Older versions (not copied here)
 
@@ -49,7 +49,7 @@ The videos made before the catalogue arrived are copied as they are.
 | `demos/ontology-walkthrough` (light style, rebuilt page, 52 s, 16:9 and 9:16) | Knowledge Map - Walkthrough Demo |
 | `films/ontology-30` and `films/ontology-foundry` (the ontology film in the Figma and Foundry looks) | Knowledge Map - Campaign Film |
 | `films/coffee-story-45` (the coffee story in the light style) | Stock Monitoring - Story Film |
-| The first cut of `films/whatif-38` (38 s, on "Midnight Drift (slowed)"); the client then sent the music | What-if on a Rule - Campaign Film |
+| The first two cuts of `films/whatif-38`: 38 s on "Midnight Drift (slowed)", then 35 s in 4K on MoodMode's track; the client then sent the track it uses now | What-if on a Rule - Campaign Film |
 | The 54 s film v1 to v3 and the 63 s film v1 to v5 | Their current versions above |
 
 To rebuild any of them, run `./build_demo.sh <project>`; the result is written to `out/`.

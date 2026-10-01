@@ -55,8 +55,8 @@ A walkthrough is ready when every point below holds.
 - [ ] Whooshes: four moments or fewer, all on transitions. Every click has its click sound (the client's
       `mouse-click.mp3`), one per bar at its +1.8, heard at least +6 dB over the music. No other UI sounds.
 - [ ] QA prints `RESULT PASS`: pulse ≤ 1.15, shake 0, −14 LUFS ± 1.5, true peak ≤ −1 dBTP.
-- [ ] The final is 4K (3840×2160) with motion blur, and `tools/fast_ranges.py --run` was run on it, at 4K too (it
-      prints "rendering at scale 2").
+- [ ] The final is 1080p (1920×1080, the client's choice since 2026-10-01; 4K only when asked) with motion blur, and
+      `tools/fast_ranges.py --run` was run on it, at the same scale (it prints "rendering at scale 1").
 
 ## Defects we have hit, and the fixes
 

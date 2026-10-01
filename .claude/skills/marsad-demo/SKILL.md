@@ -99,17 +99,22 @@ Each rule is a client correction or a lesson from a delivered video.
   (+1.5–2 beats on the launch track; one click per bar), heard at least 6 dB over the music, and its result lands on
   the bar's +2.5 hit (`method.md` §5). No other UI sounds.
 - **Samples before big changes.** When a feature needs a new kind of shot, send stills or a short sample first.
-- **Final renders are 4K with motion blur,** plus 16-sample passes on the fast moves (§6). The client found the
-  1080p walkthrough soft ("the resolution is bad here"): `build_demo.sh` renders finals at `SCALE=2` (3840×2160),
-  so the app's text is drawn at that density, and keeps the file under 29 MB. A `SUB=1` draft (1080p) is never
-  delivered. 4K alone left the tilted close-ups soft ("when it zoomed to page the resolution gets bad"): Chrome
-  draws a layer under a perspective tilt at about its own pixel size. So the kit paints the zoom flat and keeps only
-  the tilt in 3D, and the engine gives nothing in an app screen a layer of its own (`flatten`). Keep both: never put
-  the zoom back into the 3D transform, and never give a part of the screen `will-change`, a 3D transform or a
-  backdrop-filter (`references/quality-bar.md`). The 16-sample pass on the fast moves renders at the same 4K
-  (`tools/fast_ranges.py` reads the scale from the final's frames; before 2026-10-01 it rendered them at 1080p).
-- **Format.** Deliver in 16:9, 4K (3840×2160; the stage is laid out at 1920×1080). The kit has no vertical layout
-  yet. If 9:16 or 1:1 is asked for, say it needs its own framing pass.
+- **Final renders are 1080p with motion blur,** plus 16-sample passes on the fast moves (§6).
+  - The client, 2026-10-01: "make 1080p videos from now on". `build_demo.sh` renders finals at `SCALE=1`
+    (1920×1080) and keeps the file under 29 MB.
+  - Render 4K (`SCALE=2`, 3840×2160) only when the client asks for it. The earlier 4K finals came from an earlier
+    request ("the resolution is bad here").
+  - A `SUB=1` draft is never delivered.
+- **Keep tilted close-ups sharp.** They were soft at any resolution ("when it zoomed to page the resolution gets bad"):
+  Chrome draws a layer under a perspective tilt at about its own pixel size.
+  - So the kit paints the zoom flat and keeps only the tilt in 3D, and the engine gives nothing in an app screen a
+    layer of its own (`flatten`).
+  - Keep both. Never put the zoom back into the 3D transform, and never give a part of the screen `will-change`, a 3D
+    transform or a backdrop-filter (`references/quality-bar.md`).
+  - The 16-sample pass on the fast moves renders at the final's own scale: `tools/fast_ranges.py` reads it from the
+    frames.
+- **Format.** Deliver in 16:9 at 1080p; the stage is laid out at 1920×1080. The kit has no vertical layout yet. If 9:16
+  or 1:1 is asked for, say it needs its own framing pass.
 
 ## 2. The brief
 
@@ -217,7 +222,7 @@ python3 tools/fast_ranges.py <slug> --run         # 16 sub-frames on the fast mo
   `ffmpeg -ss 2 -t 8 -i out/<slug>-16x9.mp4 -vf "fps=3,scale=400:-1,tile=6x4" -frames:v 1 sheet.png`.
 - **QA** must print `RESULT PASS`: pulse ≤ 1.15, shake 0, −14 LUFS ± 1.5, true peak ≤ −1 dBTP. Then look at
   `style_audit/<slug>-16x9-sheet.png`.
-- **Timing:** a 51 s 4K final takes about 45 minutes with the fast-move pass (a `SUB=1` draft, about 3). Start it
+- **Timing:** a 51 s 1080p final takes about 15 minutes with the fast-move pass (4K about 45; a `SUB=1` draft about 3). Start it
   in the background and keep writing docs meanwhile; never edit the demo, the kit or the engine while it runs.
 - **Never edit `demo.js` or the kit while a render chain runs.** Each pass reloads the page.
 

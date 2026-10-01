@@ -8,9 +8,10 @@ of margin, and prints them. With --run it re-renders those ranges with 16 sub-fr
 frames/<slug>-<format>/, and re-muxes and re-checks the video (ONLY=audio ./build_demo.sh). The camera dives of a
 walkthrough (demos/kit/walk.js) need this: four sub-frames leave steps in a fast zoom or pan.
 
-The ranges render at the final's own scale, read from its frames (3840 wide: SCALE 2, the 4K finals). Until 2026-10-01
-they rendered at 1080p and ffmpeg upscaled them into the 4K video, so a 4K final was soft on every fast move: always
-let this script match the scale, and check that every frame has the same size (it stops if not). --ranges re-renders
+The ranges render at the final's own scale, read from its frames: 1920 wide (SCALE 1) for the 1080p finals, the default
+since 2026-10-01, or 3840 wide (SCALE 2) for a 4K final. Before 2026-10-01 they always rendered at 1080p, and ffmpeg
+upscaled them into the 4K videos, so a 4K final was soft on every fast move. Always let this script match the scale, and
+check that every frame has the same size (it stops if not). --ranges re-renders
 the given ranges (start-end, end excluded) instead of the detected ones, e.g. to redo the ranges a log printed.
 """
 import argparse, os, subprocess, sys
