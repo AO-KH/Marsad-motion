@@ -113,7 +113,13 @@ When nobody can answer, use the defaults and list them in the delivery message:
    - Put its biggest lift on the turn, and again on the end. Put a thin block on the break.
    - Make the hits with `stops`: half a beat to a beat of silence before each lift.
 
-   A song's own ending can ring out for seconds of near-silence, and the catalogue allows no silence over 1.5 s. Check it before you end on it. If it rings out too long, end on a crash inside the song and fade its groove under the end card (`films/whatif-38`, its fourth track).
+   A song's own ending can ring out for seconds of near-silence, and the catalogue allows no silence over 1.5 s. Check it before you end on it. If it rings out too long, end on a section's first hit inside the song and fade its groove under the end card (`films/whatif-38`, its fourth track).
+
+   **Find the real downbeat of every track the client sends.** Give music_fit's `downbeat` beat 1 of a bar, not just any beat: the film's grid counts bars from it.
+   - Beat 1 is where the kick is strongest and where each section's first hit lands. In a rock track that hit is often a low "boom", with the crash two beats later.
+   - The client heard the miss: "Resync the beat and fix the rhyme with the transition". The What-if film's first rock cut counted bars from beat 3, so every cut and both big hits landed on the crashes, two beats after the booms.
+   - After the draft, measure the cut times against the kick: every cut should fall on its bar's loudest kick.
+   - Put each visual result on a beat, not the action that causes it. A press comes a little before the beat, and the panel it opens lands on it.
 2. **One row per shot:** beats and time, the line in English and Arabic, what is on screen, how depth shows, the transition (a hard cut on the beat, a burst, a crane), and the sound (only on transitions).
 3. **Timing:**
    - Shots run 4–10 beats. Cuts fall on beats.

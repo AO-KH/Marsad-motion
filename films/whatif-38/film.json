@@ -2,7 +2,7 @@
   "title": "Marsad — What-if on a rule (30 s campaign film, main theme)",
   "duration": 30.0,
   "formats": ["16x9"],
-  "music": {"file": "fit/alexgrohl-electronic-stylish-rock.mp3", "bpm": 139.99, "downbeat": 0.045, "edit": [[28, 76], [164, 186]], "fade_out": 2.0, "true_peak": -3},
+  "music": {"file": "fit/alexgrohl-electronic-stylish-rock.mp3", "bpm": 139.99, "downbeat": 0.902, "edit": [[24, 72], [160, 182]], "fade_out": 2.0, "true_peak": -3},
   "sfx": [
     {"type": "swoosh", "beat": 8, "gain": -4, "seed": 91, "dur": 1.4, "rise": 0.75, "f1": 4200, "body": 0.6, "pan0": 0, "pan1": 0, "width": 0.55},
     {"type": "swoosh", "beat": 32, "gain": -8, "seed": 94, "f1": 3000, "body": 0.6, "pan0": 0.5, "pan1": -0.3},

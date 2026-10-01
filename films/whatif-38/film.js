@@ -9,18 +9,23 @@
    House rules: English + Arabic on every line, Western digits, no shake (punches <= 1.5%), nothing on every beat, no orb
    behind the logo, "Book your demo" and marsadnasl.com at the end, effects on the transitions only.
    Music: the client's track, Alex Grohl's "Electronic Stylish Rock" (fit/alexgrohl-electronic-stylish-rock.mp3,
-   Pixabay), 140 BPM (139.99), 111 s; beat k at 0.052 + k x 0.42859 s. An intro (a hit on k2, then quiet; bass and kick
-   from k18, no hats), then three 17-bar sections: 16 bars of rock groove and a fill bar (a big hit on its beat 3, a gap
-   on beat 4) before the crash that starts the next (crashes on k36, k104, k172, k240; the last one ends the song,
-   which rings out from k244). The edit [28,76] (the hatless groove, the fill bar under the hook's last beats: its big
-   hit as the numbers fly in (film k6), the gap, the first crash on the turn (k8); section A through the proof, its
-   phrases on the panel (k24) and the proof (k40)) + [164,186] (the lighter second section's last bars and its fill
-   bar under the break; the crash into the last, full section on the end (k56), its groove fading out under the end
-   card; the song's own ending rings out too long for an end card). B(k) = k x 0.42859 s; earlier cuts ran on
-   "Midnight Drift (slowed)", MoodMode's and verclub_music's tracks.
+   Pixabay), 140 BPM (139.99), 111 s. Bars start at 0.902 s ("downbeat", 7 ms before the transients; beat k at
+   0.902 + k x 0.42859 s): the kick is strongest there, and beats.py's first beat (0.052) is beat 3 of a bar. An intro
+   (bass and kick from k16, no hats), then three 17-bar sections. Each section starts with a boom on its downbeat (k32,
+   k100, k168, k236: kick and bass, the loudest beats in the song) after two beats without kick or bass, then a beat
+   without hats and a crash on beat 3 (k34, k102, k170, k238). In the groove the kick leads beat 1 and the snare and
+   cymbals hit hardest on beats 3 and 4. The edit [24,72] (the hatless groove, the bass dropping out (film k4-5) and
+   the hats rising (k6-7) under the hook as the numbers fly in, the first boom on the turn (k8) and its crash on k10;
+   section A through the proof, every cut on a bar's downbeat and the panel (k24) and the proof (k40) on new phrases)
+   + [160,182] (the lighter second section's last bars under the break, its two beats without kick or bass ending the
+   break (k54-55), the boom into the last section on the end (k56), its crash on k58, its groove fading out under the
+   end card; the song's own ending rings out too long for an end card). B(k) = k x 0.42859 s. The first cut on this
+   track counted bars from beat 3, so its cuts and hits fell on the crashes, two beats after the booms ("Resync the
+   beat and fix the rhyme with the transition"); earlier cuts ran on "Midnight Drift (slowed)", MoodMode's and
+   verclub_music's tracks.
      k0-8    hook     the rules page's own rows and a rule's numbers adrift in depth, grey, the numbers changing;
                       "What if the number changes?"; from k6.25 they fly into the centre
-     k8-16   the turn (the first crash) the mark lands and a violet lens bursts out of it; numbers ride its orbits;
+     k8-16   the turn (the first boom) the mark lands and a violet lens bursts out of it; numbers ride its orbits;
                       "Marsad lets you try it first."
      k16-24  the rules page «قواعد المراقبة» rises; the cursor clicks the overdue-invoices rule's «ماذا لو…» (the
                       flask, k19); the app's panel opens and lifts out; "Open What-if on a rule."
@@ -30,9 +35,9 @@
                       (would raise a decision, 14), glowing; "Today vs. your what-if."
      k40-48  on a bright lens: the panel's own «لا يُحفظ شيء» line and the «افتراضي — غير مسجَّل» badge lift out;
                       "Nothing saved. Nothing changed."
-     k48-56  the break (the last bars, then the fill bar's hit and gap): "Marsad watches. You decide." (the catalogue's end line), the page
+     k48-56  the break (the last bars, then two beats without kick or bass): "Marsad watches. You decide." (the catalogue's end line), the page
                       far behind
-     k56-70  the end (the crash into the last section): the capsule blooms round "Book your demo." and shrinks into marsadnasl.com; the
+     k56-70  the end (the boom into the last section): the capsule blooms round "Book your demo." and shrinks into marsadnasl.com; the
                       mark; "Book your demo · احجز عرضك التجريبي"
    Truth: the rules page, its rows, the «ماذا لو…» panel, the typed value, «احسب», the two results, the badge and the
    «لا يُحفظ شيء» line are the app's own (the client's front end in dark mode, films/whatif-38/app/capture.js, captured
@@ -212,7 +217,7 @@ const DLp=part(PG,IMG+'whatif.png',DLG,PS,[PW,PH],12);
 const CUR3=M.el('div','pm-cur',CURSVG,SH3);
 const PC={x:960,y:615};
 const FL_AT={x:PC.x-PGW/2+(FLASK[0]+FLASK[2]*0.55)*PS, y:PC.y-PGH/2+(FLASK[1]+FLASK[3]*0.6)*PS};
-const T_CLK=B(19), T_OPEN=T_CLK+0.22, T_LIFT=B(21.5);
+const T_CLK=B(20)-0.22, T_OPEN=T_CLK+0.22, T_LIFT=B(21.5);   // the panel opens on the bar's downbeat (the kick)
 M.track(t=>{
   if(!show(SH3,inShot(t,K_PAGE,K_DLG)))return;
   const pe=io(t,K_PAGE,K_PAGE+1.2), pt=io(t,T_LIFT,T_LIFT+1.6), drift=P(t,T_LIFT+1.6,K_DLG);
@@ -238,7 +243,7 @@ const CALC=[25,161,103.1,42];               // «احسب» in the panel (app px
 const CLp=part(DL,IMG+'type5-dialog.png',CALC,DS,[512,338],8);
 const CUR4=M.el('div','pm-cur',CURSVG,SH4);
 const DC={x:1270,y:560};
-const T_TYPE=B(25), T_CALC=B(28), T_RES=T_CALC+0.2;
+const T_TYPE=B(25), T_CALC=B(28)-0.2, T_RES=T_CALC+0.2;     // the results appear on the bar's downbeat (the kick)
 const FRAMES=['whatif','type1','type2','type3','type4','type5'].map(k=>k+'-dialog');   // the panel as each digit lands
 const CALC_AT={x:DC.x-DW/2+(CALC[0]+CALC[2]*0.6)*DS, y:DC.y-DH0/2+(CALC[1]+CALC[3]*0.62)*DS};
 M.track(t=>{
@@ -251,8 +256,8 @@ M.track(t=>{
   st(DL,{opacity:f3(Math.min(1,pe*1.6)),transform:T3(DC.x-24*tl,DC.y,DW,H,{z:-420*(1-pe)-60*drift,rx:4*tl,ry:-12*tl-3*drift})});
   const press=Math.sin(Math.PI*P(t,T_CALC-0.05,T_CALC+0.18)), gl=dec(t,T_CALC-0.35,T_CALC)*(1-dec(t,T_RES,T_RES+0.1));
   st(CLp,{display:!res&&t>=T_CALC-0.4?'':'none',transform:`translateZ(${f1(18*gl)}px) scale(${f3(1+0.05*gl-0.05*press)})`,boxShadow:glowRim(gl)});
-  const pm=io(t,B(26.3),T_CALC-0.06), out=io(t,T_CALC+0.4,T_CALC+1.1);
-  st(CUR4,{opacity:f3(dec(t,B(26.3),B(26.3)+0.35)*(1-out)),transform:`translate(${f1(lerp(1700,CALC_AT.x,pm)+140*out-10)}px,${f1(lerp(1020,CALC_AT.y,pm)+120*out-5)}px) scale(${f3(1-0.12*press)})`});
+  const pm=io(t,B(26),T_CALC-0.06), out=io(t,T_CALC+0.4,T_CALC+1.1);
+  st(CUR4,{opacity:f3(dec(t,B(26),B(26)+0.35)*(1-out)),transform:`translate(${f1(lerp(1700,CALC_AT.x,pm)+140*out-10)}px,${f1(lerp(1020,CALC_AT.y,pm)+120*out-5)}px) scale(${f3(1-0.12*press)})`});
 });
 jt({at:B(24.5),out:K_RES,x:130,w:760,y:390,size:76,cls:'left',words:['Try','a','different','\n',{t:'number.',g:1}],ar:'جرّب رقمًا مختلفًا.',arSize:40});
 
@@ -266,7 +271,7 @@ M.track(t=>{
   const u=P(t,K_RES,K_PROOF), pb=dec(t,K_RES,K_RES+0.6);
   st(BACK,{opacity:f3(0.16*pb),filter:'blur(7px)',transform:T3(960,700,512*1.9,476*1.9,{z:-1700,rx:10,ry:-8+4*u})});
   [[CA,610,1,K_RES],[CT,1310,-1,K_RES+S8]].forEach(([e,x,sd,t0])=>{
-    const p=dec(t,t0,t0+0.75), hi=e===CA?dec(t,B(34.5),B(34.5)+0.6):0;
+    const p=dec(t,t0,t0+0.75), hi=e===CA?dec(t,B(36),B(36)+0.6):0;   // on the second bar's downbeat (the kick), after the line
     st(e,{opacity:f3(Math.min(1,p*1.8)),transform:T3(x+sd*12*u,640+60*(1-p),CW,CH,{z:-700*(1-p)+(e===CA?70*hi:0),rx:6,ry:sd*(14*(1-p)+8)-sd*3*u}),
       boxShadow:e===CA?glowRim(0.35+0.65*hi):`0 0 0 1.5px rgba(200,196,214,0.45),0 30px 70px rgba(0,0,0,0.5)`});
   });
@@ -278,7 +283,7 @@ const SH6=M.el('div','mt-shot',null,SCN), D6=M.el('div','mt-3d',null,SH6);
 const NS6=2.5, BS6=3.6;
 const NOTE=plate(D6,IMG+'result-note.png',462*NS6,40*NS6), BADGE=plate(D6,IMG+'result-badge.png',115.5*BS6,20*BS6);
 NOTE.style.borderRadius='18px';BADGE.style.borderRadius='999px';
-const T_OK=B(42.5);
+const T_OK=B(44);                            // the second bar's downbeat (the kick), after the line
 M.track(t=>{
   if(!show(SH6,inShot(t,K_PROOF,K_BRK)))return;
   const pe=dec(t,K_PROOF,K_PROOF+0.7), u=P(t,K_PROOF,K_BRK), l=dec(t,T_OK,T_OK+0.6);

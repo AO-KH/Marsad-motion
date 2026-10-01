@@ -5,7 +5,9 @@ usage: python3 tools/music_fit.py <slug>
 demo.json "music":
   file      the track (any format ffmpeg reads)
   bpm       tempo (tools/beats.py measures it)
-  downbeat  a downbeat in the track, in seconds (sets the bar grid)
+  downbeat  a downbeat in the track, in seconds (sets the bar grid). It must be beat 1 of a bar (where the kick and
+            the sections' first hits fall), not just any beat: the film's M.B(0) goes on a bar line counted from it,
+            so a "downbeat" on beat 3 puts every cut two beats off the music (the What-if film's first rock cut)
   start     where the video starts in the track (s); pick a downbeat so M.B(0) lands at 0
   loop      optional [a, b]: beats counted from `downbeat`. When the track is too short, the section a..b is
             repeated (inserted after its first play) until the video is covered. Whole bars keep the grid intact.
