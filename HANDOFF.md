@@ -16,7 +16,7 @@ This file covers the two finished ads. For new product demo videos, see [`DEMOS.
 - **Latest delivered cut: v6** (`marsad-film-final-v6.mp4`, sent in chat on 2026-09-25): 63.0 s, 1920×1080,
   30 fps, H.264 (crf 20) + AAC 192k, master at −14.5 LUFS / −1.5 dBTP. v6 is v5 with glass icons (section 7,
   item 10); timing and audio are unchanged.
-- **What it is:** a 63-second bilingual (EN/AR) ad for **Marsad**, the sovereign AI business platform by
+- **What it is:** a 63-second bilingual (EN/AR) ad for **Marsad**, the Arabic-first decision layer for Saudi companies by
   NASL Technologies. It uses the Marsad web app's light visual language with a purple glow layer and real
   app pages. The English voiceover is TTS (Kokoro, voice "Michael"). The music is SoundSurfer's "Stylish",
   fitted without time-stretch.
@@ -426,3 +426,37 @@ Films made this way:
 | [`ontology-foundry`](films/ontology-foundry/film.js) | 29.7 s, 16:9 | The ontology film, second style (2026-09-28). After the Figma cut (`ontology-30`), the client sent two more references: Palantir Foundry's ontology animation (the hero of palantir.com/platforms/foundry) and "Ringwriter" by Edoardo Lunardi (shared by @kombaiselects). Same music, edit and landmarks as `ontology-30`. The opening follows Ringwriter: on a charcoal canvas, rings of icons of the company's data build out, turn and spin into the centre, "Your company's data is everywhere." At the client's request the rings carry icons instead of words. They are the drawing's own isometric icons, light on dark: Odoo's database, WhatsApp, spreadsheets and PDFs, invoices, invoice lines, customers, products, employees, cities, notes. The first cut, with words, is commit 2449aa3. On the groove it cuts to Foundry's grammar: a white frame (the mark and a turned label in a side strip, titles typed into a box at the bottom left) round a light canvas with a perspective line drawing. There are three tiers of plates with hatched edges and bundles of dashed cables flowing between them. The bottom tier is the sources (Odoo, WhatsApp, the company's files), "Connect your sources." The ontology plate holds the seven object types as isometric icons on pads, with their six links named on pills and a floating card for the WhatsApp note (customer متاجر الواحة, source WhatsApp), "Unify them in one ontology." The top tier is the app's own pages on plates (Business Pulse, Decisions, Assistant); the restock action rises from Product to Decisions, then "Action executed · PO-2291", "Monitor and act." The camera then pulls back to the whole stack, "Every system. One living model." In the break the drawing fades; "Meet the Marsad ontology."; the logo lands on the hit, then marsadnasl.com and "Book your demo". Effects on three transitions (the cut to the drawing, the pull-back, the logo). QA PASS, −14.0 LUFS, −2.8 dBTP. Frames 104–125, 233–267, 359–392, 410–435 and 488–529 (the spin, the two cranes, the action, the pull-back) are rendered with 16 blur samples; redo them after a full rebuild. **Renderings to confirm:** the rings of icons; the tiered drawing (sources, ontology, pages: how Marsad works, drawn); the isometric icons; the note's card layout; the cables; the action's pill ("إعادة التوريد · Restock") and its path. The Knowledge Map's types and link labels are the site kit's older page |
 | [`ontology-main-theme`](films/ontology-main-theme/film.js) | 29.7 s, 16:9 | The ontology film in Marsad's main theme (2026-09-28). The client asked for "marsad main theme, fonts color and everything" and named it: "the theme of 48 second video is good" (`style-jupiter`). It keeps the ontology film's story, timing and drawing (`ontology-foundry`) in the 48 s film's look: near-black with dust, lenses with violet-to-pink rims, white Inter type blurring in with gradient words and the Arabic under it, glowing rims and chips, and the capsule end. The opening is rings of icons of the company's data glowing between two lenses, "Your company's data is everywhere." They spin into the centre and a lens bursts out of it (k8). Inside it is the drawing, in dark violet glass with glowing rims: sources with Odoo, WhatsApp and the company's files, "Connect your sources." Then the ontology, its types standing on small lenses with their named links glowing, and the WhatsApp note as the app's search shows it, "Unify them in one ontology." Then the app's pages, lying on the top tier, stand up as glass slabs in an arc (a bezel with a glowing rim, thickness, a reflection on the plate) while the camera circles them; their real parts float out of them (the page's own pixels, with empty slots left behind), and when the restock action rises from Product to Decisions, the page's own "Action executed · PO-2291" card lifts out glowing green, "Monitor and act." (The client saw the pages lying flat and asked to "make this 3d", 2026-09-28; the recipe is in the campaign skill's `references/depth-and-3d.md`, level 3.) Then the whole stack over a glowing horizon, "Every system. One living model.", and "Meet the Marsad ontology." through the break. The 48 s film's capsule end lands on the hit. Music and edit as the other ontology cuts; effects on three transitions (the burst with the cinematic hit, the pull-back, the end with the hit). QA PASS, −14.0 LUFS. Frames 104–153, 233–267, 359–435, 488–529, 750–768 and 793–820 (the spin and the burst, the cranes, the pages standing up and the action, the pull-back, the capsule) are rendered with 16 blur samples; redo them after a full rebuild. **Renderings to confirm:** as `ontology-foundry` (the rings of icons, the tiered drawing, the icons, the cables, the action's pill), plus the lens pads, the glass slabs and their reflections, and the empty slots the floating parts leave in the pages (`films/ontology-main-theme/pages/*_base.png`) |
 | [`pulse-30`](films/pulse-30/film.js) | 29.7 s, 16:9 | Business Pulse (2026-09-30), the first film made with the rebased campaign skill ("make 30 second video with the skill for the business pulse"), from its starter, in the shots grammar. The company's numbers, small charts and files adrift in depth between three grey lenses, the numbers changing, "Your numbers change every day."; they fly into the centre, the mark lands on the groove and a violet lens bursts out of it, the numbers now glowing on its orbits, "Marsad reads them for you."; the Business Pulse page rises flat, the cursor clicks «توليد توصيات», the three recommendations fly into the page and float out of it as it tilts, "Recommendations from your own numbers."; the three recommendations as cards in 3D under a dome, each one's tag lifting out as its word lands, "Your products. Your branches. Your stock."; on a bright lens the slow-movers recommendation, its «مبني على بياناتك» pill lifting out green, "Computed from your data. Nothing made up." (the page's own claim); "Meet Business Pulse." through the break; the capsule end. Funk track, 30 s edit; whooshes on the turn (with `cinematic-start-dsm`), the cards swinging in (k24) and the end (with `cinematic-wake-dsm`). QA PASS. Frames 95–140, 300–336, 376–396, 751–768 and 793–815 (the flights and the burst, the rows flying in, the cards swinging in, the capsule) are rendered with 16 blur samples; redo them after a full rebuild. **To confirm:** the five new lines; the metric chips' numbers and the small charts in the hook (invented sample data); the page before generating (its rows' slots empty); the empty slots the lifted tags leave; the glowing numbers on the orbits |
+
+## 15. The feature catalogue and the Videos folder (2026-10-01)
+
+The client sent the product team's catalogue, "Every Marsad feature, ready to film" (checked against the live product
+on 1 October 2026), with "this is your baseline on MARSAD features". It lists the 93 features: 66 live, 14 built
+but switched off, 13 coming. It also sets the filming rules: live features only, the real UI and labels, dark mode,
+labelled sample data, and words to avoid.
+
+Its digest is in both skills (`references/feature-catalogue.md`). Several approved lines are now retired in the
+campaign skill's line bank:
+
+- "One workflow. Fully automated."
+- "Real-time recommendations"
+- "Decision to action. Nothing in between."
+- "Defense in depth. Sovereign. PDPL-compliant."
+
+The client then asked to "put the demo and campaign in separate folder and name each one based on the feature and
+purpose". **`Videos/`** holds the current version of every finished video, in `Videos/Demos/` and
+`Videos/Campaigns/`, named "Feature - Purpose (length, format).mp4". It is the only place MP4s are committed.
+`Videos/README.md` indexes them and gives each one's check against the catalogue: Ready, or what to change before
+use.
+
+In short, the films made before the catalogue carry at least one of these:
+
+- 'real time';
+- 'sovereign' and PDPL;
+- 'fully automated';
+- an action executed after approval (PO-2291);
+- automatic reorders in the assistant's answer;
+- email alerts;
+- the daily advisor;
+- the SAP, Salesforce, Oracle, Shopify and QuickBooks tiles.
+
+They stay as delivered until the client asks for changes.

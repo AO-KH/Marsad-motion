@@ -23,6 +23,7 @@ Read these as you reach them:
 - `references/depth-and-3d.md`: depth in both grammars (CSS 3D parts, the perspective drawing, pages standing as glass slabs, parts floating out). Read it when a shot shows the app.
 - `references/audio.md`: the funk track, its edits, the whooshes and hits, the mix, and an optional voice. Read it before writing `film.json`'s audio.
 - `references/quality-bar.md`: the review checklist and the defects already hit, with their fixes. Read it before reviewing stills.
+- `references/feature-catalogue.md`: what Marsad does today, by the product team's feature catalogue (2026-10-01, the client's baseline): the live features, what is switched off or coming, the filming rules and the words to avoid. Read it before writing any line or choosing what a film shows.
 - `assets/starter/`: a working 30 s film in the theme (the stage, the type, the mark, a page in perspective, a real card lifting out, the capsule end, the music and the three whooshes). Copy it to start a new film.
 
 The repo holds older films in other looks: the light 63 s and 54 s ads, the launch-style recreations, and the Figma, Foundry and Lovable samples (HANDOFF.md lists them). They are history. Don't copy their look unless the client asks for it by name.
@@ -60,7 +61,8 @@ Each rule comes from the client, in their own words, or from an approved film. A
   - Real app text on real parts: screenshots from `site_pages/` and parts from the site kit (`SK`).
   - Sample data is fictional but plausible. Show no names or badges from real accounts, and no future features.
   - Never say "unhackable", "blockchain" or "certified".
-  - Product claims come from the client's Marsad User Manual v1.0 (March 2026). It isn't in the repo, so ask for it when you need a claim checked. Its screenshots show an older UI, so show `site_pages/` instead.
+  - **The feature catalogue is the baseline** (the client, 2026-10-01: "this is your baseline on MARSAD features"). Show and claim only live features, avoid its words ('real time', 'sovereign', 'PDPL-compliant', 'reorders automatically', 'email alerts' …), and end a decision approved and sealed in its passport, not "executed". Source tiles are Odoo, documents, spreadsheets, Drive and WhatsApp, not the famous tiles of other systems. `references/feature-catalogue.md` has it all; `Videos/README.md` lists what each older film must change.
+  - Older product claims came from the client's Marsad User Manual v1.0 (March 2026); where it and the catalogue differ, the catalogue wins. Its screenshots show an older UI, so show `site_pages/` instead.
   - A concept with no page (how the data connects, the tiers) is drawn and called a rendering. List every rendering and invented element when you deliver.
 - **A voice only when asked.** Neither approved film has one. If asked, use the English voice the client chose, Kokoro "Michael" (voice 6). There is no approved Arabic voice.
 - **Finished means motion blur and QA.** Render with motion blur, render the fast moves again with 16 samples, and make sure QA passes. A `SUB=1` draft is never delivered.
@@ -109,7 +111,7 @@ When nobody can answer, use the defaults and list them in the delivery message:
    - Shots run 4–10 beats. Cuts fall on beats.
    - Lines build one word per 8th (or 16th), with the Arabic an 8th after the last word.
    - The end starts on the hit and holds at least 5 s.
-4. **Reuse approved lines** when a film makes the same point (the bank is in `references/the-two-films.md`). Write new ones the same way: short statements with one gradient phrase for Marsad's part ("Decision to **action.**").
+4. **Reuse approved lines** when a film makes the same point (the bank is in `references/the-two-films.md`), except the ones the catalogue retired (marked there). Write new ones the same way: short statements with one gradient phrase for Marsad's part ("Every system. One living **model.**").
 5. **Show the storyboard,** or stills of the key shots, when the brief was loose or the idea is new.
 
 ## 5. Build

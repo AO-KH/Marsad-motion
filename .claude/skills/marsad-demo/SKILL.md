@@ -25,7 +25,9 @@ explain the feature". What is on screen:
   transitions only.
 
 The reference is `demos/decisions-real/` ("Decisions: approve a recommendation", 51 s, on the real screens;
-`demos/decisions-walk/` is the same walkthrough on the site kit, from before the front end arrived). The machinery
+`demos/decisions-walk/` is the same walkthrough on the site kit, from before the front end arrived).
+`demos/ontology-real/` ("Knowledge map: from one customer to the whole business model") is the first made from the
+product team's feature catalogue: the app in dark mode, labelled sample data, live features only. The machinery
 is the walkthrough kit (`demos/kit/walk.js`, `walk.css`) and the capture tool (`tools/app_snap.js`), so a
 walkthrough's folder holds only its steps (`demo.js`) and what to capture (`app/capture.js`). The references:
 
@@ -35,6 +37,9 @@ walkthrough's folder holds only its steps (`demo.js`) and what to capture (`app/
   numbers, framing, lifts, the capsule, the two music maps with their effects, and the reference beat by beat. Read
   it before storyboarding.
 - `references/quality-bar.md`: the checklist and the defects already hit. Read it before reviewing stills.
+- `references/feature-catalogue.md`: what Marsad does today, by the product team's feature catalogue (2026-10-01,
+  the client's baseline): the live features, what is switched off or coming, and the filming rules. Read it when a
+  feature arrives, before the brief.
 
 The earlier light-style method (a steps rail, captions under the window, the logo end card) is retired for new
 walkthroughs. Its videos stay in `demos/` (`decisions-walkthrough`, `search-walkthrough`, `ontology-walkthrough`,
@@ -58,6 +63,15 @@ Work in the **AO-KH/Marsad-motion** repo on `main`. The client approved pushing 
 
 Each rule is a client correction or a lesson from a delivered video.
 
+- **The feature catalogue is the baseline** (the client, 2026-10-01: "this is your baseline on MARSAD features").
+  - Film only features it marks live, and nothing switched off or coming.
+  - Quote its «» labels: they are the app's own.
+  - Film in the app's dark mode (`theme: 'dark'` in `app/capture.js`).
+  - Label the data: the kit's `note: {en: 'Sample data', ar: 'بيانات تجريبية'}`.
+  - Keep personal data and English Odoo names out of focus.
+  - Avoid its words ('real time', 'sovereign', 'reorders automatically', 'email alerts' …).
+  - End on its safe lines where they fit: «مرصد يراقب. وأنت تقرّر.», «شركتك عالم. ومرصد خريطته.».
+  - `references/feature-catalogue.md` has the lists and the rules.
 - **Truth.** The app's own screens, captured from its front end, and its exact text; the feature's behaviour only
   as the client describes it and the app does it.
   - Never show a feature, flow, label or number the product doesn't have. The capture shows what the app really
@@ -92,7 +106,8 @@ Each rule is a client correction or a lesson from a delivered video.
   draws a layer under a perspective tilt at about its own pixel size. So the kit paints the zoom flat and keeps only
   the tilt in 3D, and the engine gives nothing in an app screen a layer of its own (`flatten`). Keep both: never put
   the zoom back into the 3D transform, and never give a part of the screen `will-change`, a 3D transform or a
-  backdrop-filter (`references/quality-bar.md`).
+  backdrop-filter (`references/quality-bar.md`). The 16-sample pass on the fast moves renders at the same 4K
+  (`tools/fast_ranges.py` reads the scale from the final's frames; before 2026-10-01 it rendered them at 1080p).
 - **Format.** Deliver in 16:9, 4K (3840×2160; the stage is laid out at 1920×1080). The kit has no vertical layout
   yet. If 9:16 or 1:1 is asked for, say it needs its own framing pass.
 
@@ -142,7 +157,8 @@ python3 tools/make_demo.py <slug>
 node tools/rects.js <slug> '[data-w=approve]' 'text:ثقة 80%'      # natural positions to aim the camera at
 ```
 
-- **`app/capture.js`** (`feature-brief.md` has the details): `viewport` 1440×805; `routes`, the sample data the
+- **`app/capture.js`** (`feature-brief.md` has the details): `viewport` 1440×805; `theme: 'dark'` (the catalogue's
+  rule); `routes`, the sample data the
   feature's pages ask for (the tool prints any call it had no data for as `NEW`); `states` in order, each a `url` or
   a `run` that drives the app (click, fill), plus `tag`s (`data-w`) on what the camera and the hand visit. Capture
   every state the app shows: a dialog opening, a field taking the focus, a message, the page after.
@@ -156,7 +172,8 @@ node tools/rects.js <slug> '[data-w=approve]' 'text:ثقة 80%'      # natural p
 ```js
 const W=M.walk({map:'launch',page:'home',intro:{kicker:'Introducing',name:'Decisions.',ar:'تعرّف على القرارات'},
   steps:[{at:B(8.5),en:'Open Decisions',ar:'افتح صفحة القرارات'}, ...],
-  benefit:{words:['From','recommendation','to',{t:'action.',g:1}],ar:'من التوصية إلى التنفيذ.'}});
+  benefit:{words:['From','recommendation','to',{t:'action.',g:1}],ar:'من التوصية إلى التنفيذ.'},
+  note:{en:'Sample data',ar:'بيانات تجريبية'}});                  // the label the catalogue asks for, top left
 const {app,cam,lift,NP}=W;
 cam(B(8.2),{at:NP(930,286),z:2.0,rx:2,ry:-4},{dur:1.0});         // dive onto the top bar
 app.click(B(9.8),'[data-w=dec-tab]',{ax:0.4,ay:0.9,lead:0.85,dur:0.75});   // in the bar's silence

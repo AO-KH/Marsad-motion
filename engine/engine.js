@@ -211,6 +211,20 @@ function flatten1(pg,key){
   }
 }
 
+// An element's box in its page's coordinates: the offset chain, and every CSS transform on it (React Flow places its
+// nodes and its viewport with transforms, which offsetLeft/offsetTop do not see). tools/rects.js has the same code.
+function boxIn(e,root){
+  let pts=[[0,0],[e.offsetWidth,0],[0,e.offsetHeight],[e.offsetWidth,e.offsetHeight]];
+  for(let n=e;n&&n!==root;n=n.offsetParent){
+    const cs=getComputedStyle(n);
+    if(cs.transform&&cs.transform!=='none'){const m=new DOMMatrix(cs.transform),[ox,oy]=cs.transformOrigin.split(' ').map(parseFloat);
+      pts=pts.map(([x,y])=>{const q=m.transformPoint(new DOMPoint(x-ox,y-oy));return [q.x+ox,q.y+oy];});}
+    pts=pts.map(([x,y])=>[x+n.offsetLeft,y+n.offsetTop]);
+  }
+  const xs=pts.map(q=>q[0]),ys=pts.map(q=>q[1]),x=Math.min(...xs),y=Math.min(...ys);
+  return {x,y,w:Math.max(...xs)-x,h:Math.max(...ys)-y};
+}
+
 /* ---------------- the app window ---------------- */
 const CURSOR='<svg viewBox="0 0 28 40"><path d="M2 2 L2 30 L9.5 24 L14 36 L19 34 L14.5 22 L24 22 Z" fill="#FFFFFF" stroke="#1A191E" stroke-width="2.4" stroke-linejoin="round"/></svg>';
 let VIEW={tx:0,ty:0,s:1},WOFF={y:0,s:1,vis:false},APP=null;
@@ -265,8 +279,7 @@ function app(o){
     const root=e.closest('.m-page'),fixes=[];                          // un-hide every hidden ancestor while measuring,
     for(let a=e;a&&a!==document.body;a=a.parentElement)                // the window too (it is display:none before it opens)
       if(getComputedStyle(a).display==='none'){fixes.push([a,a.style.display]);a.style.display='block';}
-    let x=0,y=0,n=e;while(n&&n!==root){x+=n.offsetLeft;y+=n.offsetTop;n=n.offsetParent;}
-    const r={x,y,w:e.offsetWidth,h:e.offsetHeight};
+    const r=boxIn(e,root);
     fixes.forEach(([a,d])=>a.style.display=d);
     return r;
   }

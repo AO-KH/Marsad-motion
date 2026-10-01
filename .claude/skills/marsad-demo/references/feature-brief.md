@@ -7,6 +7,18 @@ with what does the feature do to explain it right".
 So each walkthrough starts from a feature brief. The front end arrived on 2026-09-30 ("this is marsad front end"), so
 the screens are the real app's, captured with sample data (below).
 
+## Start from the feature catalogue
+
+The product team's catalogue (`feature-catalogue.md`, the client's baseline since 2026-10-01) gives each feature:
+
+- its status: live, switched off or coming. Film only live ones; for the others, say so and stop;
+- its Arabic name;
+- what it does;
+- an **On screen** line: the real steps with the app's own labels in «». This is usually the walkthrough's steps;
+- a note with its limits (for example "2D", "admins only", "rehearse in production first").
+
+Read the feature's entry first. Then ask only for what it leaves open.
+
 ## What to ask
 
 Ask in one short round, and skip what the client already gave:
@@ -18,7 +30,7 @@ Ask in one short round, and skip what the client already gave:
    the camera shows.
 5. **The screens:** the front end for each step (see below).
 6. **The outcome.** What's different at the end: a record, a number, a message, a sent report.
-7. **Limits.** Anything not live yet, and any claim to avoid.
+7. **Limits.** Anything not live yet, and any claim to avoid (the catalogue's note and its words to avoid).
 8. **Length.** 51 s on the launch map, 4–5 steps.
 
 If the client only names a feature, infer the steps from the front end itself: its pages (`apps/web/src/app/…`), the
@@ -87,3 +99,22 @@ For each step, list the elements the camera visits. Measure them with `node tool
 | length | 51 s, 5 steps (the outcome is its own step) |
 
 `method.md` §8 has the storyboard it became.
+
+It predates the catalogue: its outcome («نُفِّذ الإجراء», the Odoo action running after approval) is switched off
+there, so a remake ends on the approved card and its passport instead.
+
+**Worked example from the catalogue** (`demos/ontology-real`). The entries used were the knowledge map explorer
+(live), everything about a record on one page (live), AI suggests links and a person confirms (live), and the map of
+your data model (live).
+
+| Brief item | Answer |
+|---|---|
+| name | Knowledge map / الخريطة المعرفية |
+| does | Start from any customer and see everything it connects to, confirm the links the AI suggests, and see the whole business as one model |
+| who, when | a manager, on البيانات › الخريطة المعرفية |
+| steps | from the four entries' On screen lines: search for a customer (the sample «متاجر الواحة») and pick it → double-click one of its invoices to expand it → «فتح الكائن», «الروابط»: the AI's «مقترح» link → ✓ (confirm), «مؤكّد» → «عرض في الخريطة المعرفية» → «مخطط الأنطولوجيا», a type's links |
+| outcome | the confirmed link drawn solid on the map; the data model with the invoice type's links lit |
+| benefit | the catalogue's safe end line: Your company is a world. Marsad is its map. / شركتك عالم. ومرصد خريطته. |
+| screens | `explore`, `search`, `customer`, `invoice`, `inv-page`, `inv-links`, `inv-confirmed`, `inv-map`, `schema`, `schema-inv` (ten states, dark mode) |
+| limits | the map is 2D; English type names kept out (every type has its Arabic name); sample data labelled |
+| length | 51 s, 5 steps |

@@ -22,6 +22,12 @@ A walkthrough is ready when every point below holds.
 - [ ] No call a screen needs was answered `{}` (the capture prints them as `NEW`).
 - [ ] Everything invented, and every rendering, is listed in the delivery message. Say what came from the site
       kit's existing data.
+- [ ] The feature catalogue allows it (`feature-catalogue.md`):
+      - every feature shown is live;
+      - no line uses its words to avoid;
+      - the app is in dark mode;
+      - the data carries the "Sample data · بيانات تجريبية" label;
+      - no personal data or English Odoo name is in focus.
 
 **Framing**
 - [ ] The subject's text reads at 30 px or more on screen.
@@ -49,7 +55,8 @@ A walkthrough is ready when every point below holds.
 - [ ] Whooshes: four moments or fewer, all on transitions. Every click has its click sound (the client's
       `mouse-click.mp3`), one per bar at its +1.8, heard at least +6 dB over the music. No other UI sounds.
 - [ ] QA prints `RESULT PASS`: pulse ≤ 1.15, shake 0, −14 LUFS ± 1.5, true peak ≤ −1 dBTP.
-- [ ] The final is 4K (3840×2160) with motion blur, and `tools/fast_ranges.py --run` was run on it.
+- [ ] The final is 4K (3840×2160) with motion blur, and `tools/fast_ranges.py --run` was run on it, at 4K too (it
+      prints "rendering at scale 2").
 
 ## Defects we have hit, and the fixes
 
@@ -82,3 +89,13 @@ A walkthrough is ready when every point below holds.
 | The client, after the 4K final: "when it zoomed to page the resolution gets bad" (tilted close-ups soft at any resolution) | Chrome draws a layer under a perspective tilt at about its own pixel size (a rough scale, capped by the tile count, at least the device scale), and the camera's zoom was inside that 3D transform: the page was drawn at 1× and stretched 3× | The kit splits the camera: the tilt stays 3D on the window's layer, the zoom and pan are a flat transform painted inside it (`wk-zh`/`wk-zp`); floating copies are painted 4× larger in their 3D box and scaled back (`LSS`). Check a tilted close-up at 1:1 against a flat frame: the strokes should be as steep |
 | The dialog's blurred backdrop came out sharp in some frames | A backdrop-filter in a 3D scene: its blur depended on the frames drawn before, so render jobs that started mid-dialog disagreed. Any part of a screen with its own layer (a sticky top bar, the veil and the dialog on it) was also drawn soft under the tilt | The engine flattens captured screens (`flatten`): sticky bars pinned where they stand; a backdrop blur behind a fill of 80% or more dropped; a full-screen veil given a blurred copy of the screen inside it (flat renders match the app's own blur but for 1 px edges). Check: no compositing layer inside `.wk-zh` (CDP `LayerTree`), and a frame reached directly matches the same frame reached by playing |
 | A tight frame on a card's buttons was mostly empty card | RTL: the buttons sit at the card's far left, its text at the right | Frame the whole card, then ease in toward the buttons (z 2.35, ry −8) for the click |
+| A floating node of the knowledge map rose at the wrong place and size | React Flow places its nodes and its viewport with CSS transforms, which `offsetLeft`/`offsetTop` don't see | The engine's element box (`boxIn`, and `tools/rects.js`) follows every transform; `lift` paints the copy at the part's own scale (the map's zoom) and keeps its glow the same width |
+| `tools/rects.js` printed NaN for an icon button | The step-down from a wrapper to its only child walked into the button's SVG icon, which has no offset box | Step down only into HTML elements (the kit's `lift` does the same) |
+| A part floated out of a dark-mode screen left a light grey hole | The recess and shadow were made for the light app | The kit uses darker ones (`.wk-slot.dk`, `.wk-shd.dk`) when the part sits in the app's `.dark` root |
+| Arabic typed into a search box ran from the left | The box is `dir="auto"`: empty, it was left to right, and the snapshot froze that | From the first typed letter set the field's `direction: rtl` (`app.set`), as the browser does |
+| The object page showed «تعذّر تحميل الإجراءات» | The action types call was answered `{}` | Answer list calls in the page shape the app reads (`{data: [], page: 0, size: 200, totalElements: 0, totalPages: 0}`); a call answered `{}` prints as `NEW` |
+| A capture's tag found the wrong «فاتورة» | The same text sat in a hidden node of the other view | Scope the locator to the view on screen (`.react-flow__node-type`) |
+| A file name turned into «pdf.0457» | An extension after Arabic text reorders in right-to-left text | Leave the extension out of Arabic record names |
+| The map jumped when a double-click opened a record's links | Two captured states, before and after; the app eases its view onto the new records | Animate React Flow's viewport between the two states' transforms (about 0.45 s, as the app's fit view does), and fade the new records in over 0.15 s (listed as eased at delivery) |
+| A 4K final was soft on every fast camera move (found 2026-10-01) | `tools/fast_ranges.py` re-rendered its 16-sample ranges without the final's scale, so at 1080p, and ffmpeg upscaled them into the 4K video: 328 of decisions-real v3's 1530 frames | It now renders at the final's scale (read from its frames) and stops if the frames differ in size; `build_demo.sh` checks the sizes before encoding. After a fast-range pass, check that every frame in `frames/<slug>-16x9/` is 3840 wide |
+| QA flagged a shake on a fast dive whose camera never reverses | The first dive went from z 1 to 2.3 in 1.0 s, so 10% of zoom in one frame; QA's per-quadrant phase correlation can't follow that, and with 16 blur samples it misread the frame | Keep dives at 1.1–1.2 s, as §1 says (1.2 s fixed it). Before calling a flag a shake, read the camera's `ZP` transform per frame: a real shake reverses there |

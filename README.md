@@ -1,7 +1,11 @@
 # Marsad motion
 
-Motion videos for **Marsad**, the sovereign AI business platform by NASL Technologies: bilingual (EN/AR),
-built as deterministic HTML animations and rendered to video with Playwright and ffmpeg.
+Motion videos for **Marsad** (مرصد), the Arabic-first decision layer for Saudi companies by NASL Technologies:
+bilingual (EN/AR), built as deterministic HTML animations and rendered to video with Playwright and ffmpeg.
+
+**The finished videos are in [`Videos/`](Videos/README.md):** `Videos/Demos/` and `Videos/Campaigns/`, each named
+"Feature - Purpose (length, format)", with an index that checks each one against the product team's feature
+catalogue.
 
 ## Product demo videos
 

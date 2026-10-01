@@ -20,6 +20,7 @@
      W.lift(spec,a,b,{glow:'violet'|'green', depth, up, down, hide:[specs], display, exact}): a part of the page floats out of
        it (the theme's 3D), glowing, over the recess it leaves, and settles back into place by b;
      the step capsule: one line per step ({at, en, ar}), English · Arabic, at the foot of the frame, until capOut;
+     note: {en, ar}, optional: a small label at the top left while the app is on screen (e.g. 'Sample data');
      the exit (the window tilts away and fades), the benefit line on the stage held through the track's break, and the
        capsule end on the hit (Book your demo, marsadnasl.com, the mark).
    It returns {app, cam, lift, NP, jt, K}: K holds the map's times in seconds (land, capOut, exit, benefit, hit, end);
@@ -125,14 +126,16 @@ M.walk=function(o){
   const LIFTS=[], LSS=4;
   function lift(spec,a,b,lo={}){
     let orig=app.el(spec,a);
-    if(!lo.exact)while(orig.children.length===1&&orig.children[0].textContent===orig.textContent)orig=orig.children[0];   // 'text:' finds a pill's wrapper first ({exact:true}: lift the element itself, e.g. a card)
-    const R=app.rect(orig),cs=getComputedStyle(orig),rad=lo.radius??(parseFloat(cs.borderTopLeftRadius)||12);
+    if(!lo.exact)while(orig.children.length===1&&orig.children[0] instanceof HTMLElement&&orig.children[0].textContent===orig.textContent)orig=orig.children[0];   // 'text:' finds a pill's wrapper first ({exact:true}: lift the element itself, e.g. a card)
+    // k: the part's own scale on the page (1, or React Flow's zoom for a node on the knowledge map)
+    const R=app.rect(orig),cs=getComputedStyle(orig),k=orig.offsetWidth?R.w/orig.offsetWidth:1,rad=(lo.radius??(parseFloat(cs.borderTopLeftRadius)||12))*k;
     const box=cls=>{const e=M.el('div',cls,null,LB);st(e,{position:'absolute',left:R.x+'px',top:R.y+'px',width:R.w+'px',height:R.h+'px',borderRadius:rad+'px'});return e;};
-    const slot=box('wk-slot'),shd=box('wk-shd'),w=box('wk-lw'),cl=orig.cloneNode(true);cl.removeAttribute('id');
+    const dk=orig.closest('.dark')?' dk':'';                         // the app's dark mode: a dark recess and a deeper shadow
+    const slot=box('wk-slot'+dk),shd=box('wk-shd'+dk),w=box('wk-lw'),cl=orig.cloneNode(true);cl.removeAttribute('id');
     // the copy is painted LSS times larger and its 3D box shrinks it back: a part under a perspective tilt is drawn at about
     // its own pixel size and stretched, so at the camera's 3x it came out soft
-    st(cl,{position:'absolute',left:'0px',top:'0px',right:'auto',bottom:'auto',margin:'0px',width:R.w+'px',height:R.h+'px',direction:cs.direction,
-      display:lo.display||orig.dataset.disp||(cs.display==='none'?'block':cs.display),opacity:'1',transform:`scale(${LSS})`,transformOrigin:'0 0',visibility:'visible'});
+    st(cl,{position:'absolute',left:'0px',top:'0px',right:'auto',bottom:'auto',margin:'0px',width:R.w/k+'px',height:R.h/k+'px',direction:cs.direction,
+      display:lo.display||orig.dataset.disp||(cs.display==='none'?'block':cs.display),opacity:'1',transform:`scale(${LSS*k})`,transformOrigin:'0 0',visibility:'visible'});
     w.style.transformOrigin='0 0';
     let host=w;
     const scope=orig.closest('.rx-scope');
@@ -155,7 +158,7 @@ M.walk=function(o){
       [slot,shd,w].forEach(e=>show(e,on));if(!on)return;
       const l=dec(t,a,a+up)*(1-io(t,b-down,b));
       w.style.transform=`translateZ(${f1(depth*l)}px) scale(${f4(1/LSS)})`;
-      cl.style.boxShadow=`0 0 0 ${f2(2.5*l)}px rgba(${c1},${f3(0.95*l)}),0 0 ${f1(46*l)}px ${f1(6*l)}px rgba(${c2},${f3(0.5*l)})`;
+      cl.style.boxShadow=`0 0 0 ${f2(2.5*l/k)}px rgba(${c1},${f3(0.95*l)}),0 0 ${f1(46*l/k)}px ${f1(6*l/k)}px rgba(${c2},${f3(0.5*l)})`;   // the same glow at any k
       st(shd,{opacity:f3(l),transform:`translate3d(0px,${f1(0.35*depth*l)}px,0.5px)`});
     });
   }
@@ -226,6 +229,13 @@ M.walk=function(o){
 
   /* ---------------- the benefit, held through the track's break ---------------- */
   if(o.benefit)jt({at:K.benefit,out:K.hit,y:o.benefit.y??430,size:o.benefit.size??84,words:o.benefit.words,ar:o.benefit.ar,arSize:44});
+
+  /* ---------------- a small label at the frame's top left while the app is on screen, e.g. {note:{en:'Sample data',
+     ar:'بيانات تجريبية'}}: the product team's filming rules ask for demo data to be labelled as sample data ---------------- */
+  if(o.note){
+    const N=M.el('div','wk-note',`<span class="en">${o.note.en}</span><span class="sep">·</span><span class="ar">${o.note.ar}</span>`,TXT);
+    M.track(t=>{const v=dec(t,K.land,K.land+0.6)*(1-io(t,K.capOut-0.4,K.capOut+0.2));if(show(N,v>0.001))N.style.opacity=f3(v);});
+  }
 
   /* ---------------- the end: on the hit a capsule blooms round "Book your demo.", then the URL ---------------- */
   const H=K.hit, bh=k=>H+B(k)-B(0);                 // k beats after the hit

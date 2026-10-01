@@ -76,7 +76,7 @@ This is the answer to "make this 3d" in the ontology film's top tier, and it wor
 - **Blank the slots:** in the page underneath, fill each part's slot (with its shadow) with the page's own colour, and save the result as the film's `pages/<page>_base.png`.
   - Flush, the part covers its slot exactly. Lifted, it leaves an empty slot, and the parallax shows the depth.
   - Without the blanking, every part has a ghost. Find a part's exact box by scanning the screenshot for its edge or its colour.
-- **The payoff lifts furthest:** the Decisions page's own "تم تنفيذ الإجراء · PO-2291" card lifts 190 units, grows 10% and glows green when the action lands. It settles back as the camera pulls away, so the stack reads clean.
+- **The payoff lifts furthest:** the Decisions page's own "تم تنفيذ الإجراء · PO-2291" card lifts 190 units, grows 10% and glows green when the action lands. It settles back as the camera pulls away, so the stack reads clean. (Since the feature catalogue, lift an approved card or the passport's seal instead: the follow-up after approval is switched off.)
 - **Reflections:** each page also lies mirrored in the plate's top.
   - It is the same image on the quad reflected through the plate's plane (`z → 2·Z2 − z`), masked to fade away from the hinge.
   - It is clipped to the plate's top with `clip-path` in screen pixels on a wrapper, at about 24% opacity.

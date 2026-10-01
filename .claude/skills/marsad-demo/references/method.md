@@ -312,3 +312,42 @@ floating on k33.5).
 | k48–52 | — | the exit | whoosh |
 | k52–60 | "From recommendation to action." | — | over the breakdown |
 | k60–68 | the capsule end | cut | the hit brings the groove back: whoosh + hit, punch 1.5% |
+
+## 9. The second example: the knowledge map, made from the catalogue
+
+`demos/ontology-real/`: "Knowledge map: from one customer to the whole business model". It is on the real app's
+screens in **dark mode**, with ten captured states:
+
+- `explore`, `search`, `customer`, `invoice`;
+- `inv-page`, `inv-links`, `inv-confirmed`, `inv-map`;
+- `schema`, `schema-inv`.
+
+It is on the launch map and uses only live features of the catalogue: the knowledge map explorer, a record's page,
+AI-suggested links that a person confirms, and the map of the data model. The data is labelled "Sample data ·
+بيانات تجريبية" (the kit's `note`).
+
+| Beats | Line | Camera | Action and result |
+|---|---|---|---|
+| k0–7 | "Introducing / Knowledge map." «تعرّف على الخريطة المعرفية» | — | the window rises on «استكشاف», empty, its search box focused |
+| k8.5–14.5 | 1 · Start from any customer | onto the search (NP(590,530), z 2.3, 1.2 s) at k8.2; the box and its results (z 2.45) at k10.3 | «الواحة» typed (k9); the customer, its contract and its chat on the hit (k10.5); the hand clicks the customer (k13.8) |
+| k14.5–20 | 2 · See everything it connects to | the customer among its records (z 2.0, ry −6); toward INV-2291 (z 2.4, ry −9) at k16.3; down the dashed line (z 3.1) at k19.7 | a double click on INV-2291 (k17.8 and k18.0); its products, payment and receipt arrive (k18.5) as the map eases onto them |
+| k20–28 | 3 · The AI suggests a link | the panel and the dashed line (z 2.3); the record's page (z 2.3); its links (z 1.9) | «فتح الكائن» (k21.8); «الروابط» (k25.8); the «مقترح» row floats out, violet (k27.2–29.3) |
+| k28–38 | 4 · You confirm it | the whole row (z 1.85, ry −7); up to «عرض في الخريطة المعرفية» (z 1.8); the map (z 2.4) | ✓ (k29.8) → «مؤكّد» floats out, green (k30.8–33); the map (k33.8 → k34.5): the receipt, on a solid line now, floats out (k35.1–37.2) |
+| k38–47 | 5 · Your whole business, one model | the data model (z 1.75, rx 5, ry −7); the lit links (z 1.6); the whole page at k45.2 | «مخطط الأنطولوجيا» (k37.8 → k38.5); «فاتورة» clicked (k41.8): its links light up (k42.5) |
+| k52–60 | "Your company is a world. / Marsad is its map." «شركتك عالم. ومرصد خريطته.» | — | the catalogue's safe end line, over the breakdown |
+
+**What the map needed:**
+
+- **React Flow uses transforms.** The map draws its nodes and its view with CSS transforms. The engine's element box
+  and `tools/rects.js` follow them, and `lift` floats a node at the map's zoom.
+- **Two captured states and an eased view.** A double click opens a record's links: the app adds the new records at
+  once and eases its view onto them. The demo captures both views and animates React Flow's viewport transform
+  between them in 0.45 s, keeping the canvas centre steady. The new records fade in over 0.15 s; list this as eased
+  at delivery.
+- **A double click is two clicks in one bar.** The second press is `app.click(t + 0.2 beat, null, {move: false})`,
+  and `demo.json` has two click sounds.
+- **Colours and order come from the data.** The app colours a record type by a hash of its id, and sorts the data
+  model's ring by links, then id. Pick the type ids for the colours and order you want, and keep them in
+  `app/capture.js`.
+- **No English in focus.** Each type has its Arabic name. Where a type's English name shows (the object page's
+  header), frame it out.

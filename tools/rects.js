@@ -19,8 +19,17 @@ const CHROME = process.env.CHROMIUM_PATH || (fs.existsSync('/opt/pw-browsers/chr
   await page.evaluate(() => document.fonts.ready);
   const out = await page.evaluate((sels) => {
     const pages = [...document.querySelectorAll('.m-page:not(.m-chrome)')], chrome = document.querySelector('.m-chrome');
-    const rect = e => { const root = e.closest('.m-page'); let x = 0, y = 0, n = e; while (n && n !== root) { x += n.offsetLeft; y += n.offsetTop; n = n.offsetParent; }
-      return [x, y, e.offsetWidth, e.offsetHeight].map(Math.round); };
+    const rect = e => {   // engine.js boxIn: the offset chain and every CSS transform on it (React Flow's nodes and viewport)
+      const root = e.closest('.m-page');
+      let pts = [[0, 0], [e.offsetWidth, 0], [0, e.offsetHeight], [e.offsetWidth, e.offsetHeight]];
+      for (let n = e; n && n !== root; n = n.offsetParent) {
+        const cs = getComputedStyle(n);
+        if (cs.transform && cs.transform !== 'none') { const m = new DOMMatrix(cs.transform), [ox, oy] = cs.transformOrigin.split(' ').map(parseFloat);
+          pts = pts.map(([x, y]) => { const q = m.transformPoint(new DOMPoint(x - ox, y - oy)); return [q.x + ox, q.y + oy]; }); }
+        pts = pts.map(([x, y]) => [x + n.offsetLeft, y + n.offsetTop]);
+      }
+      const xs = pts.map(q => q[0]), ys = pts.map(q => q[1]), x = Math.min(...xs), y = Math.min(...ys);
+      return [x, y, Math.max(...xs) - x, Math.max(...ys) - y].map(Math.round); };
     return sels.map(s => {
       const hits = [];
       for (const r of pages.concat(chrome ? [chrome] : [])) {
@@ -28,7 +37,7 @@ const CHROME = process.env.CHROMIUM_PATH || (fs.existsSync('/opt/pw-browsers/chr
         if (s.startsWith('text:')) { const q = s.slice(5); for (const c of r.querySelectorAll('*')) { const tx = c.textContent; if (tx && tx.includes(q) && (!e || tx.length < e.textContent.length)) e = c; } }
         else e = r.querySelector(s);
         if (!e) continue;
-        while (e.children.length === 1 && e.children[0].textContent === e.textContent) e = e.children[0];
+        while (e.children.length === 1 && e.children[0] instanceof HTMLElement && e.children[0].textContent === e.textContent) e = e.children[0];
         const fixes = []; for (let a = e; a && a !== document.body; a = a.parentElement) if (getComputedStyle(a).display === 'none') { fixes.push([a, a.style.display]); a.style.display = 'block'; }
         const [x, y, w, h] = rect(e); fixes.forEach(([a, d]) => a.style.display = d);
         hits.push({ page: r === chrome ? 'top bar' : (r.dataset.key || '?'), x, y, w, h, cx: Math.round(x + w / 2), cy: Math.round(y + h / 2) });

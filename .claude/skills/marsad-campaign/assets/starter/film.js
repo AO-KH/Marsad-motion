@@ -19,7 +19,11 @@
                       the mark; "Book your demo · احجز عرضك التجريبي"
    Truth: the pages (site_pages/) and the executed card are the app's own; the lines are the approved ones of the 63 s
    and 48 s films. Renderings: the lenses, the orbits, the tiles adrift, the card's empty slot
-   (films/ontology-main-theme/pages/decisions_base.png). */
+   (films/ontology-main-theme/pages/decisions_base.png).
+   Before a real film, apply the feature catalogue (2026-10-01, references/feature-catalogue.md), which these example
+   shots predate: swap the famous tiles (K.TILES: SAP, Salesforce, Oracle, Shopify, QuickBooks imply connectors Marsad
+   doesn't have) for Odoo, documents, spreadsheets, Drive and WhatsApp; lift the approved card or the passport's seal
+   instead of "Action executed" (the follow-up after approval is switched off); and replace "Decision to action." */
 const B=M.B, S8=M.S8, S16=M.S16, ez=M.ez, P=M.P, st=M.st, lerp=M.lerp;
 const f1=x=>(+x).toFixed(1), f2=x=>(+x).toFixed(2), f3=x=>(+x).toFixed(3);
 const dec=(t,a,b)=>ez.dec(P(t,a,b)), io=(t,a,b)=>ez.ioC(P(t,a,b));

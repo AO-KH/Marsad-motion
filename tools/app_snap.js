@@ -11,6 +11,7 @@
 // It reads demos/<slug>/app/capture.js:
 //   module.exports = {
 //     viewport: {width: 1440, height: 805},   // the browser window (1440 x 805 has the demo window's 16:9 shape)
+//     theme: 'dark',                           // optional: the app's dark mode (the product team films in it); default light
 //     routes: [[method, /path/, body | (reqBody, path) => body], ...],   // the sample data; first match wins (tools/app/env.js
 //                                                                        // answers sign-in, org, workspace, rights, the bell)
 //     states: [{key, url, run: async page => {...}, tag: {name: page => locator}, wait}, ...],
@@ -64,7 +65,7 @@ const SCROLL = `for(const n of document.querySelectorAll('[data-rx-scroll]')){co
   const browser = await chromium.launch({ executablePath: CHROME });
   const ctx = await browser.newContext({ viewport: vp, locale: 'ar', colorScheme: 'light' });
   const log = [];
-  await setup(ctx, { routes: spec.routes, log });
+  await setup(ctx, { routes: spec.routes, log, theme: spec.theme || 'light' });
   const page = await ctx.newPage();
   page.on('pageerror', e => console.log('  app error:', e.message.slice(0, 160)));
   const snaps = [];

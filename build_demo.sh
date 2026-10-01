@@ -37,6 +37,8 @@ for F in $($PY tools/make_demo.py "$SLUG" --formats); do
     node render_full.js "$JOBS" "build/$SLUG-$F.html" "frames/$SLUG-$F"
   fi
   fi
+  # every frame must have the same size: ffmpeg would silently rescale a stray one (a 1080p frame in a 4K final)
+  $PY -c "import os, sys; from PIL import Image; d = 'frames/$SLUG-$F'; s = {Image.open(os.path.join(d, f)).size for f in os.listdir(d) if f.startswith('f_') and f.endswith('.jpg')}; sys.exit(0 if len(s) == 1 else 'frames of different sizes in ' + d + ': ' + ', '.join('%dx%d' % x for x in sorted(s)))" || exit 1
   CRF=${CRF:-20}
   while :; do
     ffmpeg -loglevel error -y -framerate 30 -i "frames/$SLUG-$F/f_%04d.jpg" -i "out/$SLUG-music.wav" -map 0:v -map 1:a \

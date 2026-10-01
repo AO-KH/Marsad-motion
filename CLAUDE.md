@@ -1,8 +1,8 @@
 # Marsad motion — notes for Claude
 
-Motion videos for **Marsad**, the sovereign AI business platform by NASL Technologies (Saudi market; English
-and Arabic). Everything is a deterministic HTML animation (`window.SEEK(t)`) rendered to frames with Playwright
-and muxed with ffmpeg.
+Motion videos for **Marsad** (مرصد), the Arabic-first decision layer for Saudi companies by NASL Technologies
+(English and Arabic). Everything is a deterministic HTML animation (`window.SEEK(t)`) rendered to frames with
+Playwright and muxed with ffmpeg.
 
 ## What's here
 
@@ -16,8 +16,9 @@ and muxed with ffmpeg.
     with sample data and freezes each state a walkthrough needs into `demos/<slug>/app/` (DEMOS.md §6.0). The site
     kit stays for the ads and for screens the front end doesn't have.
   - The reference is `demos/decisions-real/` (on the real screens); `demos/decisions-walk/` is the same walkthrough
-    on the site kit, from before the front end arrived. The skill's references hold the feature brief, the method's
-    numbers and the quality checklist.
+    on the site kit, from before the front end arrived. `demos/ontology-real/` (the knowledge map) is the first
+    made from the feature catalogue: dark mode, labelled sample data, live features only. The skill's references
+    hold the feature brief, the method's numbers, the quality checklist and the catalogue's digest.
   - The earlier light-style demos in `demos/` are the previous method.
   - `skills/marsad-demo.skill` and `.zip` are its installable copies for a Claude account.
   - Rebuild them with `python3 tools/package_skill.py` whenever the skill changes.
@@ -34,12 +35,31 @@ and muxed with ffmpeg.
   [`README.md`](films/monitor/README.md). Its own production brief governs it where it differs from the rules below
   (black stage, beat cuts, the bell swing, overshoot on the press and the seal only).
 - `site_kit.js` / `site_kit.css`: the Marsad web app rebuilt as HTML (shared by the ads and the demos).
+- **`Videos/`**: the finished videos the client keeps, the current version of each: `Videos/Demos/` and
+  `Videos/Campaigns/` ("put the demo and campaign in separate folder and name each one based on the feature and
+  purpose", 2026-10-01), each named "Feature - Purpose (length, format).mp4". `Videos/README.md` indexes them,
+  with each one's check against the feature catalogue. They are the only MP4s in git (`.gitignore`).
 
 ## The client's rules (each one was an explicit correction; apply them everywhere)
 
+- **The feature catalogue is the baseline** (2026-10-01: the product team's "Every Marsad feature, ready to film",
+  with "this is your baseline on MARSAD features"). Its digest is
+  `.claude/skills/marsad-demo/references/feature-catalogue.md` (the same file is in the campaign skill).
+  - Show and claim only live features.
+  - Quote the app's labels.
+  - Film the app in dark mode and label sample data.
+  - Avoid its words: 'real time', 'sovereign', 'PDPL-compliant', 'reorders automatically', 'email alerts',
+    'forecasts', 'detects anomalies automatically' and the rest of its list.
+  - A decision ends approved and sealed in its Decision Passport, not "executed": the follow-up after approval is
+    switched off.
+  - Sources are Odoo (NASL connects it during onboarding), documents and spreadsheets, Google Drive and WhatsApp
+    chats; not SAP, Salesforce, Oracle, Shopify or QuickBooks.
+  - The videos made before it are listed in `Videos/README.md` with what each must change; change them only when
+    asked.
 - Walkthroughs (the client's request, September 2026: "take these video for the walk through and take them as
   reference … keep the marsad and NASL theme"): Benji Taylor's walkthrough grammar in Marsad's main theme.
-  - The real app, with its light UI, in a window on the main theme's dark stage: soft violet glows and nothing else.
+  - The real app in a window on the main theme's dark stage: soft violet glows and nothing else. Since the
+    catalogue, the app is captured in its dark mode (`theme: 'dark'`).
     The client took out the lens circles ("replace it with stars") and then the stars ("remove the stars").
   - One continuous camera that dives onto each click and pulls back.
   - A hand clicks, and the app's own states change.
@@ -76,13 +96,18 @@ and muxed with ffmpeg.
   1080p) are never delivered. Tilted close-ups stay sharp only because the walk kit paints the camera's zoom flat
   (only the tilt is 3D) and the engine gives no part of an app screen a compositing layer (`flatten` in
   `engine/engine.js`); keep both (the client: "when it zoomed to page the resolution gets bad", 2026-10-01).
+  `tools/fast_ranges.py` re-renders the fast moves at the final's own 4K scale (read from its frames): until
+  2026-10-01 it rendered them at 1080p and ffmpeg upscaled them, which softened every fast move of the 4K finals.
+  `build_demo.sh` now refuses frames of mixed sizes.
 
 ## Working conventions
 
 - Verify before delivering: stills in both formats (`render_ab.js`), the full build, `tools/qa.py` PASS, then look
   at the contact sheet in `style_audit/`.
 - Deliver MP4s in chat (under 30 MB each: the builds start at crf 20 and raise it until the file fits; AAC 192k,
-  -14 LUFS). Build outputs (`build/`, `frames*/`, `out/`, `style_audit/`) are gitignored.
+  -14 LUFS). Build outputs (`build/`, `frames*/`, `out/`, `style_audit/`) are gitignored. Copy each delivered
+  final into `Videos/Demos/` or `Videos/Campaigns/` under its "Feature - Purpose (length, format)" name (replacing
+  the older version) and update `Videos/README.md`.
 - Commit to `main` of AO-KH/Marsad-motion and push. The client pulls into `C:\Users\aomar\Desktop\Marsad motion`
   on Windows (Git Bash: `PYTHON=python bash build_demo.sh <slug>`).
 - Keep `DEMOS.md` (demos) and `HANDOFF.md` (the ads and campaign films) current: delivered versions and any new

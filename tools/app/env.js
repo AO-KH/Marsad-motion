@@ -4,7 +4,8 @@
 //  - every API call (localhost:8081-8085, /api/v1) answered from the base routes below plus the demo's own routes
 //    (demos/<slug>/app/capture.js: routes), in order, first match wins; anything unmatched gets {} and is logged as NEW,
 //  - Google Fonts answered from local files (FONTS: the same files the snapshots use, so the layout is the same),
-//  - the Next.js dev indicator hidden.
+//  - the Next.js dev indicator hidden,
+//  - the app's light or dark mode (capture.js: theme; the app keeps it in localStorage marsad.theme).
 const fs = require('fs'), path = require('path');
 const ROOT = path.join(__dirname, '..', '..');
 const ICONS_FULL = 'node_modules/material-symbols/material-symbols-outlined.woff2';   // npm install (devDependency)
@@ -49,13 +50,14 @@ function responder(routes) {
 }
 const safeJson = s => { try { return JSON.parse(s); } catch (e) { return s; } };
 
-exports.setup = async function setup(ctx, { routes, log = [] } = {}) {
+exports.setup = async function setup(ctx, { routes, log = [], theme = 'light' } = {}) {
   const respond = responder(routes);
-  await ctx.addInitScript(({ user }) => {
+  await ctx.addInitScript(({ user, theme }) => {
     localStorage.setItem('marsad.auth.session', JSON.stringify({ access_token: 't', refresh_token: 'r', expires_at: 4102444800, token_type: 'bearer', user }));
+    localStorage.setItem('marsad.theme', theme);                       // the app's own light/dark choice (avatar menu)
     document.addEventListener('DOMContentLoaded', () => { const s = document.createElement('style');
       s.textContent = 'nextjs-portal{display:none!important}'; document.head.appendChild(s); });
-  }, { user: USER });
+  }, { user: USER, theme });
   await ctx.route(/\/\/localhost:808\d\//, route => { const r = route.request(), res = respond(r.method(), r.url(), r.postData());
     log.push((res.hit ? '    ' : 'NEW ') + r.method() + ' ' + r.url().replace(/^https?:\/\/localhost:/, ':'));
     route.fulfill({ status: 200, contentType: 'application/json', headers: { 'access-control-allow-origin': '*' }, body: JSON.stringify(res.body) }); });

@@ -86,18 +86,20 @@ Each map is an `edit` for `film.json` with its landmarks in film beats. Plan sho
 
 ## The bank of approved lines
 
-The client approved these. Reuse them when a new film makes the same point.
+The client approved these. Reuse them when a new film makes the same point, except the four marked **retired**: the
+product team's feature catalogue (2026-10-01, `references/feature-catalogue.md`) rules them out, and it overrides
+this bank.
 
 | English | Arabic |
 |---|---|
 | Your company's data is everywhere. | بيانات شركتك مبعثرة في كل مكان. |
 | When you need a quick answer, your system makes you wait. | حين تحتاج إجابة سريعة، يجعلك نظامك تنتظر. |
 | Marsad changes that. | مرصد يغيّر المعادلة. |
-| One workflow. Fully automated. | سير عمل واحد، مؤتمت بالكامل. |
+| ~~One workflow. Fully automated.~~ **Retired:** a person approves every decision. | ~~سير عمل واحد، مؤتمت بالكامل.~~ |
 | Every system. One living model. | كل الأنظمة… نموذج حيّ واحد. |
-| Real-time recommendations — from your own numbers. (Business Pulse shows a daily advisor, "10 hours ago": when the page is on screen, prefer "Recommendations from your own numbers." or check "real-time" with the client) | توصيات لحظية مبنية على أرقامك — بلا اختلاق. |
-| Decision to action. Nothing in between. | من القرار إلى التنفيذ — بلا خطوات بينهما. |
-| Defense in depth. Sovereign. PDPL-compliant. | دفاع متعدد الطبقات — بنية سيادية متوافقة مع نظام حماية البيانات الشخصية. |
+| ~~Real-time recommendations — from your own numbers.~~ **Retired:** never say 'real time' (the fastest rule runs hourly). Use "Recommendations from your own numbers." | ~~توصيات لحظية مبنية على أرقامك — بلا اختلاق.~~ Use: توصيات مبنية على أرقامك — بلا اختلاق. |
+| ~~Decision to action. Nothing in between.~~ **Retired:** the automatic follow-up after approval is switched off. A decision ends approved and sealed in its passport. | ~~من القرار إلى التنفيذ — بلا خطوات بينهما.~~ |
+| ~~Defense in depth. Sovereign. PDPL-compliant.~~ **Retired:** Marsad is a hosted cloud service. Say at most "Built with personal-data masking and an audit trail." | ~~دفاع متعدد الطبقات — بنية سيادية متوافقة مع نظام حماية البيانات الشخصية.~~ |
 | Ask in Arabic. The answer comes from your original data. | اسأل بالعربية. الإجابة من بياناتك الأصلية. |
 | One operational nervous system. | جهاز عصبي تشغيلي واحد لشركتك. |
 | Connect your sources. | اربط مصادرك. |
@@ -106,7 +108,11 @@ The client approved these. Reuse them when a new film makes the same point.
 | Meet the Marsad ontology. | تعرّف على أنطولوجيا مرصد. |
 | Book your demo. | احجز عرضك التجريبي. |
 
-The 54 s film's tagline, "Know. Watch. Decide." (اعرف. راقب. قرّر.), is also the client's own.
+The 54 s film's tagline, "Know. Watch. Decide." (اعرف. راقب. قرّر.), is also the client's own. The catalogue adds
+the product team's lines:
+- "ERP records the work. Marsad drives the decision." (يسجّل ERP العمل. ومرصد يقود القرار.)
+- Two safe end lines: "Marsad watches. You decide." (مرصد يراقب. وأنت تقرّر.) and "Your company is a world. Marsad is
+  its map." (شركتك عالم. ومرصد خريطته.)
 
 ## Open questions
 
