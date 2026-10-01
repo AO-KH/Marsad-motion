@@ -240,11 +240,15 @@ lift(target, a, b, {glow:'green'|'violet', depth, up, down, hide:[…], display,
 `lift` steps down from a wrapper to its only child with the same text (so `'text:'` lifts the pill, not its row);
 `exact: true` lifts the element itself (a whole card).
 
-The camera moves the window's layer in 3D. z 1 is the whole window; dives go to 2.5–4. A zoom turns about the point
-that stays put on screen. `hop` pulls back mid-move on long pans, and `push` keeps the camera creeping in after it
-arrives. The kit adds the entrance (the window rises in on its back from k4.5 and lands on k8), the exit, the
-benefit line through the track's break, and the capsule end on the hit. The skill's `references/method.md` has the
-numbers (zooms, tilts, timings) and the two music maps with their sound effects.
+The camera moves the window in 3D. z 1 is the whole window; dives go to 2.5–4. A zoom turns about the point that
+stays put on screen. Only the tilt is a 3D transform: the zoom and pan are a flat transform painted inside it,
+because Chrome draws a layer under a perspective tilt at about its own pixel size, so a zoom inside the 3D transform
+came out soft at any resolution (the client: "when it zoomed to page the resolution gets bad", 2026-10-01). Floating
+parts rise in a 3D twin of the window, painted 4× larger and scaled back. `hop` pulls back mid-move on long pans, and
+`push` keeps the camera creeping in after it arrives. The kit adds the entrance (the window rises in on its back from
+k4.5 and lands on k8), the exit, the benefit line through the track's break, and the capsule end on the hit. The
+skill's `references/method.md` has the numbers (zooms, tilts, timings) and the two music maps with their sound
+effects.
 
 ## 6. Pages and screens
 
@@ -286,7 +290,11 @@ In `demo.js` the states are pages: `W.walk({page: 'home'})`, `app.page(t, 'confi
 - the app's `:hover`, `:focus` and `:active` styles apply when an element has the class `rx-hover`, `rx-focus` or
   `rx-active` (`demos/decisions-real/demo.js` has `hover()` and `press()` helpers);
 - scrolled boxes keep their scroll; there are no CSS animations; a `<canvas>` (a chart) becomes a still image;
-- dialogs that are `position: fixed` sit in the page's own viewport, as in the app.
+- dialogs that are `position: fixed` sit in the page's own viewport, as in the app;
+- nothing in a screen gets a compositing layer of its own, since under the walk camera's tilt Chrome draws such a
+  layer soft and a backdrop-filter there blurs or not depending on the frames before (render jobs disagreed). So the
+  engine (`flatten` in `engine.js`) pins sticky bars where they stand, drops a backdrop blur behind a fill of 80% or
+  more, and gives a full-screen veil (a dialog's) a blurred copy of the screen inside it. The look is the app's.
 
 The engine keeps the site kit's and the app's styles apart (`.site :where(:not(.rx-scope *))`, and `.rx-scope`
 starts from `all: initial`), and the kit's `lift` wraps a floated copy in the same scope.
@@ -419,7 +427,7 @@ target, nothing cut off in 9:16.
 
 | Demo | Kind | Length | Music | Notes |
 |---|---|---|---|---|
-| [`decisions-real`](demos/decisions-real/demo.js) | Walkthrough, the new method on **the real app's screens** (**the reference**; the first use of `tools/app_snap.js`) | 51.0 s, 16:9 | `monume-product-launch-review.mp3`, the launch map; clicks: `mouse-click.mp3` | Decisions: approve a recommendation, in 5 steps, from the Home page: open Decisions (the top bar's tab) → read the recommendation (its title, then the AI's reasoning) → check its confidence and source («ثقة 80%», «مستند · Odoo», both float out) → approve it with a reason (the app's own confirm dialog: a click in the reason field, the reason typed, «تأكيد الموافقة») → «تم بنجاح», and the card, now «موافق» and «نُفِّذ الإجراء», floats out while the counts move. Six captured states: `home`, `decisions`, `confirm`, `focus`, `done`, `after`. v1 (2026-09-30), after the client sent the front end; their mouse click ("use this click sound") replaced the glass press. Four clicks, one per bar, each at the bar's +1.8 (its silence), +12 dB over the music, the result on the +2.5 hit. Sample data: the three recommendations of the client's screen recording, with the source set to «مستند · Odoo» and the Odoo action awaiting approval; the counts 6 / 0 / 1. Invented: the reason typed; the counts are shown moving after the dialog closes (the app updates them behind it). Renderings: the stage and its glows, the rim, the camera, the pointer with its hover and press, the floating parts with their recesses and shadows, the capsule |
+| [`decisions-real`](demos/decisions-real/demo.js) | Walkthrough, the new method on **the real app's screens** (**the reference**; the first use of `tools/app_snap.js`) | 51.0 s, 16:9 | `monume-product-launch-review.mp3`, the launch map; clicks: `mouse-click.mp3` | Decisions: approve a recommendation, in 5 steps, from the Home page: open Decisions (the top bar's tab) → read the recommendation (its title, then the AI's reasoning) → check its confidence and source («ثقة 80%», «مستند · Odoo», both float out) → approve it with a reason (the app's own confirm dialog: a click in the reason field, the reason typed, «تأكيد الموافقة») → «تم بنجاح», and the card, now «موافق» and «نُفِّذ الإجراء», floats out while the counts move. Six captured states: `home`, `decisions`, `confirm`, `focus`, `done`, `after`. v1 (2026-09-30), after the client sent the front end; their mouse click ("use this click sound") replaced the glass press. v2 (2026-10-01): 4K ("the resolution is bad here"). v3 (same day): "when it zoomed to page the resolution gets bad": the tilted close-ups were soft at any resolution, so the camera's zoom is now painted flat (only the tilt is 3D), the floating copies are painted 4× larger, and the screens have no compositing layers (the dialog's backdrop blur is painted). Four clicks, one per bar, each at the bar's +1.8 (its silence), +12 dB over the music, the result on the +2.5 hit. Sample data: the three recommendations of the client's screen recording, with the source set to «مستند · Odoo» and the Odoo action awaiting approval; the counts 6 / 0 / 1. Invented: the reason typed; the counts are shown moving after the dialog closes (the app updates them behind it). Renderings: the stage and its glows, the rim, the camera, the pointer with its hover and press, the floating parts with their recesses and shadows, the capsule |
 | [`decisions-walk`](demos/decisions-walk/demo.js) | Walkthrough, the new method on the site kit's pages (the kit's first use; before the front end arrived) | 51.0 s, 16:9 | `monume-product-launch-review.mp3`, the launch map | Decisions: approve a recommendation, in 5 steps, starting on Business Pulse. Open Decisions (a hand clicks the tab) → read the recommendation → check its confidence and source (both float out) → approve (the click is heard in the silence just before a hit; the executed card appears on the hit and floats out) → the counters change. It uses the site kit's existing pages and data. v1 (2026-09-30): the funk track, 43.8 s, lenses. v2 (same day): the client asked for stars instead of the bubbles (the lenses) and for their launch track, so the timing moved onto the new track (80 BPM; the benefit over its breakdown) and the whoosh-hits were re-tuned to its key. v3 (same day): "remove the stars and add sfx for the click": the stage is dark with soft glows only, and each click has a soft click sound (glass-press-am) in the track's silence just before a hit, with its result on the hit. The renderings are the stage and its glows, the rim, the pointer, the floating parts with their recesses and shadows, and the capsule |
 | [`pulse-short`](demos/pulse-short/demo.js) | Short feature demo, the light style (the previous method's reference) | 30 s | `product-video.mp3` | Business Pulse: the daily advisor switches on, new findings, a stock alert with highlight and callout. v2 (2026-09-25): Western digits (18%), the click on the switch not its label, clean edges (the alert whole in 9:16), motion blur |
 | [`search-walkthrough`](demos/search-walkthrough/demo.js) | Walkthrough, 3 steps (the skill's test run) | 41 s | `product-video.mp3` | Search across all your data: open Search from the Data sidebar, type «فاتورة», results from Odoo, WhatsApp and files. `pages.js` rebuilds the search page. **To confirm with the client before use:** the files result row and its pills are invented, and the route through the Data sidebar |

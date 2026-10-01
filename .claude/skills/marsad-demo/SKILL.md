@@ -88,7 +88,11 @@ Each rule is a client correction or a lesson from a delivered video.
 - **Final renders are 4K with motion blur,** plus 16-sample passes on the fast moves (§6). The client found the
   1080p walkthrough soft ("the resolution is bad here"): `build_demo.sh` renders finals at `SCALE=2` (3840×2160),
   so the app's text is drawn at that density, and keeps the file under 29 MB. A `SUB=1` draft (1080p) is never
-  delivered.
+  delivered. 4K alone left the tilted close-ups soft ("when it zoomed to page the resolution gets bad"): Chrome
+  draws a layer under a perspective tilt at about its own pixel size. So the kit paints the zoom flat and keeps only
+  the tilt in 3D, and the engine gives nothing in an app screen a layer of its own (`flatten`). Keep both: never put
+  the zoom back into the 3D transform, and never give a part of the screen `will-change`, a 3D transform or a
+  backdrop-filter (`references/quality-bar.md`).
 - **Format.** Deliver in 16:9, 4K (3840×2160; the stage is laid out at 1920×1080). The kit has no vertical layout
   yet. If 9:16 or 1:1 is asked for, say it needs its own framing pass.
 

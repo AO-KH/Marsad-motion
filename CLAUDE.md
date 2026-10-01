@@ -73,7 +73,9 @@ and muxed with ffmpeg.
   callouts never cover what they explain.
 - Final renders have motion blur (the default in the builds) and are 4K, 3840×2160 (`build_demo.sh` renders finals at
   `SCALE=2`: the client found the 1080p walkthrough soft, "the resolution is bad here", 2026-10-01). Drafts (`SUB=1`,
-  1080p) are never delivered.
+  1080p) are never delivered. Tilted close-ups stay sharp only because the walk kit paints the camera's zoom flat
+  (only the tilt is 3D) and the engine gives no part of an app screen a compositing layer (`flatten` in
+  `engine/engine.js`); keep both (the client: "when it zoomed to page the resolution gets bad", 2026-10-01).
 
 ## Working conventions
 

@@ -64,8 +64,16 @@ M.walk=function(o){
   const WIN_EL=document.querySelector('.m-win'), WL=WIN_EL.parentNode, SITE=WIN_EL.querySelector('.m-site'), CUR_EL=WIN_EL.querySelector('.m-cursor');
   const NP=(x,y)=>({x,y,w:0,h:0});
 
-  /* ---------------- the camera: it moves the window's layer in 3D ---------------- */
+  /* ---------------- the camera: it moves the window's layer in 3D ----------------
+     The tilt is 3D (WL: perspective, rotateX/Y about the frame's centre); the zoom and pan are a flat 2D transform on ZP,
+     inside ZH, so Chrome paints the page already zoomed. A layer under a perspective tilt is drawn at about its own pixel
+     size and stretched on screen, so with the zoom in the 3D transform every tilted close-up came out soft (the client:
+     "when it zoomed to page the resolution gets bad"). The floating parts sit in a 3D twin of ZP (ZL, then WP for the
+     window's place), so they still rise toward the camera. On screen it is the same camera as one 3D transform. */
   st(WL,{transformOrigin:'0 0',transformStyle:'preserve-3d'});
+  const ZH=M.el('div','wk-zh'), ZP=M.el('div','wk-zp',null,ZH);WL.insertBefore(ZH,WIN_EL);ZP.appendChild(WIN_EL);
+  const ZL=M.el('div','wk-zl',null,WL), WP=M.el('div','wk-wp',null,ZL);
+  st(WP,{left:WIN_EL.style.left,top:WIN_EL.style.top,width:WIN_EL.style.width,height:WIN_EL.style.height});
   const PERSP=1600, CAM0={cx:960,cy:530,z:0.66,rx:64,ry:0,ox:0,oy:860}, CAM=[];
   function cam(t,to,co={}){if(to==='page')to={z:1.04,rx:3,ry:-4};CAM.push({t,to,o:co});CAM.sort((a,b)=>a.t-b.t);}
   function goal(k){
@@ -93,9 +101,10 @@ M.walk=function(o){
     camT=t;return camS=f(t);
   }
   M.track(t=>{
-    const c=camAt(t),z=f4(c.z);
-    WL.style.transform=`translate(${f2(960+c.ox)}px,${f2(540+c.oy)}px) perspective(${PERSP}px) rotateX(${f3(c.rx)}deg) rotateY(${f3(c.ry)}deg) `+
-      `scale3d(${z},${z},${z}) translate(${f2(-c.cx)}px,${f2(-c.cy)}px)`;
+    const c=camAt(t),z=f4(c.z),sx=f2(960+c.ox),sy=f2(540+c.oy),pan=`translate(${f2(-c.cx)}px,${f2(-c.cy)}px)`;
+    WL.style.transform=`translate(${sx}px,${sy}px) perspective(${PERSP}px) rotateX(${f3(c.rx)}deg) rotateY(${f3(c.ry)}deg) translate(${f2(-960-c.ox)}px,${f2(-540-c.oy)}px)`;
+    ZP.style.transform=`translate(${sx}px,${sy}px) scale(${z}) ${pan}`;
+    ZL.style.transform=`translate(${sx}px,${sy}px) scale3d(${z},${z},${z}) ${pan}`;
     CUR_EL.style.setProperty('--k',f3(Math.pow(c.z,-0.5)));      // the pointer stays about one size on screen as the camera zooms
   });
   // the window rises in on its back and lands flat on the groove
@@ -111,17 +120,20 @@ M.walk=function(o){
 
   /* ---------------- parts float out of the page: a copy of the part, outside the window's clip, rises off the page
      over the recess it leaves and its shadow, glowing, then settles back and hands over to the real one ---------------- */
-  const LB=M.el('div','site m-site wk-lb');WIN_EL.insertBefore(LB,CUR_EL);
+  const LB=M.el('div','site m-site wk-lb',null,WP);
   st(LB,{left:'1.5px',top:'1.5px',transformStyle:'preserve-3d'});
-  const LIFTS=[];
+  const LIFTS=[], LSS=4;
   function lift(spec,a,b,lo={}){
     let orig=app.el(spec,a);
     if(!lo.exact)while(orig.children.length===1&&orig.children[0].textContent===orig.textContent)orig=orig.children[0];   // 'text:' finds a pill's wrapper first ({exact:true}: lift the element itself, e.g. a card)
     const R=app.rect(orig),cs=getComputedStyle(orig),rad=lo.radius??(parseFloat(cs.borderTopLeftRadius)||12);
     const box=cls=>{const e=M.el('div',cls,null,LB);st(e,{position:'absolute',left:R.x+'px',top:R.y+'px',width:R.w+'px',height:R.h+'px',borderRadius:rad+'px'});return e;};
     const slot=box('wk-slot'),shd=box('wk-shd'),w=box('wk-lw'),cl=orig.cloneNode(true);cl.removeAttribute('id');
+    // the copy is painted LSS times larger and its 3D box shrinks it back: a part under a perspective tilt is drawn at about
+    // its own pixel size and stretched, so at the camera's 3x it came out soft
     st(cl,{position:'absolute',left:'0px',top:'0px',right:'auto',bottom:'auto',margin:'0px',width:R.w+'px',height:R.h+'px',direction:cs.direction,
-      display:lo.display||orig.dataset.disp||(cs.display==='none'?'block':cs.display),opacity:'1',transform:'none',visibility:'visible'});
+      display:lo.display||orig.dataset.disp||(cs.display==='none'?'block':cs.display),opacity:'1',transform:`scale(${LSS})`,transformOrigin:'0 0',visibility:'visible'});
+    w.style.transformOrigin='0 0';
     let host=w;
     const scope=orig.closest('.rx-scope');
     if(scope){   // a real app screen: its styles apply inside .rx-scope > .rx-html > .rx-body, so the copy goes in boxless copies
@@ -142,15 +154,13 @@ M.walk=function(o){
       const on=inShot(t,a,b);hide.forEach(e=>{e.style.visibility=on?'hidden':'';});
       [slot,shd,w].forEach(e=>show(e,on));if(!on)return;
       const l=dec(t,a,a+up)*(1-io(t,b-down,b));
-      w.style.transform=`translateZ(${f1(depth*l)}px)`;
+      w.style.transform=`translateZ(${f1(depth*l)}px) scale(${f4(1/LSS)})`;
       cl.style.boxShadow=`0 0 0 ${f2(2.5*l)}px rgba(${c1},${f3(0.95*l)}),0 0 ${f1(46*l)}px ${f1(6*l)}px rgba(${c2},${f3(0.5*l)})`;
       st(shd,{opacity:f3(l),transform:`translate3d(0px,${f1(0.35*depth*l)}px,0.5px)`});
     });
   }
-  M.track(t=>{
-    const on=LIFTS.some(([a,b])=>inShot(t,a,b));
-    WIN_EL.style.transformStyle=on?'preserve-3d':'';             // only while something floats: the window is flat otherwise
-    if(show(LB,on))LB.style.transform=SITE.style.transform;
+  M.track(t=>{                                                  // the 3D twin follows the window and its page
+    if(show(ZL,LIFTS.some(([a,b])=>inShot(t,a,b)))){WP.style.transform=WIN_EL.style.transform;LB.style.transform=SITE.style.transform;}
   });
 
   /* ---------------- the stage: near black and soft violet glows, never circles. The client took out the lens circles

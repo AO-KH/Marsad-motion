@@ -13,6 +13,11 @@
 .m-cursor{width:calc(30px*var(--k,1));height:calc(44px*var(--k,1));}
 .m-cursor svg.hand{position:absolute;left:calc(-9.4px*var(--k,1));top:calc(0.6px*var(--k,1));width:calc(32px*var(--k,1));height:calc(36px*var(--k,1));overflow:visible;}
 
+/* the camera's layers (walk.js): ZH/ZP hold the window flat (its zoom painted), ZL/WP carry the floating parts in 3D */
+.wk-zh,.wk-zp,.wk-zl{position:absolute;left:0;top:0;width:1920px;height:1080px;transform-origin:0 0;}
+.wk-zl,.wk-wp{transform-style:preserve-3d;pointer-events:none;}
+.wk-wp{position:absolute;transform-origin:50% 50%;}
+
 /* the executed card floating out of the page: the recess it leaves, its shadow on the page, the card */
 .wk-lb{transform-origin:0 0;}
 .wk-slot{border-radius:22px;background:#F2F0F6;box-shadow:inset 0 2px 16px rgba(40,20,70,0.10);}

@@ -168,6 +168,48 @@ const CUSTOM={};
 // app.css styles them inside .rx-scope)
 function definePage(key,spec){CUSTOM[key]=spec;}
 const FIX={decisions:e=>{const t=e.querySelector('#toast');if(t){t.dataset.disp='flex';t.style.display='none';}}};
+/* A real app screen keeps no composited layer of its own. Under a camera that tilts the window in 3D (demos/kit/walk.js),
+   Chrome draws a composited layer at about its own pixel size, so it comes out soft in a close-up; and a backdrop-filter in
+   a 3D scene reads its backdrop differently depending on the frames drawn before it, so parallel render jobs disagree. The
+   screen is frozen, so the same look can be painted: a sticky element becomes relative where it stands; a backdrop-filter
+   behind a fill of 80% or more goes (the plain page under a top bar does not show through it); a full-screen one (a
+   dialog's veil) gets the screen under it as a blurred copy, inside it, clipped to it and under its own fill */
+function flatten(pg,key){
+  const fixes=[];                                                      // measured with every hidden ancestor shown
+  for(let a=pg;a&&a!==document.body;a=a.parentElement)if(getComputedStyle(a).display==='none'){fixes.push([a,a.style.display]);a.style.display='block';}
+  try{flatten1(pg,key);}finally{fixes.forEach(([a,d])=>a.style.display=d);}
+}
+function flatten1(pg,key){
+  const imp=(e,k,v)=>e.style.setProperty(k,v,'important'),W=pg.offsetWidth,H=pg.offsetHeight,veils=[],
+    scope=pg.querySelector(':scope>.rx-scope')||pg.firstElementChild;
+  const at=e=>{let x=0,y=0;for(let n=e;n&&n!==pg;n=n.offsetParent){x+=n.offsetLeft;y+=n.offsetTop;}return [x,y];};
+  for(const n of pg.querySelectorAll('[data-rx-scroll]')){const [x,y]=n.dataset.rxScroll.split(',');n.scrollLeft=+x;n.scrollTop=+y;}
+  for(const e of pg.querySelectorAll('*'))if(getComputedStyle(e).position==='sticky'){
+    const x=e.offsetLeft,y=e.offsetTop;imp(e,'position','relative');for(const k of ['top','right','bottom','left'])imp(e,k,'auto');
+    imp(e,'left',(x-e.offsetLeft)+'px');imp(e,'top',(y-e.offsetTop)+'px');}
+  for(const e of pg.querySelectorAll('*')){
+    const cs=getComputedStyle(e),bf=cs.backdropFilter;if(!bf||bf==='none')continue;
+    const bc=cs.backgroundColor,m=bc.match(/\/\s*([\d.]+)(%?)\s*\)$/)||bc.match(/^rgba\([^,]+,[^,]+,[^,]+,\s*([\d.]+)()\)$/),
+      a=m?+m[1]/(m[2]?100:1):bc==='transparent'?0:1;                  // the fill's alpha
+    imp(e,'backdrop-filter','none');imp(e,'-webkit-backdrop-filter','none');imp(e,'isolation','isolate');
+    if(a>=0.8)continue;
+    if(e.offsetWidth<0.9*W||e.offsetHeight<0.9*H){console.warn(`M.app: page "${key}": a backdrop-filter dropped (${e.className})`);continue;}
+    veils.push([e,bf]);
+  }
+  for(const [e,bf] of veils){
+    const path=[];for(let n=e;n!==scope;n=n.parentElement)path.unshift([...n.parentElement.children].indexOf(n));
+    const cp=scope.cloneNode(true);let v=cp;for(const i of path)v=v.children[i];v.remove();      // the screen, without the veil
+    for(const n of cp.querySelectorAll('[id],[data-w]')){n.removeAttribute('id');n.removeAttribute('data-w');}
+    const [x0,y0]=at(e),L=x0+e.clientLeft,T=y0+e.clientTop,cs=getComputedStyle(e),
+      box=z=>{const d=document.createElement('div');d.style.cssText=`position:absolute;inset:0;z-index:${z};border-radius:inherit;pointer-events:none;`;
+        for(const k of ['margin','border','padding'])imp(d,k,'0');return d;},       // last in the veil, so its own children keep their places
+      fill=box(-1),clip=box(-2);
+    for(const k of ['backgroundColor','backgroundImage','backgroundSize','backgroundPosition','backgroundRepeat','backgroundOrigin','backgroundClip'])fill.style[k]=cs[k];
+    imp(e,'background','none');clip.className='rx-bd';clip.style.overflow='clip';
+    cp.style.cssText=`all:initial;visibility:inherit;display:block;position:absolute;left:${-L}px;top:${-T}px;width:${W}px;height:${H}px;overflow:hidden;filter:${bf};`;
+    clip.appendChild(cp);e.append(clip,fill);
+  }
+}
 
 /* ---------------- the app window ---------------- */
 const CURSOR='<svg viewBox="0 0 28 40"><path d="M2 2 L2 30 L9.5 24 L14 36 L19 34 L14.5 22 L24 22 Z" fill="#FFFFFF" stroke="#1A191E" stroke-width="2.4" stroke-linejoin="round"/></svg>';
@@ -194,7 +236,7 @@ function app(o){
     const real=!!(c&&c.app);                                           // a real app screen: its own top bar, its own CSS
     if(window.SK&&!(c&&c.img)&&!real)for(const [k] of SK.TABS){const ch=SK.chrome(k);if(html.includes(ch)){html=html.replace(ch,'');tab=tab||k;break;}}
     const e=el('div','m-page'+(real?' rx-page':''),html,site);e.dataset.key=key;st(e,{width:w+'px',height:h+'px',visibility:'hidden'});
-    if(real)SCROLLED.push(...e.querySelectorAll('[data-rx-scroll]'));  // scrolled boxes keep their scroll (set each frame)
+    if(real){flatten(e,key);SCROLLED.push(...e.querySelectorAll('[data-rx-scroll]'));}   // scrolled boxes keep their scroll (set each frame)
     if(tab&&!chrome){chrome=el('div','m-page m-chrome',SK.chrome(tab),site);st(chrome,{width:w+'px'});
       chUL=chrome.querySelector('.sk-ul');chTabs=[...chrome.querySelectorAll('.sk-tab')];}
     if(chrome)site.appendChild(chrome);                                // the shared top bar stays above every page
