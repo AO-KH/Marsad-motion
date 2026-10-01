@@ -4,19 +4,21 @@
 // Length from window.DURATION, size from window.STAGE_W/H.  usage: node render_mb.js <workers> <page.html> <outdir> [S=4] [from to]
 // With a frame range [from, to), only those frames are rendered, into <outdir>/sub/ (the folder is kept): re-render a few frames,
 // blend them, and they replace their old f_<frame>.jpg.
+// SCALE=2 (env) renders at twice the pixels (3840x2160 for 16:9): the page's text, icons and images are drawn at that
+// density, not upscaled. build_demo.sh sets it for finals.
 const { chromium } = require('playwright');
 const path = require('path'), fs = require('fs');
 const CHROME = process.env.CHROMIUM_PATH || (fs.existsSync('/opt/pw-browsers/chromium') ? '/opt/pw-browsers/chromium' : undefined);
 (async () => {
   const [w = '4', file, outdir, s = '4', from, to] = process.argv.slice(2);
-  const WK = parseInt(w), S = parseInt(s), FPS = 30, OPEN = 1 / 60;
+  const WK = parseInt(w), S = parseInt(s), FPS = 30, OPEN = 1 / 60, SCALE = +(process.env.SCALE || 1);
   const out = path.join(__dirname, outdir), sub = path.join(out, 'sub');
   if (from === undefined) fs.rmSync(out, { recursive: true, force: true });
   fs.mkdirSync(sub, { recursive: true });
   const browser = await chromium.launch({ executablePath: CHROME, args: ['--force-color-profile=srgb', '--disable-lcd-text', '--hide-scrollbars'] });
   const t0 = Date.now(); let N = 0;
   await Promise.all([...Array(WK).keys()].map(async k => {
-    const page = await browser.newPage({ viewport: { width: 1920, height: 1080 } });
+    const page = await browser.newPage({ viewport: { width: 1920, height: 1080 }, deviceScaleFactor: SCALE });
     page.on('pageerror', e => console.error('PAGE ERROR:', e.message));
     await page.goto('file://' + path.join(__dirname, file));
     await page.waitForFunction('typeof window.SEEK === "function"');

@@ -57,9 +57,9 @@ def main():
     page, frames = f'build/{a.slug}-{a.format}.html', f'frames/{a.slug}-{a.format}'
     if not os.path.isfile(os.path.join(ROOT, frames, 'f_0001.jpg')):
         sys.exit(f'no {frames}/: run the final build first (./build_demo.sh {a.slug} {a.format})')
-    for a_, b in rs:
+    for a_, b in rs:                               # blend each range as it comes: 16 sub-frames at 4K are big
         subprocess.run(['node', 'render_mb.js', str(a.jobs), page, frames, '16', str(a_), str(b)], cwd=ROOT, check=True)
-    subprocess.run([sys.executable, 'tools/blend.py', frames], cwd=ROOT, check=True)
+        subprocess.run([sys.executable, 'tools/blend.py', frames], cwd=ROOT, check=True)
     env = dict(os.environ, ONLY='audio', PYTHON=sys.executable)
     subprocess.run(['bash', 'build_demo.sh', a.slug, a.format], cwd=ROOT, check=True, env=env)
 

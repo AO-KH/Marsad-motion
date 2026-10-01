@@ -34,21 +34,24 @@ The two finished ads (the 63 s campaign film and the 54 s "Know. Watch. Decide."
 
 ```bash
 npm install                                   # once (playwright; Chromium: see README for Windows)
-JOBS=6 ./build_demo.sh decisions-walk 16x9    # a walkthrough (the kit): -> out/decisions-walk-16x9.mp4
-python3 tools/fast_ranges.py decisions-walk --run   # then 16 sub-frames on its fast camera moves, re-mux, QA
+JOBS=6 ./build_demo.sh decisions-real 16x9    # a walkthrough (the kit, real screens): -> out/decisions-real-16x9.mp4 (4K)
+python3 tools/fast_ranges.py decisions-real --run   # then 16 sub-frames on its fast camera moves, re-mux, QA
 ./build_demo.sh pulse-short                   # a light-style demo: -> out/pulse-short-16x9.mp4 and -9x16.mp4
 ```
 
 Each build writes the pages to `build/`, fits the music to `out/<slug>-music.wav`, renders the frames to
 `frames/<slug>-<format>/`, muxes the MP4 and runs the QA check (section 8). Final builds have motion blur:
-`render_mb.js` renders four sub-frames per frame and `tools/blend.py` averages them. This takes about 8 minutes per
-format for 60 s. `SUB=1 ./build_demo.sh <slug>` makes a quick draft without blur, about 4× faster.
+`render_mb.js` renders four sub-frames per frame and `tools/blend.py` averages them. Finals are **4K** (3840×2160):
+`SCALE=2` is the default, so the pages are drawn at twice the pixels (the client found 1080p soft: "the resolution is
+bad here"). They render in chunks of 150 frames, each blended before the next, and the encode keeps the MP4 under
+29 MB (crf 20, raised if needed). A 51 s 4K final, with `fast_ranges.py`, takes about 45 minutes; `SCALE=1` gives a
+1080p final in about 15. `SUB=1 ./build_demo.sh <slug>` makes a quick 1080p draft without blur, about 4× faster.
 
 To fix a few seconds after a full build, re-render only those frames and re-mux:
 
 ```bash
 python3 tools/make_demo.py <slug>
-node render_mb.js 4 build/<slug>-16x9.html frames/<slug>-16x9 4 400 450   # frames 400-449 (30 fps), into the same folder
+SCALE=2 node render_mb.js 4 build/<slug>-16x9.html frames/<slug>-16x9 4 400 450   # frames 400-449 (30 fps), 4K like the rest
 python3 tools/blend.py frames/<slug>-16x9
 ONLY=audio ./build_demo.sh <slug>                                         # re-mux the MP4 and run QA on the frames
 ```

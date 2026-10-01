@@ -12,7 +12,7 @@ const CHROME = process.env.CHROMIUM_PATH || (fs.existsSync('/opt/pw-browsers/chr
   const t0 = Date.now();
   const F0 = parseInt(process.argv[5] || '0'); let N = 0;
   await Promise.all([...Array(W).keys()].map(async w => {
-    const page = await browser.newPage({ viewport: { width: 1920, height: 1080 } });
+    const page = await browser.newPage({ viewport: { width: 1920, height: 1080 }, deviceScaleFactor: +(process.env.SCALE || 1) });
     page.on('pageerror', e => console.error('PAGE ERROR:', e.message));
     await page.goto('file://' + path.join(__dirname, FILE));
     await page.waitForFunction('typeof window.SEEK === "function"');

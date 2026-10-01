@@ -71,14 +71,16 @@ and muxed with ffmpeg.
 - Western digits (0–9) in captions, callouts and the steps rail, in both languages, as in the app.
 - Readable on a phone: in 9:16 the subject is shown at a readable size (pan, don't shrink). The cursor and
   callouts never cover what they explain.
-- Final renders have motion blur (the default in the builds); drafts (`SUB=1`) are never delivered.
+- Final renders have motion blur (the default in the builds) and are 4K, 3840×2160 (`build_demo.sh` renders finals at
+  `SCALE=2`: the client found the 1080p walkthrough soft, "the resolution is bad here", 2026-10-01). Drafts (`SUB=1`,
+  1080p) are never delivered.
 
 ## Working conventions
 
 - Verify before delivering: stills in both formats (`render_ab.js`), the full build, `tools/qa.py` PASS, then look
   at the contact sheet in `style_audit/`.
-- Deliver MP4s in chat (under 30 MB each; the builds use crf 20, AAC 192k, -14 LUFS). Build outputs (`build/`,
-  `frames*/`, `out/`, `style_audit/`) are gitignored.
+- Deliver MP4s in chat (under 30 MB each: the builds start at crf 20 and raise it until the file fits; AAC 192k,
+  -14 LUFS). Build outputs (`build/`, `frames*/`, `out/`, `style_audit/`) are gitignored.
 - Commit to `main` of AO-KH/Marsad-motion and push. The client pulls into `C:\Users\aomar\Desktop\Marsad motion`
   on Windows (Git Bash: `PYTHON=python bash build_demo.sh <slug>`).
 - Keep `DEMOS.md` (demos) and `HANDOFF.md` (the ads and campaign films) current: delivered versions and any new

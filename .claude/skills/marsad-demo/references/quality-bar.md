@@ -49,7 +49,7 @@ A walkthrough is ready when every point below holds.
 - [ ] Whooshes: four moments or fewer, all on transitions. Every click has its click sound (the client's
       `mouse-click.mp3`), one per bar at its +1.8, heard at least +6 dB over the music. No other UI sounds.
 - [ ] QA prints `RESULT PASS`: pulse ≤ 1.15, shake 0, −14 LUFS ± 1.5, true peak ≤ −1 dBTP.
-- [ ] The final has motion blur, and `tools/fast_ranges.py --run` was run on it.
+- [ ] The final is 4K (3840×2160) with motion blur, and `tools/fast_ranges.py --run` was run on it.
 
 ## Defects we have hit, and the fixes
 
@@ -78,4 +78,5 @@ A walkthrough is ready when every point below holds.
 | A captured screen lost its layout in the engine (tried before the fix) | The site kit's `.site *{position: relative}` reached the app's elements | The engine keeps them apart (`.site :where(:not(.rx-scope *))`, `.rx-scope{all: initial}`); `app.css` is scoped with `@scope (.rx-scope)` |
 | A captured dialog filled nothing | `position: fixed` resolved against the transformed window (0×0) | The engine gives each captured page `contain: layout`, so it is the dialog's viewport, as the browser window was |
 | Typing into a captured textarea showed nothing | A `<textarea>` can't hold the engine's typed spans | The tool turns fields into `div[data-rx-field]` sized and styled as they were, with the placeholder in `.ph` |
+| The client: "the resolution is bad here" (a close-up's text looked soft) | 1080p frames: fine 14 px app text at z 3 is only a few pixels a stroke, and a player's rescale or a streamed copy blurs it further | Finals at 4K: `build_demo.sh` renders at `SCALE=2` (the DOM drawn at twice the pixels, not upscaled), in chunks so the sub-frames fit on disk, and fits the MP4 under 29 MB |
 | A tight frame on a card's buttons was mostly empty card | RTL: the buttons sit at the card's far left, its text at the right | Frame the whole card, then ease in toward the buttons (z 2.35, ry −8) for the click |
