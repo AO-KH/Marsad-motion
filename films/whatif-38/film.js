@@ -1,4 +1,4 @@
-/* Marsad — What-if on a rule, a 32 s campaign film in Marsad's main theme (films/whatif-38), made with the
+/* Marsad — What-if on a rule, a 30 s campaign film in Marsad's main theme (films/whatif-38), made with the
    marsad-campaign skill from the Business Pulse film (films/pulse-30): the look of the client's two approved films (the
    48 s film, films/style-jupiter, and the ontology film, films/ontology-main-theme). The client asked for "a video of
    What-if on a rule and Compare what should happen with what did together … stick with marsad theme", sent a TikTok
@@ -8,17 +8,19 @@
    The shots grammar: hard cuts on beats, the app's own screens (dark mode) as plates in 3D.
    House rules: English + Arabic on every line, Western digits, no shake (punches <= 1.5%), nothing on every beat, no orb
    behind the logo, "Book your demo" and marsadnasl.com at the end, effects on the transitions only.
-   Music: the client's track, verclub_music's "No Copyright Music" (fit/verclub-no-copyright-music.mp3, Pixabay),
-   130 BPM, 48 s; beat k at 0.487 + k x 0.4615 s (tools/beats.py puts its grid an 8th early). Its shape matches the
-   film's: phrases of 16 beats from k0; a fill on k14-15; the big hit on k48 and a lighter breakdown; the music stops
-   after k59 for a one-bar break (k60-63, a riser at its end); the drop on k64; a final hit on k96 that decays to the
-   end. The edit [8,72] (straight through: phrase 2's hit on film k8, groove B on k24, the big hit on the proof
-   (k40), the break under "Marsad watches. You decide." (k52-55), the drop on the end (k56)) + [96,102] (the final
-   hit on film k64, decaying). No stops. B(k) = k x 0.4615 s; earlier cuts ran on "Midnight Drift (slowed)" and
-   MoodMode's track.
+   Music: the client's track, Alex Grohl's "Electronic Stylish Rock" (fit/alexgrohl-electronic-stylish-rock.mp3,
+   Pixabay), 140 BPM (139.99), 111 s; beat k at 0.052 + k x 0.42859 s. An intro (a hit on k2, then quiet; bass and kick
+   from k18, no hats), then three 17-bar sections: 16 bars of rock groove and a fill bar (a big hit on its beat 3, a gap
+   on beat 4) before the crash that starts the next (crashes on k36, k104, k172, k240; the last one ends the song,
+   which rings out from k244). The edit [28,76] (the hatless groove, the fill bar under the hook's last beats: its big
+   hit as the numbers fly in (film k6), the gap, the first crash on the turn (k8); section A through the proof, its
+   phrases on the panel (k24) and the proof (k40)) + [164,186] (the lighter second section's last bars and its fill
+   bar under the break; the crash into the last, full section on the end (k56), its groove fading out under the end
+   card; the song's own ending rings out too long for an end card). B(k) = k x 0.42859 s; earlier cuts ran on
+   "Midnight Drift (slowed)", MoodMode's and verclub_music's tracks.
      k0-8    hook     the rules page's own rows and a rule's numbers adrift in depth, grey, the numbers changing;
                       "What if the number changes?"; from k6.25 they fly into the centre
-     k8-16   the turn (phrase 2's hit) the mark lands and a violet lens bursts out of it; numbers ride its orbits;
+     k8-16   the turn (the first crash) the mark lands and a violet lens bursts out of it; numbers ride its orbits;
                       "Marsad lets you try it first."
      k16-24  the rules page «قواعد المراقبة» rises; the cursor clicks the overdue-invoices rule's «ماذا لو…» (the
                       flask, k19); the app's panel opens and lifts out; "Open What-if on a rule."
@@ -28,9 +30,9 @@
                       (would raise a decision, 14), glowing; "Today vs. your what-if."
      k40-48  on a bright lens: the panel's own «لا يُحفظ شيء» line and the «افتراضي — غير مسجَّل» badge lift out;
                       "Nothing saved. Nothing changed."
-     k48-56  the break (the breakdown, then the track's own one-bar stop): "Marsad watches. You decide." (the catalogue's end line), the page
+     k48-56  the break (the last bars, then the fill bar's hit and gap): "Marsad watches. You decide." (the catalogue's end line), the page
                       far behind
-     k56-70  the end (the drop): the capsule blooms round "Book your demo." and shrinks into marsadnasl.com; the
+     k56-70  the end (the crash into the last section): the capsule blooms round "Book your demo." and shrinks into marsadnasl.com; the
                       mark; "Book your demo · احجز عرضك التجريبي"
    Truth: the rules page, its rows, the «ماذا لو…» panel, the typed value, «احسب», the two results, the badge and the
    «لا يُحفظ شيء» line are the app's own (the client's front end in dark mode, films/whatif-38/app/capture.js, captured
@@ -174,15 +176,15 @@ M.track(t=>{
       transform:T3(q.x,q.y,W,H,{z:q.z,rx:q.rx,ry:q.ry,s:sc})});
   }
 });
-jt({at:B(0.25),out:B(6.75),y:432,size:84,words:['What','if','the','number',{t:'changes?',d:1}],ar:'ماذا لو تغيّر الرقم؟',fade:[B(6.15),B(6.75)]});
+jt({at:B(0),out:B(7),y:432,size:84,words:['What','if','the','number',{t:'changes?',d:1}],ar:'ماذا لو تغيّر الرقم؟',fade:[B(6.4),B(7)]});
 
 /* ================= k8-16 the turn: the mark lands, a lens bursts out of it; the numbers ride its orbits, glowing ================= */
 const MKe=mark(SCN,300);MKe.e.style.zIndex='1';
-const T_UP=B(8.75);                          // the mark rises early enough for the line to hold 3 s
+const T_UP=B(8.5);                           // the mark rises early enough for the line to hold 3 s
 M.track(t=>{
   const on=t>=B(6.25)&&t<K_PAGE;MKe.e.style.display=on?'':'none';if(!on)return;
   const p=P(t,K_TURN,K_TURN+0.75), sc=t<K_TURN?0.86:0.86+0.14*ez.dec(p)+0.03*Math.sin(Math.PI*Math.min(1,p*1.3))*(p<1?1:0);
-  const pu=io(t,T_UP,T_UP+0.9), y=lerp(MK.y,300,pu), s=sc*lerp(1,0.55,pu);
+  const pu=io(t,T_UP,T_UP+0.6), y=lerp(MK.y,300,pu), s=sc*lerp(1,0.55,pu);
   st(MKe.e,{transform:`translate(${f1(MK.x-150)}px,${f1(y-114.5)}px) scale(${f3(s)})`,opacity:f3(t<K_TURN?1:ez.dec(Math.min(1,p*1.6)))});
   const pre=0.35*io(t,B(6.25),K_TURN), bloom=0.9*dec(t,K_TURN,K_TURN+0.3)*(1-0.55*io(t,K_TURN+0.4,K_TURN+2));
   MKe.gl.style.opacity=f3(t<K_TURN?pre:Math.max(bloom,0.35*(1-dec(t,K_TURN,K_TURN+0.3))));
@@ -197,7 +199,7 @@ M.track(t=>{
     st(r.e,{opacity:f3(a),transform:`translate(${f1(q.x)}px,${f1(q.y)}px) translate(-50%,-50%) scale(${f3(0.78+0.22*fr)})`,zIndex:q.front>0?'2':'0'});
   }
 });
-jt({at:B(9.5),out:K_PAGE,y:470,size:88,step:S16*1.5,words:[{t:'Marsad',g:1},'lets','you','try','it','first.'],ar:'مرصد يخلّيك تجرّبه أولاً.',arSize:44});
+jt({at:B(9),out:K_PAGE,y:480,size:88,step:S16*1.5,words:[{t:'Marsad',g:1},'lets','you','try','it','first.'],ar:'مرصد يخلّيك تجرّبه أولاً.',arSize:44});
 
 /* ================= k16-24 the rules page: one click on a rule's «ماذا لو…»; the app's panel opens and lifts out ================= */
 const SH3=M.el('div','mt-shot',null,SCN), D3=M.el('div','mt-3d',null,SH3);

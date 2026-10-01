@@ -112,6 +112,8 @@ When nobody can answer, use the defaults and list them in the delivery message:
    - Map it with `tools/beats.py`. Check the downbeat where its sections change, because the tool's guess can be a beat off.
    - Put its biggest lift on the turn, and again on the end. Put a thin block on the break.
    - Make the hits with `stops`: half a beat to a beat of silence before each lift.
+
+   A song's own ending can ring out for seconds of near-silence, and the catalogue allows no silence over 1.5 s. Check it before you end on it. If it rings out too long, end on a crash inside the song and fade its groove under the end card (`films/whatif-38`, its fourth track).
 2. **One row per shot:** beats and time, the line in English and Arabic, what is on screen, how depth shows, the transition (a hard cut on the beat, a burst, a crane), and the sound (only on transitions).
 3. **Timing:**
    - Shots run 4–10 beats. Cuts fall on beats.
