@@ -1,18 +1,22 @@
-/* Marsad — What-if on a rule, a 38 s campaign film in Marsad's main theme (films/whatif-38), made with the
+/* Marsad — What-if on a rule, a 35 s campaign film in Marsad's main theme (films/whatif-38), made with the
    marsad-campaign skill from the Business Pulse film (films/pulse-30): the look of the client's two approved films (the
    48 s film, films/style-jupiter, and the ontology film, films/ontology-main-theme). The client asked for "a video of
    What-if on a rule and Compare what should happen with what did together … stick with marsad theme", sent a TikTok
-   concept ad as the pace, and chose a fast campaign film on the music made for it (2026-10-01). Compare («مطابقة
-   مجموعتين») is switched off in the feature catalogue ("Don't film yet"), so the client chose What-if only for now.
+   concept ad as the pace, chose a fast campaign film, then sent its music ("Use this music") (2026-10-01). Compare
+   («مطابقة مجموعتين») is switched off in the feature catalogue ("Don't film yet"), so the client chose What-if only for
+   now.
    The shots grammar: hard cuts on beats, the app's own screens (dark mode) as plates in 3D.
    House rules: English + Arabic on every line, Western digits, no shake (punches <= 1.5%), nothing on every beat, no orb
    behind the logo, "Book your demo" and marsadnasl.com at the end, effects on the transitions only.
-   Music: "Midnight Drift (slowed)" (fit/midnight-drift-slowed.mp3, original, tools/make_phonk.py), 110.7 BPM; the edit
-   [104,112] (the build: snare roll and riser) + [112,152] (drop B, its impact on film k8) + [80,88] (the breakdown's
-   first bars, the downlifter) + [16,30] (drop A's impact on film k56, the end). B(k) = k x 0.5420 s.
+   Music: the client's track, MoodMode's "No Copyright Music" (fit/moodmode-no-copyright-music.mp3, Pixabay), 120 BPM,
+   D minor, phonk in 2-bar blocks at one level throughout (a bright lead plays only in k192-223). The edit
+   [184,224] (the full bars before the lead, then the lead's entry on film k8, the track running on through the
+   results) + [192,200] (the lead again for the proof) + [224,232] (2 thin bars, without the low layer: the break) +
+   [192,206] (the lead's entry on film k56, the end); stops on k7.5-8 and k55-56 make the two entries land like
+   drops. B(k) = k x 0.5 s.
      k0-8    hook     the rules page's own rows and a rule's numbers adrift in depth, grey, the numbers changing;
                       "What if the number changes?"; from k6.25 they fly into the centre
-     k8-16   the turn (drop B's impact) the mark lands and a violet lens bursts out of it; numbers ride its orbits;
+     k8-16   the turn (the lead's entry) the mark lands and a violet lens bursts out of it; numbers ride its orbits;
                       "Marsad lets you try it first."
      k16-24  the rules page «قواعد المراقبة» rises; the cursor clicks the overdue-invoices rule's «ماذا لو…» (the
                       flask, k19); the app's panel opens and lifts out; "Open What-if on a rule."
@@ -22,9 +26,9 @@
                       (would raise a decision, 14), glowing; "Today vs. your what-if."
      k40-48  on a bright lens: the panel's own «لا يُحفظ شيء» line and the «افتراضي — غير مسجَّل» badge lift out;
                       "Nothing saved. Nothing changed."
-     k48-56  the break (the breakdown's downlifter): "Marsad watches. You decide." (the catalogue's end line), the page
+     k48-56  the break (the thin bars, then a beat's stop): "Marsad watches. You decide." (the catalogue's end line), the page
                       far behind
-     k56-70  the end (drop A's impact): the capsule blooms round "Book your demo." and shrinks into marsadnasl.com; the
+     k56-70  the end (the lead's entry): the capsule blooms round "Book your demo." and shrinks into marsadnasl.com; the
                       mark; "Book your demo · احجز عرضك التجريبي"
    Truth: the rules page, its rows, the «ماذا لو…» panel, the typed value, «احسب», the two results, the badge and the
    «لا يُحفظ شيء» line are the app's own (the client's front end in dark mode, films/whatif-38/app/capture.js, captured
@@ -168,7 +172,7 @@ M.track(t=>{
       transform:T3(q.x,q.y,W,H,{z:q.z,rx:q.rx,ry:q.ry,s:sc})});
   }
 });
-jt({at:B(0.875),out:B(6.2),y:432,size:84,words:['What','if','the','number',{t:'changes?',d:1}],ar:'ماذا لو تغيّر الرقم؟',fade:[B(5.6),B(6.2)]});
+jt({at:B(0.5),out:B(6.5),y:432,size:84,words:['What','if','the','number',{t:'changes?',d:1}],ar:'ماذا لو تغيّر الرقم؟',fade:[B(5.9),B(6.5)]});
 
 /* ================= k8-16 the turn: the mark lands, a lens bursts out of it; the numbers ride its orbits, glowing ================= */
 const MKe=mark(SCN,300);MKe.e.style.zIndex='1';

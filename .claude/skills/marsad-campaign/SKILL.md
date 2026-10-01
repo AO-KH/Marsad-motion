@@ -106,6 +106,11 @@ When nobody can answer, use the defaults and list them in the delivery message:
    - groove B lifts a product proof;
    - the track's own one-bar **break** holds a line;
    - **the hit** after it is the end.
+
+   A track the client sends may have none of these: one level throughout, no break, no hit. That was the case in `films/whatif-38`.
+   - Map it with `tools/beats.py`. Check the downbeat where its sections change, because the tool's guess can be a beat off.
+   - Put its biggest lift on the turn, and again on the end. Put a thin block on the break.
+   - Make the hits with `stops`: half a beat to a beat of silence before each lift.
 2. **One row per shot:** beats and time, the line in English and Arabic, what is on screen, how depth shows, the transition (a hard cut on the beat, a burst, a crane), and the sound (only on transitions).
 3. **Timing:**
    - Shots run 4–10 beats. Cuts fall on beats.
