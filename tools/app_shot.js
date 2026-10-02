@@ -13,6 +13,8 @@
 //   };
 // It writes films/<slug>/pages/: <key>.png (the whole window), <key>-<name>.png (each crop, at the same pixel ratio) and
 // shots.json (each crop's box in CSS px, {key: {name: {x, y, w, h}}}, so the film can lift a part off its page exactly).
+// A state's run may resize the window (page.setViewportSize, e.g. for a dialog taller than the window); shots.json then
+// gives that state's window under sizes: {key: {width, height}}, and its PNG has that size.
 // CSS transitions and animations are switched off, so each still is the settled state.
 const { chromium } = require('playwright');
 const fs = require('fs'), path = require('path'), http = require('http'), { spawn, execFileSync } = require('child_process');
@@ -51,7 +53,7 @@ async function server() {
   await setup(ctx, { routes: spec.routes, log, theme: spec.theme || 'light' });
   const page = await ctx.newPage();
   page.on('pageerror', e => console.log('  app error:', e.message.slice(0, 160)));
-  const boxes = {};
+  const boxes = {}, sizes = {};
   const still = async () => {
     await page.addStyleTag({ content: '*,*::before,*::after{transition:none!important;animation:none!important;caret-color:transparent!important}' });
     await page.evaluate(() => document.fonts.ready);
@@ -63,6 +65,8 @@ async function server() {
     if (typeof s.wait === 'function') await s.wait(page); else if (s.wait) await page.waitForTimeout(s.wait);
     await still();
     await page.screenshot({ path: path.join(OUT, `${s.key}.png`) });
+    const ws = page.viewportSize();
+    if (ws.width !== vp.width || ws.height !== vp.height) sizes[s.key] = ws;
     const made = [`${s.key}.png`];
     for (const [name, fn] of Object.entries(s.crops || {})) {
       const loc = fn(page).first();
@@ -74,7 +78,7 @@ async function server() {
     }
     console.log(`${s.key}: ${made.join(', ')}`);
   }
-  fs.writeFileSync(path.join(OUT, 'shots.json'), JSON.stringify({ viewport: vp, dpr, boxes }, null, 1));
+  fs.writeFileSync(path.join(OUT, 'shots.json'), JSON.stringify({ viewport: vp, dpr, ...(Object.keys(sizes).length ? { sizes } : {}), boxes }, null, 1));
   const fresh = [...new Set(log.filter(l => l.startsWith('NEW')))];
   if (fresh.length) console.log('calls with no sample data (answered {}):\n  ' + fresh.join('\n  '));
   await browser.close();

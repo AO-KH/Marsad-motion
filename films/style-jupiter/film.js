@@ -1,51 +1,67 @@
-/* Marsad — style sample: Jupiter Exchange, v2 (films/style-jupiter). The Marsad film told in the grammar of Jupiter's
-   launch video (the client's reference 03_JupiterExchange.mp4): near-black; big lenses with dark bodies and bright rims
-   (Jupiter's are navy to lime; here Marsad's indigo, violet, magenta and pink); medium-weight white type with grey and
-   gradient words; the app's parts in perspective with glowing rims; a carousel under a glowing dome; rings; the URL in a
-   glowing capsule; the mark.
-   v2, at the client's request: more in each frame (dust, the sources and the company's files adrift, the waiting chat,
-   the tiles flying into the mark, orbits, the loop's pills joined, the carousel flowing into the Knowledge Map, a real
-   recommendation, the Decisions counters, six defence rings with their layers, the Assistant answering). It follows the
-   63 s film's story and lines. v1 (28.6 s) is in git history (80af6f8). The client asked for a slower pace (v2 on
-   "Movement", 53.4 s; on their funk track 60.5 s), then a quicker one: this cut is 48 s, scenes of 4-9 beats. At the
-   end, a wide capsule replaced two joined lenses (the client asked for another shape).
+/* Marsad — the brand film in the main theme (films/style-jupiter, delivered as "Marsad Platform - Brand Film, Main Theme
+   (48s, 16x9)"). The Marsad film told in the grammar of Jupiter's launch video (the client's reference
+   03_JupiterExchange.mp4): near-black; big lenses with dark bodies and bright rims (here Marsad's indigo, violet, magenta
+   and pink); medium-weight white type with grey and gradient words; the app's screens in perspective with glowing rims;
+   a carousel under a glowing dome; rings; the URL in a glowing capsule; the mark.
+   History: v1 (28.6 s) is in git history (80af6f8); v2 put more in each frame, then the client's funk track, a quicker
+   48 s cut and a wide capsule at the end. v3 (2026-10-02, "Use the real front end for this video"): every app screen is
+   now the client's real front end in dark mode with sample data (app/capture.js), and the film follows the feature
+   catalogue of 2026-10-01: the source tiles are Odoo, spreadsheets, Google Drive, WhatsApp and documents; the loop's last
+   step is Decide; the decision ends approved and sealed in its passport (no purchase order); the shield names live
+   features only; no "real time", "sovereign" or "PDPL-compliant"; the assistant answers from the data and creates nothing.
    House rules kept: English + Arabic on every line, Western digits, no shake (punches <= 1.5%), nothing on every beat, no
    orb behind the logo, "Book your demo" and marsadnasl.com at the end. Sound effects only on four transitions: a whoosh
    (tools/sfx.py `swoosh`) into the mark (k16), the Pulse flyover (k38), the shield (k56) and the end (k80), with the
-   cinematic hits on the mark and the end. The client asked for whooshes, then for fewer (not on every cut).
+   cinematic hits on the mark and the end.
    Music: "Joyful Rhythm Walk Funk" by lightbeatsmusic (Pixabay #513936, supplied by the client; fit/lightbeats-joyful-rhythm-
    walk-funk.mp3), 115 BPM, downbeat 0.538 s. film.json "edit" (song beats): 0-47 (the intro, then groove A from film k16),
    64-79 (groove B, film k48), 48-63 (groove A's last phrase, ending in the track's own one-bar break on film k76-79) and
    64-75 (the hit on film k80, then the fade). B(k) = k x 0.5217 s.
-     k0-7     sources   three lenses drift apart; the source tiles and the company's files adrift in depth;
-                        "Your company's data is everywhere."
+     k0-7     sources   three lenses drift apart; the source tiles (Odoo, Excel, Drive, WhatsApp, PDF, CSV, DOCX, ZIP) and
+                        the company's files adrift in depth; "Your company's data is everywhere."
      k7-16    waiting   the lenses turn grey; a team chat waits for an answer; "When you need a quick answer, your system
                         makes you wait."; the tiles and files fly into the centre
      k16-24   the turn  (the groove starts) the mark lands and a lens bursts out of it; orbits; "Marsad / changes that."
-     k24-28   the loop  Connect · Unify · Monitor · Act light up one by one over a rising horizon; "One workflow. Fully
-                        automated."
+     k24-28   the loop  Connect · Unify · Monitor · Decide light up one by one over a rising horizon; "Know. Watch. Decide."
      k28-38   the model the source tiles turn on an arc under a glowing dome, "Every system."; they rise into the dome and
                         the Knowledge Map's objects and links turn around the mark; "One living model."
-     k38-48   pulse     Business Pulse in perspective, "Real-time recommendations"; a white lens with a real
-                        recommendation, "From your own numbers."
-     k48-56   decide    (groove B) the Decisions counters and card settle; the cursor clicks «موافقة» (k52): executed,
-                        PO-2291; approved 0 -> 1, under review 6 -> 5; "Decision to action." / "Nothing in between."
-     k56-64   shield    six rings snap in around the mark with their layers; "Defense in depth. Sovereign. PDPL-compliant."
-     k64-74   Arabic    «بالعربية», huge; then the Assistant: the Arabic question typed and sent, the answer streamed from
-                        the data with its source chip; "The answer comes from your original data."
+     k38-48   pulse     the real Business Pulse page in perspective, "Operational recommendations"; on a white lens the first
+                        recommendation opened with its numbers, «مبني على بياناتك» glowing; "From your own numbers."
+     k48-56   decide    (groove B) the real Decisions counters and card settle; the cursor presses «موافقة» (the confirm lands
+                        on k50), «تأكيد الموافقة» («تم بنجاح» on k52; behind it the card reads «موافق», 6/0 -> 5/1), the
+                        card and counters glow green (k53); «جواز القرار» opens the passport on k54, sealed: «السلسلة
+                        سليمة — لا يوجد عبث»; "Marsad watches. You decide."
+     k56-64   shield    six rings snap in around the mark with their layers; "Built with personal-data masking and an
+                        audit trail."
+     k64-74   Arabic    «بالعربية», huge; then the real assistant: the Arabic question typed and sent, «المساعد يفكّر…» (k69),
+                        the answer with its sources (k70; the sources glow on k71); "The answer comes from your original data."
      k74-80   breath    "One operational nervous system.", held through the track's break (k76-79)
      k80-92   end       on the hit a wide glowing capsule blooms round "Book your demo."; it shrinks into the URL capsule,
                         marsadnasl.com; the mark; "Book your demo · احجز عرضك التجريبي"
-   Truth: the Business Pulse page and recommendation, the Decisions counters, card and toast, the Knowledge Map's objects
-   and link names, the Assistant's name, input and placeholder, and the file names (the Projects page) are the app's own
-   (site kit, site_pages/). The team chat, the question and its answer, the six layers and the tiles flying into the mark
-   are the 63 s film's renderings. The lenses, rings, orbits and capsules are the reference's grammar. */
+   Truth: the Business Pulse page and recommendation, the Decisions counters, card, confirm dialog, «تم بنجاح» and passport,
+   and the assistant's page, question, «المساعد يفكّر…», answer and sources are the app's own screens (pages/, captured by
+   tools/app_shot.js from the client's front end, dark mode); their records are sample data, labelled "Sample data ·
+   بيانات تجريبية". The typing is the captured typed question uncovered letter by letter, with a drawn caret. The Knowledge
+   Map's objects and link names and the file names are the app's own words (site kit). The team chat, the six layers and
+   the tiles flying into the mark are renderings. The lenses, rings, orbits and capsules are the reference's grammar. */
 const B=M.B, S8=M.S8, S16=M.S16, S32=M.S32, ez=M.ez, P=M.P, st=M.st, lerp=M.lerp, FQ=M.FQ;
 const f1=x=>(+x).toFixed(1), f2=x=>(+x).toFixed(2), f3=x=>(+x).toFixed(3);
 const dec=(t,a,b)=>ez.dec(P(t,a,b)), io=(t,a,b)=>ez.ioC(P(t,a,b)), inc=(t,a,b)=>ez.inC(P(t,a,b));
 const T3=(x,y,w,h,{z=0,rx=0,ry=0,rz=0,s=1}={})=>`translate3d(${f1(x-w/2)}px,${f1(y-h/2)}px,${f1(z)}px) rotateX(${f2(rx)}deg) rotateY(${f2(ry)}deg) rotateZ(${f2(rz)}deg) scale(${f3(s)})`;
 const show=(e,v)=>{e.style.display=v?'':'none';return v;};
 const inShot=(t,a,b)=>t>=a&&t<b;
+// the real app's screens (films/style-jupiter/app/capture.js; tools/app_shot.js captured them at 5x, dark mode, sample
+// data). Each part is its own PNG (pages/<state>-<part>.png; boxes in app px in pages/shots.json), drawn at k stage px
+// per app px: the size it shows, so it stays sharp
+const IMG='films/style-jupiter/pages/';
+const plate=(parent,file,w,h,k,{cls='rx-part',r=12}={})=>{const e=M.el('div',cls,null,parent);
+  st(e,{width:f1(w*k)+'px',height:f1(h*k)+'px',borderRadius:f1(r*k)+'px',backgroundImage:`url(${IMG}${file})`,backgroundSize:'100% 100%'});return e;};
+// a part laid over a plate (its box and the plate's in the same page's app px): typed text, a send button, a glow
+const over=(pl,file,[x,y,w,h],[px,py],k,cls='rx-sub')=>{const e=M.el('div',cls,null,pl);
+  st(e,{left:f1((x-px)*k)+'px',top:f1((y-py)*k)+'px',width:f1(w*k)+'px',height:f1(h*k)+'px'});
+  if(file)st(e,{backgroundImage:`url(${IMG}${file})`,backgroundSize:'100% 100%'});return e;};
+const glowRim=(l,c='236,205,255',g2='206,64,240')=>`0 0 0 ${f2(2*l)}px rgba(${c},${f3(0.9*l)}),0 0 ${f1(40*l)}px ${f1(5*l)}px rgba(${g2},${f3(0.45*l)}),0 ${f1(24*l)}px ${f1(50*l)}px rgba(6,2,20,${f3(0.5*l)})`;
+const CURSVG=`<svg viewBox="0 0 32 32" width="54" height="54"><path d="M6 3 L26 17 L16.6 18.6 L21.4 28.2 L17.6 30 L12.8 20.4 L6 26 Z" fill="#fff" stroke="#140B24" stroke-width="1.6" stroke-linejoin="round"/></svg>`;
 const NS='http://www.w3.org/2000/svg';
 function sv(parent,tag,at){const e=document.createElementNS(NS,tag);for(const k in at)e.setAttribute(k,at[k]);parent.appendChild(e);return e;}
 function svgLayer(parent){const s=document.createElementNS(NS,'svg');s.setAttribute('class','jp-svg');s.setAttribute('width',1920);s.setAttribute('height',1080);parent.appendChild(s);return s;}
@@ -157,8 +173,8 @@ const MK={x:960,y:540};                  // where the mark lands on k16
 const TL=[{x:300,y:230,z:-80,rx:-8,ry:18,slot:3},{x:760,y:150,z:-340,rx:-12,ry:8,slot:0},{x:1210,y:170,z:-60,rx:-10,ry:-10,slot:6},
   {x:1660,y:260,z:-240,rx:-6,ry:-20,slot:2},{x:250,y:830,z:-200,rx:10,ry:20,slot:5},{x:700,y:910,z:-60,rx:14,ry:10,slot:1},
   {x:1200,y:890,z:-300,rx:12,ry:-8,slot:7},{x:1680,y:810,z:-40,rx:8,ry:-18,slot:4}]
-  .map((p,i)=>({...p,i,t0:B(0.2188+0.2188*i),ta:B(14.0312+0.2812*p.slot),el:M.el('div','k-tile m-glass',K.tile(K.TILES[i]),D1)}));
-const FL=[['invoices_q3.xlsx',560,330,-120],['branch_returns.csv',1360,318,-260],['po_2291.pdf',600,730,-200],['suppliers_2025.xlsx',1330,712,-90]]
+  .map((p,i)=>({...p,i,t0:B(0.2188+0.2188*i),ta:B(14.0312+0.2812*p.slot),el:M.el('div','k-tile m-glass',K.tile(K.SOURCES[i]),D1)}));
+const FL=[['invoices_q3.xlsx',560,330,-120],['branch_returns.csv',1360,318,-260],['supplier_contract.pdf',600,730,-200],['whatsapp_sales_chat.txt',1330,712,-90]]
   .map(([n,x,y,z],j)=>({x,y,z,rx:0,ry:0,i:8+j,t0:B(1.3125+0.4375*j),ta:B(14.1718+0.5625*j),
     el:M.el('div','jf',`${SK.ic('file',22,'#D9B8FF',2)}<span>${n}</span>`,D1)}));
 function driftBase(p,t,w,h){             // adrift, then back into the dark behind the chat (k6.5-8)
@@ -240,7 +256,7 @@ M.track(t=>{
 });
 
 /* ================= k24-28 the loop: four steps light up one by one, joined by a line ================= */
-const PL=[['link','Connect','اربط'],['merge','Unify','وحّد'],['pulse','Monitor','راقب'],['check','Act','نفّذ']];
+const PL=[['link','Connect','اربط'],['merge','Unify','وحّد'],['pulse','Monitor','راقب'],['check','Decide','قرّر']];   // a person decides (the catalogue)
 const SH4=M.el('div','jp-shot',null,TXT);
 const lsv=svgLayer(SH4);
 lsv.innerHTML=`<defs><linearGradient id="jlg" gradientUnits="userSpaceOnUse" x1="300" y1="0" x2="1620" y2="0"><stop offset="0" stop-color="#8E32C3"/><stop offset="0.5" stop-color="#F29BFF"/><stop offset="1" stop-color="#8E6BFF"/></linearGradient>${GLOW}</defs>`;
@@ -258,11 +274,11 @@ M.track(t=>{
   const u=((t-B(26.4))/1.6)%1, dOn=t>=B(26.4);lDot.setAttribute('opacity',f3(dOn?Math.sin(Math.PI*u)*dec(t,B(26.4),B(26.4)+0.3):0));
   if(dOn)lDot.setAttribute('cx',f1(lerp(PX[0],PX[3],u)));
 });
-jt({at:B(25.2),out:K_SYS,y:318,size:76,words:['One','workflow.','Fully',{t:'automated.',g:1}],ar:'سير عمل واحد، مؤتمت بالكامل.'});
+jt({at:B(25.2),out:K_SYS,y:318,size:76,words:['Know.','Watch.',{t:'Decide.',g:1}],ar:'اعرف. راقب. قرّر.'});   // the client's tagline
 
 /* ================= k28-38 every system: the carousel under the dome; it rises into the Knowledge Map ================= */
 const SH5=M.el('div','jp-shot',null,SCN);
-const CAR=[...Array(10).keys()].map(i=>({i,el:M.el('div','k-tile m-glass',K.tile(K.TILES[(i+2)%8]),SH5)}));
+const CAR=[...Array(10).keys()].map(i=>({i,el:M.el('div','k-tile m-glass',K.tile(K.SOURCES[(i+2)%8]),SH5)}));
 const carPos=(c,t)=>{const th=90+27.5-c.i*6.1-2.4*(t-K_SYS), r=th*Math.PI/180;return {x:960+2250*Math.cos(r),y:-1300+2250*Math.sin(r),th};};
 const GC={x:960,y:432};
 const gsv=svgLayer(SH5);gsv.innerHTML=`<defs>${GLOW}</defs>`;
@@ -306,65 +322,90 @@ M.track(t=>{
 jt({at:B(28.5),out:B(33),y:392,size:76,words:['Every',{t:'system.',g:1}],ar:'كل الأنظمة.',fade:[B(32),B(33)]});
 jt({at:B(36),out:K_PUL,y:760,size:76,words:['One','living',{t:'model.',g:1}],ar:'نموذج حيّ واحد.'});
 
+// the catalogue: the real screens show sample data, and say so (dark text on the white lens, k43-48)
+const SAMPLE=M.el('div','rx-label','<span class="en">Sample data</span><span class="sep">·</span><span class="ar">بيانات تجريبية</span>',TXT);
+M.track(t=>{const on=inShot(t,K_PUL,K_SHD)||inShot(t,K_ASK,K_BR);if(!show(SAMPLE,on))return;
+  const t0=t<K_SHD?K_PUL:K_ASK;SAMPLE.style.opacity=f3(dec(t,t0+0.3,t0+0.8));SAMPLE.classList.toggle('lt',inShot(t,K_NUM,K_DEC));});
+
 /* ================= k38-43 Business Pulse in perspective, pulling back and up ================= */
+// the app's own page «نبض الأعمال» (pages/pulse.png): four recommendations from the sample data
 const SH6=M.el('div','jp-shot',null,SCN), D6=M.el('div','jp-3d',null,SH6);
-const UI=M.el('div','jp-ui',`<img src="site_pages/pulse.png">`,D6);
+const UI=M.el('div','jp-ui',`<img src="${IMG}pulse.png">`,D6);
 M.track(t=>{
   if(!show(SH6,inShot(t,K_PUL,K_NUM)))return;
   const u=io(t,K_PUL,K_NUM), pe=dec(t,K_PUL,K_PUL+0.6), ty=lerp(470,70,ez.dec(P(t,K_PUL,K_NUM)));
   st(UI,{opacity:f3(pe),transform:`translate3d(12px,${f1(10+ty)}px,${f1(lerp(-150,-780,u))}px) rotateX(${f2(lerp(66,16,u))}deg) rotateZ(${f2(lerp(-7,0,u))}deg)`});
 });
-jt({at:B(38.5),out:K_NUM,y:64,size:60,words:['Real-time',{t:'recommendations',g:1}],ar:'توصيات لحظية',arSize:34});
+jt({at:B(38.5),out:K_NUM,y:64,size:60,words:['Operational',{t:'recommendations',g:1}],ar:'توصيات تشغيلية',arSize:36});   // the page's own words
 
-/* ================= k43-48 a white lens: one real recommendation, "From your own numbers." ================= */
+/* ================= k43-48 a white lens: one real recommendation, opened, "From your own numbers." ================= */
+// the first recommendation opened (pages/pulse-open-card.png): its numbers in the text; «مبني على بياناتك» glows on k45.33
 const SH6b=M.el('div','jp-shot',null,SCN), D6b=M.el('div','jp-3d',null,SH6b);
-const tp=document.createElement('div');tp.innerHTML=SK.pulseContent({id:'jpPulse'});
-const row0=tp.querySelector('#recRows').children[0];
-st(row0,{position:'absolute',left:'0',top:'0',right:'auto',width:'1535px',height:'118px'});
-const RW=M.el('div','jp-card soft',null,D6b);st(RW,{width:'1535px',height:'118px'});M.el('div','site m-site',null,RW).appendChild(row0);
-const okPill=row0.querySelector('.sk-pill.ok');
+const RK=1.5, RB=[208,277,1024,251.5];
+const REC=plate(D6b,'pulse-open-card.png',RB[2],RB[3],RK,{r:16});
+const pillG=over(REC,null,[1008.3,298,112.9,26],RB,RK,'rx-sub rx-glow');pillG.style.borderRadius=f1(13*RK)+'px';
 M.track(t=>{
   if(!show(SH6b,inShot(t,K_NUM,K_DEC)))return;
   const pe=dec(t,K_NUM+0.1,K_NUM+0.8), u=P(t,K_NUM,K_DEC);
-  st(RW,{opacity:f3(pe),filter:pe<1?`blur(${f2((1-pe)*8)}px)`:'none',transform:T3(960,652+(1-pe)*60,1535,118,{rx:lerp(14,4,u),s:0.82*(1+0.03*u)})});
-  const gp=dec(t,B(45.3334),B(45.3334)+0.35)*(1-io(t,B(45.3334)+0.5,B(45.3334)+1.6));
-  okPill.style.boxShadow=gp>0.002?`0 0 ${f1(26*gp)}px rgba(11,132,71,${f3(0.6*gp)}),0 0 0 ${f2(2*gp)}px rgba(11,132,71,${f3(0.5*gp)})`:'';
+  st(REC,{opacity:f3(pe),filter:pe<1?`blur(${f2((1-pe)*8)}px)`:'none',transform:T3(960,712+(1-pe)*60,RB[2]*RK,RB[3]*RK,{rx:lerp(14,4,u),s:0.95+0.03*u})});
+  pillG.style.opacity=f3(dec(t,B(45.3334),B(45.3334)+0.35)*(1-io(t,B(45.3334)+0.5,B(45.3334)+1.6)));
 });
 jt({at:K_NUM+0.05,out:K_DEC,y:300,size:84,cls:'dark',step:S16*1.5,words:['From','your','own','numbers.'],ar:'مبنية على أرقامك — بلا اختلاق.',arSize:42});
 
-/* ================= k48-56 on groove B, decide: the counters and the card settle; the cursor clicks «موافقة» ================= */
+/* ================= k48-56 on groove B, decide: the real inbox; «موافقة», the app's confirm, approved; its passport ================= */
+// The app's own Decisions page (dark mode, sample data): a recommendation a monitoring rule raised. The parts are the
+// captured crops: the counters, the card, the confirm dialog, «تم بنجاح»; after the approval the card reads «موافق» and the
+// counts move (under review 6 → 5, approved 0 → 1); then «جواز القرار» opens its passport, sealed: «السلسلة سليمة — لا يوجد عبث».
 const SH7=M.el('div','jp-shot',null,SCN), D7=M.el('div','jp-3d',null,SH7);
-const td=document.createElement('div');td.innerHTML=SK.decContent({id:'jpDec'});
-const dcard=td.querySelector('#decCard'),toast=td.querySelector('#toast'),btn=dcard.querySelector('#btnOK'),stats=td.querySelector('#stats');
-[dcard,toast].forEach(e=>{e.removeAttribute('id');st(e,{position:'absolute',left:'0',top:'0',right:'auto',width:'1402px',height:'214px'});});
-toast.style.display='flex';
-const DW=M.el('div','jp-card',null,D7);st(DW,{width:'1402px',height:'214px'});M.el('div','site m-site',null,DW).append(dcard,toast);
-stats.removeAttribute('id');st(stats,{position:'absolute',left:'0',top:'0',right:'auto',width:'1402px',height:'138px'});
-const SW=M.el('div',null,null,D7);st(SW,{width:'1402px',height:'138px'});M.el('div','site m-site',null,SW).appendChild(stats);
-const statEls=[...stats.children], nApp=statEls[2].querySelector('.n'), nRev=statEls[3].querySelector('.n');
-statEls.forEach(e=>e.style.boxShadow='0 0 0 1.5px rgba(255,190,248,0.55),0 0 22px rgba(206,64,240,0.3)');
-const CUR=M.el('div','jp-cur',`<svg viewBox="0 0 32 32" width="54" height="54"><path d="M6 3 L26 17 L16.6 18.6 L21.4 28.2 L17.6 30 L12.8 20.4 L6 26 Z" fill="#fff" stroke="#140B24" stroke-width="1.6" stroke-linejoin="round"/></svg>`,SH7);
-const DS=0.9, DC={x:960,y:676}, SCy=462, OKB={x:DC.x+(1402-36-80-701)*DS,y:DC.y+(138+28-107)*DS}, T_FLAT=B(51.4), T_CL=B(52), T_CNT=B(53);
+const DK=1.16, DLK=1.55, PK=1.5, PH=303;          // stage px per app px: the card and counters, the dialogs, the passport
+const BX={card:[32,460,1120,206],ok1:[53,481,107.4,38],dialog:[496,253.5,448,322],ok2:[521,506.5,153.9,44]};
+const dStats=plate(D7,'decisions-stats.png',1120,94,DK), dStatsA=plate(D7,'after-stats.png',1120,94,DK),
+  dCard=plate(D7,'decisions-card.png',1120,206,DK), dCardA=plate(D7,'after-card.png',1120,206,DK),
+  dDlg=plate(D7,'confirm-dialog.png',448,322,DLK,{r:16}), dDone=plate(D7,'done-dialog.png',448,110,DLK,{r:16}),
+  dPass=plate(D7,'passport-modal.png',672,PH,PK,{cls:'rx-part rx-pass',r:16});   // the passport's top: masthead, seal, the decision
+dPass.style.backgroundSize='100% auto';
+const passL=M.el('div','rx-label rx-cap','<span class="en">Decision Passport</span><span class="sep">·</span><span class="ar">جواز القرار</span>',SH7);
+const CUR=M.el('div','jp-cur',CURSVG,SH7);
+const SC7={x:960,y:452}, CC7={x:960,y:704}, DG={x:960,y:560}, PG={x:960,y:610};
+const W7=1120*DK, OK1={x:CC7.x-W7/2+(BX.ok1[0]-BX.card[0]+BX.ok1[2]/2)*DK, y:CC7.y-206*DK/2+(BX.ok1[1]-BX.card[1]+BX.ok1[3]/2)*DK},
+  OK2={x:DG.x-448*DLK/2+(BX.ok2[0]-BX.dialog[0]+BX.ok2[2]/2)*DLK, y:DG.y-322*DLK/2+(BX.ok2[1]-BX.dialog[1]+BX.ok2[3]/2)*DLK};
+// «جواز القرار» sits where «موافقة» was (the approved card keeps only that button), so the third press is at OK1 again.
+// Each press comes a moment before its beat, so the panel it opens lands on the beat.
+const T_FLAT=B(49.5), T_DLG=B(50), T_OK=B(52), T_APP=B(53), T_PASS=B(54), PRE=0.15;
+let PLW=0;
 M.track(t=>{
   if(!show(SH7,inShot(t,K_DEC,K_SHD)))return;
-  const pf=io(t,K_DEC,T_FLAT), pe=dec(t,K_DEC,K_DEC+0.6), ps=dec(t,K_DEC+0.15,K_DEC+0.75), push=1+0.025*P(t,T_CL,K_SHD);
-  st(DW,{opacity:f3(pe),transform:T3(DC.x,DC.y+(1-pf)*70,1402,214,{z:-140*(1-pf),rx:24*(1-pf),ry:-14*(1-pf),s:DS*push})});
-  st(SW,{opacity:f3(ps),transform:T3(960,SCy+(1-pf)*50,1402,138,{z:-200*(1-pf),rx:24*(1-pf),ry:-14*(1-pf),s:DS*push})});
-  const pk=dec(t,T_CL+0.05,T_CL+0.4);dcard.style.opacity=f3(1-pk);toast.style.opacity=f3(pk);
-  const press=Math.sin(Math.PI*P(t,T_CL-0.05,T_CL+0.18));btn.style.transform=`scale(${f3(1-0.05*press)})`;
-  const pm=io(t,B(50.4),T_CL-0.08), out=io(t,T_CL+0.6,T_CL+1.3);
-  st(CUR,{opacity:f3(dec(t,B(50.4),B(50.4)+0.35)*(1-out)),transform:`translate(${f1(lerp(1620,OKB.x,pm)+140*out-6)}px,${f1(lerp(1040,OKB.y,pm)+100*out-3)}px) scale(${f3(1-0.12*press)})`});
-  const done=FQ(t)>=T_CNT;nApp.textContent=done?'1':'0';nRev.textContent=done?'5':'6';
-  const gc=dec(t,T_CNT,T_CNT+0.4)*(1-io(t,T_CNT+0.9,T_CNT+2.4));
-  statEls[2].style.boxShadow=`0 0 0 1.5px rgba(255,190,248,0.55),0 0 22px rgba(206,64,240,0.3)`+(gc>0.002?`,0 0 ${f1(36*gc)}px rgba(11,132,71,${f3(0.6*gc)}),inset 0 0 0 ${f2(2*gc)}px rgba(11,132,71,${f3(0.6*gc)})`:'');
+  const pf=io(t,K_DEC,T_FLAT), pe=dec(t,K_DEC,K_DEC+0.6), ps=dec(t,K_DEC+0.15,K_DEC+0.75), push=1+0.02*P(t,T_DLG,K_SHD);
+  // the page dims under the confirm and its success (T_DLG..T_APP), and under the passport
+  const dim=1-0.55*Math.max(dec(t,T_DLG,T_DLG+0.2)*(1-dec(t,T_APP,T_APP+0.25)),dec(t,T_PASS,T_PASS+0.25));
+  const app=FQ(t)>=T_OK;                  // behind «تم بنجاح» the list already shows the approval (the app reloads it first)
+  const tilt={z:-160*(1-pf),rx:22*(1-pf),ry:-12*(1-pf),s:push};
+  [[dStats,dStatsA,SC7,94,ps],[dCard,dCardA,CC7,206,pe]].forEach(([a,b,c,h,o])=>{
+    const tr=T3(c.x,c.y+(1-pf)*60,W7,h*DK,tilt);
+    st(a,{display:app?'none':'',opacity:f3(o*dim),transform:tr});st(b,{display:app?'':'none',opacity:f3(o*dim),transform:tr});});
+  const ga=dec(t,T_APP,T_APP+0.35)*(1-io(t,T_APP+0.8,T_APP+2.2));   // the approval lands: the counters and the card glow green
+  [dStatsA,dCardA].forEach(e=>e.style.boxShadow=`0 0 0 1.5px rgba(214,170,255,0.38),0 0 30px rgba(170,70,240,0.22),0 26px 60px rgba(4,2,14,0.55)`+
+    (ga>0.002?`,0 0 ${f1(40*ga)}px rgba(11,180,100,${f3(0.55*ga)}),0 0 0 ${f2(2*ga)}px rgba(80,220,150,${f3(0.7*ga)})`:''));
+  const pd=dec(t,T_DLG,T_DLG+0.22), pt=dec(t,T_OK,T_OK+0.2), outT=io(t,T_APP-0.1,T_APP+0.2);
+  st(dDlg,{display:t>=T_DLG&&t<T_OK?'':'none',opacity:f3(pd),transform:T3(DG.x,DG.y+(1-pd)*30,448*DLK,322*DLK,{z:120,s:0.94+0.06*pd})});
+  st(dDone,{display:t>=T_OK&&outT<1?'':'none',opacity:f3(pt*(1-outT)),transform:T3(DG.x,DG.y,448*DLK,110*DLK,{z:120,s:(0.94+0.06*pt)*(1-0.04*outT)})});
+  const pp=dec(t,T_PASS,T_PASS+0.4);         // the passport rises in front, sealed
+  st(dPass,{display:t>=T_PASS-0.02?'':'none',opacity:f3(pp),filter:pp<1?`blur(${f2((1-pp)*6)}px)`:'none',
+    transform:T3(PG.x,PG.y+(1-pp)*50,672*PK,PH*PK,{z:160,rx:8*(1-pp),s:0.95+0.05*pp})});
+  const pl=dec(t,T_PASS+0.25,T_PASS+0.65);st(passL,{display:pl>0.002?'':'none',opacity:f3(pl)});   // centred over the passport
+  if(pl>0.002){if(!PLW)PLW=passL.offsetWidth;st(passL,{left:f1(PG.x-PLW/2)+'px',top:f1(PG.y-PH*PK/2-66+(1-pl)*10)+'px'});}
+  // the cursor: in, «موافقة», over to «تأكيد الموافقة», back to «جواز القرار», away
+  const m1=io(t,B(48.75),T_DLG-PRE-0.05), m2=io(t,T_DLG+0.15,T_OK-PRE-0.05), m3=io(t,T_APP+0.1,T_PASS-PRE-0.05), out=io(t,T_PASS+0.05,T_PASS+0.5);
+  const press=c=>Math.sin(Math.PI*P(t,c-0.05,c+0.18)), pk=Math.max(press(T_DLG-PRE),press(T_OK-PRE),press(T_PASS-PRE));
+  const cx=lerp(lerp(lerp(1640,OK1.x,m1),OK2.x,m2),OK1.x,m3)+140*out, cy=lerp(lerp(lerp(1040,OK1.y,m1),OK2.y,m2),OK1.y,m3)+100*out;
+  st(CUR,{opacity:f3(dec(t,B(48.75),B(48.75)+0.35)*(1-out)),transform:`translate(${f1(cx-6)}px,${f1(cy-3)}px) scale(${f3(1-0.12*pk)})`,zIndex:'5'});
 });
-jt({at:B(48.4),out:B(53.7),y:118,size:66,words:['Decision','to',{t:'action.',g:1}],ar:'من القرار إلى التنفيذ.',arSize:36,fade:[B(53.1),B(53.7)]});
-jt({at:B(53.7),out:K_SHD,y:118,size:66,words:['Nothing','in',{t:'between.',g:1}],ar:'بلا خطوات بينهما.',arSize:36});
+jt({at:B(48.4),out:K_SHD,y:118,size:66,words:[{t:'Marsad',g:1},'watches.','You',{t:'decide.',g:1}],ar:'مرصد يراقب. وأنت تقرّر.',arSize:36});
 
 /* ================= k56-64 defence in depth: six rings snap in around the mark, with their layers ================= */
 const SHD=M.el('div','jp-shot',null,TXT);
-const LAYERS=[['ACCESS CONTROLS','التحكم بالوصول'],['DATA PROTECTION','حماية البيانات'],['NETWORK SECURITY','أمن الشبكة'],
-  ['APPLICATION SECURITY','أمن التطبيقات'],['MONITORING & AUDIT','المراقبة والتدقيق'],['SOVEREIGN INFRASTRUCTURE','بنية تحتية سيادية']];
+const LAYERS=[['EACH COMPANY WALLED OFF','بيانات كل شركة معزولة'],['PERSONAL-DATA MASKING','إخفاء البيانات الشخصية'],      // live features only
+  ['ROLES & PERMISSIONS','الأدوار والصلاحيات'],['INVITE-ONLY ACCESS','الدخول بدعوة فقط'],['WORKSPACES PER BRANCH','مساحة عمل لكل فرع'],['AUDIT LOG','سجل التدقيق']];
 const LYR=LAYERS.map(([en,ar],i)=>{const r=SR(i),a=-2.36;
   const tag=M.el('div','sh-tag',`L0${i+1}`,SHD);st(tag,{left:f1(SC.x+r*Math.cos(a))+'px',top:f1(SC.y+r*Math.sin(a))+'px'});
   const row=M.el('div','sh-row',`<b>L0${i+1}</b><span class="en">${en}</span><span class="ar">${ar}</span>`,SHD);st(row,{top:(356+74*i)+'px'});
@@ -379,8 +420,8 @@ M.track(t=>{
     const pr=dec(t,s.t0+S16,s.t0+S16+0.6);
     st(s.row,{opacity:f3(pr),filter:pr<1?`blur(${f2((1-pr)*10)}px)`:'none',transform:`translateX(${f1((1-pr)*34)}px)`});}
 });
-jt({at:B(56.5),out:K_AR,y:84,size:56,words:['Defense','in','depth.','Sovereign.',{t:'PDPL-compliant.',g:1}],
-  ar:'دفاع متعدد الطبقات — بنية سيادية متوافقة مع نظام حماية البيانات الشخصية.',arSize:30});
+jt({at:B(56.5),out:K_AR,y:84,size:56,words:['Built','with','personal-data',{t:'masking',g:1},'and','an',{t:'audit trail.',g:1}],
+  ar:'مبني على إخفاء البيانات الشخصية وسجلّ للتدقيق.',arSize:36});   // the catalogue's most: no "sovereign", no "PDPL-compliant"
 
 /* ================= k64-66 «بالعربية», huge ================= */
 const BG11=M.el('div','jbig',`<span class="a g">بالعربية</span><span class="a w">بالعربية</span><span class="s">Ask in Arabic.</span>`,TXT);
@@ -395,39 +436,36 @@ M.track(t=>{
   st(bS,{left:f1(1920-170-BW+10)+'px',top:'700px',opacity:f3(ps),filter:ps<1?`blur(${f2((1-ps)*10)}px)`:'none'});
 });
 
-/* ================= k66-74 the Assistant: the Arabic question typed and sent, the answer streamed from the data ================= */
+/* ================= k66-74 the Assistant: the Arabic question typed and sent; it thinks; the answer, with its sources ================= */
+// The app's own assistant page (pages/chat-*): its thread panel in four states. The typing uncovers the captured typed
+// field letter by letter, right to left, over the focused empty one; then «المساعد يفكّر…»; then the answer with
+// «المصادر» (the app answers in one piece, it does not stream). The panel pushes in on the answer.
 const SH9=M.el('div','jp-shot',null,SCN), D9=M.el('div','jp-3d',null,SH9);
-const Q='لماذا انخفضت مبيعات الرياض هذا الأسبوع؟';
-const ANS=['انخفضت','المبيعات','§','بسبب','نفاد','المخزون','في','ثلاثة','فروع','—','تم','إنشاء','طلبات','التوريد','تلقائيًا.'];
-const ask=M.el('div','as-card',
-  `<div class="hd"><span class="bt">${SK.ic('bot',26,'#fff',2)}</span><span class="nm">مساعد مرصد الذكي</span>`+
-  `<span class="ws">${SK.ic('chevDown',18,'#52505A',2)}<span>كل مساحة العمل</span></span></div><div class="dv"></div>`+
-  `<div class="um">${Q}</div>`+
-  `<div class="an"><span class="av">${SK.ic('bot',24,'#fff',2)}</span><div class="ac"><div class="tx"></div>`+
-  `<span class="chip">${SK.ic('check',16,'#0B8447',2.6)}<span>مبني على بياناتك الأصلية — بدون اختلاق</span></span></div></div>`+
-  `<div class="ir"><div class="in"><span class="ph">اسأل مرصد عن أي شيء بخصوص بياناتك...</span><span class="qq"></span><i class="caret"></i></div>`+
-  `<span class="send">${SK.ic('send',28,'#fff',2)}</span></div>`,D9);
-const aUM=ask.querySelector('.um'),aAN=ask.querySelector('.an'),aTX=ask.querySelector('.tx'),aCH=ask.querySelector('.chip'),
-  aPH=ask.querySelector('.ph'),aQQ=ask.querySelector('.qq'),aCa=ask.querySelector('.caret'),aSend=ask.querySelector('.send');
-const T_TYPE=B(66.5334), CPS=30, T_SEND=B(69.3066), T_POST=B(69.52), T_ANS=B(69.84), T_W=B(70.0534), T_CHIP=B(72.7692);
-let lastTx='';
+const AK=2, TH=[32,235,816,532];
+const AS=M.el('div','rx-stack',null,D9);st(AS,{width:f1(TH[2]*AK)+'px',height:f1(TH[3]*AK)+'px'});
+const APL=['chat-thread','chat-space-thread','chat-thinking-thread','chat-answer-thread'].map(f=>plate(AS,f+'.png',TH[2],TH[3],AK,{r:16}));
+const FB=[117,695,706,48], TX0=458, TX1=688;          // the field, and the typed question's span inside it (app px, measured)
+const aTyped=over(APL[1],'chat-typed-field.png',FB,TH,AK), aSendOn=over(APL[1],'chat-typed-send.png',[57,702,48,48],TH,AK),
+  aCaret=over(APL[1],null,[FB[0],FB[1]+14,1.1,20],TH,AK,'rx-sub rx-caret'),
+  srcG=over(APL[3],null,[209.5,388.3,556.5,73],TH,AK,'rx-sub rx-glow v');   // round «المصادر» and its chips, 8 px clear
+srcG.style.borderRadius=f1(12*AK)+'px';
+const QN=39;                                          // «لماذا انخفضت مبيعات الرياض هذا الأسبوع؟»
+const T_TYPE=B(66.375), CPS=36, T_THINK=B(69), T_SEND=T_THINK-0.15, T_ANS=B(70), T_SRC=B(71);
 M.track(t=>{
   if(!show(SH9,inShot(t,K_ASK,K_BR)))return;
-  const pe=dec(t,K_ASK,K_ASK+0.7), u=P(t,K_ASK,K_BR);
-  st(ask,{opacity:f3(pe),filter:pe<1?`blur(${f2((1-pe)*8)}px)`:'none',transform:T3(960,622+(1-pe)*120,1100,590,{rx:lerp(14,3,u),ry:lerp(-10,-2,u),s:1.08})});
-  const q=FQ(t), n=q>=T_SEND+0.1?0:Math.max(0,Math.min(Q.length,Math.floor((q-T_TYPE)*CPS)));
-  aQQ.textContent=Q.slice(0,n);aPH.style.display=n>0?'none':'';
-  aCa.style.opacity=t>=T_TYPE-0.3&&t<T_SEND+0.1?'1':'0';
-  const pk=P(t,T_SEND,T_SEND+0.3);aSend.style.background=n>0||(pk>0&&pk<1)?'#5909B4':'#C9A8E6';
-  aSend.style.transform=`scale(${f3(1-0.06*Math.sin(Math.PI*pk))})`;
-  const pu=dec(t,T_POST,T_POST+0.5);st(aUM,{opacity:f3(pu),transform:`translateY(${f1((1-pu)*40)}px)`});
-  const pa=dec(t,T_ANS,T_ANS+0.5);st(aAN,{opacity:f3(pa),transform:`translateY(${f1((1-pa)*24)}px)`});
-  const nw=q<T_W?0:Math.min(ANS.length,Math.floor((q-T_W)/S32)+1);
-  const tx=ANS.slice(0,nw).map(w=>w==='§'?'<span class="hl">8.2%</span>':w).join(' ');
-  if(tx!==lastTx){aTX.innerHTML=tx;lastTx=tx;}
-  const pc=dec(t,T_CHIP,T_CHIP+0.5);st(aCH,{opacity:f3(pc),transform:`scale(${f3(0.94+0.06*pc)})`});
+  const pe=dec(t,K_ASK,K_ASK+0.7), u=P(t,K_ASK,K_BR), pz=io(t,T_THINK,T_ANS+0.6);
+  st(AS,{opacity:f3(pe),filter:pe<1?`blur(${f2((1-pe)*8)}px)`:'none',
+    transform:T3(960,lerp(600,831,pz)+(1-pe)*120,TH[2]*AK,TH[3]*AK,{rx:lerp(12,3,u),ry:lerp(-8,-1,u),s:lerp(0.78,0.94,pz)})});
+  const q=FQ(t), n=Math.max(0,Math.min(QN,Math.floor((q-T_TYPE)*CPS)+1)), k=q>=T_ANS?3:q>=T_THINK?2:q>=T_TYPE?1:0;
+  APL.forEach((e,i)=>e.style.display=i===k?'':'none');
+  if(k===1){const xr=TX1-(TX1-TX0)*n/QN;
+    aTyped.style.clipPath=`inset(0 0 0 ${f1(xr*AK)}px)`;
+    st(aCaret,{left:f1((FB[0]-TH[0]+xr-1.8)*AK)+'px'});
+    aSendOn.style.transform=`scale(${f3(1-0.08*Math.sin(Math.PI*P(t,T_SEND-0.05,T_SEND+0.2)))})`;}
+  if(k===3)srcG.style.opacity=f3(dec(t,T_SRC,T_SRC+0.35)*(1-0.4*io(t,T_SRC+0.6,T_SRC+1.6)));   // its sources: the proof
 });
-jt({at:B(70.16),out:K_BR,y:64,size:52,step:S16,words:['The','answer','comes','from','your',{t:'original',g:1},{t:'data.',g:1}],ar:'الإجابة من بياناتك الأصلية.',arSize:32});
+jt({at:B(69.75),out:K_BR,y:64,size:52,step:S16,words:['The','answer','comes','from','your',{t:'original',g:1},{t:'data.',g:1}],
+  ar:'الإجابة من بياناتك الأصلية.',arSize:36,arAt:B(70.75)});
 
 /* ================= k74-80 the breath, held through the track's break (k76-79) ================= */
 jt({at:B(74.3),out:K_END,y:352,size:92,step:S8,words:['One','operational','\n','nervous',{t:'system.',g:1}],ar:'جهاز عصبي تشغيلي واحد لشركتك.',arSize:44});

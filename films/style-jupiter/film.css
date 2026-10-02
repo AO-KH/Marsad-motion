@@ -73,13 +73,9 @@
   color:#F4E6FF;font:500 17px 'PlexAR';white-space:nowrap;direction:rtl;}
 
 /* the app's page in perspective, framed by a glowing rim */
-.jp-ui{position:absolute;left:0;top:0;width:1896px;height:1060px;border-radius:26px;overflow:hidden;background:#fff;
+.jp-ui{position:absolute;left:0;top:0;width:1896px;height:1060px;border-radius:26px;overflow:hidden;background:#0B0E1A;
   box-shadow:0 0 0 3px rgba(255,190,248,0.9),0 0 40px 6px rgba(206,64,240,0.55),0 0 120px 20px rgba(122,40,220,0.35);}
 .jp-ui img{display:block;width:100%;height:100%;}
-/* a real card with a glowing rim */
-.jp-card{position:absolute;left:0;top:0;background:#fff;border-radius:22px;
-  box-shadow:0 0 0 2.5px rgba(255,190,248,0.85),0 0 36px 4px rgba(206,64,240,0.5),0 30px 80px rgba(0,0,0,0.5);}
-.jp-card.soft{box-shadow:0 30px 70px rgba(90,30,150,0.28),0 6px 18px rgba(90,30,150,0.12);}
 .jp-cur{position:absolute;left:0;top:0;width:54px;height:54px;filter:drop-shadow(0 4px 10px rgba(0,0,0,0.5));}
 
 /* k52-60: the defence layers */
@@ -97,33 +93,6 @@
 .jbig .a.w{color:#F7F4FB;}
 .jbig .s{position:absolute;left:420px;top:720px;font:500 64px 'Inter';letter-spacing:-0.02em;color:#F4F1FA;white-space:nowrap;}
 
-/* k62.5-70: the Assistant (the app's AI assistant: its name, workspace filter, input and placeholder) */
-.as-card{position:absolute;left:0;top:0;width:1100px;height:590px;background:#fff;direction:rtl;border-radius:28px;
-  box-shadow:0 0 0 2.5px rgba(255,190,248,0.85),0 0 36px 4px rgba(206,64,240,0.45),0 30px 80px rgba(0,0,0,0.5);}
-.as-card>*{position:absolute;}
-.as-card .hd{right:30px;left:30px;top:24px;height:56px;display:flex;align-items:center;gap:14px;direction:rtl;}
-.as-card .bt,.as-card .av{width:52px;height:52px;border-radius:16px;background:linear-gradient(140deg,#5F0DB4,#BC59D1);display:flex;align-items:center;justify-content:center;flex:none;}
-.as-card .nm{font:700 27px 'PlexAR';color:var(--ink);white-space:nowrap;}
-.as-card .ws{margin-right:auto;height:46px;padding:0 18px;border-radius:14px;border:1.5px solid #D6D5DA;display:inline-flex;align-items:center;gap:14px;
-  font:500 18px 'PlexAR';color:var(--ink);white-space:nowrap;direction:ltr;}
-.as-card .dv{left:0;right:0;top:100px;height:1.5px;background:#EEEDF2;}
-.as-card .um{left:30px;top:128px;padding:16px 28px;border-radius:24px 24px 24px 8px;background:linear-gradient(95deg,#5F0DB4,#8E32C3 60%,#BC59D1);
-  color:#fff;font:600 25px 'PlexAR';white-space:nowrap;}
-.as-card .an{right:30px;left:30px;top:222px;display:flex;align-items:flex-start;gap:16px;direction:rtl;}
-.as-card .av{width:48px;height:48px;border-radius:15px;}
-.as-card .ac{flex:1;min-height:168px;padding:20px 28px 22px;border-radius:8px 24px 24px 24px;background:#F8F7FC;border:1.5px solid #E5E4E9;}
-.as-card .tx{font:500 26px/1.75 'PlexAR';color:var(--ink);min-height:92px;}
-.as-card .tx .hl{color:var(--pd);font:700 26px 'Inter';background:var(--pl);padding:0 8px;border-radius:8px;}
-.as-card .chip{display:inline-flex;align-items:center;gap:8px;height:38px;padding:0 16px;border-radius:19px;background:#E7F5EE;color:#0B8447;
-  font:500 17px 'PlexAR';white-space:nowrap;margin-top:10px;}
-.as-card .ir{right:30px;left:30px;bottom:26px;height:72px;}
-.as-card .in{position:absolute;right:0;left:98px;top:0;height:72px;border:1.5px solid #CECDD2;border-radius:20px;background:#fff;padding:0 28px;
-  display:flex;align-items:center;direction:rtl;white-space:nowrap;overflow:hidden;}
-.as-card .ph{font:400 22px 'PlexAR';color:#6C6A72;}
-.as-card .qq{font:600 25px 'PlexAR';color:var(--ink);}
-.as-card .caret{display:inline-block;width:2.5px;height:32px;margin-right:4px;background:#8E32C3;border-radius:2px;}
-.as-card .send{position:absolute;left:0;top:0;width:78px;height:72px;border-radius:18px;background:#C9A8E6;display:flex;align-items:center;justify-content:center;}
-
 /* the end: the URL in a glowing capsule, the mark, "Book your demo" */
 .jcap{position:absolute;left:0;top:0;border-radius:999px;background:#07050F;display:flex;align-items:center;justify-content:center;
   box-shadow:inset 0 0 0 2px rgba(255,215,250,0.95),inset 0 0 16px 5px rgba(214,70,240,0.85),inset 0 0 46px 14px rgba(110,30,200,0.55),
@@ -134,3 +103,26 @@
 .jbook .ar{font:500 34px 'PlexAR';}
 .jbook .sep{color:rgba(244,241,250,0.4);margin:0 14px;}
 .jft{position:absolute;left:0;top:976px;width:1920px;text-align:center;font:600 17px 'JBMono';letter-spacing:0.32em;color:#F4F1FA;}
+/* the real app's screens (dark mode captures, films/style-jupiter/pages/): parts drawn at the size they show; parts laid
+   over them (.rx-sub: the typed question, the send button, a glow); the passport's parchment */
+.rx-part{position:absolute;left:0;top:0;background-repeat:no-repeat;background-color:#0D1020;transform-origin:50% 50%;
+  box-shadow:0 0 0 1.5px rgba(214,170,255,0.38),0 0 30px rgba(170,70,240,0.22),0 26px 60px rgba(4,2,14,0.55);}
+.rx-label{position:absolute;left:56px;top:44px;height:40px;padding:0 18px;border-radius:20px;display:flex;align-items:center;white-space:nowrap;
+  background:rgba(20,12,40,0.55);box-shadow:inset 0 0 0 1px rgba(214,170,255,0.25);}
+.rx-label .en{font:500 17px 'Inter';color:rgba(244,241,250,0.78);}
+.rx-label .sep{margin:0 9px;font:500 17px 'Inter';color:rgba(244,241,250,0.32);}
+.rx-label .ar{font:500 17px 'PlexAR';color:rgba(244,241,250,0.72);direction:rtl;}
+.rx-stack{position:absolute;left:0;top:0;}
+.rx-sub{position:absolute;background-repeat:no-repeat;pointer-events:none;}
+.rx-glow{opacity:0;box-shadow:0 0 0 2px rgba(90,225,155,0.85),0 0 26px 4px rgba(11,180,100,0.55);}
+.rx-glow.v{box-shadow:0 0 0 2.5px rgba(242,170,255,0.9),0 0 34px 6px rgba(206,64,240,0.5);}
+.rx-caret{border-radius:1px;background:#EDE6F7;}
+.rx-pass{background-color:#F3EDE0;box-shadow:0 0 0 1.5px rgba(232,214,176,0.95),0 0 46px rgba(206,64,240,0.3),0 34px 80px rgba(4,2,14,0.7);}
+.rx-cap{height:48px;padding:0 22px;border-radius:24px;background:rgba(28,14,52,0.78);box-shadow:inset 0 0 0 1.5px rgba(232,214,176,0.5);}
+.rx-cap .en,.rx-cap .sep,.rx-cap .ar{font-size:23px;}
+.rx-cap .en{color:rgba(250,246,236,0.92);}
+.rx-cap .ar{color:rgba(250,246,236,0.85);}
+.rx-label.lt{background:rgba(255,255,255,0.62);box-shadow:inset 0 0 0 1px rgba(60,20,110,0.22);}
+.rx-label.lt .en{color:rgba(23,18,31,0.8);}
+.rx-label.lt .sep{color:rgba(23,18,31,0.35);}
+.rx-label.lt .ar{color:rgba(23,18,31,0.75);}

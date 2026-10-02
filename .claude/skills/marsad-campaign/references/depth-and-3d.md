@@ -19,6 +19,8 @@ The 48 s film and the starter place each part in a `perspective: 1600px` contain
   - Draw a plate at the size it shows on screen: its CSS width and height are the box it fills, and its transform has no scale-up. Chrome rasters a 3D-transformed layer at about its own size, so a small plate scaled up in 3D comes out soft in the 4K final. The 5× screenshots leave room for close-ups.
   - The app's states are its own screenshots. A panel opening is a layer with the next state's screenshot fading in over 0.12 s. Typing is one screenshot per character, stepped on `M.FQ(t)`. A result snaps in, as the app does.
   - A part lifts off its plate as a box of the same picture (`part(plate, src, box, k, full)`), positioned by the box `shots.json` gives.
+  - Prefer each part's own crop (`pages/<state>-<part>.png`, `background-size: 100% 100%`) to a box of the whole page: a 7200 px page decodes to over 100 MB in every render job (`films/style-jupiter`'s `plate` and `over`).
+  - Typing from one screenshot: lay the typed state's field over the focused empty one (captured with a space typed, so the placeholder is gone) and uncover it right to left, one step per character on `M.FQ(t)` (`clip-path: inset(0 0 0 Xpx)`), with a drawn caret at the edge (`films/style-jupiter`, the assistant).
 - **A real part lifting out of its page:**
   - Make the part a child of the page element, with `transform-style: preserve-3d` on the page. Move it along the page's own normal with `translateZ(d)` (the starter lifts the executed card by 170 px and scales it 1.08, glowing green).
   - The page element can't have `overflow: hidden` (it flattens the 3D). Round it with `border-radius` on its background.
