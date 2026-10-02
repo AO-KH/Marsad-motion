@@ -5,7 +5,14 @@
 //    (demos/<slug>/app/capture.js: routes), in order, first match wins; anything unmatched gets {} and is logged as NEW,
 //  - Google Fonts answered from local files (FONTS: the same files the snapshots use, so the layout is the same),
 //  - the Next.js dev indicator hidden,
-//  - the app's light or dark mode (capture.js: theme; the app keeps it in localStorage marsad.theme).
+//  - the app's light or dark mode (capture.js: theme; the app keeps it in localStorage marsad.theme),
+//  - the app's language (capture.js: lang, 'ar' by default; since 2026-10-02 the app is bilingual and keeps the choice in
+//    localStorage marsad.lang),
+//  - the Effra font the 2026-10-02 front end loads from fonts.cdnfonts.com: answered from build/font-cache/<host>/<path>
+//    when a copy is there, else passed on to the network as the app would load it. Fill the cache once (it is not
+//    committed: the font is the app's, served by cdnfonts):
+//      curl --create-dirs -o build/font-cache/fonts.cdnfonts.com/css/effra https://fonts.cdnfonts.com/css/effra
+//      curl --create-dirs -o build/font-cache/fonts.cdnfonts.com/s/13762/Effra_Std_Rg.woff https://fonts.cdnfonts.com/s/13762/Effra_Std_Rg.woff
 const fs = require('fs'), path = require('path');
 const ROOT = path.join(__dirname, '..', '..');
 const ICONS_FULL = 'node_modules/material-symbols/material-symbols-outlined.woff2';   // npm install (devDependency)
@@ -50,17 +57,23 @@ function responder(routes) {
 }
 const safeJson = s => { try { return JSON.parse(s); } catch (e) { return s; } };
 
-exports.setup = async function setup(ctx, { routes, log = [], theme = 'light' } = {}) {
+exports.setup = async function setup(ctx, { routes, log = [], theme = 'light', lang = 'ar' } = {}) {
   const respond = responder(routes);
-  await ctx.addInitScript(({ user, theme }) => {
+  await ctx.addInitScript(({ user, theme, lang }) => {
     localStorage.setItem('marsad.auth.session', JSON.stringify({ access_token: 't', refresh_token: 'r', expires_at: 4102444800, token_type: 'bearer', user }));
     localStorage.setItem('marsad.theme', theme);                       // the app's own light/dark choice (avatar menu)
+    localStorage.setItem('marsad.lang', lang);                         // the app's language (account menu; Arabic by default)
     document.addEventListener('DOMContentLoaded', () => { const s = document.createElement('style');
       s.textContent = 'nextjs-portal{display:none!important}'; document.head.appendChild(s); });
-  }, { user: USER, theme });
+  }, { user: USER, theme, lang });
   await ctx.route(/\/\/localhost:808\d\//, route => { const r = route.request(), res = respond(r.method(), r.url(), r.postData());
     log.push((res.hit ? '    ' : 'NEW ') + r.method() + ' ' + r.url().replace(/^https?:\/\/localhost:/, ':'));
     route.fulfill({ status: 200, contentType: 'application/json', headers: { 'access-control-allow-origin': '*' }, body: JSON.stringify(res.body) }); });
+  await ctx.route(/\/\/fonts\.cdnfonts\.com\//, route => { const u = new URL(route.request().url());
+    const file = path.join(ROOT, 'build', 'font-cache', u.host, decodeURIComponent(u.pathname));
+    if (!fs.existsSync(file)) { log.push('NET ' + u.href); return route.continue(); }
+    route.fulfill({ status: 200, contentType: /\.woff2?$/.test(u.pathname) ? 'font/' + u.pathname.split('.').pop() : 'text/css',
+      headers: { 'access-control-allow-origin': '*' }, body: fs.readFileSync(file) }); });
   await ctx.route(/fonts\.googleapis\.com\/css2/, route => { const fam = new URL(route.request().url()).searchParams.getAll('family').join('|');
     const only = new RegExp(fam.split('|').map(f => f.split(':')[0].replace(/\+/g, ' ')).join('|'));
     route.fulfill({ status: 200, contentType: 'text/css', headers: { 'access-control-allow-origin': '*' }, body: fontCss(f => `https://fonts.gstatic.com/rx/${f}`, only) }); });

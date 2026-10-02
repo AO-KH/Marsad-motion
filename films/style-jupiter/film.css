@@ -73,7 +73,7 @@
   color:#F4E6FF;font:500 17px 'PlexAR';white-space:nowrap;direction:rtl;}
 
 /* the app's page in perspective, framed by a glowing rim */
-.jp-ui{position:absolute;left:0;top:0;width:1896px;height:1060px;border-radius:26px;overflow:hidden;background:#0B0E1A;
+.jp-ui{position:absolute;left:0;top:0;width:1896px;height:1060px;border-radius:6px;overflow:hidden;background:#0B0A10;
   box-shadow:0 0 0 3px rgba(255,190,248,0.9),0 0 40px 6px rgba(206,64,240,0.55),0 0 120px 20px rgba(122,40,220,0.35);}
 .jp-ui img{display:block;width:100%;height:100%;}
 .jp-cur{position:absolute;left:0;top:0;width:54px;height:54px;filter:drop-shadow(0 4px 10px rgba(0,0,0,0.5));}
@@ -105,7 +105,7 @@
 .jft{position:absolute;left:0;top:976px;width:1920px;text-align:center;font:600 17px 'JBMono';letter-spacing:0.32em;color:#F4F1FA;}
 /* the real app's screens (dark mode captures, films/style-jupiter/pages/): parts drawn at the size they show; parts laid
    over them (.rx-sub: the typed question, the send button, a glow); the passport's parchment */
-.rx-part{position:absolute;left:0;top:0;background-repeat:no-repeat;background-color:#0D1020;transform-origin:50% 50%;
+.rx-part{position:absolute;left:0;top:0;background-repeat:no-repeat;background-color:#0B0A10;transform-origin:50% 50%;
   box-shadow:0 0 0 1.5px rgba(214,170,255,0.38),0 0 30px rgba(170,70,240,0.22),0 26px 60px rgba(4,2,14,0.55);}
 .rx-label{position:absolute;left:56px;top:44px;height:40px;padding:0 18px;border-radius:20px;display:flex;align-items:center;white-space:nowrap;
   background:rgba(20,12,40,0.55);box-shadow:inset 0 0 0 1px rgba(214,170,255,0.25);}

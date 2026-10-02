@@ -8,6 +8,7 @@
 // It reads films/<slug>/app/capture.js (or demos/<slug>/app/capture.js), app_snap's format plus two keys:
 //   module.exports = {
 //     viewport: {width: 1440, height: 805}, theme: 'dark', routes: [...],      // as in app_snap
+//     lang: 'ar',                                // the app's language since it went bilingual (2026-10-02): 'ar' (default) or 'en'
 //     dpr: 5,                                    // the pixel ratio of the PNGs (5: a 1440 px page is 7200 px wide, sharp in 4K close-ups)
 //     states: [{key, url, run, wait, crops: {name: page => locator}}, ...],    // crops: parts saved on their own
 //   };
@@ -48,9 +49,9 @@ async function server() {
   await server();
   const vp = spec.viewport || { width: 1440, height: 805 }, dpr = spec.dpr || 5;
   const browser = await chromium.launch({ executablePath: CHROME });
-  const ctx = await browser.newContext({ viewport: vp, deviceScaleFactor: dpr, locale: 'ar', colorScheme: spec.theme === 'dark' ? 'dark' : 'light' });
+  const ctx = await browser.newContext({ viewport: vp, deviceScaleFactor: dpr, locale: spec.lang === 'en' ? 'en-GB' : 'ar', colorScheme: spec.theme === 'dark' ? 'dark' : 'light' });
   const log = [];
-  await setup(ctx, { routes: spec.routes, log, theme: spec.theme || 'light' });
+  await setup(ctx, { routes: spec.routes, log, theme: spec.theme || 'light', lang: spec.lang || 'ar' });
   const page = await ctx.newPage();
   page.on('pageerror', e => console.log('  app error:', e.message.slice(0, 160)));
   const boxes = {}, sizes = {};

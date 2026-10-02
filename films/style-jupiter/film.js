@@ -9,6 +9,9 @@
    catalogue of 2026-10-01: the source tiles are Odoo, spreadsheets, Google Drive, WhatsApp and documents; the loop's last
    step is Decide; the decision ends approved and sealed in its passport (no purchase order); the shield names live
    features only; no "real time", "sovereign" or "PDPL-compliant"; the assistant answers from the data and creates nothing.
+   The same day the client sent the new front end ("This the new front end edit the video to it": bilingual Arabic/English,
+   and the MARSAD × Fusion look: flat, squared, Effra with IBM Plex Sans Arabic). The screens were captured again from it,
+   in Arabic (its default), and the parts drawn square like its panels.
    House rules kept: English + Arabic on every line, Western digits, no shake (punches <= 1.5%), nothing on every beat, no
    orb behind the logo, "Book your demo" and marsadnasl.com at the end. Sound effects only on four transitions: a whoosh
    (tools/sfx.py `swoosh`) into the mark (k16), the Pulse flyover (k38), the shield (k56) and the end (k80), with the
@@ -54,7 +57,7 @@ const inShot=(t,a,b)=>t>=a&&t<b;
 // data). Each part is its own PNG (pages/<state>-<part>.png; boxes in app px in pages/shots.json), drawn at k stage px
 // per app px: the size it shows, so it stays sharp
 const IMG='films/style-jupiter/pages/';
-const plate=(parent,file,w,h,k,{cls='rx-part',r=12}={})=>{const e=M.el('div',cls,null,parent);
+const plate=(parent,file,w,h,k,{cls='rx-part',r=0}={})=>{const e=M.el('div',cls,null,parent);
   st(e,{width:f1(w*k)+'px',height:f1(h*k)+'px',borderRadius:f1(r*k)+'px',backgroundImage:`url(${IMG}${file})`,backgroundSize:'100% 100%'});return e;};
 // a part laid over a plate (its box and the plate's in the same page's app px): typed text, a send button, a glow
 const over=(pl,file,[x,y,w,h],[px,py],k,cls='rx-sub')=>{const e=M.el('div',cls,null,pl);
@@ -342,8 +345,8 @@ jt({at:B(38.5),out:K_NUM,y:64,size:60,words:['Operational',{t:'recommendations',
 // the first recommendation opened (pages/pulse-open-card.png): its numbers in the text; «مبني على بياناتك» glows on k45.33
 const SH6b=M.el('div','jp-shot',null,SCN), D6b=M.el('div','jp-3d',null,SH6b);
 const RK=1.5, RB=[208,277,1024,251.5];
-const REC=plate(D6b,'pulse-open-card.png',RB[2],RB[3],RK,{r:16});
-const pillG=over(REC,null,[1008.3,298,112.9,26],RB,RK,'rx-sub rx-glow');pillG.style.borderRadius=f1(13*RK)+'px';
+const REC=plate(D6b,'pulse-open-card.png',RB[2],RB[3],RK);
+const pillG=over(REC,null,[1010.3,298,111.6,26],RB,RK,'rx-sub rx-glow');pillG.style.borderRadius=f1(13*RK)+'px';
 M.track(t=>{
   if(!show(SH6b,inShot(t,K_NUM,K_DEC)))return;
   const pe=dec(t,K_NUM+0.1,K_NUM+0.8), u=P(t,K_NUM,K_DEC);
@@ -358,11 +361,11 @@ jt({at:K_NUM+0.05,out:K_DEC,y:300,size:84,cls:'dark',step:S16*1.5,words:['From',
 // counts move (under review 6 → 5, approved 0 → 1); then «جواز القرار» opens its passport, sealed: «السلسلة سليمة — لا يوجد عبث».
 const SH7=M.el('div','jp-shot',null,SCN), D7=M.el('div','jp-3d',null,SH7);
 const DK=1.16, DLK=1.55, PK=1.5, PH=303;          // stage px per app px: the card and counters, the dialogs, the passport
-const BX={card:[32,460,1120,206],ok1:[53,481,107.4,38],dialog:[496,253.5,448,322],ok2:[521,506.5,153.9,44]};
+const BX={card:[32,476,1120,206],ok1:[53,497,106.7,38],dialog:[496,253.5,448,322],ok2:[521,506.5,153.1,44]};
 const dStats=plate(D7,'decisions-stats.png',1120,94,DK), dStatsA=plate(D7,'after-stats.png',1120,94,DK),
   dCard=plate(D7,'decisions-card.png',1120,206,DK), dCardA=plate(D7,'after-card.png',1120,206,DK),
-  dDlg=plate(D7,'confirm-dialog.png',448,322,DLK,{r:16}), dDone=plate(D7,'done-dialog.png',448,110,DLK,{r:16}),
-  dPass=plate(D7,'passport-modal.png',672,PH,PK,{cls:'rx-part rx-pass',r:16});   // the passport's top: masthead, seal, the decision
+  dDlg=plate(D7,'confirm-dialog.png',448,322,DLK), dDone=plate(D7,'done-dialog.png',448,110,DLK),
+  dPass=plate(D7,'passport-modal.png',672,PH,PK,{cls:'rx-part rx-pass'});   // the passport's top: masthead, seal, the decision
 dPass.style.backgroundSize='100% auto';
 const passL=M.el('div','rx-label rx-cap','<span class="en">Decision Passport</span><span class="sep">·</span><span class="ar">جواز القرار</span>',SH7);
 const CUR=M.el('div','jp-cur',CURSVG,SH7);
@@ -441,21 +444,21 @@ M.track(t=>{
 // field letter by letter, right to left, over the focused empty one; then «المساعد يفكّر…»; then the answer with
 // «المصادر» (the app answers in one piece, it does not stream). The panel pushes in on the answer.
 const SH9=M.el('div','jp-shot',null,SCN), D9=M.el('div','jp-3d',null,SH9);
-const AK=2, TH=[32,235,816,532];
+const AK=2, TH=[32,250,816,517];
 const AS=M.el('div','rx-stack',null,D9);st(AS,{width:f1(TH[2]*AK)+'px',height:f1(TH[3]*AK)+'px'});
-const APL=['chat-thread','chat-space-thread','chat-thinking-thread','chat-answer-thread'].map(f=>plate(AS,f+'.png',TH[2],TH[3],AK,{r:16}));
-const FB=[117,695,706,48], TX0=458, TX1=688;          // the field, and the typed question's span inside it (app px, measured)
+const APL=['chat-thread','chat-space-thread','chat-thinking-thread','chat-answer-thread'].map(f=>plate(AS,f+'.png',TH[2],TH[3],AK));
+const FB=[117,695,706,48], TX0=462, TX1=688;          // the field, and the typed question's span inside it (app px, measured)
 const aTyped=over(APL[1],'chat-typed-field.png',FB,TH,AK), aSendOn=over(APL[1],'chat-typed-send.png',[57,702,48,48],TH,AK),
   aCaret=over(APL[1],null,[FB[0],FB[1]+14,1.1,20],TH,AK,'rx-sub rx-caret'),
-  srcG=over(APL[3],null,[209.5,388.3,556.5,73],TH,AK,'rx-sub rx-glow v');   // round «المصادر» and its chips, 8 px clear
-srcG.style.borderRadius=f1(12*AK)+'px';
+  srcG=over(APL[3],null,[209.5,403.3,556.5,73],TH,AK,'rx-sub rx-glow v');   // round «المصادر» and its chips, 8 px clear
+srcG.style.borderRadius=f1(2*AK)+'px';   // the app's squared geometry
 const QN=39;                                          // «لماذا انخفضت مبيعات الرياض هذا الأسبوع؟»
 const T_TYPE=B(66.375), CPS=36, T_THINK=B(69), T_SEND=T_THINK-0.15, T_ANS=B(70), T_SRC=B(71);
 M.track(t=>{
   if(!show(SH9,inShot(t,K_ASK,K_BR)))return;
   const pe=dec(t,K_ASK,K_ASK+0.7), u=P(t,K_ASK,K_BR), pz=io(t,T_THINK,T_ANS+0.6);
   st(AS,{opacity:f3(pe),filter:pe<1?`blur(${f2((1-pe)*8)}px)`:'none',
-    transform:T3(960,lerp(600,831,pz)+(1-pe)*120,TH[2]*AK,TH[3]*AK,{rx:lerp(12,3,u),ry:lerp(-8,-1,u),s:lerp(0.78,0.94,pz)})});
+    transform:T3(960,lerp(600,817,pz)+(1-pe)*120,TH[2]*AK,TH[3]*AK,{rx:lerp(12,3,u),ry:lerp(-8,-1,u),s:lerp(0.78,0.94,pz)})});
   const q=FQ(t), n=Math.max(0,Math.min(QN,Math.floor((q-T_TYPE)*CPS)+1)), k=q>=T_ANS?3:q>=T_THINK?2:q>=T_TYPE?1:0;
   APL.forEach((e,i)=>e.style.display=i===k?'':'none');
   if(k===1){const xr=TX1-(TX1-TX0)*n/QN;

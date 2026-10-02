@@ -65,7 +65,7 @@ const SCROLL = `for(const n of document.querySelectorAll('[data-rx-scroll]')){co
   const browser = await chromium.launch({ executablePath: CHROME });
   const ctx = await browser.newContext({ viewport: vp, locale: 'ar', colorScheme: 'light' });
   const log = [];
-  await setup(ctx, { routes: spec.routes, log, theme: spec.theme || 'light' });
+  await setup(ctx, { routes: spec.routes, log, theme: spec.theme || 'light', lang: spec.lang || 'ar' });
   const page = await ctx.newPage();
   page.on('pageerror', e => console.log('  app error:', e.message.slice(0, 160)));
   const snaps = [];
