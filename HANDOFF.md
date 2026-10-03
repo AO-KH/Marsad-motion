@@ -515,6 +515,11 @@ Two tool changes came with it:
   passes it on to the network when the cache is empty. It also sets the app's language (`lang`).
 - `tools/app_shot.js` and `tools/app_snap.js` take `lang` from `capture.js`.
 
+On 2026-10-03 the client sent a newer export of the same front end ("use this"). Its changes are all in the English
+interface (icons that mirror in left-to-right pages, the Settings tab kept after a language switch, English names on
+the Links page) and in pages the film doesn't show. Captured from it, the film's 15 screens came out pixel-identical to
+the ones above, so the delivered film already matches it.
+
 Not done yet: `tools/app_snap.js` snapshots (the walkthroughs) embed only the fonts in `fonts/`, so a walkthrough of the
 new front end would show Latin text and digits in IBM Plex instead of Effra. Serve Effra from the cache there before
 the next walkthrough.
