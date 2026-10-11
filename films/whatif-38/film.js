@@ -6,6 +6,8 @@
    («مطابقة مجموعتين») is switched off in the feature catalogue ("Don't film yet"), so the client chose What-if only for
    now.
    The shots grammar: hard cuts on beats, the app's own screens (dark mode) as plates in 3D.
+   2026-10-11: the screens were captured again from the client's new front end (bilingual, the MARSAD × Fusion look:
+   flat and squared; its Arabic interface), and the parts are drawn square to match ("apply this to all other videos").
    House rules: English + Arabic on every line, Western digits, no shake (punches <= 1.5%), nothing on every beat, no orb
    behind the logo, "Book your demo" and marsadnasl.com at the end, effects on the transitions only.
    Music: the client's track, Alex Grohl's "Electronic Stylish Rock" (fit/alexgrohl-electronic-stylish-rock.mp3,
@@ -133,7 +135,7 @@ const mark=(parent,w)=>{const e=M.el('div','jmark',`<img class="gl" src="assets_
 // a plate: one of the app's screenshots, drawn at the size it shows (W x H CSS px for a box of w x h app px)
 const plate=(parent,src,W,H,cls='wi-plate')=>{const e=M.el('div',cls,null,parent);st(e,{width:f1(W)+'px',height:f1(H)+'px',backgroundImage:`url(${src})`});return e;};
 // a part of a plate: the box [x, y, w, h] (app px) of the plate's own picture, at the plate's scale k
-const part=(parent,src,[x,y,w,h],k,full,r=10)=>{const e=M.el('div','wi-part',null,parent);
+const part=(parent,src,[x,y,w,h],k,full,r=0)=>{const e=M.el('div','wi-part',null,parent);
   st(e,{left:f1(x*k)+'px',top:f1(y*k)+'px',width:f1(w*k)+'px',height:f1(h*k)+'px',borderRadius:f1(r*k)+'px',backgroundImage:`url(${src})`,
     backgroundSize:`${f1(full[0]*k)}px ${f1(full[1]*k)}px`,backgroundPosition:`${f1(-x*k)}px ${f1(-y*k)}px`});return e;};
 const CURSVG=`<svg viewBox="0 0 32 32" width="54" height="54"><path d="M6 3 L26 17 L16.6 18.6 L21.4 28.2 L17.6 30 L12.8 20.4 L6 26 Z" fill="#fff" stroke="#140B24" stroke-width="1.6" stroke-linejoin="round"/></svg>`;
@@ -211,9 +213,9 @@ const SH3=M.el('div','mt-shot',null,SCN), D3=M.el('div','mt-3d',null,SH3);
 const PS=0.95, PGW=PW*PS, PGH=PH*PS;        // the page at the size it shows
 const PG=plate(D3,IMG+'monitors.png',PGW,PGH,'wi-page');
 const PGO=M.el('div','wi-layer',null,PG);PGO.style.backgroundImage=`url(${IMG}whatif.png)`;   // the app with its panel open
-const FLASK=[99.6,316,28,28], ROW1=[33,299.5,1118,61], DLG=[464,245.5,512,338];
-const ROWp=part(PG,IMG+'monitors.png',ROW1,PS,[PW,PH],8), FLp=part(PG,IMG+'monitors.png',FLASK,PS,[PW,PH],6);
-const DLp=part(PG,IMG+'whatif.png',DLG,PS,[PW,PH],12);
+const FLASK=[101.6,328,28,28], ROW1=[33,311.5,1118,61], DLG=[464,245.5,512,338];   // the 2026-10-02 front end's boxes
+const ROWp=part(PG,IMG+'monitors.png',ROW1,PS,[PW,PH],0), FLp=part(PG,IMG+'monitors.png',FLASK,PS,[PW,PH],2);
+const DLp=part(PG,IMG+'whatif.png',DLG,PS,[PW,PH],0);
 const CUR3=M.el('div','pm-cur',CURSVG,SH3);
 const PC={x:960,y:615};
 const FL_AT={x:PC.x-PGW/2+(FLASK[0]+FLASK[2]*0.55)*PS, y:PC.y-PGH/2+(FLASK[1]+FLASK[3]*0.6)*PS};
@@ -240,7 +242,7 @@ const SH4=M.el('div','mt-shot',null,SCN), D4=M.el('div','mt-3d',null,SH4);
 const DS=1.75, DW=512*DS, DH0=338*DS, DH1=476*DS;
 const DL=plate(D4,IMG+'whatif-dialog.png',DW,DH0);
 const CALC=[25,161,103.1,42];               // «احسب» in the panel (app px)
-const CLp=part(DL,IMG+'type5-dialog.png',CALC,DS,[512,338],8);
+const CLp=part(DL,IMG+'type5-dialog.png',CALC,DS,[512,338],0);
 const CUR4=M.el('div','pm-cur',CURSVG,SH4);
 const DC={x:1270,y:560};
 const T_TYPE=B(25), T_CALC=B(28)-0.2, T_RES=T_CALC+0.2;     // the results appear on the bar's downbeat (the kick)
@@ -281,8 +283,8 @@ jt({at:B(32.4),out:K_PROOF,y:120,size:76,words:['Today',{t:'vs.',d:1},'your',{t:
 /* ================= k40-48 on a bright lens: the panel's «لا يُحفظ شيء» line and the badge lift out ================= */
 const SH6=M.el('div','mt-shot',null,SCN), D6=M.el('div','mt-3d',null,SH6);
 const NS6=2.5, BS6=3.6;
-const NOTE=plate(D6,IMG+'result-note.png',462*NS6,40*NS6), BADGE=plate(D6,IMG+'result-badge.png',115.5*BS6,20*BS6);
-NOTE.style.borderRadius='18px';BADGE.style.borderRadius='999px';
+const NOTE=plate(D6,IMG+'result-note.png',462*NS6,40*NS6), BADGE=plate(D6,IMG+'result-badge.png',116.2*BS6,20*BS6);
+NOTE.style.borderRadius='0';BADGE.style.borderRadius=f1(2*BS6)+'px';   // the app's squared geometry (2 px chips)
 const T_OK=B(44);                            // the second bar's downbeat (the kick), after the line
 M.track(t=>{
   if(!show(SH6,inShot(t,K_PROOF,K_BRK)))return;
@@ -290,7 +292,7 @@ M.track(t=>{
   st(NOTE,{opacity:f3(pe),filter:pe<1?`blur(${f2((1-pe)*8)}px)`:'none',transform:T3(960,760+(1-pe)*50,462*NS6,40*NS6,{rx:lerp(14,5,u),ry:lerp(-5,4,u),z:60*l}),
     boxShadow:`0 30px 70px rgba(60,20,110,0.35),`+glowRim(l,'120,220,160','40,190,110')});
   const pb=dec(t,K_PROOF+0.3,K_PROOF+0.9);
-  st(BADGE,{opacity:f3(pb),transform:T3(1260,600+(1-pb)*30,115.5*BS6,20*BS6,{rx:8,ry:-6,z:90*l+20}),boxShadow:`0 24px 50px rgba(60,20,110,0.35),`+glowRim(l,'255,214,120','240,170,40')});
+  st(BADGE,{opacity:f3(pb),transform:T3(1260,600+(1-pb)*30,116.2*BS6,20*BS6,{rx:8,ry:-6,z:90*l+20}),boxShadow:`0 24px 50px rgba(60,20,110,0.35),`+glowRim(l,'255,214,120','240,170,40')});
 });
 jt({at:B(40.4),out:K_BRK,y:190,size:76,cls:'dark',step:S16*1.5,words:['Nothing','saved.','\n','Nothing',{t:'changed.',g:1}],ar:'لا يُحفظ شيء، ولا يتغيّر شيء.',arSize:42});
 
