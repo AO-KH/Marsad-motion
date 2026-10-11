@@ -27,11 +27,12 @@
 .jmark .m{filter:drop-shadow(0 0 26px rgba(214,70,240,0.75)) drop-shadow(0 0 80px rgba(122,40,220,0.5));}
 .jmark .gl{filter:blur(26px) saturate(1.6);}
 
-/* a real page (a site_pages/ screenshot, at its own size) with a glowing rim; .p3d lets its parts float out of it */
-.mt-page{width:1896px;height:1060px;border-radius:26px;background:#fff center/100% 100% no-repeat;
+/* a real page (the app's screen, 1440 x 880 CSS px, from tools/app_shot.js) with a glowing rim; .p3d lets its parts float out of it */
+.mt-page{width:1440px;height:880px;border-radius:6px;background:#0B0A10 center/100% 100% no-repeat;
   box-shadow:0 0 0 3px rgba(255,190,248,0.9),0 0 40px 6px rgba(206,64,240,0.55),0 0 120px 20px rgba(122,40,220,0.35);}
 .mt-page.p3d{transform-style:preserve-3d;}
-.mt-part{position:absolute;background-repeat:no-repeat;background-size:1896px 1060px;transform-origin:50% 50%;}
+.mt-part{position:absolute;background-repeat:no-repeat;background-size:100% 100%;transform-origin:50% 50%;}
+.mt-layer{position:absolute;left:0;top:0;width:100%;height:100%;border-radius:inherit;background:center/100% 100% no-repeat;}
 
 /* the end: the URL in a glowing capsule, the mark, "Book your demo" */
 .jcap{position:absolute;left:0;top:0;border-radius:999px;background:#07050F;display:flex;align-items:center;justify-content:center;
@@ -62,6 +63,12 @@
 .pm-orb i{width:8px;height:8px;border-radius:50%;background:#FF9BF0;box-shadow:0 0 10px #DE0DFF;}
 .pm-cur{position:absolute;left:0;top:0;width:54px;height:54px;filter:drop-shadow(0 4px 10px rgba(0,0,0,0.5));}
 .pm-grp{width:0;height:0;transform-style:preserve-3d;}
-.mt-card3{position:absolute;left:0;top:0;border-radius:16px;background-color:#fff;background-repeat:no-repeat;background-size:1896px 1060px;
+.mt-card3{position:absolute;left:0;top:0;border-radius:0;background-color:#0B0A10;background-repeat:no-repeat;background-size:100% 100%;
   transform-style:preserve-3d;}
+/* the sample-data label, top left, while the app is on screen */
+.pm-note{position:absolute;left:56px;top:44px;height:40px;padding:0 18px;border-radius:20px;display:flex;align-items:center;white-space:nowrap;
+  background:rgba(12,8,24,0.72);box-shadow:inset 0 0 0 1px rgba(255,255,255,0.10);}
+.pm-note .en{font:500 17px 'Inter';color:rgba(244,241,250,0.78);}
+.pm-note .sep{margin:0 9px;font:500 17px 'Inter';color:rgba(244,241,250,0.32);}
+.pm-note .ar{font:500 17px 'PlexAR';color:rgba(244,241,250,0.72);direction:rtl;}
 .mt-card3.soft{box-shadow:0 30px 70px rgba(90,30,150,0.28),0 6px 18px rgba(90,30,150,0.12);}

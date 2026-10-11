@@ -20,11 +20,18 @@
      k40-48  name     "Meet Business Pulse.", held through the track's break (k44-47), the page far behind
      k48-57  end      on the hit a capsule blooms round "Book your demo." and shrinks into the marsadnasl.com capsule;
                       the mark; "Book your demo · احجز عرضك التجريبي"
-   Truth: the Business Pulse page, its button, its three recommendations and their tags are the app's own (site_pages/
-   pulse.png, site kit); "Nothing made up" is the page's own claim ("تُحسب المؤشرات أولاً ثم يصيغها الذكاء الاصطناعي دون
-   اختلاق"); the file names are the Projects page's. Renderings: the lenses, orbits and dust; the metric chips and their
-   numbers and the small charts in the hook (invented sample data); the page before generating (its rows' slots
-   empty, films/pulse-30/pages/pulse_base.png); the empty slots the lifted tags leave (pulse_rows_base.png). */
+   Truth (since 2026-10-11, "apply this to all other videos"): the Business Pulse page, its button, its three
+   recommendations and their chips are the real app's (the client's bilingual front end in dark mode, its Arabic
+   interface, the MARSAD × Fusion look), captured by tools/app_shot.js from films/pulse-30/app/capture.js with sample data
+   labelled "Sample data · بيانات تجريبية": «لا توجد توصيات بعد» before the click; after it the three recommendations
+   (one per recipe the film names: «أعلى وأضعف المنتجات», «مقارنة الفروع», «المنتجات بطيئة الحركة»), as the page lists
+   them once generated (the green «تم توليد…» line the app shows right after generating is left out). The daily advisor
+   is switched off in the feature catalogue, so its panel is not on the page. "Nothing made up" is the page's own claim
+   ("تُحسب المؤشرات أولاً ثم يصيغها الذكاء الاصطناعي دون اختلاق"); the file names are sample data. Renderings: the lenses,
+   orbits and dust; the metric chips and their numbers and the small charts in the hook (invented sample data); the
+   page between the click and the cards (the list with its cards out: the captured slots.png); the empty places the
+   lifted chips leave (bare-b*.png: the cards with those chips hidden). Before 2026-10-11 the film used a site-kit
+   screenshot of the old light page. */
 const B=M.B, S8=M.S8, S16=M.S16, ez=M.ez, P=M.P, st=M.st, lerp=M.lerp, FQ=M.FQ;
 const f1=x=>(+x).toFixed(1), f2=x=>(+x).toFixed(2), f3=x=>(+x).toFixed(3);
 const dec=(t,a,b)=>ez.dec(P(t,a,b)), io=(t,a,b)=>ez.ioC(P(t,a,b)), inc=(t,a,b)=>ez.inC(P(t,a,b));
@@ -108,12 +115,17 @@ function jt(o){
 }
 const mark=(parent,w)=>{const e=M.el('div','jmark',`<img class="gl" src="assets_logo_m.png"><img class="m" src="assets_logo_m.png">`,parent);
   st(e,{width:w+'px',height:f1(w*1637/2145)+'px'});return {e,m:e.querySelector('.m'),gl:e.querySelector('.gl')};};
-// a part of a page: a box of the screenshot's own pixels, a child of the page (so it moves with it, and out of it)
-const part=(parent,src,[x,y,w,h],r=16,cls='')=>{const e=M.el('div','mt-part'+cls,null,parent);
-  st(e,{left:x+'px',top:y+'px',width:w+'px',height:h+'px',borderRadius:r+'px',backgroundImage:`url(${src})`,backgroundPosition:`${-x}px ${-y}px`});return e;};
-const PULSE='site_pages/pulse.png', PULSE_ROWS='films/pulse-30/pages/pulse_rows_base.png';
-const ROWS=[[184,640,1534,118],[184,776,1534,118],[184,912,1534,118]];
-const CATP=[[1514,707,171,36],[1576,843,109,36],[1520,979,165,36]], OKP=[[1350,707,154,36],[1412,843,154,36],[1356,979,154,36]];
+/* ---------------- the app's own screens: tools/app_shot.js from films/pulse-30/app/capture.js (the client's front end in
+   dark mode, its Arabic interface, sample data), PNGs at 5x in films/pulse-30/pages/, boxes in CSS px (shots.json) ---------------- */
+const IMG='films/pulse-30/pages/', PW=1440, PH=880;
+const BTNB=[208,234,153.9,48], ROWS=[[208,530,1024,100],[208,642,1024,100],[208,754,1024,100]];
+const CATP=[[1084.6,551,123.4,26],[1129.9,663,78.1,26],[1088.9,775,119.1,26]], OKP=[[965,551,111.6,26],[1010.3,663,111.6,26],[969.3,775,111.6,26]];
+const PILL=13;   // the chips are pills (26 px tall); the cards and the button are square (the MARSAD × Fusion look)
+// a crop of a screen: its own PNG at its box [x, y, w, h] (CSS px), measured from (ox, oy), at the scale k
+const crop=(parent,file,[x,y,w,h],k=1,r=0,[ox,oy]=[0,0])=>{const e=M.el('div','mt-part',null,parent);
+  st(e,{left:f1((x-ox)*k)+'px',top:f1((y-oy)*k)+'px',width:f1(w*k)+'px',height:f1(h*k)+'px',borderRadius:f1(r*k)+'px',
+    backgroundImage:`url(${IMG}${file})`});return e;};
+const page=(parent,file,cls='mt-page')=>{const e=M.el('div',cls,null,parent);e.style.backgroundImage=`url(${IMG}${file})`;return e;};
 
 /* ================= k0-8 the hook: the company's numbers, charts and files adrift in depth, grey ================= */
 const SH1=M.el('div','mt-shot',null,SCN), D1=M.el('div','mt-3d',null,SH1);
@@ -189,36 +201,41 @@ jt({at:B(10),out:K_PUL,y:470,size:96,step:S16*1.5,words:[{t:'Marsad',g:1},'reads
 
 /* ================= k16-24 Business Pulse: one click on «توليد توصيات»; the recommendations fly in and float out ================= */
 const SH3=M.el('div','mt-shot',null,SCN), D3=M.el('div','mt-3d',null,SH3);
-const PG=M.el('div','mt-page p3d',null,D3);PG.style.backgroundImage='url(films/pulse-30/pages/pulse_base.png)';
-const BTN=part(PG,PULSE,[183,326,236,71],14,' btn');
-const RW3=ROWS.map((r,i)=>({i,e:part(PG,PULSE,r,16),d:[60,95,130][i]}));
+const PG=page(D3,'before.png','mt-page p3d');                         // «لا توجد توصيات بعد»
+const PGS=M.el('div','mt-layer',null,PG);PGS.style.backgroundImage=`url(${IMG}slots.png)`;   // the click's result: the list, its cards still out
+const BTN=crop(PG,'list-btn.png',BTNB);
+const RW3=ROWS.map((r,i)=>({i,e:crop(PG,`list-r${i+1}.png`,r),d:[60,95,130][i]}));
 const CUR=M.el('div','pm-cur',`<svg viewBox="0 0 32 32" width="54" height="54"><path d="M6 3 L26 17 L16.6 18.6 L21.4 28.2 L17.6 30 L12.8 20.4 L6 26 Z" fill="#fff" stroke="#140B24" stroke-width="1.6" stroke-linejoin="round"/></svg>`,SH3);
-const PS=0.72, PC={x:960,y:610};            // the page flat for the click: its box on screen is (PC - size*PS/2) + natural*PS
-const BTN_AT={x:PC.x-1896*PS/2+(183+196)*PS, y:PC.y-1060*PS/2+(326+60)*PS};   // the tip lands on the button's lower right, by its icon
+const PS=0.95, PC={x:960,y:610};            // the page flat for the click: its box on screen is (PC - size*PS/2) + natural*PS
+const BTN_AT={x:PC.x-PW*PS/2+(BTNB[0]+BTNB[2]*0.8)*PS, y:PC.y-PH*PS/2+(BTNB[1]+BTNB[3]*0.68)*PS};   // the tip on the button, by its icon
 const T_CLK=B(19), T_FLY=T_CLK+0.25;
 M.track(t=>{
   if(!show(SH3,inShot(t,K_PUL,K_REC)))return;
   const pe=io(t,K_PUL,K_PUL+1.2), pt=io(t,T_CLK+0.45,T_CLK+2.2), drift=P(t,T_CLK+2.2,K_REC);
-  st(PG,{opacity:f3(dec(t,K_PUL,K_PUL+0.5)),transform:T3(PC.x+40*pt+20*drift,PC.y+140*(1-pe)-20*pt,1896,1060,
+  st(PG,{opacity:f3(dec(t,K_PUL,K_PUL+0.5)),transform:T3(PC.x+40*pt+20*drift,PC.y+140*(1-pe)-20*pt,PW,PH,
     {z:-320*(1-pe)-140*pt,rx:18*(1-pe)+11*pt,ry:-17*pt-2*drift,s:PS})});
+  PGS.style.opacity=f3(dec(t,T_CLK+0.12,T_CLK+0.4));
   const press=Math.sin(Math.PI*P(t,T_CLK-0.05,T_CLK+0.18)), gl=dec(t,T_CLK,T_CLK+0.2)*(1-io(t,T_CLK+0.3,T_CLK+1.4));
   st(BTN,{transform:`translateZ(${f1(2+26*gl)}px) scale(${f3(1-0.05*press)})`,boxShadow:`0 8px 22px rgba(118,40,200,0.35),0 0 ${f1(36*gl)}px ${f1(6*gl)}px rgba(222,13,255,${f3(0.6*gl)})`});
   RW3.forEach(r=>{const t0=T_FLY+r.i*S8, e=dec(t,t0,t0+0.6), l=dec(t,B(21.5)+r.i*S16,B(21.5)+r.i*S16+0.6);
     if(!show(r.e,t>=t0-0.01))return;
     st(r.e,{opacity:f3(Math.min(1,e*2)),filter:e<1?`blur(${f2((1-e)*8)}px)`:'none',transform:`translateZ(${f1(lerp(520,0,e)+r.d*l)}px)`,
-      boxShadow:`0 0 0 ${f1(2.5*l)}px rgba(236,205,255,${f3(0.95*l)}),0 ${f1(26*l)}px ${f1(60*l)}px rgba(30,4,70,${f3(0.4*l)}),0 0 ${f1(40*l)}px rgba(206,64,240,${f3(0.35*l)})`});});
+      boxShadow:`0 0 0 ${f1(2.5*l)}px rgba(236,205,255,${f3(0.95*l)}),0 ${f1(26*l)}px ${f1(60*l)}px rgba(0,0,0,${f3(0.5*l)}),0 0 ${f1(40*l)}px rgba(206,64,240,${f3(0.35*l)})`});});
   const pm=io(t,B(17.6),T_CLK-0.06), out=io(t,T_CLK+0.5,T_CLK+1.2);   // the cursor: in, press, away
   st(CUR,{opacity:f3(dec(t,B(17.6),B(17.6)+0.35)*(1-out)),transform:`translate(${f1(lerp(1560,BTN_AT.x,pm)+160*out-10)}px,${f1(lerp(1010,BTN_AT.y,pm)+110*out-5)}px) scale(${f3(1-0.12*press)})`});
 });
 jt({at:B(16.5),out:K_REC,y:64,size:60,words:['Recommendations','from',{t:'your',g:1},{t:'own',g:1},{t:'numbers.',g:1}],ar:'توصيات مبنية على أرقامك.',arSize:36});
+// the screens' records are sample data: labelled while the app is on screen
+const NOTE=M.el('div','pm-note','<span class="en">Sample data</span><span class="sep">·</span><span class="ar">بيانات تجريبية</span>',TXT);
+M.track(t=>{const v=dec(t,K_PUL,K_PUL+0.5)*(t<K_NAME?1:0);if(show(NOTE,v>0.001))NOTE.style.opacity=f3(v);});
 
 /* ================= k24-32 the three recommendations as cards in 3D; each one's tag lifts out as its word lands ================= */
 const SH4=M.el('div','mt-shot',null,SCN), D4=M.el('div','mt-3d',null,SH4);
 const GRP=M.el('div','pm-grp',null,D4);
-const RW4=ROWS.map((r,i)=>{const e=M.el('div','mt-card3',null,GRP);
-  st(e,{width:r[2]+'px',height:r[3]+'px',backgroundImage:`url(${PULSE_ROWS})`,backgroundPosition:`${-r[0]}px ${-r[1]}px`});
-  const cat=part(e,PULSE,[CATP[i][0]-r[0],CATP[i][1]-r[1],CATP[i][2],CATP[i][3]],18);cat.style.backgroundPosition=`${-CATP[i][0]}px ${-CATP[i][1]}px`;
-  const ok=part(e,PULSE,[OKP[i][0]-r[0],OKP[i][1]-r[1],OKP[i][2],OKP[i][3]],18);ok.style.backgroundPosition=`${-OKP[i][0]}px ${-OKP[i][1]}px`;
+const K4=1.4, CW4=1024*K4, CH4=100*K4;      // the cards at 1.4x: about the size the old page's rows had here
+const RW4=ROWS.map((r,i)=>{const e=M.el('div','mt-card3',null,GRP),o=[r[0],r[1]];
+  st(e,{width:f1(CW4)+'px',height:f1(CH4)+'px',backgroundImage:`url(${IMG}bare-b${i+1}.png)`});   // the card, its chips' places empty
+  const cat=crop(e,`list-cat${i+1}.png`,CATP[i],K4,PILL,o);crop(e,`list-ok${i+1}.png`,OKP[i],K4,PILL,o);
   return {i,e,cat,y:[-190,0,190][i],z:[-230,0,230][i],t0:B(24.75)+i*B(1)};});
 M.track(t=>{
   if(!show(SH4,inShot(t,K_REC,K_TRU)))return;
@@ -226,23 +243,23 @@ M.track(t=>{
   SH4.style.opacity=f3(dec(t,K_REC,K_REC+0.4));   // fade the shot, not the group: opacity on a 3D group flattens it
   st(GRP,{transform:`translate3d(${f1(lerp(1500,960,sw)-40*drift)}px,${f1(590)}px,${f1(lerp(-700,-120,sw))}px) rotateX(8deg) rotateY(${f2(lerp(-58,-22,sw)+16*drift)}deg) scale(0.84)`});
   RW4.forEach(r=>{const h=dec(t,r.t0,r.t0+0.55), rim=0.35+0.65*h;
-    st(r.e,{transform:`translate3d(${f1(-767)}px,${f1(r.y-59)}px,${f1(r.z)}px)`,
+    st(r.e,{transform:`translate3d(${f1(-CW4/2)}px,${f1(r.y-CH4/2)}px,${f1(r.z)}px)`,
       boxShadow:`0 0 0 ${f1(1.5+1.5*h)}px rgba(236,205,255,${f3(0.6*rim)}),0 0 ${f1(24+26*h)}px rgba(206,64,240,${f3(0.3+0.25*h)}),0 30px 70px rgba(0,0,0,0.45)`});
-    st(r.cat,{transform:`translateZ(${f1(80*h)}px) scale(${f3(1+0.1*h)})`,boxShadow:`0 0 0 ${f1(2*h)}px rgba(236,205,255,${f3(0.95*h)}),0 0 ${f1(34*h)}px rgba(206,64,240,${f3(0.55*h)}),0 ${f1(18*h)}px ${f1(40*h)}px rgba(30,4,70,${f3(0.35*h)})`});});
+    st(r.cat,{transform:`translateZ(${f1(80*h)}px) scale(${f3(1+0.1*h)})`,boxShadow:`0 0 0 ${f1(2*h)}px rgba(236,205,255,${f3(0.95*h)}),0 0 ${f1(34*h)}px rgba(206,64,240,${f3(0.55*h)}),0 ${f1(18*h)}px ${f1(40*h)}px rgba(0,0,0,${f3(0.45*h)})`});});
 });
 jt({at:B(24.5),out:K_TRU,y:64,size:60,words:['Your','products.','Your','branches.',{t:'Your',g:1},{t:'stock.',g:1}],ar:'منتجاتك. فروعك. مخزونك.',arSize:36});
 
 /* ================= k32-40 the truth, on a bright lens: its «مبني على بياناتك» pill lifts out, glowing green ================= */
 const SH5=M.el('div','mt-shot',null,SCN), D5=M.el('div','mt-3d',null,SH5);
-const R5=M.el('div','mt-card3 soft',null,D5);
-st(R5,{width:'1534px',height:'118px',backgroundImage:`url(${PULSE_ROWS})`,backgroundPosition:`${-ROWS[2][0]}px ${-ROWS[2][1]}px`});
-const C5=part(R5,PULSE,[CATP[2][0]-ROWS[2][0],CATP[2][1]-ROWS[2][1],CATP[2][2],CATP[2][3]],18);C5.style.backgroundPosition=`${-CATP[2][0]}px ${-CATP[2][1]}px`;
-const O5=part(R5,PULSE,[OKP[2][0]-ROWS[2][0],OKP[2][1]-ROWS[2][1],OKP[2][2],OKP[2][3]],18);O5.style.backgroundPosition=`${-OKP[2][0]}px ${-OKP[2][1]}px`;
+const R5=M.el('div','mt-card3 soft',null,D5), K5=1.45, O3=[ROWS[2][0],ROWS[2][1]];
+st(R5,{width:f1(1024*K5)+'px',height:f1(100*K5)+'px',backgroundImage:`url(${IMG}bare-b3.png)`});
+crop(R5,'list-cat3.png',CATP[2],K5,PILL,O3);
+const O5=crop(R5,'list-ok3.png',OKP[2],K5,PILL,O3);
 const T_OK=B(34.5);
 M.track(t=>{
   if(!show(SH5,inShot(t,K_TRU,K_NAME)))return;
   const pe=dec(t,K_TRU+0.1,K_TRU+0.8), u=P(t,K_TRU,K_NAME);
-  st(R5,{opacity:f3(pe),filter:pe<1?`blur(${f2((1-pe)*8)}px)`:'none',transform:T3(960,660+(1-pe)*60,1534,118,{rx:lerp(16,5,u),ry:lerp(-6,4,u),s:1.02*(1+0.04*u)})});
+  st(R5,{opacity:f3(pe),filter:pe<1?`blur(${f2((1-pe)*8)}px)`:'none',transform:T3(960,660+(1-pe)*60,1024*K5,100*K5,{rx:lerp(16,5,u),ry:lerp(-6,4,u),s:1.02*(1+0.04*u)})});
   const l=dec(t,T_OK,T_OK+0.6);
   st(O5,{transform:`translate3d(${f1(-22*l)}px,${f1(4*l)}px,${f1(110*l)}px) scale(${f3(1+0.1*l)})`,
     boxShadow:`0 0 0 ${f1(2.5*l)}px rgba(120,220,160,${f3(0.95*l)}),0 0 ${f1(46*l)}px ${f1(6*l)}px rgba(40,190,110,${f3(0.5*l)}),0 ${f1(22*l)}px ${f1(46*l)}px rgba(6,40,20,${f3(0.3*l)})`});
@@ -251,11 +268,11 @@ jt({at:B(32.4),out:K_NAME,y:250,size:76,cls:'dark',step:S16*1.5,words:['Computed
 
 /* ================= k40-48 the name, held through the track's break (k44-47); the page far behind ================= */
 const SH6=M.el('div','mt-shot',null,SCN), D6=M.el('div','mt-3d',null,SH6);
-const PG6=M.el('div','mt-page',null,D6);PG6.style.backgroundImage=`url(${PULSE})`;
+const PG6=page(D6,'list.png');
 M.track(t=>{
   if(!show(SH6,inShot(t,K_NAME,K_HIT)))return;
   const u=P(t,K_NAME,K_HIT), pe=dec(t,K_NAME,K_NAME+1);
-  st(PG6,{opacity:f3(0.32*pe),filter:'blur(4px)',transform:T3(960,1160-80*u,1896,1060,{z:-2100,rx:lerp(64,58,u),s:1})});
+  st(PG6,{opacity:f3(0.32*pe),filter:'blur(4px)',transform:T3(960,1160-80*u,PW,PH,{z:-2100,rx:lerp(64,58,u),s:1.317})});
 });
 jt({at:B(40.3),out:K_HIT,y:330,size:92,words:['Meet',{t:'Business',g:1},{t:'Pulse.',g:1}],ar:'تعرّف على نبض الأعمال.',arSize:44});
 
