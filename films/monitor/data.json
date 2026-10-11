@@ -1,35 +1,11 @@
 {
-  "_about": "Every number and product string the film shows. The truth rules in the brief apply: replace each PLACEHOLDER with the real value from the product before release.",
-  "monitor": {
-    "name": "تراكم أوامر البيع",
-    "metric": "أوامر البيع",
-    "limit": 400,
-    "count": 513,
-    "recorded": "2026-09-19",
-    "condition": "عدد أوامر البيع أكبر من 400",
-    "condition_PLACEHOLDER": "the rule's condition exactly as the monitors page shows it"
+  "_about": "The film's own numbers and strings. Every screen is the app's own (app/capture.js holds their sample data, labelled on screen 'Sample data · بيانات تجريبية').",
+  "stock": {
+    "_about": "the coffee's stock on its record page, falling as eight orders come in (the Coffee film's orders SO-4822 to SO-4829: 5, 6, 4, 7, 5, 6, 5 and 14 units); the big one takes it below its reorder level on the drop (2.5 s). [time in s on a frame, value]: each value is a captured state of the page",
+    "limit": 200,
+    "steps": [[1.5, 240], [1.7, 235], [1.8667, 229], [2.0, 225], [2.1333, 218], [2.2333, 213], [2.3333, 207], [2.4, 202], [2.5, 188]]
   },
-  "samples": [248, 262, 231, 285, 301, 276, 318, 296, 332, 344, 327, 356, 371],
-  "samples_PLACEHOLDER": "the monitor's real samples (oldest first); the last one is where the count starts in shot 2",
-  "alert": "تجاوز عدد أوامر البيع 400 — العدد الحالي 513",
-  "decision": {
-    "title": "تجاوز عدد أوامر البيع 400 — العدد الحالي 513",
-    "title_PLACEHOLDER": "the decision card's Arabic title (the brief asks to confirm it is Arabic on the card and in the bell)",
-    "source": "مراقبة",
-    "severity": "مرتفع",
-    "status": "قيد المراجعة",
-    "status_done": "موافق",
-    "approve": "موافقة",
-    "approved_msg": "تمت الموافقة على القرار.",
-    "evidence": ["S04812", "S04813", "S04815", "S04817", "S04818", "S04821", "S04822", "S04824", "S04826", "S04827", "S04829", "S04830"],
-    "evidence_PLACEHOLDER": "the order references exactly as the passport lists this decision's evidence (names and count)"
-  },
-  "passport": {
-    "title": "جواز القرار",
-    "raised": "رُفِع القرار",
-    "approved": "تمت الموافقة",
-    "chain_ok": "السلسلة سليمة — لا يوجد عبث"
-  },
+  "note": {"en": "Sample data", "ar": "بيانات تجريبية"},
   "end": {
     "ar": "مرصد يراقب. وأنت تقرّر.",
     "en": "Marsad watches. You decide.",
@@ -37,10 +13,13 @@
     "cta_ar": "احجز عرضك التجريبي",
     "cta_en": "Book your demo"
   },
-  "captions_en": {
-    "s2": "Sales orders cross the limit",
-    "s4": "Marsad raises the alert",
-    "s7": "Approved, and sealed",
-    "_DRAFT": "the brief asks for three small English captions on shots 2, 4 and 7 but does not give the words; these are drafts to approve"
-  }
+  "_captions": "the story with the sound off, [from s, to s, English, Arabic] (the client's rules: every line in English and Arabic); lines to approve",
+  "captions": [
+    [0.25, 1.45, "A rule watches your stock.", "قاعدة مراقبة تراقب مخزونك."],
+    [1.6, 2.98, "It falls below its reorder level.", "المخزون ينزل تحت حد إعادة الطلب."],
+    [3.65, 4.95, "Marsad raises the alert.", "مرصد يرفع التنبيه."],
+    [5.15, 6.95, "The decision comes to you.", "والقرار يصلك."],
+    [7.1, 8.45, "You approve it, with a reason.", "تعتمده مع ذكر السبب."],
+    [8.6, 9.95, "Sealed in its Decision Passport.", "ويُختم في جواز القرار."]
+  ]
 }

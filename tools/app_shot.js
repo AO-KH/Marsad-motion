@@ -10,8 +10,8 @@
 //     viewport: {width: 1440, height: 805}, theme: 'dark', routes: [...],      // as in app_snap
 //     lang: 'ar',                                // the app's language since it went bilingual (2026-10-02): 'ar' (default) or 'en'
 //     dpr: 5,                                    // the pixel ratio of the PNGs (5: a 1440 px page is 7200 px wide, sharp in 4K close-ups)
-//     states: [{key, url, run, wait, crops: {name: page => locator}}, ...],    // crops: parts saved on their own
-//   };
+//     states: [{key, url, run, wait, crops: {name: page => locator}, full}, ...],   // crops: parts saved on their own;
+//   };                                                                           // full: false skips the whole window's PNG
 // It writes films/<slug>/pages/: <key>.png (the whole window), <key>-<name>.png (each crop, at the same pixel ratio) and
 // shots.json (each crop's box in CSS px, {key: {name: {x, y, w, h}}}, so the film can lift a part off its page exactly).
 // A state's run may resize the window (page.setViewportSize, e.g. for a dialog taller than the window); shots.json then
@@ -65,10 +65,10 @@ async function server() {
     if (s.run) await s.run(page);
     if (typeof s.wait === 'function') await s.wait(page); else if (s.wait) await page.waitForTimeout(s.wait);
     await still();
-    await page.screenshot({ path: path.join(OUT, `${s.key}.png`) });
+    if (s.full !== false) await page.screenshot({ path: path.join(OUT, `${s.key}.png`) });
     const ws = page.viewportSize();
     if (ws.width !== vp.width || ws.height !== vp.height) sizes[s.key] = ws;
-    const made = [`${s.key}.png`];
+    const made = s.full !== false ? [`${s.key}.png`] : [];
     for (const [name, fn] of Object.entries(s.crops || {})) {
       const loc = fn(page).first();
       const b = await loc.boundingBox();

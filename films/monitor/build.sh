@@ -15,6 +15,14 @@ for C in "${CUTS[@]}"; do
   KIND=${C%%-*}                                    # hero | bumper
   node render_mb.js "$JOBS" "build/monitor-$C.html" "frames/monitor-$C" "$SUB"
   $PY tools/blend.py "frames/monitor-$C"
+  # the fast camera moves of the hero (the pull-out from the bell, the glide along the card to «موافقة», the move onto
+  # «تم بنجاح», the passport's glide, the pull-back over the rules) again with 16 blur samples: 4 leave steps in them
+  if [ "$KIND" = hero ] && [ "$SUB" -gt 1 ]; then
+    for R in 112-137 165-200 226-245 255-331; do
+      node render_mb.js "$JOBS" "build/monitor-$C.html" "frames/monitor-$C" 16 "${R%-*}" "${R#*-}"
+      $PY tools/blend.py "frames/monitor-$C"
+    done
+  fi
   ffmpeg -loglevel error -y -framerate 30 -i "frames/monitor-$C/f_%04d.jpg" -i "out/monitor-$KIND.wav" -map 0:v -map 1:a \
     -c:v libx264 -preset slow -crf 18 -pix_fmt yuv420p -profile:v high -c:a aac -b:a 192k -movflags +faststart -shortest \
     "out/monitor-$C.mp4"

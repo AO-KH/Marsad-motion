@@ -16,7 +16,6 @@ SR = 48000
 LEN = 14.5                                   # the hero is 13 s; the bumper reuses 11.0-13.5
 N = int(SR * LEN)
 rng = np.random.default_rng(20260919)
-DATA = json.load(open(os.path.join(HERE, 'data.json'), encoding='utf-8'))
 
 music = np.zeros((2, N)); sfx = np.zeros((2, N)); send = np.zeros((2, N))   # send: to the reverb
 
@@ -197,6 +196,9 @@ for k, n in enumerate(['D5', 'F#5', 'A5', 'D6', 'E6']):
 add(music, bell(hz('A5'), 0.05, dec=1.6), 11.6, pan=0.1, rv=0.6)
 
 # ---------------------------------------------------------------- sound effects (times from monitor.js)
+# Since v2 (2026-10-11) the effects sit on the transitions only, the client's rule of 2026-09-30 for every film: the
+# UI makes no sound (no ticks, clicks, chimes or lock). Soft whooshes into the cuts; two cinematic hits: the drop
+# (2.5 s, the stock below its reorder level) and the flash into the alert (3.5 s).
 CUES = {}
 
 
@@ -205,57 +207,28 @@ def cue(name, t):
     return t
 
 
-# 2 · the count: a tick on each number between the last sample and the limit (it speeds up), a hit on the crossing
-def value(t):
-    a, L, c = DATA['samples'][-1], DATA['monitor']['limit'], DATA['monitor']['count']
-    if t < 2.5:
-        p = min(max((t - 1.58) / (2.5 - 1.58), 0), 1)
-        return a + (L - a) * p * p
-    p = min(max((t - 2.5) / 0.5, 0), 1)
-    return L + (c - L) * (1 - (1 - p) ** 3)
+def into(t, dur, f0, f1, gain, peak=0.7, pan=0.0, rv=0.25):
+    """a whoosh that peaks on the cut at t"""
+    add(sfx, whoosh(dur, f0, f1, gain, peak=peak), cue('whoosh', t) - peak * dur, pan=pan, rv=rv)
 
 
-last, lt = int(value(1.5)), -1
-for i in range(int(1.5 * SR), int(3.0 * SR), 48):
-    s = i / SR; v = int(value(s))
-    if v != last and s - lt > 0.028:
-        add(sfx, tick(2600 + 900 * (v - DATA['samples'][-1]) / 142, 0.12 if s < 2.5 else 0.07), cue('count tick', s), pan=-0.15)
-        lt = s
-    last = v
-add(sfx, boom(90, 40, 0.5), cue('crossing hit', 2.5), gain=0.5)
+# 1.5 · into the close-up on the stock
+into(1.5, 0.42, 700, 3600, 0.08, pan=0.15)
+# 2.5 · the drop: the stock goes below its reorder level
+add(sfx, boom(90, 40, 0.5), cue('drop hit', 2.5), gain=0.5)
 add(sfx, filt(noise(0.3), 1800, 'high') * np.exp(-tt(0.3) / 0.04), 2.5, gain=0.18, rv=0.3)
-# 3 · bloom: a reverse swell into a bright hit on the cut (3.5)
+# 3.0-3.5 · the bloom: a reverse swell into a bright hit on the cut to the alert (3.5)
 rs = whoosh(0.5, 600, 9000, 1.0, peak=0.93)
 add(sfx, rs, cue('reverse swell', 3.0), gain=0.34, rv=0.5)
 add(sfx, boom(80, 38, 0.6), cue('flash hit', 3.5), gain=0.45)
 add(sfx, filt(noise(1.2), 3000, 'high') * np.exp(-tt(1.2) / 0.25), 3.5, gain=0.07, rv=0.6)
-# 4 · the bell rings twice: a soft two-note chime, not an alarm; the alert slides out; the light trace
-add(sfx, bell(hz('A5'), 0.16), cue('bell chime', 3.55), pan=-0.2, rv=0.55)
-add(sfx, bell(hz('D6'), 0.12), cue('bell chime', 3.75), pan=-0.1, rv=0.55)
-add(sfx, whoosh(0.35, 500, 3000, 0.1), cue('alert out', 3.85), pan=0.1)
-add(sfx, whoosh(0.65, 3000, 9000, 0.04, peak=0.4), cue('light trace', 4.3), rv=0.5)
-# 5 · a tick per record (2 frames apart), a whoosh as the bracket draws (6.0) and rolls them up (6.3)
-for k in range(len(DATA['decision']['evidence'])):
-    add(sfx, tick(2000 + 60 * k, 0.1, dec=0.01), cue('record tick', 5.1 + k * 2 / 30 + 0.03), pan=0.3 - 0.05 * k)
-add(sfx, whoosh(0.28, 700, 4000, 0.16, peak=0.5), cue('bracket whoosh', 6.0), pan=0.2, rv=0.25)
-add(sfx, whoosh(0.34, 2500, 500, 0.14, peak=0.45), cue('roll-up whoosh', 6.3), rv=0.25)
-add(sfx, boom(110, 60, 0.12), cue('card lands', 6.62), gain=0.18)
-# 6 · approve: the click on the beat (7.5), a soft confirm, the status flip (8.0)
-add(sfx, tick(1900, 0.32, dec=0.006) + boom(170, 120, 0.03, 0.3)[:int(0.06 * SR)], cue('click', 7.5), pan=0.15)
-add(sfx, tick(2400, 0.12, dec=0.005), cue('click release', 7.58), pan=0.15)
-add(sfx, bell(hz('D6'), 0.1, dec=0.7), cue('confirm', 7.66), rv=0.5)
-add(sfx, bell(hz('F#6'), 0.08, dec=0.8), cue('confirm', 7.78), rv=0.5)
-add(sfx, tick(1500, 0.12, dec=0.008), cue('status flip', 8.0), pan=-0.3)
-# 7 · the passport slides in (8.5); the link snaps on with a metallic lock click and a low hit (9.0)
+# 5.0 · into the decision; 7.0 · into the confirm dialog (softer)
+into(5.0, 0.45, 600, 3200, 0.08, pan=-0.15)
+into(7.0, 0.36, 900, 4200, 0.05, pan=0.1)
+# 8.5 · the passport slides in, like paper
 add(sfx, filt(whoosh(0.42, 1500, 6000, 1.0, peak=0.3), 1200, 'high'), cue('paper slide', 8.5), gain=0.14)
-lock = np.zeros(int(0.5 * SR))
-for s, g in ((0.0, 1.0), (0.022, 0.7)):
-    i = int(s * SR); t = tt(0.5 - s)
-    ring = sum(a * np.sin(2 * np.pi * f * t) * np.exp(-t / d) for f, a, d in ((2150, 0.5, 0.09), (3420, 0.35, 0.06), (5710, 0.25, 0.04)))
-    lock[i:] += g * (filt(noise(0.5 - s), 3000, 'high') * np.exp(-t / 0.003) * 0.8 + ring)
-add(sfx, lock, cue('lock click', 9.0), gain=0.3, rv=0.35)
-add(sfx, boom(62, 34, 0.5), cue('low hit', 9.0), gain=0.4)
-add(sfx, whoosh(0.5, 4000, 10000, 0.03, peak=0.3), cue('seal shimmer', 9.05), rv=0.6)
+# 10.0 · out to the rule that raised it (a falling whoosh); 11.0 is the score's own bass hit
+into(10.0, 0.5, 3000, 700, 0.06, peak=0.45, rv=0.35)
 
 
 # ---------------------------------------------------------------- mix

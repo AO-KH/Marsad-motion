@@ -386,6 +386,9 @@ Delivered versions:
 
 - **v1**: the 9:16 Arabic master with the organic end card, plus stills of the organic and paid end cards (2026-09-25).
   Next, once the master is approved: 16:9 and 1:1 recompositions, the 6 s bumper, the English cut, and the paid cut.
+- **v2** (2026-10-11, §18): every screen is the real app (`app/capture.js` → `pages/`), the Coffee film's story cut to
+  13 s, with English and Arabic captions, effects on the transitions only and the "Book your demo" end. The English
+  cuts are gone (every line is bilingual).
 
 ## 14. New campaign films (from 2026-09-28)
 
@@ -574,3 +577,14 @@ square), the catalogue's fixes, 1080p. One video at a time, each delivered when 
   for its 2 s, the card approved and the counts 5 / 1 glowing. The effects are on the transitions only now (the
   ignition, the window, Decisions, the end: 6, from 16), the client's rule of 2026-09-30. QA PASS, −14.1 LUFS,
   −1.9 dBTP, 10 MB.
+- **Monitoring social ad** (`films/monitor`, 13 s, 9:16): its own pipeline (no demo engine), remade shot by shot on
+  the real app, captured by `tools/app_shot.js` from `films/monitor/app/capture.js` (which can now skip a state's
+  whole-window PNG, `full: false`, so only the crops are kept). v1's story (sales orders over 400, placeholder numbers,
+  12 evidence records) and its rebuilt dark-mode parts gave way to the Coffee film's sample data: the coffee's
+  properties written in; its stock row at each value as eight orders come in, 240 → 188, below «حد إعادة الطلب» 200 on
+  the drop; the bell and the alert the rule raised; the decision's card («مراقبة» lit), «موافقة», the confirm dialog
+  with its reason, «تم بنجاح»; the passport, the approval coming into its chain, the green seal; back to «قواعد
+  المراقبة»; the M and the end. It also follows the client's rules of 2026-09-30 that came after v1: captions in English
+  and Arabic, effects on the transitions only (no ticks, chimes or clicks), no wiggle or overshoot (the bell no longer
+  swings), and the end says "Book your demo · احجز عرضك التجريبي" under marsadnasl.com. The fast camera moves are
+  rendered with 16 blur samples (`build.sh` does it). QA PASS, −14.0 LUFS, −1.1 dBTP, 4.9 MB.
