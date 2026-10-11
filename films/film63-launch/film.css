@@ -127,3 +127,22 @@
 .end .book .ar{font:600 25px 'PlexAR';}
 .end .book .sep{color:rgba(255,255,255,0.55);}
 .end .ft{position:absolute;left:0;top:958px;width:1920px;text-align:center;font:600 17px 'JBMono';letter-spacing:0.32em;color:#fff;}
+
+/* 2026-10-11: the real app's screens (dark mode captures: films/pulse-30/pages/, films/style-jupiter/pages/), drawn
+   square as the app's MARSAD × Fusion look; the parts laid over them (.rx-sub); the sample-data label */
+.cl-plain.sq{border-radius:3px;}
+.cl-plain.sq>div{border-radius:3px;}
+.cl-dlg{border-radius:3px;box-shadow:0 0 0 1.5px rgba(214,170,255,0.45),0 0 40px rgba(170,70,240,0.3),0 30px 70px rgba(0,0,0,0.6);}
+.cl-sglow{position:absolute;opacity:0;pointer-events:none;box-shadow:inset 0 0 0 2px rgba(52,211,153,0.75),0 0 34px rgba(52,211,153,0.35);}
+.rx-part{position:absolute;left:0;top:0;background-repeat:no-repeat;background-color:#0B0A10;transform-origin:50% 50%;
+  box-shadow:0 0 0 1.5px rgba(214,170,255,0.38),0 0 30px rgba(170,70,240,0.22),0 26px 60px rgba(4,2,14,0.55);}
+.rx-stack{position:absolute;left:0;top:0;}
+.rx-sub{position:absolute;background-repeat:no-repeat;pointer-events:none;}
+.rx-glow{opacity:0;box-shadow:0 0 0 2px rgba(90,225,155,0.85),0 0 26px 4px rgba(11,180,100,0.55);}
+.rx-glow.v{box-shadow:0 0 0 2.5px rgba(242,170,255,0.9),0 0 34px 6px rgba(206,64,240,0.5);}
+.rx-caret{border-radius:1px;background:#EDE6F7;}
+.rx-label{position:absolute;left:56px;top:44px;height:40px;padding:0 18px;border-radius:20px;display:flex;align-items:center;white-space:nowrap;
+  background:rgba(20,12,40,0.55);box-shadow:inset 0 0 0 1px rgba(214,170,255,0.25);}
+.rx-label .en{font:500 17px 'Inter';color:rgba(244,241,250,0.78);}
+.rx-label .sep{margin:0 9px;font:500 17px 'Inter';color:rgba(244,241,250,0.32);}
+.rx-label .ar{font:500 17px 'PlexAR';color:rgba(244,241,250,0.72);direction:rtl;}

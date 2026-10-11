@@ -9,27 +9,34 @@
    Music: HoliznaCC0 "Movement" (fit/holizna-movement.mp3, CC0, 96.67 BPM, C minor), cut with film.json "edit": song beats
    16-95 (the second half of the stripped intro, then groove A) and 128-149 (the last two bars of groove B, its two-beat
    silence on 136-137, the stripped groove after it). Film beat k = song k+16 up to k79, then song k+48. B(k) = k x 0.6207 s.
-     k0-8    sources   the eight famous tiles float scattered in depth; "Your company's data is everywhere."
+     k0-8    sources   eight sources Marsad takes in (the catalogue's: Odoo, Excel, Google Drive, WhatsApp, PDF, CSV,
+                       DOCX, ZIP) float scattered in depth; "Your company's data is everywhere."
      k8-14   waiting   a team chat waits for an answer (a dull card: no glow); "When you need a quick answer, your system
                        makes you wait."
      k14-24  the turn  the tiles fly into the Marsad mark, which lands on k16 as the groove starts; "Marsad changes that.";
                        the camera flies through the mark's V
-     k24-32  the loop  Connect, Unify, Monitor, Act, one per beat, joined by one line; "One workflow. Fully automated."
+     k24-32  the loop  Connect, Unify, Monitor, Decide, one per beat, joined by one line; "Know. Watch. Decide."
      k32-44  the model the sources dock around the mark; the Knowledge Map's objects and links build on a slowly turning
                        plane; "Every system. One living model."; the plane pitches away
      k44-56  pulse     Business Pulse's three recommendations float up; the camera closes in on «مبني على بياناتك»;
-                       "Real-time recommendations — from your own numbers."
-     k56-68  decisions the Decisions counters and card swing in; the camera closes in on «موافقة»; the cursor clicks on
-                       k64 (a hit): executed, PO-2291, approved 0 -> 1; "Decision to action. Nothing in between."
-     k68-75  shield    six defence rings snap in around the mark, with their layers; "Defense in depth. Sovereign.
-                       PDPL-compliant."
-     k75-86  ask       the Assistant: an Arabic question typed and sent, the answer streamed word by word with its source
-                       chip; "Ask in Arabic." then "The answer comes from your original data."
+                       "Operational recommendations — from your own numbers."
+     k56-68  decisions the Decisions counters and card swing in ("Marsad watches."); the camera closes in on «موافقة»;
+                       the click (k62) opens the app's confirm dialog; «تأكيد الموافقة» on the hit (k64); «تم بنجاح»; the
+                       card approved, the counts 6 -> 5 and 0 -> 1 ("You decide.")
+     k68-75  shield    six rings snap in around the mark, with their live layers; "Built with personal-data masking
+                       and an audit trail."
+     k75-86  ask       the Assistant: an Arabic question typed and sent, «المساعد يفكّر…», the answer with its sources;
+                       "Ask in Arabic." then "The answer comes from your original data."
      k86-90  breath    black; "One operational nervous system." held through the music's two-beat silence (k88-89)
      k90-102 end       on the hit after the silence: the mark, the wordmark, marsadnasl.com, "Book your demo"
-   Truth: the Business Pulse rows, the Decisions counters, card and toast, the Knowledge Map's objects and link names, and
-   the Assistant's name, input and placeholder are the app's own (site kit). The team chat, the question and its answer,
-   the six layers and the tiles flying into the mark are the 63 s film's renderings. */
+   Truth (2026-10-11, "apply this to all other videos": the brand film's fixes, as the feature catalogue asks): the
+   Business Pulse rows, the Decisions counters, card, confirm dialog, «تم بنجاح» and approved card, and the Assistant's
+   thread (the question, «المساعد يفكّر…», the answer and its sources) are the real app's screens, captured from the
+   client's bilingual front end in dark mode with sample data (labelled "Sample data · بيانات تجريبية"): films/pulse-30/
+   pages/ and films/style-jupiter/pages/ (tools/app_shot.js). Nothing runs after the approval (the automatic follow-up is
+   switched off). The Knowledge Map's objects and link names are the app's own words (site kit). The team chat, the six
+   layers (live features: the brand film's) and the tiles flying into the mark are renderings. The dialogs dim the card
+   behind them as the app's veil does (a rendering of it). */
 const B=M.B, S8=M.S8, S16=M.S16, S32=M.S32, ez=M.ez, P=M.P, st=M.st, lerp=M.lerp, FQ=M.FQ;
 const f1=x=>(+x).toFixed(1), f2=x=>(+x).toFixed(2), f3=x=>(+x).toFixed(3);
 const dec=(t,a,b)=>ez.dec(P(t,a,b)), io=(t,a,b)=>ez.ioC(P(t,a,b)), inc=(t,a,b)=>ez.inC(P(t,a,b));
@@ -102,7 +109,7 @@ M.track(t=>{for(const e of D3.children)e.style.setProperty('--a',f1((t*26)%360)+
 // where an element sits inside a part (px from the part's top-left corner); measured once, while it is shown
 function offsetIn(e,root){let x=0,y=0,n=e;while(n&&n!==root){x+=n.offsetLeft;y+=n.offsetTop;n=n.offsetParent;}return {x:x+e.offsetWidth/2,y:y+e.offsetHeight/2};}
 
-/* ================= k0-8 the sources: the eight famous tiles float scattered in depth ================= */
+/* ================= k0-8 the sources: eight sources Marsad takes in (the catalogue's) float scattered in depth ================= */
 const MK={x:960,y:420};                  // where the mark lands on k16; the tiles fly into it
 const TL=[                               // x, y, depth, turn; slot = the 16th it is absorbed on (k14.25 + slot/4, the last on k16)
   {x:300, y:236,z:-60, rx:-8, ry:18, slot:3},
@@ -113,7 +120,7 @@ const TL=[                               // x, y, depth, turn; slot = the 16th i
   {x:700, y:912,z:-40, rx:14, ry:10, slot:1},
   {x:1196,y:888,z:-280,rx:12, ry:-8, slot:7},
   {x:1664,y:806,z:-30, rx:8,  ry:-18,slot:4},
-].map((p,i)=>({...p,i,t0:B(0.25+0.25*i),ta:B(14.25+0.25*p.slot),el:M.el('div','k-tile m-glass',K.tile(K.TILES[i]),D3)}));
+].map((p,i)=>({...p,i,t0:B(0.25+0.25*i),ta:B(14.25+0.25*p.slot),el:M.el('div','k-tile m-glass',K.tile(K.SOURCES[i]),D3)}));
 function tileBase(p,t){                  // the tile before the pull: in, drifting, then back into the dark behind the chat
   const pe=dec(t,p.t0,p.t0+0.9), pr=io(t,B(7.2),B(8.8));
   return {x:p.x+16*Math.sin(2*Math.PI*t/11+p.i*1.7), y:p.y+11*Math.cos(2*Math.PI*t/13+p.i*1.1), z:p.z-160*(1-pe)-520*pr,
@@ -188,8 +195,8 @@ M.track(t=>{
 kt({at:B(16.5),out:B(21.8),y:650,size:110,words:[{t:'Marsad',g:1},'changes','that.'],ar:'مرصد يغيّر المعادلة.'});
 M.punch(T_MK,{amp:0.015});
 
-/* ================= k24-32 the loop: Connect, Unify, Monitor, Act, one per beat, joined by one line ================= */
-const FT=[['Connect.','اربط','link'],['Unify.','وحّد','merge'],['Monitor.','راقب','pulse'],['Act.','نفّذ','check']]
+/* ================= k24-32 the loop: Connect, Unify, Monitor, Decide, one per beat, joined by one line ================= */
+const FT=[['Connect.','اربط','link'],['Unify.','وحّد','merge'],['Monitor.','راقب','pulse'],['Decide.','قرّر','check']]   // a person decides (the catalogue)
   .map(([en,ar,ic],i)=>({en,ar,ic,i,x:390+380*i,t0:B(24+i)}));
 const FY=392, T_FOUT=B(31.3);
 const fs=svgLayer(LO);
@@ -218,7 +225,7 @@ M.track(t=>{
   if(dOn){const u=((t-B(27.2))/1.9)%1;fDot.setAttribute('cx',f1(lerp(FT[0].x+84,FT[3].x-84,u)));fDot.setAttribute('cy',FY);
     fDot.setAttribute('opacity',f3(Math.sin(Math.PI*u)*(1-x)*dec(t,B(27.2),B(27.2)+0.4)));}
 });
-kt({at:B(28),out:B(31.2),y:716,size:72,words:['One','workflow.','Fully',{t:'automated.',g:1}],ar:'سير عمل واحد، مؤتمت بالكامل.',arSize:38,step:S16*1.5});
+kt({at:B(28),out:B(31.2),y:716,size:72,words:['Know.','Watch.',{t:'Decide.',g:1}],ar:'اعرف. راقب. قرّر.',arSize:38,step:S16*1.5});   // the client's tagline
 
 /* ================= k32-44 the model: the sources dock, the Knowledge Map's objects and links build around the mark ================= */
 const GR=M.el('div','cl-g',null,HI);                  // one group: it pitches away at the end
@@ -227,7 +234,7 @@ gsv.innerHTML=`<defs><linearGradient id="spg" x1="0" x2="1"><stop offset="0" sto
 const GC={x:960,y:566};
 // the sources: the eight tiles dock around the model, each with a line into it
 const SRC=[{x:190,y:400},{x:1730,y:400},{x:190,y:730},{x:1730,y:730},{x:540,y:290},{x:1380,y:290},{x:540,y:925},{x:1380,y:925}]
-  .map((p,i)=>({...p,i,t0:B(32.5+0.25*i),el:M.el('div','k-tile m-glass',K.tile(K.TILES[i]),GR),
+  .map((p,i)=>({...p,i,t0:B(32.5+0.25*i),el:M.el('div','k-tile m-glass',K.tile(K.SOURCES[i]),GR),
     ln:sv(gsv,'line',{x1:p.x,y1:p.y,x2:GC.x,y2:GC.y,stroke:'url(#spg)','stroke-width':2}),
     dot:sv(gsv,'circle',{r:4.5,fill:'#FFD2FF',filter:'url(#glw)'})}));
 SRC.forEach(s=>{s.len=Math.hypot(GC.x-s.x,GC.y-s.y);s.ln.setAttribute('stroke-dasharray',f1(s.len));
@@ -282,20 +289,19 @@ kt({ats:[B(32.5),B(33),B(37),B(37.5),B(38)],out:B(42.5),y:62,size:64,words:['Eve
   ar:'كل الأنظمة… نموذج حيّ واحد.',arSize:34});
 
 /* ================= k44-56 Business Pulse: the three recommendations float up; the camera closes in on «مبني على بياناتك» ================= */
-const tp=document.createElement('div');tp.innerHTML=SK.pulseContent({id:'flPulse'});
-const RW=1535,RH=118,RS=0.8;
-const RR=[...tp.querySelector('#recRows').children].map((r,i)=>{
-  st(r,{position:'absolute',left:'0',top:'0',right:'auto',width:RW+'px',height:RH+'px'});
-  const w=M.el('div',null,null);st(w,{position:'absolute',left:'0',top:'0',width:RW+'px',height:RH+'px',background:'#fff',borderRadius:'22px'});
-  M.el('div','site m-site',null,w).appendChild(r);
-  let e;if(i===0)e=gwrap(w,RW,RH,22);else{e=M.el('div','cl-plain',null,D3);st(e,{width:RW+'px',height:RH+'px'});e.appendChild(w);}
-  return {i,e,row:r,t0:B(44.5+0.25*i),y:448+132*i,z:-50*i};});
+// the real app's Business Pulse (films/pulse-30/pages/: tools/app_shot.js, dark mode, sample data): its three
+// recommendations, each 1024 x 100 app px, drawn 1.5x; «مبني على بياناتك» in the first at OKP
+const PIMG='films/pulse-30/pages/', RK=1.5, RW=1024*RK, RH=100*RK, RS=0.8;
+const RR=[1,2,3].map((n,i)=>{
+  const w=M.el('div',null,null);st(w,{position:'absolute',left:'0',top:'0',width:RW+'px',height:RH+'px',
+    background:`#0B0A10 url(${PIMG}list-r${n}.png) 0 0/100% 100% no-repeat`});
+  let e;if(i===0)e=gwrap(w,RW,RH,3);else{e=M.el('div','cl-plain sq',null,D3);st(e,{width:RW+'px',height:RH+'px'});e.appendChild(w);}
+  return {i,e,t0:B(44.5+0.25*i),y:430+150*i,z:-50*i};});
+const OKP={x:(965-208+55.8)*RK,y:(551-530+13)*RK};
 const ptag=M.el('div','ptag',`${SK.ic('pulse',24,'#F29BFF',2)}<span class="ar">نبض الأعمال</span><span class="en">Business Pulse</span>`,HI);
 const T_PZ=B(48.5), T_POUT=B(55.3), PZ=2.2;
-let OKP=null;
 M.track(t=>{
   const on=t>=B(44.2)&&t<T_POUT+0.95;RR.forEach(r=>r.e.style.display=on?'':'none');ptag.style.display=on?'':'none';if(!on)return;
-  if(!OKP)OKP=offsetIn(RR[0].row.querySelector('.sk-pill.ok'),RR[0].row);          // «مبني على بياناتك» in the top row
   const pz=io(t,T_PZ,T_PZ+1.4), px=io(t,T_POUT,T_POUT+0.9);
   // the camera: zoom by Z about the pill, which glides to (960,470)
   const F={x:960+(OKP.x-RW/2)*RS,y:RR[0].y+(OKP.y-RH/2)*RS},Z=lerp(1,PZ,pz),Tx=lerp(F.x,960,pz),Ty=lerp(F.y,470,pz);
@@ -308,56 +314,65 @@ M.track(t=>{
   const pt=dec(t,B(44.25),B(44.25)+0.6);
   st(ptag,{opacity:f3(pt*(1-pz)*(1-px)),transform:`translate(960px,${f1(344+(1-pt)*14)}px) translate(-50%,-50%)`});
 });
-kt({at:B(44.5),out:B(48.3),y:62,size:64,words:['Real-time',{t:'recommendations',g:1}],ar:'توصيات لحظية',arSize:34,step:S16*1.5});
+kt({at:B(44.5),out:B(48.3),y:62,size:64,words:['Operational',{t:'recommendations',g:1}],ar:'توصيات تشغيلية',arSize:34,step:S16*1.5});   // the page's own words
 kt({at:B(49),out:B(55.1),y:760,size:72,words:['From','your','own',{t:'numbers.',g:1}],ar:'مبنية على أرقامك — بلا اختلاق.',arSize:38,step:S16*1.5});
 
-/* ================= k56-68 Decisions: the counters and the card swing in; one click on «موافقة» ================= */
-const td=document.createElement('div');td.innerHTML=SK.decContent({id:'flDec'});
-const dcard=td.querySelector('#decCard'),toast=td.querySelector('#toast'),btn=dcard.querySelector('#btnOK'),stats=td.querySelector('#stats');
-[dcard,toast].forEach(e=>{e.removeAttribute('id');st(e,{position:'absolute',left:'0',top:'0',right:'auto',width:'1402px',height:'214px'});});
-toast.style.display='flex';
-const DWR=M.el('div',null,null);st(DWR,{position:'absolute',left:'0',top:'0',width:'1402px',height:'214px',background:'#fff',borderRadius:'22px'});
-M.el('div','site m-site',null,DWR).append(dcard,toast);
-const DEC=gwrap(DWR,1402,214,22);
-stats.removeAttribute('id');st(stats,{position:'absolute',left:'0',top:'0',right:'auto',width:'1402px',height:'138px'});
-const SWR=M.el('div',null,null);st(SWR,{position:'absolute',left:'0',top:'0',width:'1402px',height:'138px'});
-M.el('div','site m-site',null,SWR).appendChild(stats);
-const STW=M.el('div','cl-plain',null,D3);st(STW,{width:'1402px',height:'138px'});STW.appendChild(SWR);
-const statEls=[...stats.children];                     // left to right: حرجة, مرفوضة, موافق عليها, قيد المراجعة
-const nApp=statEls[2].querySelector('.n'),nRev=statEls[3].querySelector('.n');
-const BTN={x:1402-36-80,y:138+28};                     // «موافقة»'s centre in the card (right:36px, top:138px, 56 px tall, about 160 px wide)
-const DC={x:960,y:612}, SC7={x:960,y:352,s:0.86};
-const T_DIN=B(55.8), T_ZIN=B(60), T_CLICK=B(64), T_BACK=B(64.4), T_CNT=B(65.5), T_DOUT=B(67.3), ZS=2.6;
+/* ================= k56-68 Decisions: the counters and the card swing in; «موافقة», the app's confirm, «تم بنجاح» ================= */
+// the real app's Decisions page (films/style-jupiter/pages/: the brand film's captures, dark mode, sample data): the
+// counters and a recommendation a monitoring rule raised. «موافقة» opens the app's confirm dialog; «تأكيد الموافقة» gives
+// «تم بنجاح»; then the card is approved and the counts read 5 / 1. Nothing runs after the approval (the catalogue)
+const DIMG='films/style-jupiter/pages/', DK=1.25, CW=1120*DK, CH=206*DK, SW=1120*DK, SH=94*DK;
+const dPlate=(file,w,h)=>{const e=M.el('div',null,null);
+  st(e,{position:'absolute',left:'0',top:'0',width:f1(w)+'px',height:f1(h)+'px',background:`#0B0A10 url(${DIMG}${file}) 0 0/100% 100% no-repeat`});return e;};
+const dIn=dPlate('decisions-card.png',CW,CH), dAfter=dPlate('after-card.png',CW,CH);
+const DWR=M.el('div',null,null);st(DWR,{position:'absolute',left:'0',top:'0',width:CW+'px',height:CH+'px'});DWR.append(dIn,dAfter);
+const DEC=gwrap(DWR,CW,CH,3);
+const sIn=dPlate('decisions-stats.png',SW,SH), sAfter=dPlate('after-stats.png',SW,SH);
+const STW=M.el('div','cl-plain sq',null,D3);st(STW,{width:SW+'px',height:SH+'px'});STW.append(sIn,sAfter);
+const sGlow=M.el('div','cl-sglow',null,STW);st(sGlow,{left:f1((600-32)*DK)+'px',top:'0px',width:f1(268*DK)+'px',height:f1(SH)+'px'});   // «موافق عليها»
+const BTN={x:(53-32+53.35)*DK,y:(497-476+19)*DK};       // «موافقة»'s centre in the card (the brand film's boxes)
+// the app's dialogs, centred on the screen as the app centres them: the confirm, then «تم بنجاح»
+const QK=1.7, dlg=M.el('div',null,null,HI), dlgC=dPlate('confirm-dialog.png',448*QK,322*QK), dlgD=dPlate('done-dialog.png',448*QK,110*QK);
+st(dlg,{position:'absolute',left:'0',top:'0',width:f1(448*QK)+'px',height:f1(322*QK)+'px'});dlg.append(dlgC,dlgD);
+st(dlgD,{top:f1((322-110)/2*QK)+'px'});[dlgC,dlgD].forEach(e=>e.className='cl-dlg');   // each with its own rim
+const OKB={x:960-448*QK/2+(521-496+76.55)*QK, y:540-322*QK/2+(506.5-253.5+22)*QK};   // «تأكيد الموافقة» on screen
+const DC={x:960,y:612}, SC7={x:960,y:372,s:0.86};
+const T_DIN=B(55.8), T_ZIN=B(59), T_CLICK=B(62), T_BACK=B(62.4), T_DLG=B(62.5), T_OK=B(64), T_DONE=B(64.25), T_CNT=B(65.75), T_DOUT=B(67.3), ZS=2.6;
 M.track(t=>{
   const on=t>=T_DIN-0.02&&t<T_DOUT+0.7;DEC.style.display=on?'':'none';STW.style.display=on?'':'none';if(!on)return;
   const pe=dec(t,T_DIN,T_DIN+1.1), ps=dec(t,T_DIN+0.1,T_DIN+1.2), pz=io(t,T_ZIN,T_ZIN+1.5)*(1-io(t,T_BACK,T_BACK+1.3)), x=inc(t,T_DOUT,T_DOUT+0.6);
   // the camera: zoom by Z about «موافقة», which glides to the centre
-  const F={x:DC.x+BTN.x-701,y:DC.y+BTN.y-107},Z=lerp(1,ZS,pz),Tx=lerp(F.x,960,pz),Ty=lerp(F.y,540,pz);
-  const sw=1000*(1-pe);                                  // the swing in from the right
-  st(DEC,{opacity:f3(pe*(1-x)),filter:pe<1||x>0?`blur(${f2((1-pe)*8+x*10)}px)`:'none',
-    transform:T3(Tx+(DC.x-F.x)*Z+sw,Ty+(DC.y-F.y)*Z-x*160,1402,214,{rx:lerp(8,0,pz),ry:lerp(-35*(1-pe)-4+7*P(t,B(57),B(67)),0,pz),s:Z})});
-  st(STW,{opacity:f3(ps*(1-pz)*(1-x)),filter:ps<1||x>0?`blur(${f2((1-ps)*8+x*10)}px)`:'none',
-    transform:T3(Tx+(SC7.x-F.x)*Z+1000*(1-ps),Ty+(SC7.y-F.y)*Z-x*160,1402,138,{z:-60,rx:lerp(10,0,pz),ry:lerp(-35*(1-ps)-4+7*P(t,B(57),B(67)),0,pz),s:SC7.s*Z})});
-  const pk=dec(t,T_CLICK+0.05,T_CLICK+0.45);dcard.style.opacity=f3(1-pk);toast.style.opacity=f3(pk);
-  const pr=P(t,T_CLICK,T_CLICK+0.24);btn.style.transform=`scale(${f3(1-0.05*Math.sin(Math.PI*pr))})`;
-  // the counters follow: approved 0 -> 1, under review 6 -> 5; the approved tile glows once
-  const done=FQ(t)>=T_CNT;nApp.textContent=done?'1':'0';nRev.textContent=done?'5':'6';
-  const gc=dec(t,T_CNT,T_CNT+0.4)*(1-io(t,T_CNT+0.8,T_CNT+2.2));
-  statEls[2].style.boxShadow=gc>0.001?`0 0 ${f1(34*gc)}px rgba(11,132,71,${f3(0.55*gc)}),inset 0 0 0 ${f2(2*gc)}px rgba(11,132,71,${f3(0.6*gc)})`:'';
+  const F={x:DC.x+BTN.x-CW/2,y:DC.y+BTN.y-CH/2},Z=lerp(1,ZS,pz),Tx=lerp(F.x,960,pz),Ty=lerp(F.y,540,pz);
+  const sw=1000*(1-pe), dim=0.55*dec(t,T_DLG,T_DLG+0.3)*(1-dec(t,T_CNT,T_CNT+0.3));   // dimmed behind the dialog, as the app does
+  const fl=(p)=>p<1||x>0||dim>0.001?`blur(${f2((1-p)*8+x*10+2*dim)}px) brightness(${f3(1-dim)})`:'none';
+  st(DEC,{opacity:f3(pe*(1-x)),filter:fl(pe),
+    transform:T3(Tx+(DC.x-F.x)*Z+sw,Ty+(DC.y-F.y)*Z-x*160,CW,CH,{rx:lerp(8,0,pz),ry:lerp(-35*(1-pe)-4+7*P(t,B(57),B(67)),0,pz),s:Z})});
+  st(STW,{opacity:f3(ps*(1-pz)*(1-x)),filter:fl(ps),
+    transform:T3(Tx+(SC7.x-F.x)*Z+1000*(1-ps),Ty+(SC7.y-F.y)*Z-x*160,SW,SH,{z:-60,rx:lerp(10,0,pz),ry:lerp(-35*(1-ps)-4+7*P(t,B(57),B(67)),0,pz),s:SC7.s*Z})});
+  const pk=dec(t,T_CNT,T_CNT+0.35);dAfter.style.opacity=f3(pk);sAfter.style.opacity=f3(pk);   // approved; the counts read 5 / 1
+  sGlow.style.opacity=f3(dec(t,T_CNT,T_CNT+0.4)*(1-io(t,T_CNT+0.8,T_CNT+2.2)));
 });
-kt({at:B(56.5),out:B(61.8),y:62,size:64,words:['Decision','to',{t:'action.',g:1}],ar:'من القرار إلى التنفيذ.',arSize:34,step:S16*1.5});
-kt({at:B(65.5),out:B(67.1),y:800,size:72,words:['Nothing','in',{t:'between.',g:1}],ar:'بلا خطوات بينهما.',arSize:38,step:S16*1.5});
-M.punch(T_CLICK,{amp:0.008});
-// the cursor: glides in, presses «موافقة» on k64 (the tip below the label), one soft ring
+M.track(t=>{                                           // the confirm pops in on the click's result; «تم بنجاح» on the confirm's
+  const on=t>=T_DLG-0.02&&t<T_CNT+0.35;dlg.style.display=on?'':'none';if(!on)return;
+  const pi=dec(t,T_DLG,T_DLG+0.3), po=io(t,T_CNT,T_CNT+0.3);
+  st(dlg,{opacity:f3(pi*(1-po)),transform:T3(960,540+(1-pi)*24,448*QK,322*QK,{s:0.96+0.04*pi})});
+  const pd=dec(t,T_DONE,T_DONE+0.2);dlgC.style.opacity=f3(1-pd);dlgD.style.opacity=f3(pd);
+});
+kt({at:B(56.5),out:B(61.8),y:62,size:64,words:[{t:'Marsad',g:1},'watches.'],ar:'مرصد يراقب.',arSize:34,step:S16*1.5});
+kt({at:B(65.75),out:B(67.3),y:880,size:72,words:['You',{t:'decide.',g:1}],ar:'وأنت تقرّر.',arSize:38,step:S16*1.5});
+M.punch(T_OK,{amp:0.008});
+// the cursor: glides in, presses «موافقة» (k62), then the dialog's «تأكيد الموافقة» on the hit (k64); one soft ring each
 const cur=M.el('div','cur',`<svg viewBox="0 0 32 32" width="70" height="70"><path d="M6 3 L26 17 L16.6 18.6 L21.4 28.2 L17.6 30 L12.8 20.4 L6 26 Z" fill="#fff" stroke="#1A0F2E" stroke-width="1.6" stroke-linejoin="round"/></svg>`,HI);
 const ring=M.el('div','ring',null,HI);
 M.track(t=>{
-  const on=t>=B(62)&&t<B(65.6);cur.style.display=on?'':'none';ring.style.display=t>=T_CLICK&&t<T_CLICK+0.6?'':'none';if(!on)return;
-  const pm=io(t,B(62),T_CLICK-0.08), tx=lerp(1560,972,pm), ty=lerp(1010,590,pm);
-  const press=Math.sin(Math.PI*P(t,T_CLICK-0.02,T_CLICK+0.2)), out=inc(t,B(65),B(65.6));
-  st(cur,{opacity:f3(dec(t,B(62),B(62.4))*(1-out)),transform:`translate(${f1(tx-12)}px,${f1(ty-6)}px) scale(${f3(1-0.12*press)})`});
-  const pr=P(t,T_CLICK,T_CLICK+0.6),R=20+100*ez.dec(pr);
-  st(ring,{opacity:f3(0.8*(1-pr)),width:f1(2*R)+'px',height:f1(2*R)+'px',transform:`translate(${f1(tx-R)}px,${f1(ty-R)}px)`});
+  const on=t>=B(60)&&t<B(65.6), rg=[T_CLICK,T_OK].find(c=>t>=c&&t<c+0.6);
+  cur.style.display=on?'':'none';ring.style.display=rg!=null?'':'none';if(!on)return;
+  const pm=io(t,B(60),T_CLICK-0.08), pm2=io(t,T_DLG+0.2,T_OK-0.08);
+  const tx=lerp(lerp(1560,972,pm),OKB.x,pm2), ty=lerp(lerp(1010,566,pm),OKB.y,pm2);
+  const press=Math.max(Math.sin(Math.PI*P(t,T_CLICK-0.02,T_CLICK+0.2)),Math.sin(Math.PI*P(t,T_OK-0.02,T_OK+0.2))), out=inc(t,B(65),B(65.6));
+  st(cur,{opacity:f3(dec(t,B(60),B(60.4))*(1-out)),transform:`translate(${f1(tx-12)}px,${f1(ty-6)}px) scale(${f3(1-0.12*press)})`});
+  if(rg!=null){const pr=P(t,rg,rg+0.6),R=20+100*ez.dec(pr);
+    st(ring,{opacity:f3(0.8*(1-pr)),width:f1(2*R)+'px',height:f1(2*R)+'px',transform:`translate(${f1(tx-R)}px,${f1(ty-R)}px)`});}
 });
 
 /* ================= k68-75 the shield: six defence rings snap in around the mark, with their layers ================= */
@@ -365,8 +380,8 @@ const SHG=M.el('div','cl-sh',null,HI);
 const ssv=svgLayer(SHG);
 ssv.innerHTML=`<defs><linearGradient id="shg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#7A2BD6"/><stop offset="0.5" stop-color="#E86BFF"/><stop offset="1" stop-color="#8E6BFF"/></linearGradient>${GLOW}</defs>`;
 const SC={x:600,y:606};
-const LAYERS=[['ACCESS CONTROLS','التحكم بالوصول'],['DATA PROTECTION','حماية البيانات'],['NETWORK SECURITY','أمن الشبكة'],
-  ['APPLICATION SECURITY','أمن التطبيقات'],['MONITORING & AUDIT','المراقبة والتدقيق'],['SOVEREIGN INFRASTRUCTURE','بنية تحتية سيادية']];
+const LAYERS=[['EACH COMPANY WALLED OFF','بيانات كل شركة معزولة'],['PERSONAL-DATA MASKING','إخفاء البيانات الشخصية'],      // live features only
+  ['ROLES & PERMISSIONS','الأدوار والصلاحيات'],['INVITE-ONLY ACCESS','الدخول بدعوة فقط'],['WORKSPACES PER BRANCH','مساحة عمل لكل فرع'],['AUDIT LOG','سجل التدقيق']];
 const RGS=LAYERS.map(([en,ar],i)=>{const r=120+44*i,gp=sv(ssv,'g',{});
   const c=sv(gp,'circle',{cx:SC.x,cy:SC.y,r,fill:'none',stroke:'url(#shg)','stroke-width':i===5?3:2.2,filter:'url(#glw)'});
   if(i===1||i===3)c.setAttribute('stroke-dasharray','10 12');
@@ -394,46 +409,47 @@ M.track(t=>{
   const pw=dec(t,B(71.5),B(71.5)+0.6);sweep.setAttribute('opacity',f3(0.85*pw*(1-x)));
   sweep.setAttribute('stroke-dashoffset',f1(-((t-B(71.5))*520)%SWL));
 });
-kt({at:B(68.5),out:B(74.2),y:62,size:56,words:['Defense','in','depth.','Sovereign.',{t:'PDPL-compliant.',g:1}],
-  ar:'دفاع متعدد الطبقات — بنية سيادية متوافقة مع نظام حماية البيانات الشخصية.',arSize:30,step:S16*1.5});
+kt({at:B(68.5),out:B(74.2),y:62,size:56,words:['Built','with','personal-data',{t:'masking',g:1},'and','an',{t:'audit trail.',g:1}],
+  ar:'مبني على إخفاء البيانات الشخصية وسجلّ للتدقيق.',arSize:32,step:S16});   // the catalogue's most: no "sovereign", no "PDPL-compliant"
 
-/* ================= k75-86 Ask in Arabic: the Assistant; a question typed and sent, the answer streamed from the data ================= */
-const Q='لماذا انخفضت مبيعات الرياض هذا الأسبوع؟';
-const ANS=['انخفضت','المبيعات','§','بسبب','نفاد','المخزون','في','ثلاثة','فروع','—','تم','إنشاء','طلبات','التوريد','تلقائيًا.'];
-const ask=M.el('div','as-card',
-  `<div class="hd"><span class="bt">${SK.ic('bot',26,'#fff',2)}</span><span class="nm">مساعد مرصد الذكي</span>`+
-  `<span class="ws">${SK.ic('chevDown',18,'#52505A',2)}<span>كل مساحة العمل</span></span></div><div class="dv"></div>`+
-  `<div class="um">${Q}</div>`+
-  `<div class="an"><span class="av">${SK.ic('bot',24,'#fff',2)}</span><div class="ac"><div class="tx"></div>`+
-  `<span class="chip">${SK.ic('check',16,'#0B8447',2.6)}<span>مبني على بياناتك الأصلية — بدون اختلاق</span></span></div></div>`+
-  `<div class="ir"><div class="in"><span class="ph">اسأل مرصد عن أي شيء بخصوص بياناتك...</span><span class="qq"></span><i class="caret"></i></div>`+
-  `<span class="send">${SK.ic('send',28,'#fff',2)}</span></div>`);
-st(ask,{width:'1100px',height:'590px'});
-const ASK=gwrap(ask,1100,590,28);
-const aUM=ask.querySelector('.um'),aAN=ask.querySelector('.an'),aTX=ask.querySelector('.tx'),aCH=ask.querySelector('.chip'),
-  aPH=ask.querySelector('.ph'),aQQ=ask.querySelector('.qq'),aCa=ask.querySelector('.caret'),aSend=ask.querySelector('.send');
-const T_AIN=B(75), T_TYPE=B(76), T_SEND=B(78.5), T_POST=B(78.75), T_ANS=B(79.25), T_W=B(79.5), T_CHIP=B(83.25), T_AOUT=B(85.6);
-let lastTx='';
+/* ================= k75-86 Ask in Arabic: the Assistant; the question typed and sent; it thinks; the answer, with its sources ================= */
+// The app's own assistant page (films/style-jupiter/pages/chat-*: the brand film's captures): its thread panel in four
+// states. The typing uncovers the captured typed field letter by letter, right to left, over the focused empty one; then
+// «المساعد يفكّر…»; then the answer with «المصادر» (the app answers in one piece; it explains the drop and creates nothing)
+const AK=2, TH=[32,250,816,517];
+const plate=(parent,file,w,h,k)=>{const e=M.el('div','rx-part',null,parent);
+  st(e,{width:f1(w*k)+'px',height:f1(h*k)+'px',backgroundImage:`url(${DIMG}${file})`,backgroundSize:'100% 100%'});return e;};
+const over=(pl,file,[x,y,w,h],[px,py],k,cls='rx-sub')=>{const e=M.el('div',cls,null,pl);
+  st(e,{left:f1((x-px)*k)+'px',top:f1((y-py)*k)+'px',width:f1(w*k)+'px',height:f1(h*k)+'px'});
+  if(file)st(e,{backgroundImage:`url(${DIMG}${file})`,backgroundSize:'100% 100%'});return e;};
+const ASK=M.el('div','rx-stack',null,D3);st(ASK,{width:f1(TH[2]*AK)+'px',height:f1(TH[3]*AK)+'px'});
+const APL=['chat-thread','chat-space-thread','chat-thinking-thread','chat-answer-thread'].map(f=>plate(ASK,f+'.png',TH[2],TH[3],AK));
+const FB=[117,695,706,48], TX0=462, TX1=688;          // the field, and the typed question's span inside it (app px, measured)
+const aTyped=over(APL[1],'chat-typed-field.png',FB,TH,AK), aSendOn=over(APL[1],'chat-typed-send.png',[57,702,48,48],TH,AK),
+  aCaret=over(APL[1],null,[FB[0],FB[1]+14,1.1,20],TH,AK,'rx-sub rx-caret'),
+  srcG=over(APL[3],null,[209.5,403.3,556.5,73],TH,AK,'rx-sub rx-glow v');   // round «المصادر» and its chips, 8 px clear
+srcG.style.borderRadius=f1(2*AK)+'px';
+const QN=39;                                          // «لماذا انخفضت مبيعات الرياض هذا الأسبوع؟»
+const T_AIN=B(75), T_TYPE=B(76), CPS=26, T_THINK=B(78.75), T_SEND=T_THINK-0.15, T_ANS=B(79.75), T_SRC=B(82.25), T_AOUT=B(85.6);
 M.track(t=>{
   const on=t>=T_AIN-0.02&&t<T_AOUT+0.7;ASK.style.display=on?'':'none';if(!on)return;
-  const pe=dec(t,T_AIN,T_AIN+1.1), x=inc(t,T_AOUT,T_AOUT+0.6);
+  const pe=dec(t,T_AIN,T_AIN+1.1), x=inc(t,T_AOUT,T_AOUT+0.6), u=P(t,T_AIN,T_AOUT), pz=io(t,T_THINK,T_ANS+0.6);
   st(ASK,{opacity:f3(pe*(1-x)),filter:pe<1||x>0?`blur(${f2((1-pe)*10+x*10)}px)`:'none',
-    transform:T3(960,606+(1-pe)*300+x*200,1100,590,{rx:lerp(24,4,pe)+14*x,ry:-3+6*P(t,T_AIN,T_AOUT)})});
-  // typing: one key per 32nd, 2.5 characters a key; the input clears when the question is sent
-  const q=FQ(t), keys=q<T_TYPE?0:Math.floor((q-T_TYPE)/S32)+1, n=q>=T_SEND+0.1?0:Math.min(Q.length,Math.ceil(keys*2.5));
-  aQQ.textContent=Q.slice(0,n);aPH.style.display=n>0?'none':'';
-  aCa.style.opacity=t>=T_TYPE-0.3&&t<T_SEND+0.1?'1':'0';
-  const pk=P(t,T_SEND,T_SEND+0.3);aSend.style.background=n>0||(pk>0&&pk<1)?'#5909B4':'#C9A8E6';
-  aSend.style.transform=`scale(${f3(1-0.06*Math.sin(Math.PI*pk))})`;
-  const pu=dec(t,T_POST,T_POST+0.5);st(aUM,{opacity:f3(pu),transform:`translateY(${f1((1-pu)*40)}px)`});
-  const pa=dec(t,T_ANS,T_ANS+0.5);st(aAN,{opacity:f3(pa),transform:`translateY(${f1((1-pa)*24)}px)`});
-  const nw=q<T_W?0:Math.min(ANS.length,Math.floor((q-T_W)/S16)+1);
-  const tx=ANS.slice(0,nw).map(w=>w==='§'?'<span class="hl">8.2%</span>':w).join(' ');
-  if(tx!==lastTx){aTX.innerHTML=tx;lastTx=tx;}
-  const pc=dec(t,T_CHIP,T_CHIP+0.5);st(aCH,{opacity:f3(pc),transform:`scale(${f3(0.94+0.06*pc)})`});
+    transform:T3(960,lerp(600,817,pz)+(1-pe)*300+x*200,TH[2]*AK,TH[3]*AK,{rx:lerp(24,3,pe)+14*x,ry:lerp(-8,-1,u),s:lerp(0.78,0.94,pz)})});
+  const q=FQ(t), n=Math.max(0,Math.min(QN,Math.floor((q-T_TYPE)*CPS)+1)), k=q>=T_ANS?3:q>=T_THINK?2:q>=T_TYPE?1:0;
+  APL.forEach((e,i)=>e.style.display=i===k?'':'none');
+  if(k===1){const xr=TX1-(TX1-TX0)*n/QN;
+    aTyped.style.clipPath=`inset(0 0 0 ${f1(xr*AK)}px)`;
+    st(aCaret,{left:f1((FB[0]-TH[0]+xr-1.8)*AK)+'px'});
+    aSendOn.style.transform=`scale(${f3(1-0.08*Math.sin(Math.PI*P(t,T_SEND-0.05,T_SEND+0.2)))})`;}
+  if(k===3)srcG.style.opacity=f3(dec(t,T_SRC,T_SRC+0.35)*(1-0.4*io(t,T_SRC+0.6,T_SRC+1.6)));   // its sources: the proof
 });
 kt({at:B(75.5),out:B(81.6),y:62,size:72,words:['Ask','in',{t:'Arabic.',g:1}],ar:'اسأل بالعربية.',arSize:38});
 kt({at:B(82),out:B(85.6),y:62,size:56,words:['The','answer','comes','from','your',{t:'original',g:1},{t:'data.',g:1}],ar:'الإجابة من بياناتك الأصلية.',arSize:32,step:S16});
+// the app's screens show sample data: labelled while they are up (Business Pulse, Decisions, the Assistant)
+const SAMPLE=M.el('div','rx-label','<span class="en">Sample data</span><span class="sep">·</span><span class="ar">بيانات تجريبية</span>',HI);
+M.track(t=>{const v=Math.max(dec(t,B(44.2),B(44.7))*(1-io(t,B(67.3),B(67.9))),dec(t,T_AIN,T_AIN+0.5)*(1-io(t,T_AOUT,T_AOUT+0.6)));
+  SAMPLE.style.display=v>0.001?'':'none';SAMPLE.style.opacity=f3(v);});
 
 /* ================= k86-90 the breath: black, the line held through the music's two-beat silence ================= */
 kt({at:B(86.5),out:B(89.3),y:392,size:104,words:['One','operational','nervous',{t:'system.',g:1}],ar:'جهاز عصبي تشغيلي واحد لشركتك.',step:S16*1.5});
