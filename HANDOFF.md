@@ -520,6 +520,11 @@ interface (icons that mirror in left-to-right pages, the Settings tab kept after
 the Links page) and in pages the film doesn't show. Captured from it, the film's 15 screens came out pixel-identical to
 the ones above, so the delivered film already matches it.
 
+On 2026-10-11 the client asked to try again from that zip (attached again; the session's container had been reset, so
+the front end was installed afresh with `npm ci`). The film was captured from it again and rendered again. Its screens
+differ from the 3 October ones only in anti-aliasing at glyph and icon edges (0.03-0.45% of pixels; a new container's
+Chromium), with the same layout, boxes and text. QA PASS: pulse 0.99×, shake 0, −14.0 LUFS, −2.8 dBTP.
+
 Not done yet: `tools/app_snap.js` snapshots (the walkthroughs) embed only the fonts in `fonts/`, so a walkthrough of the
 new front end would show Latin text and digits in IBM Plex instead of Effra. Serve Effra from the cache there before
 the next walkthrough.
