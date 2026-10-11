@@ -15,22 +15,25 @@
                       everywhere."; from k6.75 they spin into the centre
      k8-16   connect  (the groove) a lens bursts out of the centre; inside it, the drawing: the sources' plates, Odoo and
                       WhatsApp and the company's files, cables flowing up; "Connect your sources."
-     k16-24  unify    the camera cranes up to the ontology: seven types on small lenses, six links with their names, the
-                      WhatsApp note as the app shows it; "Unify them in one ontology."
+     k16-24  unify    the camera cranes up to the ontology: seven record types on small lenses, six links with their
+                      names (the knowledge map's sample model, as in the Knowledge Map walkthrough), a WhatsApp message
+                      and its customer; "Unify them in one ontology."
      k24-32  act      up to the app's pages (Business Pulse, Decisions, the Assistant), lying on the top tier; they stand
                       up as glass slabs (bezel, thickness, a reflection on the plate) in an arc facing the middle, and
-                      their parts float out of them while the camera circles; the restock action rises from Product to
-                      Decisions and its "Action executed · PO-2291" card lifts out, glowing green; "Monitor and act."
+                      their parts float out of them while the camera circles; a monitoring rule rises from Product to
+                      Decisions and the decision it raised lifts out, glowing; "Monitor and decide."
      k32-44  model    the pull-back to the whole stack over a glowing horizon; "Every system. One living model."
      k42.5-48         "Meet the Marsad ontology." through the track's break
      k48-57  end      on the hit the 48 s film's end: a capsule blooms round "Book your demo." and shrinks into the
                       marsadnasl.com capsule; the mark; "Book your demo · احجز عرضك التجريبي"
-   Truth: the object types, their links (Arabic labels and API names), the WhatsApp note and its customer (the app's
-   search row), the file names, the page screenshots and the executed action's text are the app's own (site kit,
-   site_pages/); the parts floating out of the pages are the screenshots' own pixels. Renderings: the rings of icons, the
-   tiered drawing (how Marsad works, drawn), the isometric icons, the lens pads, the cables, the glass slabs and their
-   reflections, the empty slots the floating parts leave in the pages (films/ontology-main-theme/pages/*_base.png), the
-   action's pill and its path. */
+   Truth (2026-10-11, "apply this to all other videos"): the three pages and the parts floating out of them are the real
+   app's screens, captured from the client's bilingual front end in dark mode with sample data (films/ontology-main-
+   theme/app/capture.js, tools/app_shot.js: each page as it is and with those parts hidden, their places kept); the
+   record types and link names are the knowledge map's sample model; the file names are sample data. A person decides
+   (the catalogue): no action runs after an approval. Renderings: the rings of icons, the tiered drawing (how Marsad
+   works, drawn), the isometric icons, the lens pads, the cables, the glass slabs and their reflections, the message
+   card, the rule's pill and its path. Before 2026-10-11: site-kit screenshots of the old light pages, an older model,
+   and an executed action (PO-2291). */
 const B=M.B, S8=M.S8, S16=M.S16, ez=M.ez, P=M.P, st=M.st, lerp=M.lerp, FQ=M.FQ;
 const f1=x=>(+x).toFixed(1), f2=x=>(+x).toFixed(2), f3=x=>(+x).toFixed(3);
 const dec=(t,a,b)=>ez.dec(P(t,a,b)), io=(t,a,b)=>ez.ioC(P(t,a,b)), inc=(t,a,b)=>ez.inC(P(t,a,b));
@@ -189,24 +192,27 @@ function camAt(t){let k=0;while(k<CAMK.length-2&&t>=CAMK[k+1][0])k++;
 const TIER0=[{k:'sys',x0:-1300,x1:-120,y0:0,y1:560},{k:'files',x0:120,x1:1300,y0:0,y1:560}];
 const TIER1={x0:-1400,x1:1400,y0:0,y1:760};
 /* the top tier: each page stands on its plate as a glass slab and turns to face the middle; its parts (the screenshot's
-   own pixels: [x, y, w, h, corner radius, how far it floats out, has a shadow]) float out of it */
+   own pixels: [x, y, w, h, corner radius, how far it floats out, has a shadow]) float out of it
+   (the real app's screens: films/ontology-main-theme/pages/, tools/app_shot.js: <img>.png as it is, <img>-base.png with
+   those parts hidden, their places kept; the boxes are the capture's, in CSS px of its 1440 x 805 window) */
 const TIER2=[{k:'pulse',x0:-1500,x1:-540,img:'pulse',ang:22,hx:-930,ar:'نبض الأعمال',en:'BUSINESS PULSE',
-    parts:[[184,640,1534,118,16,60,0],[184,776,1534,118,16,95,0],[184,912,1534,118,16,130,0],[183,326,236,71,14,120,1]]},
+    parts:[[208,470,1024,100,0,60,0],[208,582,1024,100,0,95,0],[208,694,1024,100,0,130,0],[208,174,153.9,48,0,120,1]]},
   {k:'dec',x0:-480,x1:480,img:'decisions',ang:0,hx:0,ar:'القرارات',en:'DECISIONS',
-    parts:[[58,405,331,138,16,75,0],[415,405,331,138,16,75,0],[772,405,331,138,16,75,0],[1129,405,331,138,16,75,0]]},
-  {k:'ai',x0:540,x1:1500,img:'assistant',ang:-22,hx:930,ar:'مساعد مرصد الذكي',en:'ASSISTANT',
-    parts:[[187,963,789,70,14,55,0],[127,692,398,96,16,85,0],[547,692,397,96,16,85,0],[1064,376,371,62,12,100,1],[490,418,92,92,20,135,0]]}]
+    parts:[[32,286,268,94,0,75,0],[316,286,268,94,0,75,0],[600,286,268,94,0,75,0],[884,286,268,94,0,75,0]]},
+  {k:'ai',x0:540,x1:1500,img:'chat',ang:-22,hx:930,ar:'مساعد مرصد الذكي',en:'ASSISTANT',
+    parts:[[117,695,706,48,0,55,0],[104,494.5,330,70,0,85,0],[446,494.5,330,70,0,85,0],[104,576.5,330,70,0,100,0],[446,576.5,330,70,0,115,0]]}]
   .map(p=>({...p,y0:0,y1:700}));
-const DONE=[58,687,1402,214,16];                                  // Decisions' "Action executed" card: it floats out on the action
+const DONE=[32,476,1120,206,0];                                   // Decisions' card, raised by a monitoring rule: it floats out on the rule
 const SRCS=[{ic:'db',x:-920,y:300,lb:'Odoo',cls:''},{ic:'chat',x:-480,y:300,lb:'واتساب',cls:' ar'},
-  {ic:'xlsx',x:340,y:300,lb:'invoices_q3.xlsx',cls:''},{ic:'csv',x:720,y:300,lb:'branch_returns.csv',cls:''},{ic:'pdf',x:1100,y:300,lb:'po_2291.pdf',cls:''}].map((o,i)=>({...o,z:0,t0:B(8.9)+i*S16}));
-const OBJ=[{k:'cust',ic:'store',ar:'عميل',en:'Customer',x:0,y:380,h:62},{k:'inv',ic:'doc',ar:'فاتورة',en:'Invoice',x:660,y:210,h:84},
-  {k:'note',ic:'note',ar:'ملاحظة',en:'Note',x:-1030,y:200,h:66},{k:'emp',ic:'person',ar:'موظف',en:'Employee',x:-850,y:600,h:82},
-  {k:'city',ic:'city',ar:'مدينة',en:'City',x:350,y:650,h:104},{k:'prod',ic:'box',ar:'منتج',en:'Product',x:950,y:660,h:58},
-  {k:'line',ic:'line',ar:'بند فاتورة',en:'Invoice line',x:1150,y:360,h:66}].map((o,i)=>({...o,z:Z1,t0:B(16.75)+i*S16}));
+  {ic:'xlsx',x:340,y:300,lb:'invoices_q3.xlsx',cls:''},{ic:'csv',x:720,y:300,lb:'branch_returns.csv',cls:''},{ic:'pdf',x:1100,y:300,lb:'supply_contract.pdf',cls:''}].map((o,i)=>({...o,z:0,t0:B(8.9)+i*S16}));
+// the knowledge map's sample model (the Knowledge Map walkthrough's, demos/ontology-real: its types and link names)
+const OBJ=[{k:'cust',ic:'store',ar:'عميل',en:'Customer',x:0,y:380,h:62},{k:'inv',ic:'doc',ar:'فاتورة',en:'Invoice',x:560,y:150,h:84},
+  {k:'chat',ic:'chat',ar:'رسالة واتساب',en:'WhatsApp message',x:-740,y:140,h:66},{k:'doc',ic:'note',ar:'مستند',en:'Document',x:-760,y:620,h:66},
+  {k:'ord',ic:'line',ar:'أمر بيع',en:'Sales order',x:300,y:690,h:66},{k:'prod',ic:'box',ar:'منتج',en:'Product',x:840,y:720,h:58},
+  {k:'sup',ic:'person',ar:'مورد',en:'Supplier',x:1230,y:400,h:82}].map((o,i)=>({...o,z:Z1,t0:B(16.75)+i*S16}));
 const OK={};OBJ.forEach(o=>OK[o.k]=o);
-const LNK=[['cust','inv','صادرة إلى','billed_to'],['inv','line','تحتوي بند','has_line'],['prod','line','المنتج','line_product'],
-  ['cust','note','يذكر','mentions',0.55],['cust','emp','مدير الحساب','account_manager',0.6],['cust','city','يقع في','located_in']].map((l,j)=>({a:OK[l[0]],b:OK[l[1]],ar:l[2],en:l[3],f:l[4]??0.5,t0:B(18.5)+j*S16}));
+const LNK=[['inv','cust','تخص العميل','invoice_customer'],['inv','prod','تتضمن المنتج','invoice_product',0.5],['prod','sup','يورّده','product_supplier',0.55],
+  ['chat','cust','من العميل','message_customer',0.45],['doc','cust','يذكر العميل','document_customer',0.4],['ord','cust','طلب العميل','order_customer',0.35]].map((l,j)=>({a:OK[l[0]],b:OK[l[1]],ar:l[2],en:l[3],f:l[4]??0.5,t0:B(18.5)+j*S16}));
 
 /* the layers, painted bottom tier first; the slabs' reflections lie on the top tier's plates, the slabs stand over them */
 const DG=M.el('div','om-lay',null,SCN);
@@ -245,13 +251,13 @@ LNK.forEach(l=>{l.gl=sv(LK1,'line',{stroke:'rgba(206,64,240,0.35)','stroke-width
 [...OBJ].sort((a,b)=>b.y-a.y).forEach(o=>thing(S1,H1,o,`<span>${o.ar}</span><span class="en">${o.en}</span>`,'om-ty'));
 const TL0=M.el('div','om-lb om-tier','<span>SOURCES</span><span class="sep">·</span><span class="ar">المصادر</span>',H0);
 const TL1=M.el('div','om-lb om-tier','<span>ONTOLOGY</span><span class="sep">·</span><span class="ar">الأنطولوجيا</span>',H1);
-const CARD=M.el('div','om-lb om-card','<div class="r1"><span class="pl cat">ملاحظة</span><span class="msg">«الفاتورة تأخرت أسبوعًا» — عميل: متاجر الواحة</span></div>'+
-  '<div class="r2"><span class="pl src">واتساب</span></div>',H1);
+const CARD=M.el('div','om-lb om-card','<div class="r1"><span class="pl cat">رسالة واتساب</span><span class="msg">طلب توريد عاجل — متاجر الواحة</span></div>'+
+  '<div class="r2"><span class="pl src">من العميل</span><span class="pl src">متاجر الواحة</span></div>',H1);
 const CARDL=sv(S1,'polyline',{fill:'none',stroke:'#E3C9FF','stroke-width':1.6});
 
 /* the slabs: a hinge on the plate; e runs 0 (the page lying on the plate) to 1 (standing, leaning back TILT degrees, turned
    by ang to face the middle, the side ones sliding in to hx); local coordinates a (across), b (up the page), c (out of it: 0 the back face, ST the page) */
-const NW=1896, NH=1060, SW=880, SBZ=14, SH=2*SBZ+(SW-2*SBZ)*NH/NW, ST=24, HY=190, TILT=12;
+const NW=1440, NH=805, SW=880, SBZ=14, SH=2*SBZ+(SW-2*SBZ)*NH/NW, ST=24, HY=190, TILT=12;
 function slabF(p,e){const a=p.ang*e*Math.PI/180, ph=lerp(90,TILT,e)*Math.PI/180, sa=Math.sin(a), ca=Math.cos(a), sp=Math.sin(ph), cp=Math.cos(ph);
   return {O:[lerp((p.x0+p.x1)/2,p.hx,e),HY,Z2],u:[ca,sa,0],v:[-sa*sp,ca*sp,cp],n:[sa*cp,-ca*cp,sp]};}
 const L3=(F,a,b,c)=>[F.O[0]+F.u[0]*a+F.v[0]*b+F.n[0]*c,F.O[1]+F.u[1]*a+F.v[1]*b+F.n[1]*c,F.O[2]+F.v[2]*b+F.n[2]*c];
@@ -267,7 +273,7 @@ function homog(q,W,H){const [x0,y0]=[q[0].x,q[0].y],[x1,y1]=[q[1].x,q[1].y],[x2,
   return m.every(Number.isFinite)?`matrix3d(${m.map(v=>(+v).toFixed(6)).join(',')})`:null;}
 const quad=(c,F,a0,b0,a1,b1,cc)=>[L3(F,a0,b1,cc),L3(F,a1,b1,cc),L3(F,a1,b0,cc),L3(F,a0,b0,cc)].map(P=>pj(c,P[0],P[1],P[2]));   // TL TR BR BL
 TIER2.forEach((p,i)=>{
-  const src=`site_pages/${p.img}.png`, base=`films/ontology-main-theme/pages/${p.img}_base.png`;
+  const src=`films/ontology-main-theme/pages/${p.img}.png`, base=`films/ontology-main-theme/pages/${p.img}-base.png`;
   p.rw=M.el('div','om-lay',null,R2);p.rimg=M.el('img','om-refl',null,p.rw);p.rimg.src=base;              // the reflection on the plate
   p.box=M.el('div','om-lay',null,K2);p.svg=svgEl(p.box);
   p.glow=sv(p.svg,'polygon',{fill:'none',stroke:'rgba(214,80,245,0.4)','stroke-width':12,'stroke-linejoin':'round'});
@@ -304,7 +310,7 @@ function drawCable(c,cb,t){let L=[cb.lo.x,cb.lo.y,cb.lo.z],H=[cb.hi.x,cb.hi.y,cb
 
 const ACTG=sv(S3,'path',{fill:'none',stroke:'rgba(222,13,255,0.35)','stroke-width':9,'stroke-linecap':'round'});
 const ACTL=sv(S3,'path',{fill:'none',stroke:'#FF9BF0','stroke-width':3,'stroke-linecap':'round'});
-const ACT=M.el('div','om-lb om-act','<span>إعادة التوريد</span><span class="en">Restock</span>',H3);
+const ACT=M.el('div','om-lb om-act','<span>قاعدة مراقبة</span><span class="en">Monitoring rule</span>',H3);   // it raises a decision; a person decides
 const T_A0=B(26.25), T_A1=B(27.75), T_TO=B(28);
 
 const place=(e,x,y,s,o)=>{e.style.display=o>0.002?'':'none';if(o>0.002)st(e,{opacity:f3(o),transform:`translate(${f1(x)}px,${f1(y)}px) translate(-50%,-50%) scale(${f3(s)})`});};
@@ -324,7 +330,7 @@ function drawSlab(c,p,t,onT2){                                    // one page on
   if(p.done){const l=dec(t,T_TO,T_TO+0.55)*(1-io(t,B(31.5),B(33))), r=p.done.r, sc=1+0.1*l, cx=SXl(r[0]+r[2]/2), cy=SYl(r[1]+r[3]/2),
       hw=(SXl(r[0]+r[2])-SXl(r[0]))/2*sc, hh=(SYl(r[1])-SYl(r[1]+r[3]))/2*sc;
     setTf(p.done.el,homog(quad(c,F,cx-hw,cy-hh+60*l,cx+hw,cy+hh+60*l,ST+1+190*l),r[2],r[3]));
-    p.done.el.style.boxShadow=`0 0 0 ${f1(3*l)}px rgba(150,236,190,${f3(0.95*l)}),0 0 ${f1(80*l)}px ${f1(16*l)}px rgba(60,220,140,${f3(0.5*l)}),0 ${f1(40*l)}px ${f1(90*l)}px rgba(6,30,18,${f3(0.35*l)})`;}
+    p.done.el.style.boxShadow=`0 0 0 ${f1(3*l)}px rgba(236,205,255,${f3(0.95*l)}),0 0 ${f1(80*l)}px ${f1(16*l)}px rgba(206,64,240,${f3(0.5*l)}),0 ${f1(40*l)}px ${f1(90*l)}px rgba(14,4,30,${f3(0.4*l)})`;}
   // its reflection on the plate: the page mirrored in the plate's top, fading away from the hinge
   const M3=P=>pj(c,P[0],P[1],2*Z2-P[2]), q=[L3(F,-SW/2+SBZ,SH-SBZ,ST),L3(F,SW/2-SBZ,SH-SBZ,ST),L3(F,SW/2-SBZ,SBZ,ST),L3(F,-SW/2+SBZ,SBZ,ST)].map(M3);
   setTf(p.rimg,homog(q,NW,NH));p.rimg.style.opacity=f3(0.24*e*e);
@@ -351,7 +357,7 @@ M.track(t=>{
     o.g.setAttribute('transform',`translate(${f1(q.x)} ${f1(q.y)}) scale(${f3(q.s*ICS)}) scale(1 ${f3(0.2+0.8*p)})`);o.g.setAttribute('opacity',f3(P(t,o.t0,o.t0+0.15)));
     const lq=pj(c,o.x,o.y,Z1+o.h*ICS+80);place(o.lb,lq.x,lq.y-12*q.s*1.6,q.s*1.6,onT1?(o.k==='prod'?1:lb1)*dec(t,o.t0+0.15,o.t0+0.5):0);});
   const t1=pj(c,720,-40,Z1-TH);place(TL1,t1.x,t1.y+30*t1.s*1.7,t1.s*1.7,dec(t,B(17),B(17)+0.5));
-  { const nt=OK.note, q=pj(c,-300,1000,Z1+120), a=pj(c,nt.x+40,nt.y,Z1+160), pc=(onT1?1:0)*dec(t,B(19.75),B(19.75)+0.5)*(1-P(t,B(23.5),B(24.25)));
+  { const nt=OK.chat, q=pj(c,-300,1000,Z1+120), a=pj(c,nt.x+40,nt.y,Z1+160), pc=(onT1?1:0)*dec(t,B(19.75),B(19.75)+0.5)*(1-P(t,B(23.5),B(24.25)));
     place(CARD,q.x,q.y,q.s*1.45,pc);
     CARDL.setAttribute('points',pts([[a.x,a.y],[q.x-160*q.s*1.45,q.y+50*q.s*1.45]]));CARDL.setAttribute('opacity',f3(pc)); }
   CB.forEach(cb=>drawCable(c,cb,t));
@@ -369,10 +375,14 @@ M.track(t=>{
   else{ACTG.style.display=ACTL.style.display=ACT.style.display='none';}
 });
 
+// the records on the model and in the pages are sample data: labelled while they are up
+const SAMPLE=M.el('div','om-sample','<span class="en">Sample data</span><span class="sep">·</span><span class="ar">بيانات تجريبية</span>',TXT);
+M.track(t=>{const v=dec(t,B(16.25),B(16.75))*(1-io(t,B(32),B(32.8)));if(show(SAMPLE,v>0.001))SAMPLE.style.opacity=f3(v);});
+
 /* the lines of the drawing's shots (the 48 s film's type) */
 jt({at:B(8.9),out:K_ONT-0.05,y:56,size:60,step:S16,words:['Connect','your',{t:'sources.',g:1}],ar:'اربط مصادرك.',arSize:36});
 jt({at:B(16.25),out:K_APP-0.05,y:56,size:60,step:S16,words:['Unify','them','in','one',{t:'ontology.',g:1}],ar:'وحّدها في أنطولوجيا واحدة.',arSize:36});
-jt({at:B(24.25),out:K_ALL-0.05,y:56,size:60,step:S16,words:['Monitor','and',{t:'act.',g:1}],ar:'راقب ونفّذ.',arSize:36});
+jt({at:B(24.25),out:K_ALL-0.05,y:56,size:60,step:S16,words:['Monitor','and',{t:'decide.',g:1}],ar:'راقب وقرّر.',arSize:36});
 jt({at:B(32.25),out:B(42),y:40,size:58,step:S16,words:['Every','system.',{t:'One',g:1},{t:'living',g:1},{t:'model.',g:1}],ar:'كل الأنظمة… نموذج حيّ واحد.',arSize:36,fade:[B(41.4),B(42)]});
 jt({at:B(42.5),out:K_HIT,y:420,size:84,step:S8,words:['Meet','the','Marsad',{t:'ontology.',g:1}],ar:'تعرّف على أنطولوجيا مرصد.',arSize:44,fade:[B(47.6),K_HIT]});
 
