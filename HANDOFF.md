@@ -552,3 +552,7 @@ square), the catalogue's fixes, 1080p. One video at a time, each delivered when 
   - the kit's `lift` took a part's see-through fill against the dark app, so the passport's pale-green seal came out
     dark when it floated: `lift(..., {surface})` now gives the copy and its recess the surface it sits on.
   QA PASS (shake 0 after the pointer came in before the dive), −14.8 LUFS, −2.8 dBTP, 14 MB.
+- **Knowledge Map walkthrough** (`demos/ontology-real`, 51 s): the ten screens captured again from `app/capture.js`
+  (unchanged: the same customer, records and links). The new layout puts every page 16 px lower, so every camera and
+  pointer point moved down 16 px, and the map's two captured views (`VP0`, `VP1`, canvas `CW` × `CH`) were measured
+  again. Story, music, clicks and timing unchanged. 1080p (it was 4K). QA PASS, −14.8 LUFS, −2.8 dBTP, 12 MB.
