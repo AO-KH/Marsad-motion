@@ -6,3 +6,9 @@
 .bt-mk{position:absolute;left:0;top:0;transform-origin:50% 50%;}
 .bt-mk img{position:absolute;left:0;top:0;width:100%;display:block;}
 .bt-mk .glow{filter:blur(20px) saturate(1.5);opacity:0;}
+/* the sample-data label, top left, while the app's window is up (on the light stage) */
+.bt-note{position:absolute;left:56px;top:44px;height:40px;padding:0 18px;border-radius:20px;display:flex;align-items:center;white-space:nowrap;
+  background:rgba(255,255,255,0.72);box-shadow:inset 0 0 0 1px rgba(60,30,120,0.10),0 6px 18px rgba(60,30,120,0.08);}
+.bt-note .en{font:500 17px 'Inter';color:var(--body);}
+.bt-note .sep{margin:0 9px;font:500 17px 'Inter';color:var(--meta);}
+.bt-note .ar{font:500 17px 'PlexAR';color:var(--body);direction:rtl;}

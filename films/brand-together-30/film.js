@@ -4,19 +4,32 @@
    Music: SoundSurfer "Stylish" (fit/stylish.mp3, 93.99 BPM) from song beat k44 (28.129 s), so film beat k = song k+44.
    Groove k0-27 (a one-beat dip on k11, just before the k12 bar line), breakdown k28-36 (quietest k29-31), the drop on
    k37 = the end card. B(k) = k x 0.638 s.
-     hook   k0-8    the eight famous sources, scattered, drifting apart          "Your company's data is everywhere."
+     hook   k0-8    eight sources Marsad takes in (Odoo, Excel, Google Drive, WhatsApp, PDF, CSV, DOCX, ZIP: the
+                    feature catalogue's), scattered, drifting apart          "Your company's data is everywhere."
      turn   k8-16   they glide one per 16th into a ring and connect to the centre; the mark eases in (k10), ignites
                     softly on k12 (after the dip) and holds to k14; the sources are absorbed (k14) and the mark
                     glides (k15-17) to where the app's logo will be          "Marsad brings it all together."
      proof  k16-28  the window rises on Business Pulse around the mark, which becomes its logo (k17.4); three
-                    recommendations arrive (k18); Decisions (k22): the Riyadh restock recommendation and its source
+                    recommendations arrive (k18); Decisions (k22): the Riyadh stock recommendation a monitoring rule
+                    raised, and its source «مراقبة»
                                                                                  "Your numbers become decisions."
      (the window comes in on k16, not k14, so the connected hub holds 1.3 s after the ignition and the mark flies
       over an empty stage instead of across the page; the anatomy's 30 s map now follows this film)
-     quiet  k28-36  (the breakdown) the cursor clicks «موافقة» on k31; the action is executed; the counters move
-                                                                                 "Act on them in one click."
+     quiet  k28-36  (the breakdown) a person approves it in the app's own steps: «موافقة» (k28.5), the confirm
+                    dialog, «تأكيد الموافقة» (k30), the app's «تم بنجاح» for its 2 s; the card approved, the counts
+                    5 / 1 (nothing runs after the approval: the automatic follow-up is switched off in the catalogue)
+                                                                                 "Marsad watches. You decide."
      end    k37-47  the end card on the drop: Book your demo · marsadnasl.com
-   Calm: entrances 0.8-1.0 s on M.ez.dec, glides on M.ez.ioC, two soft punches (k12, k37), nothing on every beat. */
+   Calm: entrances 0.8-1.0 s on M.ez.dec, glides on M.ez.ioC, two soft punches (k12, k37), nothing on every beat.
+   2026-10-11 ("apply this to all other videos"): the window shows the client's new front end (its Arabic interface, dark
+   mode, the MARSAD × Fusion look) frozen by tools/app_snap.js (films/brand-together-30/app/) with sample data labelled
+   "Sample data · بيانات تجريبية"; the catalogue's sources replace the famous tiles; the last line was "Act on them in one
+   click." over an action executed after the approval (switched off in the catalogue). Truth: every screen in the window
+   is the app's own, as it showed them with the sample data, including the approve steps and the counts after them.
+   Renderings: the tiles, the lines and dots, the mark and its glow, the stage, the pointer, the callout, the highlights.
+   Sound: effects on the transitions only since 2026-10-11 (film.json), the client's rule of 2026-09-30 (the UI makes no
+   sound; this film had ticks, clicks and a chime on the app's moments). */
+const show=(e,v)=>{e.style.display=v?'':'none';return v;};
 const B=M.B, S16=M.S16, ez=M.ez, P=M.P, st=M.st, lerp=M.lerp;
 const f1=x=>(+x).toFixed(1), f2=x=>(+x).toFixed(2), f3=x=>(+x).toFixed(3);
 const MB=M.MB;
@@ -27,15 +40,16 @@ const RX=460, RY=300;                      // the ring the sources settle on
 const HUB=M.layer();                       // under the app window: tiles, lines
 const TOP=M.layer('over');                 // above it: the mark, which glides into the window's own logo
 // hook position and scale; a = ring slot (deg, clockwise from 3 o'clock); o = order of appearing; g = order of gathering
+// the sources Marsad really takes in (the feature catalogue: K.SOURCES), not famous products' tiles
 const SRC=[
-  {k:0, hx:260, hy:190, hs:1.25, a:-135, o:0, g:7},   // SAP
-  {k:3, hx:720, hy:125, hs:1.12, a:-90,  o:4, g:0},   // Excel
-  {k:1, hx:1250,hy:150, hs:1.20, a:-45,  o:2, g:1},   // Salesforce
-  {k:6, hx:1690,hy:250, hs:1.15, a:0,    o:7, g:2},   // PDF
-  {k:5, hx:1660,hy:620, hs:1.30, a:45,   o:1, g:3},   // QuickBooks
-  {k:2, hx:1250,hy:745, hs:1.14, a:90,   o:5, g:4},   // Oracle
-  {k:4, hx:690, hy:760, hs:1.22, a:135,  o:3, g:5},   // Shopify
-  {k:7, hx:290, hy:570, hs:1.18, a:180,  o:6, g:6},   // CSV
+  {k:0, j:0, hx:260, hy:190, hs:1.25, a:-135, o:0, g:7},   // Odoo
+  {k:3, j:1, hx:720, hy:125, hs:1.12, a:-90,  o:4, g:0},   // Excel
+  {k:1, j:2, hx:1250,hy:150, hs:1.20, a:-45,  o:2, g:1},   // Google Drive
+  {k:6, j:4, hx:1690,hy:250, hs:1.15, a:0,    o:7, g:2},   // PDF
+  {k:5, j:3, hx:1660,hy:620, hs:1.30, a:45,   o:1, g:3},   // WhatsApp
+  {k:2, j:6, hx:1250,hy:745, hs:1.14, a:90,   o:5, g:4},   // DOCX
+  {k:4, j:7, hx:690, hy:760, hs:1.22, a:135,  o:3, g:5},   // ZIP
+  {k:7, j:5, hx:290, hy:570, hs:1.18, a:180,  o:6, g:6},   // CSV
 ];
 const T_APPEAR=B(0.5), T_GATHER=B(8), GLIDE=1.5*MB, DRAW=0.45, T_ABS=B(14), ABS=0.5;
 const MW=280, MH=MW*1637/2145;               // the mark's size at the hub (the client: "make marsad logo bigger")
@@ -51,7 +65,7 @@ SRC.forEach(s=>{
   s.sx=C.x+RX*Math.cos(r);s.sy=C.y+RY*Math.sin(r);                        // the ring slot
   const d=Math.hypot(s.hx-C.x,s.hy-C.y);s.ux=(s.hx-C.x)/d;s.uy=(s.hy-C.y)/d;  // drift direction: away from the centre
   s.tA=T_APPEAR+s.o*S16;s.tG=T_GATHER+s.g*S16;s.tArr=s.tG+GLIDE;
-  s.el=M.el('div','k-tile m-glass',K.tile(K.TILES[s.k]),HUB);st(s.el,{left:'0px',top:'0px',opacity:0});
+  s.el=M.el('div','k-tile m-glass',K.tile(K.SOURCES[s.j]),HUB);st(s.el,{left:'0px',top:'0px',opacity:0});
   // the line from the tile's edge to the mark's edge (an ellipse around the mark), drawn as the tile arrives
   const vx=C.x-s.sx,vy=C.y-s.sy,L=Math.hypot(vx,vy),ux=vx/L,uy=vy/L;
   const rin=Math.min((MW/2+26)/Math.max(Math.abs(ux),1e-6),(MH/2+26)/Math.max(Math.abs(uy),1e-6));   // 26 px clear of the mark's box
@@ -99,8 +113,9 @@ const mk=M.el('div','bt-mk',`<img class="glow" src="assets_logo_m.png">`+K.mark(
 st(mk,{width:MW+'px',height:f1(MH)+'px'});
 const glow=mk.querySelector('.glow');
 const T_MARK=B(10), T_IGN=B(12), T_FLY=B(15), T_LAND=B(17), T_WIN=B(16), WIN_IN=0.9;
-// where the window's own logo is on the stage at time t (app.toStage: the view, the window's entrance and its frame)
-function logoAt(t){const L=app.toStage('.sk-logo img',t);return {x:L.cx,y:L.cy,s:L.w/MW};}
+// where the window's own logo is on the stage at time t (app.toStage: the view, the window's entrance and its frame). The
+// app's header mark is a 39.5 x 32 image whose M is 25.5 px wide, centred; our mark's M fills 97% of its width
+function logoAt(t){const L=app.toStage('[data-w=logo]',t);return {x:L.cx,y:L.cy,s:0.664*L.w/MW};}
 const T_HAND=T_WIN+WIN_IN;                   // the window is whole: the mark becomes its logo (the logo is hidden until then)
 const handAt=t=>ez.ioC(P(t,T_HAND-0.1,T_HAND+0.15));
 M.track(t=>{
@@ -123,29 +138,35 @@ M.punch(T_IGN,{amp:0.015});
 M.caption({at:B(1), out:B(9.2), en:"Your company's data is everywhere.", ar:'بيانات شركتك مبعثرة في كل مكان.'});
 M.caption({at:B(10),out:B(17.2),en:'Marsad brings it all together.',    ar:'مرصد يجمعها كلها في مكان واحد.'});
 M.caption({at:B(18),out:B(27.2),en:'Your numbers become decisions.',    ar:'أرقامك تتحوّل إلى قرارات.'});
-M.caption({at:B(28),out:B(36),  en:'Act on them in one click.',         ar:'نفّذها بنقرة واحدة.'});
+M.caption({at:B(28),out:B(36),  en:'Marsad watches. You decide.',       ar:'مرصد يراقب. وأنت تقرّر.'});
 
-/* ---------------- proof in the real app: Business Pulse, then Decisions ---------------- */
-const at=(x,y)=>({x,y,w:0,h:0});                         // a view centre in page px (tools/cutcheck.js suggests these)
+/* ---------------- proof in the real app (its screens: films/brand-together-30/app/, tools/app_snap.js): Business Pulse,
+   then Decisions. The records are sample data, labelled while the window is up ---------------- */
+const at=(x,y)=>({x,y,w:0,h:0});                         // a view centre in page px
 const app=M.app({at:T_WIN,out:B(36),page:'pulse'});
-app.set(T_WIN,'.sk-logo img',(e,on,t)=>{e.style.opacity=f3(handAt(t));});   // the flying mark takes its place, then hands over
+app.set(T_WIN,'[data-w=logo]',(e,on,t)=>{e.style.opacity=f3(handAt(t));});   // the flying mark takes its place, then hands over
 // Business Pulse: three recommendations arrive, one per 16th, and the view pushes in on them
-[1,2,3].forEach((n,i)=>app.show(B(18)+i*S16,`#recRows .sk-rec:nth-child(${n})`,{from:'below',dist:18,dur:0.8}));
-app.focus(B(18),at(951,618),{scale:0.86,dur:1.5});     // header, advisor and the three rows, edges clear
-// Decisions: the page cross-fades in (the tab underline slides) as the view glides to the recommendation
+[1,2,3].forEach((n,i)=>app.show(B(18)+i*S16,`[data-w=r${n}]`,{from:'below',dist:18,dur:0.8}));
+app.focus(B(18),at(720,470),{scale:1.0,dur:1.5});        // the page's title, its two panels and the three recommendations
+// Decisions: the page cross-fades in as the view glides to the recommendation a monitoring rule raised
 app.page(B(22)-0.25,'decisions');
-app.focus(B(22),'#decCard',{scale:0.95,dy:-190,dur:1.4});
-app.set(B(23.5),'#veil',(e,on,t)=>{e.style.opacity=f3(0.75*ez.dec(P(t,B(23.5),B(23.5)+0.8))*(1-ez.ioC(P(t,B(31.5),B(31.5)+0.8))));});
-app.callout(B(24),B(27.5),'text:المخزون · Odoo',{en:'Source: Odoo inventory',ar:'المصدر: مخزون Odoo',side:'top',dx:80});
-// the quiet moment (breakdown): one click approves it; the action is executed and the counters move
-app.click(B(31),'#btnOK',{ax:0.5,ay:0.84});
-app.show(B(31.25),'#toast',{from:'none',scale:0.97,dur:0.8});
-app.cursorOut(B(33));
-app.count(B(32),'#stats .sk-stat:nth-child(3) .n',0,1);
-app.count(B(32),'#stats .sk-stat:nth-child(4) .n',6,5);
-app.text(B(32),'text:موافق عليها (0)','موافق عليها (1)');
-app.text(B(32),'text:قيد المراجعة (6)','قيد المراجعة (5)');
-app.highlight(B(32.5),B(35.5),'#stats .sk-stat:nth-child(3)',{pad:8});
+app.focus(B(22),'[data-w=card]',{scale:1.1,dy:-120,dur:1.4});   // the counts above it
+app.highlight(B(23.5),B(27.5),'[data-w=card]',{pad:6});
+app.callout(B(24),B(27.5),'[data-w=source]',{en:'Raised by a monitoring rule',ar:'رفعتها قاعدة مراقبة',side:'top',dx:80});
+// the quiet moment (breakdown): a person approves it, in the app's own steps: «موافقة», its confirm dialog,
+// «تأكيد الموافقة», «تم بنجاح» (the app shows it for 2 s); the card is approved and the counts read 5 / 1
+app.click(B(28.5),'[data-w=approve]',{ax:0.5,ay:0.62});
+app.page(B(28.75),'confirm',{dur:0.25});
+app.focus(B(28.8),at(720,425),{scale:1.25,dur:0.9});
+app.click(B(30),{page:'confirm',sel:'[data-w=ok]'},{ax:0.5,ay:0.65,lead:0.8,dur:0.7});
+app.page(B(30.25),'done',{dur:0.2});
+const CLOSE=B(30.25)+2.0;
+app.cursorOut(B(31));
+app.page(CLOSE,'after',{dur:0.3});
+app.focus(CLOSE-0.1,{page:'after',sel:'[data-w=card]'},{scale:1.1,dy:-120,dur:1.0});
+app.highlight(CLOSE+0.3,B(35.5),'[data-w=st-approved]',{pad:8});
+const NOTE=M.el('div','bt-note','<span class="en">Sample data</span><span class="sep">·</span><span class="ar">بيانات تجريبية</span>',TOP);
+M.track(t=>{const v=ez.dec(P(t,T_HAND,T_HAND+0.5))*(1-ez.ioC(P(t,B(35.6),B(36.2))));if(show(NOTE,v>0.001))NOTE.style.opacity=f3(v);});
 
 /* ---------------- the end card on the drop ---------------- */
 M.punch(B(37),{amp:0.012});
