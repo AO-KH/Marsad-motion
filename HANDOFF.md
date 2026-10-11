@@ -539,3 +539,16 @@ square), the catalogue's fixes, 1080p. One video at a time, each delivered when 
   rules and numbers). The rows sit 12 px lower in the new layout, so the flask, the first row and the panel boxes moved
   (`FLASK`, `ROW1`, `DLG` in `film.js`); the parts and plates are square (radius 0; the badge's 2 px chip corners), on
   the new near-black canvas (#0B0A10). Music, edit and timing unchanged. QA PASS, −13.9 LUFS, −2.9 dBTP, 6.9 MB.
+- **Decisions walkthrough** (`demos/decisions-real`, 51 s): captured again from `app/capture.js`, rewritten for the
+  catalogue's lead story: the recommendation comes from a monitoring rule («مراقبة», no Odoo action), and the last step
+  is "Approved, and sealed in its passport" («اعتُمدت وخُتمت في جواز القرار»): the app's «تم بنجاح», the approved card and
+  the counts 5 / 1, then «جواز القرار» (k41.8) opens the passport on the hit and its seal floats out. "Marsad watches.
+  You decide." at the end. Sample data labelled. 1080p (it was 4K). Three findings on the way:
+  - the new Home page's hero has a small kicker «طبقة القرار السيادية» ("sovereign decision layer"); the catalogue
+    avoids 'sovereign', so the capture hides it (its place kept). Worth telling the client;
+  - the app's dialogs sit inside the page's content column in the live app: the page's entrance animation (`blurIn`,
+    fill-mode both) leaves a transform on the column, which pins `position: fixed` to it. The snapshot drops
+    animations, so the dialogs show centred on the screen, as the app means them. Also a front-end bug worth telling;
+  - the kit's `lift` took a part's see-through fill against the dark app, so the passport's pale-green seal came out
+    dark when it floated: `lift(..., {surface})` now gives the copy and its recess the surface it sits on.
+  QA PASS (shake 0 after the pointer came in before the dive), −14.8 LUFS, −2.8 dBTP, 14 MB.

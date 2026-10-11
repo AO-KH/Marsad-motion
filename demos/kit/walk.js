@@ -17,8 +17,10 @@
      the pointer: W.app.click() also turns the arrow into a hand just before the click. Each click gets a click sound
        in demo.json's sfx (fit/sfx/mouse-click.mp3, the client's, at the click's beat): one click per bar, at its +1.8
        (the bar's silence on the launch track), with the result on its +2.5 hit;
-     W.lift(spec,a,b,{glow:'violet'|'green', depth, up, down, hide:[specs], display, exact}): a part of the page floats out of
-       it (the theme's 3D), glowing, over the recess it leaves, and settles back into place by b;
+     W.lift(spec,a,b,{glow:'violet'|'green', depth, up, down, hide:[specs], display, exact, surface}): a part of the page
+       floats out of it (the theme's 3D), glowing, over the recess it leaves, and settles back into place by b. surface:
+       the colour the part sits on when it is not the page's own (the Decision Passport's paper in the dark app): the copy
+       gets it under its own see-through fill, and the recess is drawn in it;
      the step capsule: one line per step ({at, en, ar}), English · Arabic, at the foot of the frame, until capOut;
      note: {en, ar}, optional: a small label at the top left while the app is on screen (e.g. 'Sample data');
      the exit (the window tilts away and fades), the benefit line on the stage held through the track's break, and the
@@ -130,8 +132,10 @@ M.walk=function(o){
     // k: the part's own scale on the page (1, or React Flow's zoom for a node on the knowledge map)
     const R=app.rect(orig),cs=getComputedStyle(orig),k=orig.offsetWidth?R.w/orig.offsetWidth:1,rad=(lo.radius??(parseFloat(cs.borderTopLeftRadius)||12))*k;
     const box=cls=>{const e=M.el('div',cls,null,LB);st(e,{position:'absolute',left:R.x+'px',top:R.y+'px',width:R.w+'px',height:R.h+'px',borderRadius:rad+'px'});return e;};
-    const dk=orig.closest('.dark')?' dk':'';                         // the app's dark mode: a dark recess and a deeper shadow
+    const dk=!lo.surface&&orig.closest('.dark')?' dk':'';            // the app's dark mode: a dark recess and a deeper shadow
     const slot=box('wk-slot'+dk),shd=box('wk-shd'+dk),w=box('wk-lw'),cl=orig.cloneNode(true);cl.removeAttribute('id');
+    if(lo.surface){slot.style.background=lo.surface;const own=cs.backgroundColor;   // its fill over the surface it leaves
+      st(cl,{backgroundImage:(cs.backgroundImage!=='none'?cs.backgroundImage+',':'')+`linear-gradient(${own},${own})`,backgroundColor:lo.surface});}
     // the copy is painted LSS times larger and its 3D box shrinks it back: a part under a perspective tilt is drawn at about
     // its own pixel size and stretched, so at the camera's 3x it came out soft
     st(cl,{position:'absolute',left:'0px',top:'0px',right:'auto',bottom:'auto',margin:'0px',width:R.w/k+'px',height:R.h/k+'px',direction:cs.direction,
