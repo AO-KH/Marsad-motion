@@ -8,19 +8,29 @@
    song beats 24-86 (the end of the stripped intro, then groove A) and 134-150 (the end of groove B, its two-beat silence
    on 136-137, and the stripped groove after it). Film beat k = song k+24 up to k62, then song k+72. B(k) = k x 0.6207 s.
      k0-8    hook      black; "This coffee [cup] has a story." word by word (the stripped intro)
-     k8-16   object    the groove starts: the coffee's object card rises in 3D with a glowing edge; its stock fills to 240
-     k16-28  links     the card turns to its links: "Stored in [Riyadh Central Warehouse]", "Ordered by [Al Waha Stores]",
-                       "Billed on [INV-10477]", each drawn to the card; "One living model."
-     k28-40  alert     the stock becomes the hero number; orders fly in (240 -> 188); below its limit on k36 (a hit);
-                       "Marsad alerts you." with the app, email and WhatsApp
-     k40-52  action    the real Decisions card floats in: "It recommends a reorder."; the camera closes in on «موافقة»,
-                       the cursor clicks on k48 (a hit): executed, PO-2291; "One approval. Done."
-     k52-62  record    the history card: who, when, what changed; kept 7 years, can't be edited
+     k8-16   object    the groove starts: the coffee's own card in the app (its properties: «المخزون المتاح» 240, «حد
+                       إعادة الطلب» 200) rises in 3D with a glowing edge
+     k16-28  links     it moves aside for its links, the app's own rows: "Stored in" (the Riyadh central warehouse),
+                       "Ordered on" (SO-1203), "Billed on" (INV-10477), each drawn to the card; "One living model."
+     k28-40  alert     the stock becomes the hero number; orders fly in (240 -> 188); below its reorder level on k36 (a
+                       hit); "Marsad alerts you.": the app's bell with the decision the monitoring rule raised
+     k40-52  decision  the real Decisions card floats in: "It recommends a reorder."; the camera closes in on «موافقة»,
+                       the cursor clicks on k48, the app's confirm dialog, «تأكيد الموافقة» (k49.5), «تم بنجاح», the
+                       card approved; "You decide."
+     k52-62  record    its Decision Passport: the decision, its origin, the review and reason, the ledger, the seal
      k62-66  breath    black; "Every product has a story." held through the music's two-beat silence (k64-65)
      k66-78  end       on the hit after the silence: the Marsad mark and wordmark, "Marsad knows all of it.",
                        marsadnasl.com and "Book your demo"
-   Truth: the object card, links, order stream, alert, channels and history are renderings of the manual's concepts
-   (as in coffee-story-45); the Decisions card and the executed toast are the app's own (site kit). */
+   Truth (2026-10-11, "apply this to all other videos"): the coffee's card and link rows, the bell's alert, the Decisions
+   card, the confirm dialog, «تم بنجاح», the approved card and the passport are the real app's screens, captured from the
+   client's bilingual front end in dark mode with sample data labelled "Sample data · بيانات تجريبية" (films/coffee-launch/
+   app/capture.js, tools/app_shot.js). Alerts are in the app only, and nothing runs after the approval (the feature
+   catalogue). Renderings: the hero number, the orders flying in and the "below" pill, the lines and the dialogs' dimming
+   of the card. Before 2026-10-11: rendered cards, alerts by email and WhatsApp, and an executed purchase order.
+   Sound (2026-10-11): effects on the scene changes only, as the client asked of the 63 s launch film (2026-09-30: "the UI
+   makes no sound"): whooshes into the card (k8), the links (k15.5), the zoom-through (k27.4), Decisions (k40) and the
+   passport (k52), the hit as the stock goes below its reorder level (k36) and the end's (k66); the UI's ticks, clicks,
+   notification, success chime and lock are gone. */
 const B=M.B, S8=M.S8, S16=M.S16, ez=M.ez, P=M.P, st=M.st, lerp=M.lerp, FQ=M.FQ;
 const f1=x=>(+x).toFixed(1), f2=x=>(+x).toFixed(2), f3=x=>(+x).toFixed(3);
 const dec=(t,a,b)=>ez.dec(P(t,a,b)), io=(t,a,b)=>ez.ioC(P(t,a,b)), inc=(t,a,b)=>ez.inC(P(t,a,b));
@@ -97,51 +107,52 @@ kt({at:B(0.5),out:B(7),y:360,words:['This','coffee',{h:`<span class="kic">${glas
     ar:'لهذه القهوة قصة.'});
 
 /* ================= k8-28 the object, then its links ================= */
-const card=M.el('div','cs-card',`<div class="tile m-glass">${glass('#8E32C3',icon(LU.coffee,40,'#6A12B8',2))}</div>`+
-  `<div class="nm">قهوة عربية فاخرة 250 جم</div><div class="en">Premium Arabian Coffee 250g</div>`+
-  `<div class="pl">${SK.pill('cat','منتج · Product')}<span class="sk-pill mono">SKU-12345</span></div>`+
-  `<div class="dv"></div><div class="sr"><span class="lb">المخزون</span><span class="n">0</span></div>`+
-  `<div class="lm">الحد الأدنى <b>200</b></div><div class="bar"><i></i></div><i class="mk"></i>`);
-st(card,{width:'560px',height:'280px'});
-const CARD=gwrap(card,560,280,30);
-const cN=card.querySelector('.sr .n'),cBar=card.querySelector('.bar i'),cMk=card.querySelector('.mk');
-st(cMk,{left:f1(28+504*(1-200/300)-1.5)+'px'});
+// the coffee's own page in the real app (films/coffee-launch/pages/: tools/app_shot.js, dark mode, sample data): its
+// properties («المخزون المتاح» 240, «حد إعادة الطلب» 200), then its links. The page's header shows the type's English
+// name (the app's), so the film shows its properties card only
+const CIMG='films/coffee-launch/pages/';
+const crop=(file,w,h,k)=>{const e=M.el('div',null,null);
+  st(e,{position:'absolute',left:'0',top:'0',width:f1(w*k)+'px',height:f1(h*k)+'px',background:`#0B0A10 url(${CIMG}${file}) 0 0/100% 100% no-repeat`});return e;};
+const PRW=1120, PRH=274, PK=1;                        // the properties card (app px) and its scale here
+const CARD=gwrap(crop('record-props.png',PRW,PRH,PK),PRW*PK,PRH*PK,3);
+const SV={x:905,y:158};                                // «240» in the card (app px)
 const T_IN=B(8), T_SIDE=B(15.5), T_ZOOM=B(27.4);
 M.track(t=>{
   const on=t>=T_IN-0.02&&t<T_ZOOM+1.0;CARD.style.display=on?'':'none';if(!on)return;
   const pe=dec(t,T_IN,T_IN+1.25), ps=io(t,T_SIDE,T_SIDE+1.3), pz=dec(t,T_ZOOM,T_ZOOM+0.9);
-  let x=lerp(960,500,ps), y=530+(1-pe)*380, s=lerp(0.9+0.55*pe,0.9,ps);
+  const W=PRW*PK, H=PRH*PK;
+  let x=lerp(960,410,ps), y=540+(1-pe)*380, s=lerp(0.8+0.42*pe,0.6,ps);
   let rx=lerp(38,7,pe)-3*ps, ry=lerp(-8+14*P(t,B(9.2),B(15.5)),16,ps);
-  // into the hero number: the camera zooms through the card's own stock figure (card point 400,195), which glides to
-  // where the hero number sits (960,434) while the card fades; the hero grows out of the same spot
-  if(pz>0){const s1=s*(1+3.1*pz),     // 44 px x 0.9 x 4.1 = the hero's 260 px at its opening scale (0.62)
-    px=lerp(x+(400-280)*s,960,pz),py=lerp(y+(195-140)*s,434,pz);
-    x=px-(400-280)*s1;y=py-(195-140)*s1;s=s1;rx*=1-pz;ry*=1-pz;}
+  // into the hero number: the camera zooms through the card's own stock figure, which glides to where the hero number
+  // sits (960,434) while the card fades; the hero grows out of the same spot
+  if(pz>0){const s1=s*(1+3.4*pz),
+    px=lerp(x+(SV.x*PK-W/2)*s,960,pz),py=lerp(y+(SV.y*PK-H/2)*s,434,pz);
+    x=px-(SV.x*PK-W/2)*s1;y=py-(SV.y*PK-H/2)*s1;s=s1;rx*=1-pz;ry*=1-pz;}
   const fo=1-P(t,T_ZOOM+0.5,T_ZOOM+0.9);
-  st(CARD,{opacity:f3(pe*fo),transform:T3(x,y,560,280,{rx,ry,s}),filter:pz>0?`blur(${f2(5*pz)}px)`:'none'});
-  const pf=dec(t,B(9),B(10.6));cN.textContent=Math.round(240*ez.dec(P(FQ(t),B(9),B(10.6))));
-  st(cBar,{width:f1(504*0.8*pf)+'px'});cMk.style.opacity=f3(dec(t,B(9.5),B(10.2)));
+  st(CARD,{opacity:f3(pe*fo),transform:T3(x,y,W,H,{rx,ry,s}),filter:pz>0?`blur(${f2(5*pz)}px)`:'none'});
 });
 M.punch(T_IN,{amp:0.008});
 
-// the links: a verb, then the linked object; each drawn to the card as it lands (the manual's link names; "Billed on" is ours)
+// the links: a verb, then the app's own link row (its «الروابط» tab), each drawn to the card as it lands
+const LRW=1070, LRH=44, LKK=1.55, LCUT=380;            // the row's right part (RTL: the record, its link type, its status)
 const LK=[
-  {v:'Stored in', va:'مخزّن في', ar:'مستودع الرياض المركزي', en:'Riyadh Central Warehouse', col:'#149BB0', ic:c=>icon(LU.warehouse,30,c,2)},
-  {v:'Ordered by',va:'طُلب بواسطة',ar:'متاجر الواحة',          en:'Customer',                 col:'#DB4E11', ic:c=>SK.ic('building',30,c,2)},
-  {v:'Billed on', va:'مفوتر في', ar:'فاتورة INV-10477',      en:'Invoice',                  col:'#17A186', ic:c=>SK.ic('receipt',30,c,2)},
+  {v:'Stored in', va:'مخزّن في',      f:'links-wh.png'},
+  {v:'Ordered on',va:'مطلوب في',      f:'links-so.png'},
+  {v:'Billed on', va:'مفوتر في',      f:'links-inv.png'},
 ];
 const svg=document.createElementNS(NS,'svg');svg.setAttribute('class','cl-lines');svg.setAttribute('width',1920);svg.setAttribute('height',1080);SCN.appendChild(svg);
 svg.innerHTML=`<defs><linearGradient id="lkg" x1="0" x2="1"><stop offset="0" stop-color="#BC59D1" stop-opacity="0.35"/><stop offset="1" stop-color="#F29BFF"/></linearGradient>
   <filter id="lkf" x="-20%" y="-50%" width="140%" height="200%"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>`;
 LK.forEach((l,i)=>{
-  l.t0=B(16.6+2.4*i);l.y=300+170*i;
-  l.el=M.el('div','lk',`<div class="v">${l.v}<div class="va">${l.va}</div></div>`+
-    `<div class="chip"><span class="ci m-glass">${glass(l.col,l.ic(K.shade(l.col,0.8)))}</span><span class="ct"><b>${l.ar}</b><i>${l.en}</i></span></div>`,SCN);
-  l.v1=l.el.querySelector('.v');l.chip=l.el.querySelector('.chip');
-  const p=document.createElementNS(NS,'path');const x0=745,y0=530,x1=880,y1=l.y+30;
-  p.setAttribute('d',`M${x0} ${y0} C ${x0+80} ${y0}, ${x1-90} ${y1}, ${x1-14} ${y1}`);
+  l.t0=B(16.6+2.4*i);l.y=330+170*i;
+  l.el=M.el('div','lk2',`<div class="v">${l.v}<div class="va">${l.va}</div></div><div class="row"></div>`,SCN);
+  l.v1=l.el.querySelector('.v');l.chip=l.el.querySelector('.row');const rc=crop(l.f,LRW,LRH,LKK);
+  st(rc,{left:f1(-(LRW-LCUT)*LKK)+'px'});l.chip.appendChild(rc);
+  st(l.chip,{width:f1(LCUT*LKK)+'px',height:f1(LRH*LKK)+'px'});
+  const p=document.createElementNS(NS,'path');const x0=752,y0=540,x1=1010,y1=l.y+100;
+  p.setAttribute('d',`M${x0} ${y0} C ${x0+70} ${y0}, ${x1-80} ${y1}, ${x1-14} ${y1}`);
   p.setAttribute('fill','none');p.setAttribute('stroke','url(#lkg)');p.setAttribute('stroke-width','3');p.setAttribute('stroke-linecap','round');p.setAttribute('filter','url(#lkf)');
-  svg.appendChild(p);l.path=p;l.len=p.getTotalLength?0:0;
+  svg.appendChild(p);l.path=p;l.len=0;
   const d=document.createElementNS(NS,'circle');d.setAttribute('r','5');d.setAttribute('fill','#FFD2FF');svg.appendChild(d);l.dot=d;
 });
 const T_LOUT=B(26.9);            // the links clear before the zoom-through (k27.4)
@@ -152,9 +163,9 @@ M.track(t=>{
     l.el.style.display=on?'':'none';l.path.style.display=on?'':'none';l.dot.style.display=on?'':'none';if(!on)continue;
     const pd=dec(t,l.t0-0.35,l.t0+0.1);l.path.setAttribute('stroke-dashoffset',f1(l.len*(1-pd)));l.path.setAttribute('opacity',f3(1-x));
     const pv=dec(t,l.t0,l.t0+0.55),pc=dec(t,l.t0+S8,l.t0+S8+0.6);
-    st(l.el,{transform:`translate(880px,${l.y}px)`,opacity:f3(1-x),filter:x>0?`blur(${f2(8*x)}px)`:'none'});
+    st(l.el,{transform:`translate(1010px,${l.y}px)`,opacity:f3(1-x),filter:x>0?`blur(${f2(8*x)}px)`:'none'});
     st(l.v1,{opacity:f3(pv),filter:`blur(${f2((1-pv)*12)}px)`,transform:`translateY(${f1((1-pv)*24)}px)`});
-    st(l.chip,{opacity:f3(pc),filter:`blur(${f2((1-pc)*10)}px)`,transform:`translateX(${f1((1-pc)*40)}px) scale(${f3(0.9+0.1*pc)})`});
+    st(l.chip,{opacity:f3(pc),filter:`blur(${f2((1-pc)*10)}px)`,transform:`translateX(${f1((1-pc)*40)}px) scale(${f3(0.94+0.06*pc)})`});
     const t1=l.t0+0.2;
     if(t>=t1){const u=((t-t1)/1.5)%1,pt=l.path.getPointAtLength?l.path.getPointAtLength(l.len*u):{x:0,y:0};
       l.dot.setAttribute('cx',f1(pt.x));l.dot.setAttribute('cy',f1(pt.y));l.dot.setAttribute('opacity',f3(Math.sin(Math.PI*u)*(1-x)*dec(t,t1,t1+0.4)));}
@@ -164,8 +175,8 @@ M.track(t=>{
 kt({at:B(24.5),out:B(26.8),y:96,size:64,words:['One','living',{t:'model.',g:1}],ar:'نموذج حيّ واحد.',arSize:34});
 
 /* ================= k28-40 the stock as the hero number; orders take it below its limit; the alert goes out ================= */
-const hero=M.el('div','hero',`<div class="lb">المخزون<span>STOCK</span></div><div class="n">240</div>`+
-  `<div class="bar"><i class="fl"></i><i class="fr"></i></div><i class="mk"></i><div class="ml">الحد الأدنى <b>200</b> · Limit</div>`+
+const hero=M.el('div','hero',`<div class="lb">المخزون المتاح<span>STOCK</span></div><div class="n">240</div>`+
+  `<div class="bar"><i class="fl"></i><i class="fr"></i></div><i class="mk"></i><div class="ml">حد إعادة الطلب <b>200</b> · Reorder level</div>`+
   `<span class="dl"></span>`,SCN);
 const hN=hero.querySelector('.n'),hFL=hero.querySelector('.fl'),hFR=hero.querySelector('.fr'),hMk=hero.querySelector('.mk'),hMl=hero.querySelector('.ml'),hDl=hero.querySelector('.dl');
 const HW=900;st(hMk,{left:f1(100+HW*(1-200/300)-1.5)+'px',top:'336px'});st(hMl,{left:f1(100+HW*(1-200/300)-150)+'px',top:'382px'});   // the bar runs 100-1000 px, y 348-366
@@ -175,7 +186,7 @@ const T_HERO=B(27.4)+0.52, T_RED=B(36), T_HOUT=B(39.4);
 const stockAt=t=>{const T=FQ(t);return 240-ORD.reduce((a,o)=>a+(T>=o.ta?o.q:0),0);};
 const barAt=t=>240-ORD.reduce((a,o)=>a+o.q*io(t,o.ta,o.ta+0.3),0);
 const mixc=(a,b,p)=>{const A=parseInt(a.slice(1),16),C=parseInt(b.slice(1),16);return 'rgb('+[16,8,0].map(s=>Math.round(lerp((A>>s)&255,(C>>s)&255,p))).join(',')+')';};
-const alertP=M.el('div','alertp',SK.ic('bang',24,'#FFB3BD',2.6)+'تحت الحد الأدنى<i>· Below its limit</i>',SCN);
+const alertP=M.el('div','alertp',SK.ic('bang',24,'#FFB3BD',2.6)+'تحت حد إعادة الطلب<i>· Below its reorder level</i>',SCN);
 M.track(t=>{
   const on=t>=T_HERO-0.02&&t<T_HOUT+0.6;hero.style.display=on?'':'none';alertP.style.display=on?'':'none';
   for(const o of ORD)o.el.style.display='none';
@@ -196,83 +207,85 @@ M.track(t=>{
   st(alertP,{opacity:f3(pa*(1-x)),transform:`translate(960px,${f1(700+(1-pa)*18)}px) translate(-50%,0) scale(${f3(0.94+0.06*pa)})`});
 });
 kt({at:B(28.6),out:B(35.2),y:96,size:64,words:['Orders','come','in.'],ar:'الطلبات تتوالى.',arSize:34});
-kt({at:B(36.4),out:B(39.2),y:96,size:64,words:[{t:'Marsad',g:1},'alerts','you.'],ar:'مرصد ينبّهك فورًا.',arSize:34,step:S16*1.5});
+kt({at:B(36.4),out:B(39.2),y:96,size:64,words:[{t:'Marsad',g:1},'alerts','you.'],ar:'مرصد ينبّهك.',arSize:34,step:S16*1.5});
 M.punch(T_RED,{amp:0.012});
-const NOTE=[
-  {x:640, h:SK.ic('bell',26,'#6A12B8',2)+'<span>داخل التطبيق</span>'},
-  {x:960, h:icon(LU.mail,26,'#52505A',2)+'<span>البريد الإلكتروني</span>'},
-  {x:1280,h:`<svg width="26" height="26" viewBox="0 0 24 24"><path fill="#25D366" d="${WA}"/></svg><span>واتساب</span>`},
-].map((n,i)=>({...n,t0:B(37.2)+i*S8,el:M.el('div','note',n.h,SCN)}));
-M.track(t=>{for(const n of NOTE){const on=t>=n.t0-0.01&&t<T_HOUT+0.6;n.el.style.display=on?'':'none';if(!on)continue;
-  const p=dec(t,n.t0,n.t0+0.6),x=inc(t,T_HOUT,T_HOUT+0.5);
-  st(n.el,{opacity:f3(p*(1-x)),filter:`blur(${f2((1-p)*8+x*8)}px)`,transform:`translate(${n.x}px,${f1(850+(1-p)*24)}px) translate(-50%,-50%) scale(${f3(0.92+0.08*p)})`});}});
+// the alert: the decision the monitoring rule raised, pushed to the person accountable: the app's own bell (alerts are in
+// the app only; email is coming)
+const BELL=gwrap(crop('bell-pop.png',384,145,1.55),384*1.55,145*1.55,3);
+const T_BELL=B(37.2);
+M.track(t=>{const on=t>=T_BELL-0.01&&t<T_HOUT+0.6;BELL.style.display=on?'':'none';if(!on)return;
+  const p=dec(t,T_BELL,T_BELL+0.6),x=inc(t,T_HOUT,T_HOUT+0.5);
+  st(BELL,{opacity:f3(p*(1-x)),filter:p<1||x>0?`blur(${f2((1-p)*8+x*8)}px)`:'none',transform:T3(960,880+(1-p)*30,384*1.55,145*1.55,{rx:lerp(20,6,p),s:0.94+0.06*p})});});
 
-/* ================= k40-52 the real Decisions card: the recommendation, one click, executed ================= */
-const tmp=document.createElement('div');tmp.innerHTML=SK.decContent({id:'clDec'});
-const dcard=tmp.querySelector('#decCard'),toast=tmp.querySelector('#toast'),btn=dcard.querySelector('#btnOK');
-[dcard,toast].forEach(e=>{e.removeAttribute('id');st(e,{position:'absolute',left:'0',top:'0',right:'auto',width:'1400px',height:'214px'});});
-toast.style.display='flex';
-const DWRAP=M.el('div',null,null);st(DWRAP,{position:'absolute',left:'0',top:'0',width:'1400px',height:'214px',background:'#fff',borderRadius:'22px'});
-const SITE=M.el('div','site m-site',null,DWRAP);SITE.append(dcard,toast);   // the site kit's layout rules live under .site
-const DEC=gwrap(DWRAP,1400,214,22);
-const BTN={x:1400-36-80,y:138+28};      // «موافقة»'s centre in the card (right:36px, top:138px, 56 px tall, about 160 px wide)
-const T_DIN=B(40), T_ZIN=B(44), T_CLICK=B(48), T_BACK=B(48.4), T_DOUT=B(51);
-const ZS=2.6;
+/* ================= k40-52 the real Decisions card: the recommendation; «موافقة», the app's confirm, «تم بنجاح» ================= */
+// The decision the monitoring rule raised (its own card, films/coffee-launch/pages/): «موافقة» opens the app's confirm
+// dialog; «تأكيد الموافقة» gives «تم بنجاح»; the card is approved. Nothing runs after the approval (the catalogue)
+const DCW=1120, DCH=206, DKK=1.25;
+const dIn=crop('decisions-card.png',DCW,DCH,DKK), dAfter=crop('after-card.png',DCW,DCH,DKK);
+const DWRAP=M.el('div',null,null);st(DWRAP,{position:'absolute',left:'0',top:'0',width:f1(DCW*DKK)+'px',height:f1(DCH*DKK)+'px'});DWRAP.append(dIn,dAfter);
+const DEC=gwrap(DWRAP,DCW*DKK,DCH*DKK,3);
+const BTN={x:(53-32+53.35)*DKK,y:(497-476+19)*DKK};   // «موافقة»'s centre in the card
+const QK=1.7, dlg=M.el('div',null,null,SCN), dlgC=crop('confirm-dialog.png',448,322,QK), dlgD=crop('done-dialog.png',448,110,QK);
+st(dlg,{position:'absolute',left:'0',top:'0',width:f1(448*QK)+'px',height:f1(322*QK)+'px'});dlg.append(dlgC,dlgD);
+st(dlgD,{top:f1((322-110)/2*QK)+'px'});[dlgC,dlgD].forEach(e=>e.className='cl-dlg');
+const OKB={x:960-448*QK/2+(521-496+76.55)*QK, y:540-322*QK/2+(506.5-253.5+22)*QK};   // «تأكيد الموافقة» on screen
+const T_DIN=B(40), T_ZIN=B(44), T_CLICK=B(48), T_BACK=B(48.4), T_DLG=B(48.25), T_OK=B(49.5), T_DONE=B(49.75), T_CNT=B(50.75), T_DOUT=B(51.4);
+const ZS=2.6, DW=DCW*DKK, DH=DCH*DKK;
 M.track(t=>{
   const on=t>=T_DIN-0.02&&t<T_DOUT+0.7;DEC.style.display=on?'':'none';if(!on)return;
   const pe=dec(t,T_DIN,T_DIN+1.2), pz=io(t,T_ZIN,T_ZIN+1.5)*(1-io(t,T_BACK,T_BACK+1.3)), x=inc(t,T_DOUT,T_DOUT+0.6);
   // the zoom keeps «موافقة» centred: scale about the button, which glides to the stage's centre
-  const s=lerp(1,ZS,pz), cx=lerp(960,960-(BTN.x-700)*s,pz), cy=lerp(560,540-(BTN.y-107)*s,pz);
-  const rx=lerp(lerp(30,7,pe),0,pz), ry=lerp(-4+7*P(t,B(41),B(51)),0,pz);
-  st(DEC,{opacity:f3(pe*(1-x)),transform:T3(cx,cy+(1-pe)*260-x*160,1400,214,{rx,ry,s})});
-  const ps=dec(t,T_CLICK+0.05,T_CLICK+0.45);dcard.style.opacity=f3(1-ps);toast.style.opacity=f3(ps);
-  const pr=P(t,T_CLICK,T_CLICK+0.24);btn.style.transform=`scale(${f3(1-0.05*Math.sin(Math.PI*pr))})`;
+  const s=lerp(1,ZS,pz), cx=lerp(960,960-(BTN.x-DW/2)*s,pz), cy=lerp(560,540-(BTN.y-DH/2)*s,pz);
+  const rx=lerp(lerp(30,7,pe),0,pz), ry=lerp(-4+7*P(t,B(41),B(51)),0,pz), dim=0.55*dec(t,T_DLG,T_DLG+0.3)*(1-dec(t,T_CNT,T_CNT+0.3));
+  st(DEC,{opacity:f3(pe*(1-x)),filter:dim>0.001?`blur(${f2(2*dim)}px) brightness(${f3(1-dim)})`:'none',transform:T3(cx,cy+(1-pe)*260-x*160,DW,DH,{rx,ry,s})});
+  dAfter.style.opacity=f3(dec(t,T_CNT,T_CNT+0.35));
+});
+M.track(t=>{                                           // the confirm pops in on the click's result; «تم بنجاح» on the confirm's
+  const on=t>=T_DLG-0.02&&t<T_CNT+0.35;dlg.style.display=on?'':'none';if(!on)return;
+  const pi=dec(t,T_DLG,T_DLG+0.3), po=io(t,T_CNT,T_CNT+0.3);
+  st(dlg,{opacity:f3(pi*(1-po)),transform:T3(960,540+(1-pi)*24,448*QK,322*QK,{s:0.96+0.04*pi})});
+  const pd=dec(t,T_DONE,T_DONE+0.2);dlgC.style.opacity=f3(1-pd);dlgD.style.opacity=f3(pd);
 });
 kt({at:B(40.6),out:B(43.6),y:96,size:64,words:['It','recommends','a',{t:'reorder.',g:1}],ar:'ويقترح إعادة الطلب.',arSize:34,step:S16*1.5});
-kt({at:B(49),out:B(50.8),y:770,size:64,words:['One','approval.',{t:'Done.',g:1}],ar:'اعتماد واحد… وتمّ التنفيذ.',arSize:34});
-M.punch(T_CLICK,{amp:0.008});
-// the cursor: glides in, presses «موافقة» on k48 (the tip below the label), one soft ring
+kt({at:B(49.9),out:B(51.7),y:880,size:64,words:['You',{t:'decide.',g:1}],ar:'وأنت تقرّر.',arSize:34});
+M.punch(T_OK,{amp:0.008});
+// the cursor: glides in, presses «موافقة» (k48), then the dialog's «تأكيد الموافقة» (k49.5); one soft ring each
 const cur=M.el('div','cur',`<svg viewBox="0 0 32 32" width="70" height="70"><path d="M6 3 L26 17 L16.6 18.6 L21.4 28.2 L17.6 30 L12.8 20.4 L6 26 Z" fill="#fff" stroke="#1A0F2E" stroke-width="1.6" stroke-linejoin="round"/></svg>`,SCN);
 const ring=M.el('div','ring',null,SCN);
 M.track(t=>{
-  const on=t>=B(46)&&t<B(49.6);cur.style.display=on?'':'none';ring.style.display=t>=T_CLICK&&t<T_CLICK+0.6?'':'none';if(!on)return;
-  const pm=io(t,B(46),T_CLICK-0.08), tx=lerp(1560,972,pm), ty=lerp(1010,590,pm);
-  const press=Math.sin(Math.PI*P(t,T_CLICK-0.02,T_CLICK+0.2)), out=inc(t,B(49),B(49.6));
+  const on=t>=B(46)&&t<B(50.6), rg=[T_CLICK,T_OK].find(c=>t>=c&&t<c+0.6);
+  cur.style.display=on?'':'none';ring.style.display=rg!=null?'':'none';if(!on)return;
+  const pm=io(t,B(46),T_CLICK-0.08), pm2=io(t,T_DLG+0.15,T_OK-0.08);
+  const tx=lerp(lerp(1560,972,pm),OKB.x,pm2), ty=lerp(lerp(1010,566,pm),OKB.y,pm2);
+  const press=Math.max(Math.sin(Math.PI*P(t,T_CLICK-0.02,T_CLICK+0.2)),Math.sin(Math.PI*P(t,T_OK-0.02,T_OK+0.2))), out=inc(t,B(50),B(50.6));
   st(cur,{opacity:f3(dec(t,B(46),B(46.4))*(1-out)),transform:`translate(${f1(tx-12)}px,${f1(ty-6)}px) scale(${f3(1-0.12*press)})`});
-  const pr=P(t,T_CLICK,T_CLICK+0.6),R=20+100*ez.dec(pr);
-  st(ring,{opacity:f3(0.8*(1-pr)),width:f1(2*R)+'px',height:f1(2*R)+'px',transform:`translate(${f1(tx-R)}px,${f1(ty-R)}px)`});
+  if(rg!=null){const pr=P(t,rg,rg+0.6),R=20+100*ez.dec(pr);
+    st(ring,{opacity:f3(0.8*(1-pr)),width:f1(2*R)+'px',height:f1(2*R)+'px',transform:`translate(${f1(tx-R)}px,${f1(ty-R)}px)`});}
 });
 
-/* ================= k52-62 the record: the coffee's history ================= */
-const ROWS=[
-  {who:'odoo',  wt:'المخزون: من 240 إلى 188',      tm:'12:38'},
-  {who:'marsad',wt:'تنبيه: أقل من الحد الأدنى',     tm:'12:38'},
-  {who:'mgr',   wt:'اعتماد: إعادة طلب المخزون',     tm:'12:50'},
-  {who:'marsad',wt:'طلب توريد PO-2291: تم التنفيذ', tm:'12:50'},
-];
-const WHO={odoo:`<span class="av od">odoo</span><span>مزامنة Odoo</span>`,
-  marsad:`<span class="av mk"><img src="assets_logo_m.png"></span><span>مرصد</span>`,
-  mgr:`<span class="av us">${icon(LU.user,18,'#6011B5',2)}</span><span>مدير العمليات</span>`};
-const hist=M.el('div','cs-hist',`<div class="tile m-glass">${glass('#8E32C3',icon(LU.coffee,40,'#6A12B8',2))}</div>`+
-  `<div class="nm">قهوة عربية فاخرة 250 جم</div><div class="en">Premium Arabian Coffee 250g</div>`+
-  `<div class="pl">${SK.pill('cat','منتج · Product')}<span class="sk-pill mono">SKU-12345</span></div><div class="dv"></div>`+
-  `<div class="ht">${SK.ic('history',24,'#6011B5',2)}<span>السجل</span><em>History</em></div>`+
-  `<div class="rows">${ROWS.map(r=>`<div class="row"><div class="who">${WHO[r.who]}</div><div class="wt">${r.wt}</div><div class="tm">${r.tm}</div></div>`).join('')}</div>`+
-  `<div class="lock">${icon(LU.lock,18,'#52505A',2)}<span>لا يُعدَّل ولا يُحذف · محفوظ 7 سنوات</span></div>`);
-st(hist,{width:'720px',height:'560px'});
-const HIST=gwrap(hist,720,560,30);
-const hRows=[...hist.querySelectorAll('.row')],hLock=hist.querySelector('.lock'),hHT=hist.querySelector('.ht');
+/* ================= k52-62 the record: the decision's passport ================= */
+// Its Decision Passport (the app's own, films/coffee-launch/pages/passport-*): the decision, its origin (a monitoring
+// rule, no AI model), the person's review and reason, its ledger (raised #4, approved #5) and the green seal, which
+// lights on k57
+const PPW=672, PPH=992.1, PPK=0.76;
+const PASS=gwrap(crop('passport-modal.png',PPW,PPH,PPK),PPW*PPK,PPH*PPK,3);
+const SEALB=[405-384,250-136,630,63.5];                // the seal in the passport (app px)
+const sealG=M.el('div','cl-seal',null,PASS.querySelector('.gi'));
+st(sealG,{left:f1(SEALB[0]*PPK)+'px',top:f1(SEALB[1]*PPK)+'px',width:f1(SEALB[2]*PPK)+'px',height:f1(SEALB[3]*PPK)+'px'});
 const T_RIN=B(52), T_ROUT=B(61.3);
 M.track(t=>{
-  const on=t>=T_RIN-0.02&&t<T_ROUT+0.7;HIST.style.display=on?'':'none';if(!on)return;
-  const pe=dec(t,T_RIN,T_RIN+1.2),x=inc(t,T_ROUT,T_ROUT+0.6);
-  st(HIST,{opacity:f3(pe*(1-x)),filter:x>0?`blur(${f2(10*x)}px)`:'none',
-    transform:T3(960,610+(1-pe)*300,720,560,{rx:lerp(28,6,pe),ry:-5+9*P(t,B(53),B(61.3)),s:1.0})});
-  const ph=dec(t,B(52.6),B(52.6)+0.7);st(hHT,{opacity:f3(ph)});
-  hRows.forEach((e,i)=>{const u=dec(t,B(53)+i*S8,B(53)+i*S8+0.7);st(e,{opacity:f3(u),transform:`translateY(${f1((1-u)*14)}px)`});});
-  const pk=dec(t,B(57),B(57)+0.7);st(hLock,{opacity:f3(pk),transform:`scale(${f3(0.92+0.08*pk)})`});
+  const on=t>=T_RIN-0.02&&t<T_ROUT+0.7;PASS.style.display=on?'':'none';if(!on)return;
+  const pe=dec(t,T_RIN,T_RIN+1.2),x=inc(t,T_ROUT,T_ROUT+0.6),pd=P(t,T_RIN,T_ROUT);
+  const H=PPH*PPK, top=lerp(282,236,pd);               // the whole passport under the line, drifting up
+  st(PASS,{opacity:f3(pe*(1-x)),filter:x>0?`blur(${f2(10*x)}px)`:'none',
+    transform:T3(960,top+H/2+(1-pe)*300,PPW*PPK,H,{rx:lerp(28,6,pe),ry:-5+9*P(t,B(53),B(61.3)),s:1.05})});
+  sealG.style.opacity=f3(dec(t,B(57),B(57)+0.5)*(1-0.5*io(t,B(58),B(59.5))));
 });
 kt({at:B(52.6),out:B(61),y:96,size:64,words:['Every','step,','on','the',{t:'record.',g:1}],ar:'كل خطوة… في السجل.',arSize:34,step:S16*1.5});
+// the app's screens show sample data: labelled while they are up
+const SAMPLE=M.el('div','rx-label','<span class="en">Sample data</span><span class="sep">·</span><span class="ar">بيانات تجريبية</span>',TXT);
+M.track(t=>{const v=Math.max(dec(t,T_IN,T_IN+0.5)*(1-io(t,B(26.9),B(27.4))),dec(t,T_BELL,T_BELL+0.5)*(1-io(t,T_ROUT,T_ROUT+0.6)));
+  SAMPLE.style.display=v>0.001?'':'none';SAMPLE.style.opacity=f3(v);});
 
 /* ================= k62-66 the breath: black, the line held through the music's two-beat silence ================= */
 kt({at:B(62),out:B(65.3),y:400,size:112,words:['Every','product','has','a',{t:'story.',g:1}],ar:'كل منتج له قصة.',step:S16*1.5});

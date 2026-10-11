@@ -118,3 +118,19 @@
   background:linear-gradient(90deg,#5F0DB4,#8E32C3 52%,#BC59D1);box-shadow:0 0 40px rgba(188,89,209,0.6);}
 .end .book .ar{font:600 25px 'PlexAR';}
 .end .book .sep{color:rgba(255,255,255,0.55);}
+
+/* 2026-10-11: the real app's screens (films/coffee-launch/pages/, dark mode), drawn square as the app's MARSAD × Fusion
+   look; the link rows with their verbs; the dialogs; the seal's light; the sample-data label */
+.lk2{position:absolute;left:0;top:0;white-space:nowrap;}
+.lk2 .v{font:700 54px/1 'Inter';letter-spacing:-0.03em;color:#fff;}
+.lk2 .va{font:600 25px 'PlexAR';color:rgba(255,255,255,0.7);direction:rtl;margin-top:8px;}
+.lk2 .row{position:relative;margin-top:16px;border-radius:2px;overflow:hidden;background:#0B0A10;
+  box-shadow:0 0 0 1.5px rgba(214,170,255,0.45),0 18px 40px rgba(0,0,0,0.4),0 0 30px rgba(188,89,209,0.35);}
+.cl-dlg{position:absolute;left:0;top:0;border-radius:3px;
+  box-shadow:0 0 0 1.5px rgba(214,170,255,0.45),0 0 40px rgba(170,70,240,0.3),0 30px 70px rgba(0,0,0,0.6);}
+.cl-seal{position:absolute;opacity:0;pointer-events:none;border-radius:2px;box-shadow:0 0 0 2.5px rgba(90,225,155,0.9),0 0 34px 6px rgba(11,180,100,0.5);}
+.rx-label{position:absolute;left:56px;top:44px;height:40px;padding:0 18px;border-radius:20px;display:flex;align-items:center;white-space:nowrap;
+  background:rgba(20,12,40,0.55);box-shadow:inset 0 0 0 1px rgba(214,170,255,0.25);}
+.rx-label .en{font:500 17px 'Inter';color:rgba(244,241,250,0.78);}
+.rx-label .sep{margin:0 9px;font:500 17px 'Inter';color:rgba(244,241,250,0.32);}
+.rx-label .ar{font:500 17px 'PlexAR';color:rgba(244,241,250,0.72);direction:rtl;}
