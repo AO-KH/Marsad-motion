@@ -53,6 +53,13 @@ async function server() {
   console.error('the dev server did not answer in 5 minutes'); process.exit(1);
 }
 
+// Effra, which the 2026-10-02 front end loads from fonts.cdnfonts.com: the snapshot uses the copy in build/font-cache/
+// (tools/app/env.js's header fills it; not committed: the font is the app's). Without it Latin text and digits fall back
+// to IBM Plex Sans Arabic.
+const EFFRA = 'build/font-cache/fonts.cdnfonts.com/s/13762/Effra_Std_Rg.woff';
+const effra = () => fs.existsSync(path.join(ROOT, EFFRA)) ?
+  `\n@font-face{font-family:'Effra';font-style:normal;font-weight:400;font-display:block;src:url(../../../${EFFRA}) format('woff');}` : '';
+
 // the page as the engine builds it (engine.js page(): the .m-page.rx-page box; engine.css resets .rx-scope)
 const wrap = s => `<div class="rx-scope"${s.scroll[0] || s.scroll[1] ? ` data-rx-scroll="${s.scroll[0]},${s.scroll[1]}"` : ''}>` +
   `<div class="rx-html${s.htmlCls ? ' ' + s.htmlCls : ''}" dir="${s.dir}"${s.lang ? ` lang="${s.lang}"` : ''}>` +
@@ -98,7 +105,7 @@ const SCROLL = `for(const n of document.querySelectorAll('[data-rx-scroll]')){co
     `   Do not edit: re-run the tool. The rules only apply inside .rx-scope (a captured page; engine.css resets it).\n` +
     `   Fonts: IBM Plex Sans Arabic and Noto Kufi Arabic (SIL OFL 1.1, fonts/); icons.woff2 is Material Symbols Outlined\n` +
     `   (Google, Apache License 2.0), cut down to the icons these screens use by tools/subset_icons.py. */\n` +
-    fontCss(f => f === ICONS_FULL ? 'icons.woff2' : '../../../' + f) +
+    fontCss(f => f === ICONS_FULL ? 'icons.woff2' : '../../../' + f) + effra() +
     '\n@scope (.rx-scope) {\n*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important;}\n' +
     '[data-rx-field=area] .m-typed{white-space:pre-wrap;}\n' + rules.join('\n') + '\n}\n';
   fs.writeFileSync(path.join(DIR, 'app.css'), css);
