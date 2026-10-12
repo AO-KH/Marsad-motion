@@ -618,3 +618,13 @@ square), the catalogue's fixes, 1080p. One video at a time, each delivered when 
   and the decision it raised lifting out; "Monitor and act." became "Monitor and decide." («راقب وقرّر.»). Music, edit,
   effects and timing unchanged. Frames 108–137, 237–260, 306–324, 360–389 and 491–518 are rendered with 16 blur samples
   (`tools/fast_ranges.py ontology-main-theme --run`). QA PASS, −14.0 LUFS, −2.9 dBTP, 15.9 MB.
+- **Search walkthrough** (`demos/search-walkthrough`, 41 s, 16:9 and 9:16): the rebuilt light page (`pages.js`,
+  removed) gave way to the real app, frozen by `tools/app_snap.js` (`app/capture.js`): the Home page (its hero's kicker
+  hidden), the header search after Ctrl K, and the Search page for «فاتورة» in a 1440 × 1240 window, so all four
+  groups are on it and the view pans down it as a scroll would. The catalogue's fixes: the search is the header's
+  (Ctrl K), as the catalogue films it, not the Data sidebar's; the results are three Odoo invoices, a WhatsApp message,
+  an uploaded spreadsheet's row with the file it came from (`invoices_q3.xlsx`) and a Google Drive file, each source's
+  pill pointed out ("From WhatsApp", "From an uploaded file", "From Google Drive"). The steps are "Press Ctrl K", "Type
+  a word, like “invoice”", "See results from every source". The type chips on the Search page use the mono font, so
+  their Arabic letters show unjoined (a finding for the client). QA PASS both formats, −13.9 LUFS, −5.3 dBTP, 11.6 and
+  10.9 MB.
