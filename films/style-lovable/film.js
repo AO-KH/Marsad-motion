@@ -1,7 +1,7 @@
 /* Marsad — style sample: Lovable (films/style-lovable). About 28 s of the Marsad film told in the grammar of Lovable's
    launch video (the client's reference 02_Lovable.mp4): a vivid gradient that runs from black through blue and magenta to
    orange; a big dark prompt card whose question types in bold, its newest word in a gradient; a white cartoon hand that
-   clicks; the app's light UI in close-up on lavender; big white one-line type shots; a 3D collage of the app's pages; the
+   clicks; the app's screens (dark mode) in close-up on lavender; big white one-line type shots; a 3D collage of the app's pages; the
    logo in white, small in the music's silence and big on the hit. Cuts, not dissolves, about one shot per 2-6 beats.
    House rules kept: English + Arabic on every line, Western digits, no shake (punches <= 1.5%), nothing on every beat, no
    orb behind the logo, "Book your demo" and marsadnasl.com at the end. Sound effects only on the transitions.
@@ -12,19 +12,23 @@
      k3.5-8    sources   the eight source tiles fly past in depth; the mark waits in the middle
      k8-14     prompt    (the groove starts) the dark card: the Arabic question types, its English follows; the camera
                          pushes toward send as the hand comes, and the hand clicks it
-     k14-20    answer    the Assistant's answer streams on lavender, from the data, with its source chip
+     k14-20    answer    the app's assistant on lavender: «المساعد يفكّر…», then its answer from the data, its sources lit
      k20-22    type      "Built on your data." «مبني على بياناتك.»
-     k22-24    list      the Decisions statuses in close-up; the hand on «قيد المراجعة» 6
-     k24-28    decide    the counters and the Decisions card; the hand clicks «موافقة»: executed, PO-2291; approved
-                         0 -> 1, under review 6 -> 5
+     k22-28    decide    the Decisions counters and card; the hand clicks «موافقة» (k23), the app's confirm dialog,
+                         «تأكيد الموافقة» (k24.5), «تم بنجاح»; the card approved, the counts 6 -> 5 and 0 -> 1 (k26.25)
      k28-31.5  type      "Every system." «كل الأنظمة.» / "One living model." «نموذج حيّ واحد.»
-     k31.5-36  collage   the app's ten pages fly in and gather in 3D
+     k31.5-36  collage   nine of the app's pages fly in and gather in 3D
      k36-38    breath    the small white logo, in the music's two-beat silence
      k38-46    end       on the hit: the big logo, marsadnasl.com, "Book your demo · احجز عرضك التجريبي"
-   Truth: the Decisions labels, counts, card and toast, the Assistant's name, input and placeholder, «مبني على بياناتك»
-   and the pages in the collage are the app's own (site kit, site_pages/). Renderings: the dark prompt card (the
-   Assistant's input restyled as the reference's card, with an "Odoo" source chip), the question and its answer (as in
-   the 63 s film), the hand cursor, the white version of the mark. */
+   Truth (2026-10-12, "apply this to all other videos"): the assistant's thread, the Decisions counters and card, the
+   confirm dialog, «تم بنجاح», the approved card and the nine pages of the collage are the real app's screens, captured
+   from the client's bilingual front end in dark mode with sample data (labelled "Sample data · بيانات تجريبية"):
+   films/style-jupiter/pages/ (the brand film's) and films/app-pages/pages/ (tools/app_shot.js). The assistant explains
+   the drop and creates nothing; nothing runs after the approval (the feature catalogue). The source tiles are the ones
+   Marsad takes in (K.SOURCES). Renderings: the dark prompt card (the assistant's input restyled as the reference's card,
+   with an "Odoo" source chip) and its typed question (the thread's own), the hand, the white mark. Shortened: the app
+   holds «تم بنجاح» for 2 s, here 0.9 s. Before 2026-10-12: site-kit pages, the famous tiles, an answer that created
+   purchase orders and an executed PO-2291. */
 const B=M.B, S8=M.S8, S16=M.S16, S32=M.S32, ez=M.ez, P=M.P, st=M.st, lerp=M.lerp, FQ=M.FQ;
 const f1=x=>(+x).toFixed(1), f2=x=>(+x).toFixed(2), f3=x=>(+x).toFixed(3);
 const dec=(t,a,b)=>ez.dec(P(t,a,b)), io=(t,a,b)=>ez.ioC(P(t,a,b)), inc=(t,a,b)=>ez.inC(P(t,a,b));
@@ -34,9 +38,9 @@ const show=(e,v)=>{e.style.display=v?'':'none';return v;};
 const camT=(F,S,Z)=>`translate(${f1(S.x-F.x*Z)}px,${f1(S.y-F.y*Z)}px) scale(${f3(Z)})`;
 
 /* the shots (hard cuts: the renderer keeps each frame's motion-blur samples on one side of a cut) */
-const K_FLY=B(3.5), K_CARD=B(8), K_ANS=B(14), K_T1=B(20), K_LIST=B(22), K_DEC=B(24), K_T2=B(28), K_T3=B(29.75), K_COL=B(31.5),
+const K_FLY=B(3.5), K_CARD=B(8), K_ANS=B(14), K_T1=B(20), K_LIST=B(22), K_T2=B(28), K_T3=B(29.75), K_COL=B(31.5),
   K_LOGO=B(36), K_END=B(38);
-window.CUTS=[K_FLY,K_CARD,K_ANS,K_T1,K_LIST,K_DEC,K_T2,K_T3,K_COL,K_LOGO,K_END];
+window.CUTS=[K_FLY,K_CARD,K_ANS,K_T1,K_LIST,K_T2,K_T3,K_COL,K_LOGO,K_END];
 const inShot=(t,a,b)=>t>=a&&t<b;
 
 /* ---------------- the stage: Lovable's gradient (black, blue, violet, magenta, pink, orange), or lavender for the UI ---------------- */
@@ -123,7 +127,7 @@ M.track(t=>{
 /* ================= k3.5-8 the sources: the eight tiles fly past in depth; the mark waits in the middle ================= */
 const S2=M.el('div','lv-shot',null,SCN), D2=M.el('div','lv-3d',null,S2);
 const FT=[...Array(14).keys()].map(i=>{const a=-Math.PI/2+i*2.4+0.35, R=150+120*((i*5)%7)/6;   // spread round the centre
-  return {i,x:960+R*Math.cos(a)*1.5,y:540+R*Math.sin(a),t0:K_FLY-0.35+i*0.19,el:M.el('div','k-tile m-glass',K.tile(K.TILES[i%8]),D2)};});
+  return {i,x:960+R*Math.cos(a)*1.5,y:540+R*Math.sin(a),t0:K_FLY-0.35+i*0.19,el:M.el('div','k-tile m-glass',K.tile(K.SOURCES[i%8]),D2)};});
 const fm=M.el('div','lv-fm',`<img src="assets_logo_m.png" style="width:100%;display:block;filter:drop-shadow(0 0 30px rgba(222,13,255,0.55)) drop-shadow(0 0 90px rgba(122,58,255,0.5));">`,D2);
 st(fm,{width:'240px',height:'183px'});
 M.track(t=>{
@@ -172,87 +176,79 @@ M.track(t=>{
   cSend.style.transform=`scale(${f3(1-0.08*press)})`;
 });
 
-/* ================= k14-20 the answer: the Assistant, on lavender; the answer streams from the data ================= */
+/* ================= k14-20 the answer: the app's assistant, on lavender: it thinks, then answers from the data ================= */
+// The app's own thread panel (films/style-jupiter/pages/chat-*: the brand film's captures, the same question): «المساعد
+// يفكّر…», then the answer with «المصادر» (it explains the drop and creates nothing); the sources light up as the proof
+const JIMG='films/style-jupiter/pages/', AK=2, TH=[32,250,816,517];
+const plate=(parent,file,w,h,k,cls='lv-part')=>{const e=M.el('div',cls,null,parent);
+  st(e,{width:f1(w*k)+'px',height:f1(h*k)+'px',backgroundImage:`url(${JIMG}${file})`,backgroundSize:'100% 100%'});return e;};
 const S4=M.el('div','lv-shot',null,SCN), D4=M.el('div','lv-3d',null,S4);
-const ANS=['انخفضت','المبيعات','§','بسبب','نفاد','المخزون','في','ثلاثة','فروع','—','تم','إنشاء','طلبات','التوريد','تلقائيًا.'];
-const ask=M.el('div','as-card',
-  `<div class="hd"><span class="bt">${SK.ic('bot',26,'#fff',2)}</span><span class="nm">مساعد مرصد الذكي</span>`+
-  `<span class="ws">${SK.ic('chevDown',18,'#52505A',2)}<span>كل مساحة العمل</span></span></div><div class="dv"></div>`+
-  `<div class="um">${Q}</div>`+
-  `<div class="an"><span class="av">${SK.ic('bot',24,'#fff',2)}</span><div class="ac"><div class="tx"></div>`+
-  `<span class="chip">${SK.ic('check',16,'#0B8447',2.6)}<span>مبني على بياناتك الأصلية — بدون اختلاق</span></span></div></div>`+
-  `<div class="ir"><div class="in"><span class="ph">اسأل مرصد عن أي شيء بخصوص بياناتك...</span></div>`+
-  `<span class="send">${SK.ic('send',28,'#fff',2)}</span></div>`,D4);
-const aUM=ask.querySelector('.um'),aAN=ask.querySelector('.an'),aTX=ask.querySelector('.tx'),aCH=ask.querySelector('.chip');
-const T_W=B(14.6), T_CHIP=B(18.6);
-let lastA='';
+const ASK=M.el('div','lv-stack',null,D4);st(ASK,{width:f1(TH[2]*AK)+'px',height:f1(TH[3]*AK)+'px'});
+const aThink=plate(ASK,'chat-thinking-thread.png',TH[2],TH[3],AK), aAns=plate(ASK,'chat-answer-thread.png',TH[2],TH[3],AK);
+const srcG=M.el('div','lv-glow',null,aAns);                                  // «المصادر» and its chips, 8 px clear
+st(srcG,{left:f1((209.5-TH[0])*AK)+'px',top:f1((403.3-TH[1])*AK)+'px',width:f1(556.5*AK)+'px',height:f1(73*AK)+'px'});
+const T_ANSWER=B(15), T_CHIP=B(18);
 M.track(t=>{
   if(!show(S4,inShot(t,K_ANS,K_T1)))return;
   const u=P(t,K_ANS,K_T1), pe=dec(t,K_ANS,K_ANS+0.5);
-  st(S4,{transform:camT({x:1000,y:560},{x:1000,y:560},1.0+0.1*io(t,K_ANS,K_T1))});   // a push toward the answer
-  st(ask,{transform:T3(940,548,1100,590,{rx:lerp(8,2,u),ry:lerp(-13,-4,u),s:1.42*(0.97+0.03*pe)}),opacity:f3(pe)});
-  const pu=dec(t,K_ANS,K_ANS+0.35);st(aUM,{opacity:f3(pu),transform:`translateY(${f1((1-pu)*20)}px)`});
-  const pa=dec(t,K_ANS+0.2,K_ANS+0.6);st(aAN,{opacity:f3(pa),transform:`translateY(${f1((1-pa)*18)}px)`});
-  const nw=FQ(t)<T_W?0:Math.min(ANS.length,Math.floor((FQ(t)-T_W)/S16)+1);
-  const tx=ANS.slice(0,nw).map(w=>w==='§'?'<span class="hl">8.2%</span>':w).join(' ');
-  if(tx!==lastA){aTX.innerHTML=tx;lastA=tx;}
-  const pc=dec(t,T_CHIP,T_CHIP+0.45);st(aCH,{opacity:f3(pc),transform:`scale(${f3(0.92+0.08*pc)})`});
+  st(S4,{transform:camT({x:960,y:540},{x:960,y:540},1.0+0.08*io(t,K_ANS,K_T1))});   // a push toward the answer
+  st(ASK,{transform:T3(960,548,TH[2]*AK,TH[3]*AK,{rx:lerp(8,2,u),ry:lerp(-13,-4,u),s:0.84*(0.97+0.03*pe)}),opacity:f3(pe)});
+  const pa=dec(t,T_ANSWER,T_ANSWER+0.35);aAns.style.opacity=f3(pa);aThink.style.opacity=f3(1-pa);
+  srcG.style.opacity=f3(dec(t,T_CHIP,T_CHIP+0.35)*(1-0.4*io(t,T_CHIP+0.6,T_CHIP+1.6)));
 });
 
 /* ================= k20-22 type ================= */
 lt({at:K_T1,out:K_LIST,y:356,words:['Built','on','your','data.'],ar:'مبني على بياناتك.'});
 
-/* ================= k22-24 the Decisions statuses in close-up; the hand on «قيد المراجعة» ================= */
-const S6=M.el('div','lv-shot',null,SCN);
-const LROWS=[['bang','حرجة','Critical','0','#A8131C',0],['clock','قيد المراجعة','Under review','6','#AA3C07',1],['ccheck','موافق عليها','Approved','0','#0B8447',0]];
-const list=M.el('div','lv-list',LROWS.map(([icn,ar,en,n,col,hi],i)=>
-  `<div class="lv-row${hi?' on':''}" style="top:${i*222}px;"><span class="ico">${SK.ic(icn,72,hi?'#8E32C3':'#3A3742',2)}</span>`+
-  `<span class="ar">${ar}</span><span class="en">${en}</span><span class="n">${n}</span></div>`).join(''),S6);
-st(list,{left:'340px',top:'214px'});
-const H6=hand(S6), ROW={x:340+620+120,y:214+222+98}, T_TAP6=B(23.3);
+/* ================= k22-28 decide: the counters and the card; «موافقة», the app's confirm, «تم بنجاح»; approved ================= */
+// the real app's Decisions page (films/style-jupiter/pages/: the brand film's captures): the counters and a
+// recommendation a monitoring rule raised. «موافقة» opens the app's confirm dialog; «تأكيد الموافقة» gives «تم بنجاح»; then
+// the card is approved and the counts read 5 / 1. Nothing runs after the approval (the catalogue)
+const S7=M.el('div','lv-shot',null,SCN), DK=1.6, CW=1120*DK, CH=206*DK, SH=94*DK, CX=(1920-CW)/2, SY=280, CY=SY+SH+28;
+const dPlate=(parent,file,x,y,w,h)=>{const e=M.el('div','lv-part',null,parent);
+  st(e,{left:f1(x)+'px',top:f1(y)+'px',width:f1(w)+'px',height:f1(h)+'px',backgroundImage:`url(${JIMG}${file})`,backgroundSize:'100% 100%'});return e;};
+const sIn=dPlate(S7,'decisions-stats.png',CX,SY,CW,SH), sAfter=dPlate(S7,'after-stats.png',CX,SY,CW,SH);
+const dIn=dPlate(S7,'decisions-card.png',CX,CY,CW,CH), dAfter=dPlate(S7,'after-card.png',CX,CY,CW,CH);
+const sGlow=M.el('div','lv-sglow',null,S7);st(sGlow,{left:f1(CX+(600-32)*DK)+'px',top:SY+'px',width:f1(268*DK)+'px',height:f1(SH)+'px'});   // «موافق عليها»
+const APB={x:CX+(53-32+53.35)*DK,y:CY+(497-476+19)*DK};      // «موافقة» on the card (the brand film's boxes)
+const DLGL=M.el('div','lv-shot',null,SCN), veil=M.el('div','lv-veil',null,DLGL);  // the app's dialogs, centred on the screen
+const QK=1.7, dlgC=dPlate(DLGL,'confirm-dialog.png',960-224*QK,540-161*QK,448*QK,322*QK), dlgD=dPlate(DLGL,'done-dialog.png',960-224*QK,540-55*QK,448*QK,110*QK);
+[dlgC,dlgD].forEach(e=>e.classList.add('lv-dlg'));
+const OKB={x:960-224*QK+(521-496+76.55)*QK,y:540-161*QK+(506.5-253.5+22)*QK};   // «تأكيد الموافقة» on screen
+const H7=hand(TXT);
+const T_CLICK=B(23), T_DLG=B(23.25), T_OK=B(24.5), T_DONE=B(24.75), T_CNT=B(26.25);
+const DCC={x:960,y:(SY+CY+CH)/2};                            // the counters and the card, whole, a slow push on their middle
+const camA=t=>{const pe=dec(t,K_LIST,K_LIST+0.45);return {pe,Z:(0.97+0.03*pe)*(1+0.06*P(t,K_LIST,K_T2))};};
+const onScreen=(p,Z)=>({x:DCC.x+(p.x-DCC.x)*Z,y:DCC.y+(p.y-DCC.y)*Z});
 M.track(t=>{
-  if(!show(S6,inShot(t,K_LIST,K_DEC)))return;
-  st(S6,{transform:camT({x:960,y:540},{x:960,y:540},1+0.05*P(t,K_LIST,K_DEC))});
-  const ph=io(t,K_LIST+0.05,T_TAP6-0.08), press=Math.sin(Math.PI*P(t,T_TAP6-0.06,T_TAP6+0.16));
-  drawHand(H6,lerp(1520,ROW.x,ph),lerp(1230,ROW.y,ph),1,press,P(t,T_TAP6,T_TAP6+0.5));
-});
-
-/* ================= k24-28 decide: the counters and the card; one click on «موافقة» ================= */
-const S7=M.el('div','lv-shot',null,SCN);
-const td=document.createElement('div');td.innerHTML=SK.decContent({id:'lvDec'});
-const dcard=td.querySelector('#decCard'),toast=td.querySelector('#toast'),btn=dcard.querySelector('#btnOK'),stats=td.querySelector('#stats');
-[dcard,toast].forEach(e=>{e.removeAttribute('id');st(e,{position:'absolute',left:'0',top:'0',right:'auto',width:'1402px',height:'214px'});});
-toast.style.display='flex';
-const DW=M.el('div','lv-dec',null,S7);M.el('div','site m-site',null,DW).append(dcard,toast);
-stats.removeAttribute('id');st(stats,{position:'absolute',left:'0',top:'0',right:'auto',width:'1402px',height:'138px'});
-const SW=M.el('div','lv-stats',null,S7);M.el('div','site m-site',null,SW).appendChild(stats);
-const statEls=[...stats.children], nApp=statEls[2].querySelector('.n'), nRev=statEls[3].querySelector('.n');
-st(SW,{left:'259px',top:'262px'});st(DW,{left:'259px',top:'470px'});
-const OK={x:259+1402-36-80,y:470+138+28}, H7=hand(S7), T_CLICK=B(25.5), T_CNT=B(26.5);
-M.track(t=>{
-  if(!show(S7,inShot(t,K_DEC,K_T2)))return;
-  const pe=dec(t,K_DEC,K_DEC+0.45), pz=io(t,K_DEC,T_CLICK-0.1)*(1-0.55*io(t,T_CLICK+0.5,T_CNT+0.4));
-  const Z0=1.25, S0={x:960-(960-OK.x)*Z0,y:540-(473-OK.y)*Z0};          // at Z0 the whole (centre 960,473) sits mid-screen
-  st(S7,{transform:camT(OK,{x:lerp(S0.x,1250,pz),y:lerp(S0.y,790,pz)},(0.97+0.03*pe)*lerp(Z0,1.62,pz)),opacity:f3(pe)});
-  const pk=dec(t,T_CLICK+0.05,T_CLICK+0.4);dcard.style.opacity=f3(1-pk);toast.style.opacity=f3(pk);
-  const press=Math.sin(Math.PI*P(t,T_CLICK-0.06,T_CLICK+0.16));btn.style.transform=`scale(${f3(1-0.05*press)})`;
-  const ph=io(t,K_DEC+0.15,T_CLICK-0.08), out=io(t,T_CLICK+0.5,T_CLICK+1.2);
-  drawHand(H7,lerp(1600,OK.x,ph)+260*out,lerp(1180,OK.y+6,ph)+300*out,1-out,press,P(t,T_CLICK,T_CLICK+0.55));
-  const done=FQ(t)>=T_CNT;nApp.textContent=done?'1':'0';nRev.textContent=done?'5':'6';
-  const gc=dec(t,T_CNT,T_CNT+0.4)*(1-io(t,T_CNT+0.8,T_CNT+2.2));
-  statEls[2].style.boxShadow=gc>0.001?`0 0 ${f1(34*gc)}px rgba(11,132,71,${f3(0.55*gc)}),inset 0 0 0 ${f2(2*gc)}px rgba(11,132,71,${f3(0.6*gc)})`:'';
+  const on=inShot(t,K_LIST,K_T2);show(S7,on);show(DLGL,on);show(H7.e,on);if(!on){H7.tap.style.display='none';return;}
+  const c=camA(t);st(S7,{transform:camT(DCC,DCC,c.Z),opacity:f3(c.pe)});
+  const pk=dec(t,T_CNT,T_CNT+0.35);dAfter.style.opacity=f3(pk);sAfter.style.opacity=f3(pk);   // approved; the counts read 5 / 1
+  sGlow.style.opacity=f3(dec(t,T_CNT,T_CNT+0.4)*(1-io(t,T_CNT+0.8,T_CNT+1.6)));
+  const pi=dec(t,T_DLG,T_DLG+0.3), po=io(t,T_CNT-0.3,T_CNT);   // the confirm pops in on the click's result; «تم بنجاح» on the confirm's
+  veil.style.opacity=f3(0.38*pi*(1-po));
+  const pd=dec(t,T_DONE,T_DONE+0.2);
+  st(dlgC,{opacity:f3(pi*(1-pd)*(1-po)),transform:`translateY(${f1((1-pi)*24)}px) scale(${f3(0.96+0.04*pi)})`});
+  st(dlgD,{opacity:f3(pd*(1-po))});
+  // the hand: in from the lower right onto «موافقة» (camera space, on screen), then onto «تأكيد الموافقة»
+  const ap=onScreen(APB,c.Z), pm=io(t,K_LIST+0.2,T_CLICK-0.08), pm2=io(t,T_DLG+0.25,T_OK-0.08), out=io(t,T_OK+0.45,T_OK+1.1);
+  const x=lerp(lerp(1640,ap.x,pm),OKB.x,pm2)+260*out, y=lerp(lerp(1230,ap.y+6,pm),OKB.y+6,pm2)+300*out;
+  const press=Math.max(Math.sin(Math.PI*P(t,T_CLICK-0.06,T_CLICK+0.16)),Math.sin(Math.PI*P(t,T_OK-0.06,T_OK+0.16)));
+  const tap=t<T_DLG+0.4?P(t,T_CLICK,T_CLICK+0.55):P(t,T_OK,T_OK+0.55);
+  drawHand(H7,x,y,1-out,press,tap);
 });
 
 /* ================= k28-31.5 type ================= */
 lt({at:K_T2,out:K_T3,y:356,words:['Every','system.'],ar:'كل الأنظمة.'});
 lt({at:K_T3,out:K_COL,y:356,words:['One','living','model.'],ar:'نموذج حيّ واحد.'});
 
-/* ================= k31.5-36 the collage: the app's ten pages fly in and gather in 3D ================= */
+/* ================= k31.5-36 the collage: nine of the app's pages fly in and gather in 3D ================= */
+// the real app's pages, whole (films/app-pages/pages/: tools/app_shot.js, dark mode, sample data)
 const S9=M.el('div','lv-shot',null,SCN), D9=M.el('div','lv-3d',null,S9);
 const GRP=M.el('div',null,null,D9);st(GRP,{width:'1920px',height:'1080px',transformStyle:'preserve-3d',transformOrigin:'960px 540px'});
-const CL=[['home',960,520,140],['pulse',560,350,-260],['decisions',1370,330,-160],['assistant',1330,730,40],['knowledgeMap',590,760,-120],
-  ['search',980,170,-560],['projects',250,560,-600],['objectTypes',1670,560,-560],['links',990,920,-480],['admin',1580,900,-720]]
-  .map(([k,x,y,z],i)=>({k,x,y,z,i,t0:K_COL+i*S16,el:M.el('div','lv-page',`<img src="site_pages/${k}.png">`,GRP)}));
+const CL=[['home',960,520,140],['pulse',560,350,-260],['decisions',1370,330,-160],['assistant',1330,730,40],['map',590,760,-120],
+  ['search',980,170,-560],['projects',250,560,-600],['schema',1670,560,-560],['monitors',990,920,-480]]
+  .map(([k,x,y,z],i)=>({k,x,y,z,i,t0:K_COL+i*S16,el:M.el('div','lv-page',`<img src="films/app-pages/pages/${k}.png">`,GRP)}));
 M.track(t=>{
   if(!show(S9,inShot(t,K_COL,K_LOGO)))return;
   const u=P(t,K_COL,K_LOGO), pc=io(t,B(34.6),K_LOGO);
@@ -285,6 +281,9 @@ M.track(t=>{
   st(cBook,{opacity:f3(pk),transform:`translateY(${f1((1-pk)*18)}px) scale(${f3(0.95+0.05*pk)})`});
   st(FTR,{opacity:f3(0.6*pf)});
 });
+// the app's screens show sample data: labelled while they are up (the assistant, Decisions, the collage)
+const SAMPLE=M.el('div','rx-label','<span class="en">Sample data</span><span class="sep">·</span><span class="ar">بيانات تجريبية</span>',TXT);
+M.track(t=>{const v=inShot(t,K_ANS,K_T1)||inShot(t,K_LIST,K_T2)||inShot(t,K_COL,K_LOGO)?1:0;SAMPLE.style.display=v?'':'none';});
 M.punch(K_CARD,{amp:0.012});
 M.punch(K_END,{amp:0.015});
 M.start();

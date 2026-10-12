@@ -40,50 +40,19 @@
 .lv-tap{position:absolute;left:0;top:0;width:360px;height:360px;border-radius:50%;
   background:radial-gradient(closest-side,rgba(255,150,230,0.75),rgba(230,120,255,0.35) 55%,rgba(230,120,255,0) 100%);}
 
-/* the Assistant's answer (the app's AI assistant: its name, workspace filter, input and placeholder) */
-.as-card{position:absolute;left:0;top:0;width:1100px;height:590px;background:#fff;direction:rtl;border-radius:30px;
-  box-shadow:0 40px 90px rgba(80,40,140,0.22),0 8px 24px rgba(80,40,140,0.10),0 0 0 1.5px #E5E4E9;}
-.as-card>*{position:absolute;}
-.as-card .hd{right:30px;left:30px;top:24px;height:56px;display:flex;align-items:center;gap:14px;direction:rtl;}
-.as-card .bt,.as-card .av{width:52px;height:52px;border-radius:16px;background:linear-gradient(140deg,#5F0DB4,#BC59D1);display:flex;align-items:center;justify-content:center;flex:none;}
-.as-card .nm{font:700 27px 'PlexAR';color:var(--ink);white-space:nowrap;}
-.as-card .ws{margin-right:auto;height:46px;padding:0 18px;border-radius:14px;border:1.5px solid #D6D5DA;display:inline-flex;align-items:center;gap:14px;
-  font:500 18px 'PlexAR';color:var(--ink);white-space:nowrap;direction:ltr;}
-.as-card .dv{left:0;right:0;top:100px;height:1.5px;background:#EEEDF2;}
-.as-card .um{left:30px;top:128px;padding:16px 28px;border-radius:24px 24px 24px 8px;background:linear-gradient(95deg,#5F0DB4,#8E32C3 60%,#BC59D1);
-  color:#fff;font:600 25px 'PlexAR';white-space:nowrap;}
-.as-card .an{right:30px;left:30px;top:222px;display:flex;align-items:flex-start;gap:16px;direction:rtl;}
-.as-card .av{width:48px;height:48px;border-radius:15px;}
-.as-card .ac{flex:1;min-height:168px;padding:20px 28px 22px;border-radius:8px 24px 24px 24px;background:#F8F7FC;border:1.5px solid #E5E4E9;}
-.as-card .tx{font:500 26px/1.75 'PlexAR';color:var(--ink);min-height:92px;}
-.as-card .tx .hl{color:var(--pd);font:700 26px 'Inter';background:var(--pl);padding:0 8px;border-radius:8px;}
-.as-card .chip{display:inline-flex;align-items:center;gap:8px;height:38px;padding:0 16px;border-radius:19px;background:#E7F5EE;color:#0B8447;
-  font:500 17px 'PlexAR';white-space:nowrap;margin-top:10px;}
-.as-card .ir{right:30px;left:30px;bottom:26px;height:72px;}
-.as-card .in{position:absolute;right:0;left:98px;top:0;height:72px;border:1.5px solid #CECDD2;border-radius:20px;background:#fff;padding:0 28px;
-  display:flex;align-items:center;direction:rtl;white-space:nowrap;overflow:hidden;}
-.as-card .ph{font:400 22px 'PlexAR';color:#6C6A72;}
-.as-card .send{position:absolute;left:0;top:0;width:78px;height:72px;border-radius:18px;background:#C9A8E6;display:flex;align-items:center;justify-content:center;}
-
-/* the Decisions status list in close-up (the app's own labels and counts), like the reference's Inbox list */
-.lv-list{position:absolute;left:0;top:0;width:1240px;height:640px;direction:rtl;}
-.lv-row{position:absolute;right:0;left:0;height:196px;display:flex;align-items:center;gap:40px;padding:0 70px;border-radius:98px;}
-.lv-row .ico{width:84px;height:84px;display:flex;align-items:center;justify-content:center;flex:none;}
-.lv-row .ar{font:600 92px/1 'PlexAR';color:#1F1D24;white-space:nowrap;}
-.lv-row .en{font:500 44px 'Inter';color:#8C8996;white-space:nowrap;direction:ltr;margin-top:18px;}
-.lv-row .n{margin-right:auto;width:132px;height:132px;border-radius:50%;background:#DCD6E4;display:flex;align-items:center;justify-content:center;
-  font:600 60px 'Inter';color:#4A4652;}
-.lv-row.on{background:#fff;box-shadow:0 30px 70px rgba(110,60,170,0.20),0 6px 18px rgba(110,60,170,0.10);}
-.lv-row.on::after{content:'';position:absolute;inset:0;border-radius:98px;padding:4px;background:linear-gradient(90deg,#FF7BD8,#B26BFF 45%,#6A5CFF);
-  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;}
-.lv-row.on .ar{background:linear-gradient(270deg,#5F0DB4,#8E32C3 45%,#C25BD6);-webkit-background-clip:text;background-clip:text;color:transparent;padding:0 4px;}
-.lv-row.on .n{background:#E9E2F2;color:#6A12B8;}
-
-/* the Decisions card and counters (site kit), on lavender */
-.lv-dec{position:absolute;left:0;top:0;width:1402px;height:214px;background:#fff;border-radius:22px;
-  box-shadow:0 36px 80px rgba(80,40,140,0.20),0 8px 22px rgba(80,40,140,0.10);}
-.lv-stats{position:absolute;left:0;top:0;width:1402px;height:138px;}
-.lv-stats .sk-stat{box-shadow:0 18px 40px rgba(80,40,140,0.12);}
+/* the real app's screens (films/style-jupiter/pages/), square as the app's MARSAD × Fusion look, on lavender */
+.lv-stack{position:absolute;left:0;top:0;}
+.lv-part{position:absolute;left:0;top:0;background-repeat:no-repeat;background-color:#0B0A10;
+  box-shadow:0 36px 80px rgba(60,20,110,0.28),0 8px 22px rgba(60,20,110,0.16);}
+.lv-glow{position:absolute;opacity:0;pointer-events:none;border-radius:4px;box-shadow:0 0 0 2.5px rgba(242,170,255,0.9),0 0 34px 6px rgba(206,64,240,0.5);}
+.lv-sglow{position:absolute;opacity:0;pointer-events:none;box-shadow:inset 0 0 0 2px rgba(52,211,153,0.75),0 0 34px rgba(52,211,153,0.35);}
+.lv-veil{position:absolute;left:0;top:0;width:1920px;height:1080px;background:#000;opacity:0;}
+.lv-dlg{box-shadow:0 0 0 1.5px rgba(214,170,255,0.45),0 0 40px rgba(170,70,240,0.3),0 30px 70px rgba(0,0,0,0.5);}
+.rx-label{position:absolute;left:56px;top:44px;height:40px;padding:0 18px;border-radius:20px;display:flex;align-items:center;white-space:nowrap;
+  background:rgba(20,12,40,0.55);box-shadow:inset 0 0 0 1px rgba(214,170,255,0.25);}
+.rx-label .en{font:500 17px 'Inter';color:rgba(244,241,250,0.78);}
+.rx-label .sep{margin:0 9px;font:500 17px 'Inter';color:rgba(244,241,250,0.32);}
+.rx-label .ar{font:500 17px 'PlexAR';color:rgba(244,241,250,0.72);direction:rtl;}
 
 /* type shots: big white words on the gradient (EN), the Arabic under them */
 .lt{position:absolute;left:0;width:1920px;text-align:center;pointer-events:none;}
@@ -92,7 +61,7 @@
 .lt .ar{font:700 76px/1.5 'PlexAR';color:rgba(255,255,255,0.86);direction:rtl;white-space:nowrap;margin-top:22px;}
 
 /* the collage of the app's pages */
-.lv-page{position:absolute;left:0;top:0;width:640px;height:358px;border-radius:18px;overflow:hidden;background:#fff;
+.lv-page{position:absolute;left:0;top:0;width:640px;height:358px;border-radius:3px;overflow:hidden;background:#0B0A10;
   box-shadow:0 30px 60px rgba(20,0,40,0.35),0 0 0 1px rgba(255,255,255,0.4);}
 .lv-page img{display:block;width:100%;height:100%;}
 
