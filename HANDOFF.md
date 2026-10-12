@@ -628,3 +628,26 @@ square), the catalogue's fixes, 1080p. One video at a time, each delivered when 
   a word, like “invoice”", "See results from every source". The type chips on the Search page use the mono font, so
   their Arabic letters show unjoined (a finding for the client). QA PASS both formats, −13.9 LUFS, −5.3 dBTP, 11.6 and
   10.9 MB.
+- **Business Pulse short demo** (`demos/pulse-short`, 30 s, 16:9 and 9:16): the rebuilt light page gave way to the
+  real app, frozen by `tools/app_snap.js` (`app/capture.js`): «نبض الأعمال» with no recommendations yet, «توليد توصيات»,
+  the three recommendations rising one per 8th, the first opened (a 1440 × 1240 window) with its text and the numbers it
+  was built on, and its «مبني على بياناتك» pill. The catalogue's fixes: the daily advisor ("Your daily advisor", switched
+  off) and the alert "as it happens" («تنبيه فوري») are gone; the captions are "Recommendations from your own numbers.",
+  "Open one: the numbers behind it." and the page's own claim "Computed from your data. Nothing made up.". The opened
+  card's «عرض الأرقام (الأساس)» block is left out: it sets Arabic labels in the mono font, which breaks their joining.
+  QA PASS both formats, −13.9 LUFS, −5.4 dBTP, 8.8 and 8.3 MB.
+
+Every video in `Videos/` that was made before the new front end is now on it, except three legacy samples (the Lovable
+look, the website-style film and "Know. Watch. Decide."), which wait for the client's word.
+
+**Front-end findings to tell the client** (seen while capturing):
+- The Home page's hero has a small kicker «طبقة القرار السيادية» ("sovereign decision layer"); the catalogue avoids
+  'sovereign'. The captures hide it.
+- In the live app the dialogs are pinned to the content column, not centred on the screen: the page's entrance
+  animation (`blurIn`, fill-mode both) leaves a transform on the column, which `position: fixed` then follows.
+- Business Pulse's notice after generating reads «تم توليد 3 توصية»; the plural is «3 توصيات».
+- Monospace on Arabic breaks the letters' joining: Business Pulse's «عرض الأرقام (الأساس)» block and the Search page's
+  type chips.
+- The record page's header shows the type's English name («Product») in the Arabic interface.
+- The decisions service writes a monitor's notification and its run-now message in English ("1 new decision(s) from
+  …", "Monitor executed. 1 decision(s) created." in its code), which the Arabic interface would show as they are.

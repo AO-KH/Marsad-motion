@@ -1,44 +1,47 @@
 /* Business Pulse — a 30 s feature demo (the "short" template).
    Music: SoundSurfer "Product Video" (fit/product-video.mp3), 88 BPM; B(k) is beat k, bars every 4 beats.
-   Its phrases start on B(4), B(20), B(36)…, so the story turns there: the alert on B(20), the end card on B(36).
-   Shape: title → the app → three beats of story, one caption each → end card. */
-const B=M.B, S8=M.S8;
-const X=M.pick(948,1358);                      // 9:16 crops the page: keep the right-hand (RTL) header in view, edges clear of text
-const XA=M.pick(948,620);                      // 9:16 from step 2: the page's left half, so the alert card is whole
-const at=(x,y)=>({x,y,w:0,h:0});               // a view centre in page px (tools/cutcheck.js suggests these)
+   Its phrases start on B(4), B(20), B(36)…, so the story turns there: the opened recommendation on B(20), the end card
+   on B(36). Shape: title → the app → three beats of story, one caption each → end card.
+   Since 2026-10-11 ("apply this to all other videos") the screens are the real app's: the client's bilingual front end
+   in dark mode, its Arabic interface, frozen by tools/app_snap.js (demos/pulse-short/app/), with sample data labelled
+   "Sample data". The story is the feature catalogue's live Business Pulse: «توليد توصيات» (the page lists the three
+   recommendations), the first opened with the workspace's numbers it was built on, and the «مبني على بياناتك» pill
+   ("Computed from your data. Nothing made up." is the page's own claim). Before: the daily advisor switched on and an
+   alert "as it happens" («تنبيه فوري»): both off the catalogue.
+   Truth: every screen is the app's own with sample data; the green «تم توليد…» line the app shows right after
+   generating is left out (the list is captured as the page loads it). Renderings: the stage, the window, the pointer,
+   the captions, the highlights, the label; the three recommendations rise in one per 8th. */
+const B=M.B, S8=M.S8, v=M.pick;                 // v(a16x9, a9x16): per-format framing
+const at=(x,y)=>({x,y,w:0,h:0});               // a view centre in page px
 
 M.title({at:B(0.5),out:B(6.5),icon:'pulse',kicker:'FEATURE',kickerAr:'ميزة',en:'Business Pulse',ar:'نبض الأعمال'});
 
-const app=M.app({at:B(7),out:B(35.5),page:'pulse',view:{x:X}});
-app.inject('pulse',`<div class="abs" id="alertCard"><span class="dot"></span><span class="t">تنبيه: انخفاض مخزون فرع الرياض 18%</span>
-  <span class="m">${SK.pill('hi','مرتفع')}${SK.pill('src','المخزون · Odoo')}<span class="sk-meta">الآن</span></span>
-  <svg width="130" height="76" viewBox="0 0 130 76"><polyline points="4,16 26,20 46,14 66,30 86,34 104,56 126,62" fill="none" stroke="#A8131C" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="126" cy="62" r="5" fill="#A8131C"/></svg></div>`);
+const app=M.app({at:B(7),out:B(35.5),page:'before',view:{x:v(720,760)}});
 
-// 1 — the daily advisor switches on
-M.caption({at:B(8),out:B(19),en:'Your daily advisor, built on your data.',ar:'مستشارك اليومي، مبني على بياناتك.'});
-if(M.FORMAT==='16x9'){
-  app.focus(B(9),at(928,554),{scale:0.82});                           // the switch and the card's heading in one view
-}else{                                                                 // 9:16 can't fit both: the heading, then the switch
-  app.focus(B(8.5),at(1338,516),{scale:1.0,dur:1.2});
-  app.focus(B(10.5),at(610,482),{scale:1.1,dur:1.2});
-}
-app.click(B(12),'.sk-toggle',{ax:0.72,ay:0.62}).toggle(B(12),'.sk-toggle');   // on the switch: the label stays readable
-app.cursorOut(B(13.5));
-app.focus(B(14),'page',{x:X,dur:1.2});
-[1,2,3].forEach((n,i)=>app.show(B(15)+i*S8,`#recRows .sk-rec:nth-child(${n}) .sk-pill.new`,{from:'none',scale:0.9}));
+// 1 — generate: the page computes the numbers first, then words the recommendations
+M.caption({at:B(8),out:B(19),en:'Recommendations from your own numbers.',ar:'توصيات مبنية على أرقامك.'});
+app.focus(B(8.5),at(v(700,560),v(360,330)),{scale:v(1.05,1.3),dur:1.2});   // the title, the page's own line and the button
+app.click(B(12),'[data-w=btn]',{ax:0.3,ay:0.6});
+app.page(B(12.5),'list',{dur:0.4});
+[1,2,3].forEach((n,i)=>app.show(B(12.75)+i*S8,`[data-w=r${n}]`,{from:'below',dist:14,dur:0.6}));
+app.focus(B(13),at(v(720,760),425),{scale:v(0.944,1.25),dur:1.3});
+app.cursorOut(B(14));
 
-// 2 — an alert arrives the moment the numbers change (a new phrase in the music)
-M.caption({at:B(20),out:B(28),en:'It flags what changed, as it happens.',ar:'ينبّهك لما تغيّر، لحظة حدوثه.'});
-if(M.FORMAT==='9x16')app.focus(B(20),'page',{x:XA,dur:1.2});         // be where the alert lands before it lands
-app.show(B(20.5),'#alertCard',{from:'above',dist:20,dur:0.8});
-app.text(B(20.5),'.sk-badge','4');
-app.focus(B(21.5),'#alertCard',{fill:0.7,dur:1.2});
-app.highlight(B(22.5),B(28),'#alertCard',{pad:12});
-app.callout(B(23),B(28),'#alertCard',{en:'Instant alert',ar:'تنبيه فوري',side:'bottom'});
+// 2 — open the first: its text, with the numbers it was built on
+M.caption({at:B(20),out:B(28),en:'Open one: the numbers behind it.',ar:'افتح توصية: والأرقام التي بُنيت عليها.'});
+app.click(B(21),'[data-w=toggle]',{ax:0.6,ay:0.5});
+app.page(B(21.5),'open',{dur:0.3});
+app.focus(B(21.5),'[data-w=r1]',{scale:v(1.15,1.25),dx:v(0,100),dur:1.3});
+app.cursorOut(B(23));
+app.highlight(B(23.5),B(28),'[data-w=body]',{pad:10});
 
-// 3 — close
-M.caption({at:B(29),out:B(35),en:'Know first. Decide faster.',ar:'اعرف أولاً، وقرّر أسرع.'});
-app.focus(B(29),'page',{x:XA,dur:1.4});
+// 3 — computed from your data: the page says so, and every recommendation carries the pill
+M.caption({at:B(29),out:B(35),en:'Computed from your data. Nothing made up.',ar:'محسوبة من بياناتك… دون اختلاق.'});
+app.highlight(B(29.5),B(35),'[data-w=ok1]',{pad:8});
+
+// the records are sample data: a small label while the app is on screen
+const NOTE=M.el('div','ps-note','<span class="en">Sample data</span><span class="sep">·</span><span class="ar">بيانات تجريبية</span>',M.layer('over'));
+M.track(t=>{const k=M.ez.dec(M.P(t,B(7.5),B(8.3)))*(1-M.ez.ioC(M.P(t,B(35),B(35.6))));NOTE.style.display=k>0.001?'':'none';NOTE.style.opacity=k.toFixed(3);});
 
 M.endcard({at:B(36)});
 M.start();
