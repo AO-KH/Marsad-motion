@@ -181,7 +181,7 @@ const MKe=mark(SCN,300);MKe.e.style.zIndex='1';   // the riders pass behind it o
 const T_UP=B(9.5);
 M.track(t=>{
   const on=t>=B(6.25)&&t<K_PUL;MKe.e.style.display=on?'':'none';if(!on)return;
-  const p=P(t,K_TURN,K_TURN+0.75), sc=t<K_TURN?0.86:0.86+0.14*ez.dec(p)+0.03*Math.sin(Math.PI*Math.min(1,p*1.3))*(p<1?1:0);
+  const p=P(t,K_TURN,K_TURN+0.75), sc=t<K_TURN?0.86:0.86+0.14*ez.dec(p);   // slows into its size, never past it (no overshoot)
   const pu=io(t,T_UP,T_UP+1.1), y=lerp(MK.y,300,pu), s=sc*lerp(1,0.55,pu);
   st(MKe.e,{transform:`translate(${f1(MK.x-150)}px,${f1(y-114.5)}px) scale(${f3(s)})`,opacity:f3(t<K_TURN?1:ez.dec(Math.min(1,p*1.6)))});
   const pre=0.35*io(t,B(6.25),K_TURN), bloom=0.9*dec(t,K_TURN,K_TURN+0.3)*(1-0.55*io(t,K_TURN+0.4,K_TURN+2));

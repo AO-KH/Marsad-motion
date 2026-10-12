@@ -176,8 +176,9 @@ const T_MK=B(16), T_ZT=B(22.2), T_ZE=B(23.8);
 const FLY=u=>Math.pow(14,Math.pow(u,1.6));        // the fly-in: scale 1 -> 14, even in log space, gently accelerating
 M.track(t=>{
   const on=t>=B(14.5)&&t<T_ZE;mk.style.display=on?'':'none';if(!on)return;
-  // the mark lands on the hit: in over 0.75 s with a 3% overshoot; its own glow gathers with the tiles, blooms and settles
-  const p=P(t,T_MK,T_MK+0.75), sc=0.86+0.14*ez.dec(p)+0.03*Math.sin(Math.PI*Math.min(1,p*1.3))*(p<1?1:0);
+  // the mark lands on the hit: in over 0.75 s, slowing into its size (never past it: no overshoot); its own glow
+  // gathers with the tiles, blooms and settles
+  const p=P(t,T_MK,T_MK+0.75), sc=0.86+0.14*ez.dec(p);
   const u=P(t,T_ZT,T_ZE), pz=io(t,T_ZT,T_ZE), zs=FLY(u), mo=1-P(u,0.62,0.95);
   const gx=lerp(0,960-(MK.x-MW/2+ZP.x),pz), gy=lerp(0,540-(MK.y-MH/2+ZP.y),pz);   // the notch glides to the centre as we fly in
   st(mk,{transform:`translate(${f1(gx)}px,${f1(gy)}px) scale(${f3((t<T_MK?0.86:sc)*zs)})`,opacity:f3(mo),visibility:mo>0.002?'visible':'hidden'});
@@ -463,8 +464,9 @@ const eMk=end.querySelector('.mk'),eGl=end.querySelector('.gl'),eWm=end.querySel
 const T_END=B(90);
 M.track(t=>{
   const on=t>=T_END-0.02;end.style.display=on?'':'none';if(!on)return;
-  // the mark lands on the hit: in over 0.75 s, a 3% overshoot, its own glow blooms and settles (no disc behind it)
-  const p=P(t,T_END,T_END+0.75), sc=0.86+0.14*ez.dec(p)+0.03*Math.sin(Math.PI*Math.min(1,p*1.3))*(p<1?1:0);
+  // the mark lands on the hit: in over 0.75 s, slowing into its size (no overshoot), its own glow blooms and settles
+  // (no disc behind it)
+  const p=P(t,T_END,T_END+0.75), sc=0.86+0.14*ez.dec(p);
   st(eMk,{opacity:f3(ez.dec(Math.min(1,p*1.6))),transform:`scale(${f3(sc)})`});
   st(eGl,{opacity:f3(0.9*dec(t,T_END,T_END+0.3)*(1-0.55*io(t,T_END+0.4,T_END+2.0))),transform:`scale(${f3(sc*1.02)})`});
   const pw=dec(t,B(90.8),B(90.8)+0.9);st(eWm,{opacity:f3(pw),transform:`translateY(${f1((1-pw)*16)}px)`});

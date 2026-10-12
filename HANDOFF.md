@@ -671,6 +671,12 @@ square), the catalogue's fixes, 1080p. One video at a time, each delivered when 
   the app's backdrop means it (black 70 %, blur 4 px). Now with motion blur (it had none): `build54.sh` renders 4
   samples a frame and its 9 fast moves with 16. QA PASS (shake 0), −13.9 LUFS, −2.0 dBTP, 25 MB.
 
+- **No overshoot, everywhere** (2026-10-12): the end marks of the brand film (`films/style-jupiter`), the launch film
+  (`films/film63-launch`, twice), the coffee film, the Business Pulse film and the What-if film landed with a small
+  bump (`+0.03·sin`), which took them 0.6 % past their size before they settled. The client's rules forbid overshoot,
+  so the mark now slows into its size (`0.86 + 0.14·ez.dec(p)`). The bump was about 2 px on screen, so the delivered
+  MP4s were not re-rendered for it: the next build of each film has the fix.
+
 Every video in `Videos/` that was made before the new front end is now on it, except the website-style film, which
 follows.
 

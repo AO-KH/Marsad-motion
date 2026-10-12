@@ -298,8 +298,9 @@ const eMk=end.querySelector('.mk'),eGl=end.querySelector('.gl'),eWm=end.querySel
 const T_END=B(66);
 M.track(t=>{
   const on=t>=T_END-0.02;end.style.display=on?'':'none';if(!on)return;
-  // the mark lands on the hit: in over 0.7 s, a 3% overshoot, its own glow blooms and settles (no disc behind it)
-  const p=P(t,T_END,T_END+0.75), sc=0.86+0.14*ez.dec(p)+0.03*Math.sin(Math.PI*Math.min(1,p*1.3))*(p<1?1:0);
+  // the mark lands on the hit: in over 0.75 s, slowing into its size (no overshoot), its own glow blooms and settles
+  // (no disc behind it)
+  const p=P(t,T_END,T_END+0.75), sc=0.86+0.14*ez.dec(p);
   st(eMk,{opacity:f3(ez.dec(Math.min(1,p*1.6))),transform:`scale(${f3(sc)})`});
   st(eGl,{opacity:f3(0.9*dec(t,T_END,T_END+0.3)*(1-0.55*io(t,T_END+0.4,T_END+2.0))),transform:`scale(${f3(sc*1.02)})`});
   const pw=dec(t,B(66.8),B(66.8)+0.9);st(eWm,{opacity:f3(pw),transform:`translateY(${f1((1-pw)*16)}px)`});
