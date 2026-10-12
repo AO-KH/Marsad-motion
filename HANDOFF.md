@@ -13,26 +13,30 @@ This file covers the two finished ads. For new product demo videos, see [`DEMOS.
 
 ## 1. Where things stand
 
-- **Latest delivered cut: v6** (`marsad-film-final-v6.mp4`, sent in chat on 2026-09-25): 63.0 s, 1920×1080,
-  30 fps, H.264 (crf 20) + AAC 192k, master at −14.5 LUFS / −1.5 dBTP. v6 is v5 with glass icons (section 7,
-  item 10); timing and audio are unchanged.
+- **Latest delivered cut: v7** (2026-10-12, "apply this to all other videos", §18; in `Videos/Campaigns/` as
+  "Marsad Platform - Campaign Film, Website Style (63s, 16x9).mp4"): 63.0 s, 1920×1080, 30 fps, motion blur,
+  H.264 + AAC 320k, QA PASS, −14.6 LUFS / −1.2 dBTP, 25.0 MB. The app window (S6/S7) and the assistant (S9) are the
+  real app's screens from the client's new bilingual front end in dark mode, with sample data labelled; the
+  lines and sources follow the feature catalogue; the motion follows the client's calm rules (no shake, lean,
+  whip, spin or overshoot); the sound effects sit on the transitions only. Timing and music are v6's.
+- **v6** (`marsad-film-final-v6.mp4`, sent in chat on 2026-09-25) was v5 with glass icons (section 7, item 10).
 - **What it is:** a 63-second bilingual (EN/AR) ad for **Marsad**, the Arabic-first decision layer for Saudi companies by
   NASL Technologies. It uses the Marsad web app's light visual language with a purple glow layer and real
   app pages. The English voiceover is TTS (Kokoro, voice "Michael"). The music is SoundSurfer's "Stylish",
   fitted without time-stretch.
 - **State of the edit:** every visual event, sound effect and voice phrase sits on the music's 94 BPM beat
   grid, and nothing pulses to the beat.
-- `./build.sh` rebuilds v6 from this folder (v6 was rendered with it). The audio is byte-identical to v5's;
-  see section 9.
+- `./build.sh` rebuilds v7 from this folder (v7 was rendered with it): about 20 minutes with motion blur, then QA.
 
 ## 2. Quick start
 
 ```bash
 # from the repo root
 npm install                        # playwright 1.63; uses the preinstalled Chromium at /opt/pw-browsers/chromium
-./build.sh out/marsad-film.mp4     # ~5 min: audio stems → mix → loudnorm → 1890 frames → MP4
+./build.sh out/marsad-film.mp4     # ~20 min: audio stems → mix → loudnorm → 1890 motion-blurred frames → MP4 → QA
 node render_ab.js film.html chk 11.6,25.0,39.1    # quick stills → style_audit/chk_<t>.png
-node render_full.js 4 film.html frames 1160 1200  # re-render a frame range only (indices, 30 fps)
+node render_mb.js 4 film.html frames/film63-web-16x9 4 1160 1200 && python3 tools/blend.py frames/film63-web-16x9
+                                   # re-render a frame range only (indices, 30 fps), then re-run build.sh's mux
 ```
 
 Needs `ffmpeg`, `python3` with `numpy` (plus `Pillow` for `tools/`), and node 18+. The renderers use
@@ -55,16 +59,16 @@ Outputs (`out/`, `frames/`, `style_audit/`, `*.npy`, `fit/*.wav`) are gitignored
 | Path | What it is |
 |---|---|
 | `film.html` | **The master source.** One deterministic page; all animation code lives here. |
-| `site_kit.css`, `site_kit.js` | Rebuilt Marsad web-app UI kit (chrome, sidebar, Business Pulse and Decisions pages), used in S6/S7. |
-| `site_pages/*.png`, `site_pages.html`, `render_pages.js` | 10 app pages as stills for the tilted wall behind the end card. `render_pages.js` regenerates them. |
+| `site_kit.css`, `site_kit.js` | Rebuilt Marsad web-app UI kit (chrome, sidebar, Business Pulse and Decisions pages). `film.html` used it in S6/S7 up to v6; v7 shows the real app's pages (`films/app-pages/pages/`). |
+| `site_pages/*.png`, `site_pages.html`, `render_pages.js` | 10 rebuilt app pages as stills, the wall behind the end card up to v6 (v7's wall is the real app's pages). `render_pages.js` regenerates them. |
 | `assets_logo_m.png`, `assets_logo_wordmark_white.png`, `assets_logo_full_dark.png` | Logo mark, wordmark and full lockup. |
 | `fonts/` | IBM Plex Sans Arabic (4 weights), Inter (variable), JetBrains Mono (variable). All OFL. |
 | `audio_stems.py` | Sound design: synthesizes every SFX, places voice phrases on the grid and computes the ducking. Writes `stem_rh_*.npy`. |
 | `mix_final.py` | Places the music track, mixes it with the stems and writes a WAV. |
 | `vo/vo01..vo13.wav` | Voiceover takes. |
 | `fit/stylish.mp3` | The music track, supplied by the client. |
-| `render_full.js`, `render_ab.js` | Frame renderers: whole film or a range; stills at given times. |
-| `build.sh` | One-command rebuild. |
+| `render_mb.js` + `tools/blend.py`, `render_full.js`, `render_ab.js` | Frame renderers: motion-blurred (the finals since v7), plain (drafts), stills at given times. |
+| `build.sh` | One-command rebuild, with QA (`tools/qa.py`). |
 | `tools/pulse_check.py`, `tools/visual_sync.py` | Checks for beat pulsing and beat sync (section 9). |
 | `tools/make_vo.py` | Regenerates voice takes. |
 | `history/` | The patch chain that produced `film.html`, for reference only (see `history/README.md`). |
@@ -72,7 +76,8 @@ Outputs (`out/`, `frames/`, `style_audit/`, `*.npy`, `fit/*.wav`) are gitignored
 ## 4. How `film.html` works
 
 - **Deterministic rendering.** `window.SEEK(t)` draws time `t` (0–63 s). Nothing runs on timers or CSS
-  animations. `render_full.js` calls `SEEK(i/30)` for i = 0…1889 and screenshots each frame as JPEG q95.
+  animations. `render_full.js` calls `SEEK(i/30)` for i = 0…1889 and screenshots each frame as JPEG q95; since v7
+  the final uses `render_mb.js`, which renders 4 sub-frames across a 180° shutter and blends them.
 - **Order of the script:**
   - **Helpers:** `st` (set styles), `P(t,a,b)` (progress), and the easings in `ez` (`outC`, `inC`, `ioC`,
     `outE`, `prem`, `emph`, `dec`, `sin`). Also `enter()` / `exitDown()`, the `mulberry` PRNG, and the static
@@ -97,15 +102,15 @@ Outputs (`out/`, `frames/`, `style_audit/`, `*.npy`, `fit/*.wav`) are gitignored
   |---|---|
   | k1 | S1→S2 slide |
   | k9 | S2→S3 zoom through the orb |
-  | k12 | Ignition: punch + anticipation push-in + lean-in + shake |
+  | k12 | Ignition: a soft 1.5 % swell + anticipation push-in (v7: no lean, no shake) |
   | k16 | S3→S4 pull-back, starting at k14.5 |
-  | k26 | S4→S5 whip |
-  | k37 | S5→S6 spin into the app |
-  | k48 | S6→S7 page nudge |
+  | k26 | S4→S5 slide (a whip up to v6) |
+  | k37 | S5→S6 zoom through the model into the app (a spin up to v6) |
+  | k48 | — (v6's page nudge: since v7 the pages cross-fade inside the window) |
   | k59 | S7→S8 zoom out |
   | k70 | S8→S9 rise |
   | k81 | S9→S10 reveal on the drop |
-  | k88 | Final punch |
+  | k88 | Final punch (1.5 %) |
 
 ## 5. Music and the beat grid (read before retiming anything)
 
@@ -116,8 +121,8 @@ Outputs (`out/`, `frames/`, `style_audit/`, `*.npy`, `fit/*.wav`) are gitignored
   The grid stays continuous and the song's ending lands at the end of the film.
 - **Grid:** `vbeat(k) = 9.0197 + 0.63832·(k−8)`, with downbeats at k ≡ 0 (mod 4). The inverse is
   `kOf(t)`. `S16 = MB/4` is a 16th note and `S8 = MB/2` an 8th.
-  - Useful beats: k12 = 11.573 (ignition), k16 = 14.126, k55 = 39.021 (the click), k81 = 55.617 (the drop),
-    k88 = 60.085.
+  - Useful beats: k12 = 11.573 (ignition), k16 = 14.126, k55 = 39.021 (the click on «تأكيد الموافقة»),
+    k81 = 55.617 (the drop), k88 = 60.085.
 - **Sections:**
 
   | Beats | Film time (s) | Section |
@@ -137,87 +142,81 @@ Outputs (`out/`, `frames/`, `style_audit/`, `*.npy`, `fit/*.wav`) are gitignored
     starts on the beat. `ez.prem` (slow start) is kept for exits and transitions; used on an entrance it
     looks about 0.1 s late.
   - **No pulsing.** Nothing may throb, breathe or flash in a loop to the beat; the client rejected it
-    explicitly. `beatPulse()` still exists but is unused (`drawBG` has `bp=0`). Continuous motion (arc
+    explicitly. `beatPulse()` was removed in v7 (`drawBG` keeps `bp=0`). Continuous motion (arc
     laps, orbits, drifts) and one-off hits (ignition burst, drop flash) are fine.
-  - Every SFX is placed at the same grid time as its visual, and every voice phrase starts on a grid point.
-    Section 6 lists them.
+  - Every SFX is placed at the same grid time as its transition, and every voice phrase starts on a grid
+    point. Section 6 lists them.
 
 ## 6. Timeline (beat map)
 
-k = beat index. Times are the film times of those beats.
+k = beat index. Times are the film times of those beats. This is v7 (2026-10-12, §18); v6's map is in git history.
 
-- **S1, 0–4.6 (before the music):** the data-source tiles scatter. Caption "Your company's data is
-  everywhere." VO1 starts at 0.95.
+- **S1, 0–4.6 (before the music):** the sources Marsad takes in (Odoo, Excel, Google Drive, WhatsApp, PDF, CSV,
+  DOCX, ZIP) scatter as glass tiles. Caption "Your company's data is everywhere." VO1 starts at 0.95.
 - **S2, 4.6–9.6: waiting chat.**
   - The question bubble pops on k1.5 (4.871).
-  - Typing dots run from k2.5: one wave per beat, with ticks on the last two 16ths of each beat.
-  - The "WAITING · 00:47" counter steps once per beat from k3 to k8, each step with a clock tick.
+  - The typing dots light in turn from k2.5, at their own pace (not the beat's), without bobbing.
+  - The "WAITING · 00:47" counter steps once per beat from k3 to k8.
   - Caption on k4 (6.466), Arabic line on k4.5.
   - VO2 "And when you need a quick answer — your system makes you wait." starts on k3.5 (6.147).
 - **S3, 9.6–13.169: charge-up and ignition.**
   - The eight source tiles spiral in with light trails and are absorbed on k10, 10.5, 11, 11.25, 11.5 and
-    11.75. The last pair hits on k12, which triggers the burst.
+    11.75; the orb grows a step with each (no kick). The last pair hits on k12, which triggers the burst.
   - A charge ring fills one step per absorb, energy streaks pull inward, a 1.25 s riser builds, and the
-    camera leans in.
-  - **Ignition on k12 (11.573):**
-    - The M bursts in (scale 0.35 → 1.2 → 1.0, drawn 1.55× its original size).
-    - Two shockwaves, 18 rays and 30 sparks fire.
-    - The camera punches and shakes, and the purple flash lands on the beat with a thump.
+    camera pushes in (no lean).
+  - **Ignition on k12 (11.573):** the M scales in and slows into its size (0.35 → 1.0 in 0.68 s, drawn 1.55× its
+    original size; no overshoot); two shockwaves, 18 rays and 30 sparks fire; a soft 1.5 % camera swell (no
+    shake) and the purple flash land on the beat with the thump.
   - The hold that follows has a slow push-in, a glint sweeping the M (12.19–12.79) and three orbiting dots.
   - Caption words rise in 16ths from k12.5 (EN) and k13 (AR). VO3 "Marsad changes that." starts on k12.5.
 - **S4, 13.169–20.190: the loop.**
-  - The glow arc does one lap per bar; its head reaches the top node on each downbeat.
-  - The nodes pop with their words, each with a D-minor ping: CONNECT on k16 (14.126), UNIFY on k17.5
-    (15.084), MONITOR on k19 (16.041), ACT on k20 (16.680).
-  - Caption "One workflow. Fully automated." on k22 (17.956), Arabic on k22.5.
-  - VO4 is split into phrases: "Connect." on k16, "Unify." on k17.5, "Monitor… and act." on k19.
-  - VO5 is split: "One workflow." on k22, "Fully automated." on k23.5.
+  - The glow arc does one lap per bar.
+  - The nodes land with their words: CONNECT on k16 (14.126), UNIFY on k17.5 (15.084), MONITOR on k19
+    (16.041), DECIDE («قرّر») on k20 (16.680).
+  - Caption "Know. Watch. Decide." on k22 (17.956), Arabic «اعرف. راقب. قرّر.» on k22.5.
+  - VO4 in phrases: "Connect." on k16, "Unify." on k17.5, "Monitor… and decide." on k19.
+  - VO5, one word a beat: "Know." on k22, "Watch." on k23, "Decide." on k24.
 - **S5, 20.190–27.4: data model.**
-  - Four source chips step in by 16ths from k26.
-  - Six graph objects step in by 16ths from k29 (22.424), each with a blip.
-  - Five links draw on in 8ths from k30.5, each label one 8th later, with ticks.
-  - The Marsad hub (M at 180 px) lands on k33 (24.978) with a pop. Spokes follow in 16ths from k33.5.
-  - Caption "Every system. One living model." on k33.5, Arabic on k34.
-  - Everything contracts into the app's spinner at 26.85–27.4.
-  - VO6 starts on k28 (21.786).
-- **S6, 27.4–34.4: Business Pulse (نبض الأعمال).**
-  - The window arrives on k37, the tag on k38, the tabs on k37.75.
-  - The heading lands on k39, the generate button on k39.5, the advice card on k39.75.
-  - Three recommendations step in by 16ths from k40.
-  - Caption on k40.5, Arabic on k41. VO7 starts on k39 (28.808).
-- **S7, 34.4–41.6: Decisions (القرارات).**
-  - The heading lands on k48 and four stats step in by 16ths from k48.5. The tabs follow on k49.5 and the
-    list on k50.
-  - The top decision lifts forward on k51 (36.467).
-  - The cursor travels from k52 to k54.75, where it hovers.
-  - **The click lands on k55 (39.021, beat 4):** press, green flash, ripple and click sound.
-  - The success toast and the updated counts land on k56 (39.659), with a chime.
-  - Caption "Decision to action. Nothing in between." on k56.5, Arabic on k57.
-  - VO8: "One decision." on k51 and "One click." on k54.5, so the word "click" lands on the click.
-  - VO9: "Decision to action." on k56, "Nothing in between." on k58.
+  - Four source chips (CSV, XLSX, PDF, ODOO) step in by 16ths from k26.
+  - Six graph objects step in by 16ths from k29 (22.424); five links draw on in 8ths from k30.5.
+  - The Marsad hub (M at 180 px) lands on k33 (24.978); spokes follow in 16ths from k33.5.
+  - Caption "Every system. One living model." on k33.5, Arabic on k34. VO6 starts on k28 (21.786).
+  - Everything contracts at 26.85–27.4 as the camera zooms through into the app (k37).
+- **S6, 27.4–34.4: Business Pulse (نبض الأعمال), the real page.**
+  - The window arrives on k37 on «لا توجد توصيات بعد»; the hand comes in on k38 and clicks «توليد توصيات» on k39.
+  - The three recommendations (the page captured listed) fade in on k39.25. The window pushes in on them
+    (k40–k41.75) and the first is rimmed in violet (k42–k46).
+  - Caption "Operational recommendations — from your own numbers." on k40.5, Arabic on k41. VO7 starts on k39
+    (28.808).
+- **S7, 34.4–41.6: Decisions (القرارات), the real page.**
+  - The page cross-fades in at 34.4. The window pushes in on the decision a monitoring rule raised, rimmed in
+    violet on k51.
+  - "Marsad watches." on k50.5 (Arabic k51), with VO8 on k51 (36.467).
+  - The hand clicks «موافقة» on k53: the app's confirm dialog. It clicks «تأكيد الموافقة» on k55 (39.021):
+    «تم بنجاح» (the app holds it 2 s; here 1).
+  - "You decide." on k55.5 (Arabic k56), with VO9 on k55.5.
+  - The card approved and the counts 5 / 1 on k56.75, the card rimmed in green (k57–k59). Nothing runs after
+    the approval.
 - **S8, 41.6–48.4: shield.**
-  - The core M (120 px) appears on k59.25.
-  - Six defence rings snap in on 8ths from k60 (42.212), each with a snap sound; their labels follow.
-  - The grid caption appears on k64.
-  - Caption "Defense in depth. Sovereign. PDPL-compliant." on k66.5, Arabic on k67.
-  - VO10 phrases start on k60.5 and k64.5.
-- **S9, 48.4–55.617: Ask in Arabic.**
-  - The heading lands on k70, the sub-line on k70.5 and the chat panel on k71. The caret blinks on the beat.
-  - The Arabic question types from the breakdown downbeat k72 (49.872): one key per 32nd, two characters per
-    key.
-  - Send is pressed on k74.5 and the user message posts on k74.75.
-  - The answer panel appears on k75.5. The answer streams one word per 16th from k75.75, each word with a
-    tick.
-  - The source chip appears on k79.5. A riser builds into the drop.
-  - VO11: "Ask in Arabic." on k71, the rest on k73.
+  - The core M appears on k59.25; six rings snap in on 8ths from k60 (42.212), with the six live layers.
+  - Caption "Built with personal-data masking and an audit trail." on k62.5, Arabic on k63; the grid caption
+    on k64.
+  - VO10: "Built with personal-data masking," on k62.5, "and an audit trail." on k65.5.
+- **S9, 48.4–55.617: Ask in Arabic, the app's own assistant.**
+  - The heading lands on k70, the sub-line on k70.5 and the thread panel on k71.
+  - The question types into the app's field from k72 (49.872), two letters a 32nd, and is sent on k74.75;
+    «المساعد يفكّر…» on k75; the answer on k76.25; its sources lit on k77.5.
+  - VO11: "Ask in Arabic." on k71, "The answer comes from your own data." on k76.5.
 - **S10, 55.617–63: end card.**
-  - The end card sits over a tilted wall of the app's pages.
-  - The M lands on the drop (k81) with the flash and bloom sound.
-  - The wordmark and VO12 "Marsad." land on k82.
-  - VO12 "One operational nervous system." starts on k83.5. The tagline lands on k84, Arabic on k84.5.
-  - The CTA lands on k86, then VO13 "Request a demo at nasl tech dot com." starts on k86.5. The footer
-    follows on k87.
+  - The end card sits over a tilted wall of the app's pages, in dark mode.
+  - The M lands on the drop (k81) with the flash and the bloom.
+  - The wordmark and VO12 "Marsad." on k82; "One operational nervous system." on k83.5; the tagline on k84,
+    Arabic on k84.5.
+  - The CTA "Book your demo · احجز عرضك التجريبي · marsadnasl.com" lands on k86, then VO13 "Book your demo at
+    marsad nasl dot com." on k86.5. The footer follows on k87.
   - The final camera punch is on k88. The film fades to white from 61.7 to 62.95.
+- **Sound effects:** whooshes on the scene transitions, the riser and thump on the ignition, the riser and bloom
+  on the drop; nothing on what happens inside a scene (the client's rule for campaign films, 2026-09-30).
 
 ## 7. What the client asked for (keep these decisions)
 
@@ -242,6 +241,10 @@ In order:
    the first video"**. The source tiles (S1, and the tiles flying into the charge in S3) and the S5 source
    chips are frosted glass: `GLASS(col)` in `film.html`, styles in `<style id="glass">`. The app pages keep
    the site's own styling.
+11. **"Apply this to all other videos"** (2026-10-12, §18): v7 shows the real app's screens from the new front end
+   (dark mode, sample data labelled) in S6/S7 and S9 and on the end's wall, follows the feature catalogue, and
+   follows the client's later rules (calm motion, no overshoot, effects on the transitions only, "Book your demo"
+   and marsadnasl.com at the end).
 
 ## 8. Audio pipeline
 
@@ -264,6 +267,7 @@ In order:
 
 ## 9. Verification
 
+- **v7** was rendered with `./build.sh` here: QA PASS (shake 0), −14.6 LUFS, −1.2 dBTP, 25.0 MB.
 - **v6** was rendered with `./build.sh` here. Its audio master is byte-identical to v5's (same md5), and
   `pulse_check.py` still reads 1.0×. A per-frame glow scan of the glass tiles and chips shows no flicker.
 - **This rebuild:** `./build.sh` in this folder reproduced v5 (compared on 2026-09-25).
@@ -279,15 +283,16 @@ In order:
   - Results: v3 19% (chance is about 21%), v5 56%.
   - Most of the rest are 16th and 32nd-note sequences, exits, and a one-frame detection lag on small
     elements.
-- **Chat upload limit:** files over 30 MiB are rejected. crf 20 with AAC 192k gives about 18–24 MB.
+- **Chat upload limit:** files over 30 MB are rejected. `build.sh` raises the crf until the MP4 is under 29 MB.
 
 ## 10. Editing tips
 
 - Edit `film.html` directly. Express times as `vbeat(k)`, `S16` and `S8` rather than seconds.
-- For each new visual hit, add its sound in `audio_stems.py` at the same `vb(k)`. Voice timing lives in
-  `VO_PLAN`.
+- Sound effects go on scene transitions only, at the transition's `vb(k)` in `audio_stems.py` (the client's rule:
+  the UI makes no sound). Voice timing lives in `VO_PLAN`.
 - Preview with `render_ab.js` stills. For small fixes, re-render only the affected frame range with
-  `render_full.js … <from> <to>` and re-run the mux line from `build.sh`.
+  `render_mb.js 4 film.html frames/film63-web-16x9 4 <from> <to>` and `tools/blend.py`, and re-run the mux line
+  from `build.sh`.
 - Keep entrances on `ez.dec` or `ez.emph`. Do not add beat-synced loops.
 - Glass elements: build them with `GLASS(col)`, which adds four layers — `.gk` opaque lavender base, `.gb`
   colour glow, `.gp` frosted pane (`backdrop-filter`), `.gs` gloss. Keep the `.gk` base. Without it the pane's
@@ -307,7 +312,8 @@ In order:
 | `marsad-film-final-v3.mp4` | Dynamic logo reveal (charge-up and ignition). |
 | `marsad-film-final-v4.mp4` | Rhythm lock (had beat pulsing). |
 | `marsad-film-final-v5.mp4` | Rhythm lock without pulsing. |
-| `marsad-film-final-v6.mp4` | Glass source tiles and chips, as in the 54 s film. **Current.** |
+| `marsad-film-final-v6.mp4` | Glass source tiles and chips, as in the 54 s film. |
+| v7 (`Videos/Campaigns/`, 2026-10-12) | The real app's screens on the new front end, the catalogue's lines and sources, the calm rules, effects on the transitions only, motion blur. **Current.** |
 
 Earlier explorations (a dark-glass style pass, four synthesized music samples) are superseded.
 
@@ -677,8 +683,25 @@ square), the catalogue's fixes, 1080p. One video at a time, each delivered when 
   so the mark now slows into its size (`0.86 + 0.14·ez.dec(p)`). The bump was about 2 px on screen, so the delivered
   MP4s were not re-rendered for it: the next build of each film has the fix.
 
-Every video in `Videos/` that was made before the new front end is now on it, except the website-style film, which
-follows.
+- **Website-style campaign film** (`film.html`, 63 s, v7, 2026-10-12): the first film, with its voiceover. Its app
+  window (S6/S7) shows the real pages of `films/app-pages`: Business Pulse empty, the hand on «توليد توصيات», its
+  three recommendations; then Decisions, the decision a monitoring rule raised, «موافقة», the confirm dialog, «تأكيد
+  الموافقة», «تم بنجاح», the card approved and the counts 5 / 1 (it executed PO-2291 with a toast). The assistant (S9)
+  is the brand film's captured thread (it typed an answer that created purchase orders). The catalogue's lines,
+  captions and voice together: "Know. Watch. Decide." and Connect · Unify · Monitor · Decide (not "One workflow. Fully
+  automated."), "Operational recommendations" (not "Real-time"), "Marsad watches. You decide." (not "Decision to
+  action. Nothing in between."), "Built with personal-data masking and an audit trail." over the six live layers (not
+  "Sovereign. PDPL-compliant."), "Book your demo · احجز عرضك التجريبي · marsadnasl.com" (not "Request a demo ·
+  nasl-tech.com"); the sources are the catalogue's (the model's API chip became Odoo: developer API keys are switched
+  off); Western digits («6 طبقات حماية»). The voice lines vo04, vo05, vo07, vo08, vo09, vo10 and vo13 were spoken
+  again (`tools/make_vo.py` now finds Kokoro through `KOKORO_DIR`). The client's later rules, applied: no impact
+  shake, lean, whip, spin or page nudge in the camera; the ignition's M no longer goes 20 % past its size; the orb no
+  longer kicks or breathes; the typing dots no longer bob on the beat; the sound effects are the transitions' only
+  (the ticks, pops, pings, blips, keys, click and chime are gone); motion blur (`build.sh` renders into
+  `frames/film63-web-16x9`: the old one deleted the whole `frames/` folder). QA PASS (shake 0), −14.6 LUFS, −1.2 dBTP,
+  25.0 MB.
+
+Every video in `Videos/` is now on the new front end.
 
 **Front-end findings to tell the client** (seen while capturing):
 - The Home page's hero has a small kicker «طبقة القرار السيادية» ("sovereign decision layer"); the catalogue avoids

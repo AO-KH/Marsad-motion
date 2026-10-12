@@ -2,7 +2,6 @@
 <html>
 <head>
 <meta charset="utf-8">
-<link rel="stylesheet" href="site_kit.css">
 <style>
 @font-face{font-family:'Inter';src:url('fonts/Inter-var.ttf');font-weight:100 900;}
 @font-face{font-family:'JBMono';src:url('fonts/JetBrainsMono-var.ttf');font-weight:100 800;}
@@ -11,7 +10,13 @@
 @font-face{font-family:'PlexAR';src:url('fonts/IBMPlexSansArabic-SemiBold.ttf');font-weight:600;}
 @font-face{font-family:'PlexAR';src:url('fonts/IBMPlexSansArabic-Bold.ttf');font-weight:700;}
 /* ===== MARSAD film — site edition: the web app's light visual language =====
-   Tokens sampled from the product screen recording. Timing identical to film.html. */
+   Tokens sampled from the product screen recording. Timing identical to film.html.
+   2026-10-12 ("apply this to all other videos"): the app window (S6/S7) and the assistant (S9) show the real app's
+   screens, from the client's bilingual front end in dark mode with sample data, labelled (films/app-pages/pages/,
+   films/style-jupiter/pages/), not the site kit's light rebuilds; the feature catalogue's lines and sources ("Know.
+   Watch. Decide.", operational recommendations, "Marsad watches. You decide." ending approved, personal-data masking
+   and an audit trail, "Book your demo" and marsadnasl.com); the client's calm rules (no shake, lean, whip, spin or
+   overshoot; nothing pulses on the beat); sound effects on the transitions only. */
 :root{
   --bg:#FFFFFF; --ink:#1A191E; --body:#52505A; --meta:#6C6A74; --faint:#8A8797; --line:#E5E4E9; --surf:#F8F7FC;
   --p1:#5F0DB4; --p2:#8E32C3; --p3:#BC59D1; --pd:#5909B4; --pl:#F1E9FA;
@@ -77,13 +82,30 @@ canvas{left:0;top:0;}
 .elbl{font-family:'PlexAR';font-size:16px;color:#535255;background:rgba(255,255,255,0.95);border:1px solid #ECEAF2;
   padding:3px 11px;border-radius:9px;white-space:nowrap;direction:rtl;}
 
-/* ---------- S6/S7 the web app window ---------- */
-#uiWrap{left:280px;top:170px;width:1360px;height:760px;}
-#uiFrame{left:0;top:0;width:1360px;height:760px;background:#fff;border:1.5px solid #E2E0E9;border-radius:18px;
+/* ---------- S6/S7 the web app window: the real app's pages (dark mode), whole, and the parts lit over them ---------- */
+#uiWrap{left:280px;top:170px;width:1360px;height:760px;transform-origin:680px 380px;}
+#uiFrame{left:0;top:0;width:1360px;height:760px;background:#0B0A10;border:1.5px solid #E2E0E9;border-radius:18px;
   box-shadow:0 60px 120px rgba(60,30,120,0.16),0 10px 30px rgba(60,30,120,0.06);overflow:hidden;}
-#uiFrame .site{transform:scale(0.717300);}
+#uiFrame .site{left:0;top:0;width:1440px;height:805px;transform-origin:0 0;transform:scale(0.944444);}
+.pg{left:0;top:0;width:1440px;height:805px;display:block;}
+.vstrip{left:0;top:0;width:1440px;height:24px;overflow:hidden;}
+.vstrip img{left:0;top:0;width:1440px;height:805px;display:block;filter:blur(4px) brightness(0.3);}
+#ov{left:0;top:0;width:1440px;height:805px;z-index:3;}
+.part{opacity:0;}
+.part.rimv{box-shadow:inset 0 0 0 1.5px rgba(236,198,244,0.9),0 0 20px rgba(200,109,215,0.6),0 0 46px rgba(95,28,184,0.4);}
+.part.rimg{box-shadow:inset 0 0 0 1.5px rgba(110,231,183,0.9),0 0 20px rgba(52,211,153,0.5),0 0 46px rgba(16,120,80,0.35);}
 #cursor{width:30px;height:44px;}
-.ripple{border-radius:50%;border:2px solid rgba(11,132,71,0.8);}
+.ripple{border-radius:50%;border:2px solid rgba(222,13,255,0.85);}
+/* a soft white band keeps the captions legible when the window pushes in */
+#capBand{left:0;top:890px;width:1920px;height:190px;opacity:0;pointer-events:none;
+  background:linear-gradient(180deg,rgba(255,255,255,0) 0%,rgba(255,255,255,0.90) 34%,rgba(255,255,255,0.97) 100%);}
+/* the sample-data label, at the frame's top left, while the app's screens are up */
+#note{left:56px;top:44px;height:40px;padding:0 18px;border-radius:20px;display:flex;align-items:center;white-space:nowrap;opacity:0;z-index:20;
+  background:rgba(26,16,46,0.78);box-shadow:inset 0 0 0 1px rgba(214,170,255,0.25);}
+#note *{position:static;}
+#note .en{font:500 17px 'Inter';color:rgba(244,241,250,0.82);}
+#note .sep{margin:0 9px;font:500 17px 'Inter';color:rgba(244,241,250,0.35);}
+#note .ar{font:500 17px 'PlexAR';color:rgba(244,241,250,0.76);direction:rtl;}
 
 /* ---------- S8 shield ---------- */
 .ring{border-radius:50%;border:1.6px solid rgba(142,50,195,0.45);box-shadow:0 0 30px rgba(142,50,195,0.08), inset 0 0 30px rgba(142,50,195,0.05);}
@@ -95,50 +117,27 @@ canvas{left:0;top:0;}
 #gridCap{font-family:'JBMono';font-size:12.5px;letter-spacing:0.24em;color:var(--meta);white-space:nowrap;width:640px;text-align:center;}
 #gridCap *{position:static;}
 #gridCap b{color:var(--green);font-weight:600;}
-#gridCap .arc{font-family:'PlexAR';letter-spacing:0;font-size:13.5px;color:var(--meta);}
+#gridCap .arc{font-family:'PlexAR';letter-spacing:0;font-size:13.5px;color:var(--meta);direction:rtl;unicode-bidi:isolate;}
 .shLbl{left:1235px;width:560px;height:44px;display:flex;align-items:center;gap:14px;}
 .shLbl b{position:static;width:9px;height:9px;border-radius:50%;background:linear-gradient(135deg,var(--p1),var(--p3));
   box-shadow:0 0 10px rgba(142,50,195,0.35);flex:0 0 auto;}
 .shLbl .en{position:static;font-family:'JBMono';font-weight:600;font-size:16.5px;letter-spacing:0.18em;color:var(--ink);white-space:nowrap;}
 .shLbl .ar{position:static;font-family:'PlexAR';font-weight:500;font-size:15px;color:var(--meta);direction:rtl;white-space:nowrap;margin-right:6px;}
 
-/* ---------- S9 ask = the site's AI assistant ---------- */
+/* ---------- S9 ask = the app's own assistant: its thread panel (816 x 517 app px) at 1.2, four captured states ---------- */
 #askHead{width:1920px;top:150px;text-align:center;font-family:'PlexAR';font-weight:700;font-size:64px;color:var(--ink);direction:rtl;}
 #askSub{width:1920px;top:246px;text-align:center;font-family:'Inter';font-weight:500;font-size:20px;color:var(--body);}
-#chatPanel{left:470px;top:318px;width:980px;height:600px;background:#fff;border:1.5px solid var(--line);border-radius:26px;
-  box-shadow:0 40px 100px rgba(60,30,120,0.12),0 6px 16px rgba(60,30,120,0.05);}
-#chatHead{left:0;top:0;width:977px;height:80px;border-bottom:1.5px solid var(--line);}
-#chatHead .who{right:30px;top:18px;display:flex;align-items:center;gap:14px;direction:rtl;}
-#chatHead .who *{position:static;}
-#chatHead .bot{width:44px;height:44px;border-radius:14px;background:linear-gradient(140deg,var(--p1),var(--p3));display:flex;align-items:center;justify-content:center;}
-#chatHead .nm{font-family:'PlexAR';font-weight:700;font-size:23px;color:var(--ink);}
-#chatHead .ws{left:30px;top:20px;height:40px;padding:0 16px;border-radius:13px;border:1.5px solid #D6D5DA;display:flex;align-items:center;gap:22px;
-  direction:rtl;font-family:'PlexAR';font-size:16px;color:var(--ink);}
-#chatHead .ws *{position:static;}
-#userMsg{left:36px;top:108px;background:var(--pl);border:1.5px solid #E6D8F6;border-radius:22px 22px 22px 6px;padding:13px 26px;
-  font-family:'PlexAR';font-weight:600;font-size:26px;color:var(--ink);white-space:nowrap;direction:rtl;}
-#ansWrap{right:32px;left:36px;top:196px;height:240px;}
-#ansAv{right:0;top:0;width:48px;height:48px;border-radius:15px;background:linear-gradient(140deg,var(--p1),var(--p3));display:flex;align-items:center;justify-content:center;}
-#ansAv *{position:static;}
-#ansCard{right:64px;left:0;top:0;background:var(--surf);border:1.5px solid var(--line);border-radius:22px 6px 22px 22px;
-  padding:18px 28px 20px;direction:rtl;}
-#ansTxt{position:static;font-family:'PlexAR';font-weight:500;font-size:25px;line-height:1.8;color:var(--ink);}
-#ansTxt .hl{position:static;color:var(--pd);font-weight:700;background:var(--pl);padding:0 6px;border-radius:6px;}
-#ansChip{position:static;display:inline-flex;align-items:center;gap:8px;margin-top:12px;height:36px;border-radius:18px;
-  padding:0 16px;background:#E7F5EE;font-family:'PlexAR';font-weight:500;font-size:16px;color:var(--green);}
-#inputRow{left:0;width:977px;top:486px;height:112px;border-top:1.5px solid var(--line);}
-#askInput{right:32px;left:124px;top:21px;height:70px;border:1.5px solid #CECDD2;border-radius:20px;display:flex;align-items:center;
-  padding:0 26px;direction:rtl;}
-#askPh{right:26px;top:19px;font-family:'PlexAR';font-size:21px;color:var(--faint);white-space:nowrap;}
-#askQ{position:static;font-family:'PlexAR';font-weight:600;font-size:25px;color:var(--ink);white-space:nowrap;}
-#askCaret{position:static;width:3px;height:34px;border-radius:2px;background:var(--p2);margin-right:3px;}
-#sendBtn{left:32px;top:21px;width:74px;height:70px;border-radius:18px;background:#C9A8E6;display:flex;align-items:center;justify-content:center;}
-#sendBtn *{position:static;}
+#askStack{left:471px;top:318px;width:979.2px;height:620.4px;background:#0B0A10;border:1.5px solid #DCC8F2;}
+.aplate{left:0;top:0;width:979.2px;height:620.4px;display:none;}
+.aplate img{left:0;top:0;width:100%;height:100%;display:block;}
+.asub img{left:0;top:0;width:100%;height:100%;display:block;}
+.asub.caret{border-radius:1px;background:#EDE6F7;box-shadow:0 0 8px rgba(188,89,209,0.9);}
+.asub.glowv{border-radius:4px;box-shadow:0 0 0 2px rgba(242,170,255,0.9),0 0 30px 5px rgba(206,64,240,0.5);opacity:0;}
 
 /* ---------- S10 end + wall of the site's pages ---------- */
 #wallWrap{left:0;top:0;width:1920px;height:1080px;display:none;}
 #wall{left:-628px;top:-385px;width:3176px;height:1851px;transform-origin:50% 50%;}
-.wtile{border-radius:14px;border:1.5px solid var(--line);background:#fff;box-shadow:0 22px 50px rgba(60,30,120,0.13);}
+.wtile{border-radius:4px;border:1.5px solid #DCC8F2;background:#0B0A10;box-shadow:0 22px 50px rgba(60,30,120,0.13);}
 #wallVeil{left:0;top:0;width:1920px;height:1080px;
   background:radial-gradient(ellipse 760px 580px at 50% 57%,rgba(255,255,255,0.97) 38%,rgba(255,255,255,0.74) 72%,rgba(255,255,255,0.30) 100%);}
 #endM{left:810px;top:282px;width:300px;}
@@ -180,14 +179,6 @@ canvas{left:0;top:0;}
   background:conic-gradient(from var(--ba,0deg),rgba(188,89,209,0) 0deg,rgba(188,89,209,0) 225deg,rgba(142,50,195,0.85) 300deg,#DE0DFF 332deg,#F3C6FF 344deg,rgba(188,89,209,0) 360deg);
   -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;}
 .beam.soft{padding:7px;filter:blur(9px);opacity:0.95;}
-#uiSite .sk-btn.pri{box-shadow:0 8px 26px rgba(142,50,195,0.45),0 0 48px rgba(188,89,209,0.45);}
-#uiSite .sk-ul{box-shadow:0 0 10px rgba(136,44,191,0.9),0 0 24px rgba(188,89,209,0.6);}
-#uiSite .sk-item.on{box-shadow:inset -3.5px 0 0 #6A12B8,0 0 26px rgba(142,50,195,0.22);}
-#uiSite .sk-pill.new{box-shadow:0 0 16px rgba(188,89,209,0.65);}
-#uiSite .sk-avatar{box-shadow:0 0 18px rgba(142,50,195,0.6);}
-#uiSite .sk-seg span.on{box-shadow:0 0 0 1.5px #E2D2F5 inset,0 0 20px rgba(142,50,195,0.22);}
-#uiSite .sk-card{box-shadow:0 0 28px rgba(142,50,195,0.08);}
-#uiSite .sk-logo img{filter:drop-shadow(0 0 8px rgba(188,89,209,0.7));}
 #cursor{filter:drop-shadow(0 0 8px rgba(142,50,195,0.55));}
 /* shield */
 .ring{border-color:rgba(142,50,195,0.58);box-shadow:0 0 24px rgba(142,50,195,0.26),inset 0 0 24px rgba(142,50,195,0.14);}
@@ -196,12 +187,7 @@ canvas{left:0;top:0;}
 #sweep{background:conic-gradient(from 0deg, rgba(142,50,195,0.24), rgba(142,50,195,0.0) 75deg);}
 .shLbl b{box-shadow:0 0 14px rgba(188,89,209,0.85);}
 /* assistant */
-#chatPanel{border-color:#DCC8F2;box-shadow:0 0 0 1px rgba(142,50,195,0.18),0 0 70px rgba(142,50,195,0.28),0 0 170px rgba(188,89,209,0.22),0 40px 100px rgba(60,30,120,0.08);}
-#chatHead .bot,#ansAv{box-shadow:0 0 20px rgba(188,89,209,0.65);}
-#sendBtn{box-shadow:0 0 26px rgba(188,89,209,0.55);}
-#userMsg{box-shadow:0 0 28px rgba(142,50,195,0.20);}
-#ansTxt .hl{box-shadow:0 0 16px rgba(188,89,209,0.5);}
-#askCaret{box-shadow:0 0 10px rgba(188,89,209,0.95);}
+#askStack{box-shadow:0 0 0 1px rgba(142,50,195,0.18),0 0 70px rgba(142,50,195,0.28),0 0 170px rgba(188,89,209,0.22),0 40px 100px rgba(60,30,120,0.08);}
 /* end card */
 .wtile{box-shadow:0 0 0 1px rgba(142,50,195,0.16),0 0 46px rgba(142,50,195,0.24),0 22px 50px rgba(60,30,120,0.08);}
 #endM{filter:drop-shadow(0 0 24px rgba(188,89,209,0.70)) drop-shadow(0 0 70px rgba(142,50,195,0.45));}
@@ -257,7 +243,6 @@ canvas{left:0;top:0;}
 .chip .gb{left:6%;top:8%;width:88%;height:84%;border-radius:30px;filter:blur(13px);opacity:0.42;}
 .chip .gs{border-radius:16px 16px 40% 40% / 16px 16px 30% 30%;height:50%;}
 </style>
-<script src="site_kit.js"></script>
 </head>
 <body>
 <div id="stage">
@@ -328,10 +313,10 @@ canvas{left:0;top:0;}
   <div id="n2" class="nodeWrap"><div class="nodeDot"></div></div>
   <div id="l2" class="nodeLbl"><span class="en">MONITOR</span><span class="ar">راقب</span></div>
   <div id="n3" class="nodeWrap"><div class="nodeDot"></div></div>
-  <div id="l3" class="nodeLbl"><span class="en">ACT</span><span class="ar">نفّذ</span></div>
+  <div id="l3" class="nodeLbl"><span class="en">DECIDE</span><span class="ar">قرّر</span></div>
   <div class="kick" id="k4" style="top:112px;">HOW IT WORKS · <span class="ar">كيف يعمل</span></div>
-  <div class="copyEN" id="c4en" style="top:842px;">One workflow. Fully automated.</div>
-  <div class="copyAR" id="c4ar" style="top:912px;">سير عمل واحد، مؤتمت بالكامل.</div>
+  <div class="copyEN" id="c4en" style="top:842px;">Know. Watch. Decide.</div>
+  <div class="copyAR" id="c4ar" style="top:912px;">اعرف. راقب. قرّر.</div>
 </div>
 
 <!-- S5 living model (the site's knowledge graph) -->
@@ -344,23 +329,20 @@ canvas{left:0;top:0;}
   <div class="copyAR" id="c5ar" style="top:912px;">كل الأنظمة… نموذج حيّ واحد.</div>
 </div>
 
-<!-- S6/S7 the Marsad web app -->
+<!-- S6/S7 the Marsad web app: the real app's pages (Business Pulse, then Decisions) -->
 <div id="s67">
   <div class="micro" id="uiTag" style="left:280px;top:128px;">MARSAD · WEB APP · BUSINESS PULSE · نبض الأعمال</div>
   <div id="uiWrap">
     <div id="uiFrame"><div class="site" id="uiSite"></div></div>
     <div class="beam soft" id="uiBeamS" style="left:-7px;top:-7px;width:1374px;height:774px;border-radius:25px;"></div><div class="beam" id="uiBeam" style="left:-2px;top:-2px;width:1364px;height:764px;border-radius:20px;"></div>
-    <svg id="vec2" width="1360" height="760" viewBox="0 0 1360 760" style="left:0;top:0;">
-      <defs><linearGradient id="gr2" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#5F0DB4"/><stop offset="100%" stop-color="#BC59D1"/></linearGradient><filter id="glowP2" filterUnits="userSpaceOnUse" x="0" y="0" width="1360" height="760"><feGaussianBlur in="SourceGraphic" stdDeviation="4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
-      <circle id="spin2" filter="url(#glowP2)" cx="680" cy="370" r="26" fill="none" stroke="url(#gr2)" stroke-width="5" stroke-linecap="round" opacity="0"/>
-    </svg>
     <svg id="cursor" viewBox="0 0 28 40"><path d="M2 2 L2 30 L9.5 24 L14 36 L19 34 L14.5 22 L24 22 Z" fill="#FFFFFF" stroke="#1A191E" stroke-width="2.4" stroke-linejoin="round"/></svg>
     <div class="ripple" id="rip"></div>
   </div>
-  <div class="copyEN" id="c6en" style="top:952px;font-size:40px;">Real-time recommendations — from your own numbers.</div>
-  <div class="copyAR" id="c6ar" style="top:1014px;font-size:22px;">توصيات لحظية مبنية على أرقامك — بلا اختلاق.</div>
-  <div class="copyEN" id="c7en" style="top:952px;">Decision to action. Nothing in between.</div>
-  <div class="copyAR" id="c7ar" style="top:1013px;font-size:22px;">من القرار إلى التنفيذ — بلا خطوات بينهما.</div>
+  <div id="capBand"></div>
+  <div class="copyEN" id="c6en" style="top:952px;font-size:40px;">Operational recommendations — from your own numbers.</div>
+  <div class="copyAR" id="c6ar" style="top:1014px;font-size:22px;">توصيات تشغيلية مبنية على أرقامك — بلا اختلاق.</div>
+  <div class="copyEN" id="c7en" style="top:952px;"><span class="cw">Marsad watches.</span> <span class="cw">You decide.</span></div>
+  <div class="copyAR" id="c7ar" style="top:1013px;font-size:22px;"><span class="cw">مرصد يراقب.</span> <span class="cw">وأنت تقرّر.</span></div>
 </div>
 
 <!-- S8 shield -->
@@ -369,31 +351,18 @@ canvas{left:0;top:0;}
   <div id="rings"></div>
   <div id="sents"></div>
   <img id="coreM" src="assets_logo_m.png" style="filter:drop-shadow(0 0 18px rgba(188,89,209,0.75)) drop-shadow(0 0 44px rgba(142,50,195,0.45));">
-  <div id="gridCap"><span>DEFENSE GRID · </span><b>ACTIVE</b><span> · </span><span class="arc">٦ طبقات حماية</span></div>
+  <div id="gridCap"><span>DEFENSE GRID · </span><b>ACTIVE</b><span> · </span><span class="arc">6 طبقات حماية</span></div>
   <div id="shLbls"></div>
-  <div class="copyEN" id="c8en" style="top:906px;font-size:40px;">Defense in depth. Sovereign. PDPL-compliant.</div>
-  <div class="copyAR" id="c8ar" style="top:968px;font-size:23px;">دفاع متعدد الطبقات — بنية سيادية متوافقة مع نظام حماية البيانات الشخصية.</div>
+  <div class="copyEN" id="c8en" style="top:906px;font-size:40px;">Built with personal-data masking and an audit trail.</div>
+  <div class="copyAR" id="c8ar" style="top:968px;font-size:23px;">مبني على إخفاء البيانات الشخصية وسجلّ للتدقيق.</div>
 </div>
 
-<!-- S9 ask = the site's AI assistant -->
+<!-- S9 ask = the app's own assistant: its thread, captured (the question typed, «المساعد يفكّر…», the answer and its sources) -->
 <div id="s9">
   <div id="askHead">اسأل بالعربية.</div>
   <div id="askSub">Ask in Arabic. The answer comes from your original data.</div>
-  <div id="chatPanel">
-    <div class="beam soft" id="chBeamS" style="left:-8.5px;top:-8.5px;width:994px;height:614px;border-radius:33px;"></div><div class="beam" id="chBeam" style="left:-3.5px;top:-3.5px;width:984px;height:604px;border-radius:28px;"></div>
-    <div id="chatHead">
-      <div class="who"><span class="bot" id="botHead"></span><span class="nm">مساعد مرصد الذكي</span></div>
-      <div class="ws" id="wsChip"><span>كل مساحة العمل</span></div>
-    </div>
-    <div id="userMsg">لماذا انخفضت مبيعات الرياض هذا الأسبوع؟</div>
-    <div id="ansWrap">
-      <div id="ansAv"></div>
-      <div id="ansCard"><div id="ansTxt"></div><div id="ansChip">✓&nbsp; مبني على بياناتك الأصلية — بدون اختلاق</div></div>
-    </div>
-    <div id="inputRow">
-      <div id="askInput"><span id="askPh">اسأل مرصد عن أي شيء بخصوص بياناتك...</span><span id="askQ"></span><span id="askCaret"></span></div>
-      <div id="sendBtn"></div>
-    </div>
+  <div id="askStack">
+    <div class="beam soft" id="chBeamS" style="left:-8.5px;top:-8.5px;width:996.2px;height:637.4px;border-radius:6px;"></div><div class="beam" id="chBeam" style="left:-3.5px;top:-3.5px;width:986.2px;height:627.4px;border-radius:2px;"></div>
   </div>
 </div>
 
@@ -403,11 +372,13 @@ canvas{left:0;top:0;}
   <img id="endWord" src="assets_logo_wordmark_white.png">
   <div id="endTag">One operational nervous system.</div>
   <div id="endTagAR">جهاز عصبي تشغيلي واحد لشركتك.</div>
-  <div id="endCTA"><span id="ctaPill"><span>Request a demo</span><span style="position:static;color:rgba(255,255,255,0.55);">·</span><span class="ar">اطلب عرضاً</span><span style="position:static;color:rgba(255,255,255,0.55);">·</span><span class="web">nasl-tech.com</span></span></div>
+  <div id="endCTA"><span id="ctaPill"><span>Book your demo</span><span style="position:static;color:rgba(255,255,255,0.55);">·</span><span class="ar">احجز عرضك التجريبي</span><span style="position:static;color:rgba(255,255,255,0.55);">·</span><span class="web">marsadnasl.com</span></span></div>
   <div id="endFoot">NASL TECHNOLOGIES · RIYADH</div>
 </div>
 
 </div><!-- /cam -->
+<!-- the app's screens show sample data: labelled while they are up (S6/S7, S9) -->
+<div id="note"><span class="en">Sample data</span><span class="sep">·</span><span class="ar">بيانات تجريبية</span></div>
 <div id="swp"><i id="swA"></i><i id="swB"></i></div>
 <svg width="0" height="0" style="position:absolute;left:0;top:0;"><filter id="mblur" x="-8%" y="-8%" width="116%" height="116%" color-interpolation-filters="sRGB"><feGaussianBlur id="mbG" stdDeviation="0 0"/></filter></svg>
 <div id="flash"></div>
@@ -488,45 +459,55 @@ for(const tt of tileHome){
 }
 const tileEls=[...tilesDiv.children],tile3Els=[...tiles3Div.children];
 
-/* the Marsad web app window (S6/S7), assembled from the site kit */
-const uiSite=$('uiSite');
-uiSite.innerHTML=SK.chrome('pulse')+SK.sidebar('dec',0,'skSideDec')+SK.pulseContent()+SK.decContent();
-const tabEls67=[...uiSite.querySelectorAll('.sk-tab')];
-const tabPulse=uiSite.querySelector('.sk-tab[data-k="pulse"]'),tabDec=uiSite.querySelector('.sk-tab[data-k="dec"]');
-const ulEl=$('skUL');
-const UL_P=[1655.5-62.5,125],UL_D=[1402.5-39.5,79];
-const sideDec=$('skSideDec');
-const sideItems=[...sideDec.querySelectorAll('.sk-item')];
-const recEls=[...$('recRows').children];
-const statEls=[...$('stats').children];          // left→right: حرجة, مرفوضة, موافق عليها, قيد المراجعة
-const segEls=[...$('segTabs').children];
-const K_UI=0.7173;                                // .site natural 1896px → 1360px window
-function offsetIn(el,root){let x=0,y=0;while(el&&el!==root){x+=el.offsetLeft;y+=el.offsetTop;el=el.offsetParent;}return [x,y];}
-/* approve-button centre in #uiWrap coords, accounting for the card's forward lift */
-function btnTarget(lift){
-  const b=$('btnOK'),c=$('decCard');
-  const [bx,by]=offsetIn(b,uiSite),[cx,cy]=offsetIn(c,uiSite);
-  const bc=[bx+b.offsetWidth/2,by+b.offsetHeight/2],cc=[cx+c.offsetWidth/2,cy+c.offsetHeight/2];
-  return [(cc[0]+(bc[0]-cc[0])*lift)*K_UI,(cc[1]+(bc[1]-cc[1])*lift)*K_UI];
-}
-/* S9 assistant icons */
-$('botHead').innerHTML=SK.ic('bot',24,'#fff',2);
-$('ansAv').innerHTML=SK.ic('bot',26,'#fff',2);
-$('wsChip').insertAdjacentHTML('beforeend',SK.ic('chevDown',18,'#52505A',2));
-$('sendBtn').innerHTML=SK.ic('send',30,'#fff',2);
+/* the Marsad web app window (S6/S7): the real app's pages, captured whole (films/app-pages/pages/, `node tools/app_shot.js
+   app-pages`): the client's bilingual front end in dark mode (its Arabic interface, the MARSAD × Fusion look) with
+   sample data. A page fills the 1360 x 760 window; natural coordinates are the page's CSS px (1440 x 805) */
+const KW=1360/1440, AP='films/app-pages/pages/', uiSite=$('uiSite');
+const PLATES=['pulse-empty','pulse','decisions','confirm','done','after'];
+uiSite.innerHTML=PLATES.map(k=>`<img class="pg" id="pg-${k}" src="${AP}${k}.png">`).join('')+'<div id="ov"></div>';
+const PG=Object.fromEntries(PLATES.map(k=>[k,$('pg-'+k)])), ov=$('ov');
+// the app's dialogs veil the page from 24 px down (their backdrop sits in a transformed column), leaving the header's
+// top strip bright, its avatar and its bell's badge: veiled here as the backdrop means it (bg-black/70, backdrop-blur-sm)
+const VS={};
+for(const k of ['confirm','done']){const d=document.createElement('div');d.className='vstrip';
+  d.innerHTML=`<img src="${AP}${k}.png">`;PG[k].after(d);VS[k]=d;}
+// the parts' boxes on their pages, in CSS px (films/app-pages/pages/shots.json)
+const APB={'pulse-empty':{btn:{x:208,y:234,w:153.9,h:48}},pulse:{r1:{x:208,y:530,w:1024,h:100}},
+  decisions:{card:{x:32,y:476,w:1120,h:206},approve:{x:53,y:497,w:106.7,h:38}},
+  confirm:{ok:{x:521,y:506.5,w:153.1,h:44}},after:{card:{x:32,y:476,w:1120,h:206}}};
+const pad=(b,d)=>({x:b.x-d,y:b.y-d,w:b.w+2*d,h:b.h+2*d}), ctr=b=>[b.x+b.w/2,b.y+b.h*0.6];
+function part(b,cls){const d=document.createElement('div');d.className='part '+cls;
+  st(d,{left:b.x+'px',top:b.y+'px',width:b.w+'px',height:b.h+'px'});ov.appendChild(d);return d;}
+const genRim=part(pad(APB['pulse-empty'].btn,3),'rimv'), recRim=part(pad(APB.pulse.r1,3),'rimv'),
+  cardRim=part(pad(APB.decisions.card,3),'rimv'), okRim=part(pad(APB.after.card,3),'rimg');
+const C_GEN=ctr(APB['pulse-empty'].btn), C_OK=ctr(APB.decisions.approve), C_CONF=ctr(APB.confirm.ok);
 
-/* S10 wall of the site's pages */
-const WALL_PAGES=['pulse','home','decisions','knowledgeMap','assistant','objectTypes','links','search','projects','admin'];
+/* S9: the app's own assistant page (films/style-jupiter/pages/chat-*: the brand film's captures), its thread panel in
+   four states. The typing uncovers the captured typed field letter by letter, right to left, over the focused empty one;
+   then «المساعد يفكّر…»; then the answer with «المصادر» (the app answers in one piece; it explains the drop and creates
+   nothing). Boxes in the page's CSS px (films/style-jupiter/pages/shots.json) */
+const JP='films/style-jupiter/pages/', AK=1.2, TH=[32,250,816,517];
+const APL=['chat-thread','chat-space-thread','chat-thinking-thread','chat-answer-thread'].map(f=>{
+  const d=document.createElement('div');d.className='aplate';d.innerHTML=`<img src="${JP}${f}.png">`;$('askStack').appendChild(d);return d;});
+function asub(pl,file,[x,y,w,h],cls){const d=document.createElement('div');d.className='asub'+(cls?' '+cls:'');
+  st(d,{left:((x-TH[0])*AK).toFixed(1)+'px',top:((y-TH[1])*AK).toFixed(1)+'px',width:(w*AK).toFixed(1)+'px',height:(h*AK).toFixed(1)+'px'});
+  if(file)d.innerHTML=`<img src="${JP}${file}.png">`;pl.appendChild(d);return d;}
+const FB=[117,695,706,48], TX0=462, TX1=688, QN=39;   // the field; the typed question's span in it; «لماذا انخفضت مبيعات الرياض هذا الأسبوع؟»
+const aTyped=asub(APL[1],'chat-typed-field',FB), aSendOn=asub(APL[1],'chat-typed-send',[57,702,48,48]),
+  aCaret=asub(APL[1],null,[FB[0],FB[1]+14,1.4,20],'caret'), aSrc=asub(APL[3],null,[209.5,403.3,556.5,73],'glowv');
+
+/* S10 wall of the app's pages (films/app-pages/pages/) */
+const WALL_PAGES=['pulse','home','decisions','map','assistant','schema','search','monitors','projects','after'];
 {const wall=$('wall');const TW=600,TH=335,GAP=44,COLS=5,ROWS=5;
  for(let r=0;r<ROWS;r++)for(let c=0;c<COLS;c++){
    const img=document.createElement('img');img.className='wtile';
-   img.src='site_pages/'+WALL_PAGES[(r*COLS+c+r*3)%WALL_PAGES.length]+'.png';
+   img.src=AP+WALL_PAGES[(r*COLS+c+r*3)%WALL_PAGES.length]+'.png';
    st(img,{left:c*(TW+GAP)+'px',top:r*(TH+GAP)+'px',width:TW+'px',height:TH+'px'});wall.appendChild(img);}}
 
 /* S5 source chips + the site's knowledge graph (object types from the live ontology) */
-const CHIPS=[['CSV',150,318,700,395],['XLSX',120,742,652,690],['PDF',1690,300,1210,390],['API',1712,760,1235,672]];
+const CHIPS=[['CSV',150,318,700,395],['XLSX',120,742,652,690],['PDF',1690,300,1210,390],['ODOO',1712,760,1235,672]];
 const chipsDiv=$('chips');
-const CHIP_COL={CSV:'#12A594',XLSX:'#2EA36B',PDF:'#E5484D',API:'#8E32C3'};
+const CHIP_COL={CSV:'#12A594',XLSX:'#2EA36B',PDF:'#E5484D',ODOO:'#714B67'};
 CHIPS.forEach(c=>{const d=document.createElement('div');d.className='chip';const col=CHIP_COL[c[0]];
  d.innerHTML=GLASS(col)+`<b style="background:linear-gradient(160deg,${col},${shade(col)});"></b><span>${c[0]}</span>`;chipsDiv.appendChild(d);});
 const chipEls=[...chipsDiv.children];
@@ -561,8 +542,8 @@ const spokeEls=GN.map(n=>{
 
 spokeEls.forEach(l=>$('spokesG').appendChild(l));
 /* S8 rings + labels */
-const SH=[['ACCESS CONTROLS','التحكم بالوصول'],['DATA PROTECTION','حماية البيانات'],['NETWORK SECURITY','أمن الشبكة'],
- ['APPLICATION SECURITY','أمن التطبيقات'],['MONITORING & AUDIT','المراقبة والتدقيق'],['SOVEREIGN INFRASTRUCTURE','بنية تحتية سيادية']];
+const SH=[['EACH COMPANY WALLED OFF','بيانات كل شركة معزولة'],['PERSONAL-DATA MASKING','إخفاء البيانات الشخصية'],   // live features only
+ ['ROLES & PERMISSIONS','الأدوار والصلاحيات'],['INVITE-ONLY ACCESS','الدخول بدعوة فقط'],['WORKSPACES PER BRANCH','مساحة عمل لكل فرع'],['AUDIT LOG','سجل التدقيق']];
 const ringsDiv=$('rings'),shDiv=$('shLbls');
 const CX8=700,CY8=517;
 const ringEls=SH.map((s,i)=>{const r=86+i*44;const d=document.createElement('div');
@@ -581,13 +562,6 @@ for(let i=0;i<SH.length;i++){for(let k=0;k<2;k++){
 const shEls=SH.map((s,i)=>{const d=document.createElement('div');d.className='shLbl';
  d.style.top=(300+i*62)+'px';
  d.innerHTML=`<b></b><span class="en">${s[0]}</span><span class="ar">${s[1]}</span>`;shDiv.appendChild(d);return d;});
-
-/* S9 texts */
-const Q_AR='لماذا انخفضت مبيعات الرياض هذا الأسبوع؟';
-const ANS_PRE='انخفضت المبيعات ';
-const ANS_HL='٨٫٢٪';
-const ANS_POST=' بسبب نفاد المخزون في ثلاثة فروع — تم إنشاء طلبات التوريد تلقائيًا.';
-const ANS_WORDS=(ANS_PRE.trim()+' § '+ANS_POST.trim()).split(' ');
 
 /* ================= canvases ================= */
 const bg=$('bg').getContext('2d');
@@ -644,14 +618,12 @@ const sinceBeat=(t,mod=1,off=0)=>{const k=kOf(t);return t-vbeat(off+mod*Math.flo
 const TR=[
   {t:vbeat(1),  type:'slide',  dir:-1, a:0.45, b:0.42, amp:110, blur:8},          // S1→S2   intro beat
   {t:vbeat(9),  type:'through',       a:0.46, b:0.50, amp:0.20, blur:6},          // S2→S3   zoom through the orb
-  {t:vbeat(12), type:'punch',         d:0.55, amp:0.065},                         // ignition downbeat (harder)
+  {t:vbeat(12), type:'punch',  d:0.80, amp:0.015, at:0.25},                       // ignition downbeat: a soft swell, no shake
   {t:vbeat(12), type:'anticipate', a:1.0, amp:0.03},                              // push in toward the orb before the hit
-  {t:vbeat(12), type:'charge', t0:9.95, amp:0.03, rot:-1.2},                      // lean in while the sources are pulled in
-  {t:vbeat(12), type:'shake', d:0.6, amp:0.9, f:11},                                // impact shake (degrees)
+  {t:vbeat(12), type:'charge', t0:9.95, amp:0.03, rot:0},                         // push in while the sources are pulled in, no lean
   {t:vbeat(16), type:'pullback', t0:vbeat(14.5), amp:0.10},                              // S3→S4   pull back with the ring, land on the downbeat
-  {t:vbeat(26), type:'whip',   dir:-1, a:0.30, b:0.34, amp:240, blur:14, sweep:1},// S4→S5
-  {t:vbeat(37), type:'spin',          a:0.50, b:0.55, amp:0.14, rot:7, blur:5},   // S5→S6   contraction into the app
-  {t:vbeat(48), type:'nudge',  dir:-1, a:0.22, b:0.26, amp:60,  blur:6, sweep:1}, // page switch (downbeat)
+  {t:vbeat(26), type:'slide',  dir:-1, a:0.45, b:0.42, amp:110, blur:8, sweep:1}, // S4→S5   (was a whip)
+  {t:vbeat(37), type:'through',       a:0.50, b:0.55, amp:0.14, blur:5},          // S5→S6   through the model into the app (was a spin)
   {t:vbeat(59), type:'out',           a:0.45, b:0.70, amp:0.13, blur:6},          // S7→S8   zoom out into the shield
   {t:vbeat(70), type:'rise',   dir:-1, a:0.60, b:0.50, amp:150, blur:11, sweep:1},// S8→S9
   {t:vbeat(81), type:'reveal',        a:0.45, b:1.00, amp:0.22, blur:7, sweep:1}, // S9→S10  the drop
@@ -683,13 +655,6 @@ function camState(t){
     if(e.sweep){const q=P(t,e.t-0.32,e.t+0.32);if(q>0&&q<1)sw.push({q,dir:e.type==='rise'?'v':'h'});}
   }
   return {x,y,s,r,bx,by,sw};
-}
-/* kick-locked pulse for the background glow: every beat in the grooves, downbeats stronger; silent in intro + breakdown */
-function beatPulse(t){
-  const inGroove=(t>=vbeat(8)&&t<vbeat(72))||(t>=vbeat(81)&&t<60.2);
-  if(!inGroove)return 0;
-  const k=Math.floor((t-MK8)/MB)+8, b=vbeat(k), age=t-b;
-  return Math.exp(-age/0.17)*(k%4===0?1:0.55);
 }
 function camera(t){
   const c=CAM, cam=$('cam');
@@ -733,12 +698,11 @@ function ignition(t){
   SPK.forEach(s=>{const p=P(t,IGN+0.02,IGN+0.02+s.life);if(p<=0||p>=1){s.el.setAttribute('opacity',0);return;}
     const d=95+s.v*ez.outC(p);s.el.setAttribute('cx',960+Math.cos(s.a)*d);s.el.setAttribute('cy',540+Math.sin(s.a)*d+30*p*p);
     s.el.setAttribute('r',(s.r*(1-0.5*p)).toFixed(2));s.el.setAttribute('opacity',(0.9*(1-p)**1.2).toFixed(3));});
-  // ---- the M: scale-in with overshoot, then a slow push that never stops
+  // ---- the M: a soft scale-in on the downbeat, slowing into its size (never past it: no overshoot), then a slow push
   const m=$('orbM');let sc,op,bl=0;
   if(t<IGN-0.08){sc=0.35;op=0;}
-  else if(t<IGN+0.14){const q=P(t,IGN-0.08,IGN+0.14);sc=0.35+0.85*ez.outC(q);op=Math.min(1,q*2.2);bl=5*(1-q);}
-  else if(t<IGN+0.55){sc=1.20-0.20*ez.ioC(P(t,IGN+0.14,IGN+0.55));op=1;}
-  else if(t<T.s3[1]){sc=1.0+0.07*ez.sin(P(t,IGN+0.55,T.s3[1]));op=1;}
+  else if(t<IGN+0.6){const q=P(t,IGN-0.08,IGN+0.6);sc=0.35+0.65*ez.dec(q);op=Math.min(1,q*2.6);bl=5*Math.max(0,1-2*q);}
+  else if(t<T.s3[1]){sc=1.0+0.07*ez.sin(P(t,IGN+0.6,T.s3[1]));op=1;}
   else {const q=ez.prem(P(t,T.s4[0],T.s4[0]+0.8));sc=1.07+0.06*q;op=1-q;}
   const g=18+26*Math.exp(-Math.max(0,t-IGN)/0.28)*(t>=IGN?1:0);
   const tf=`translate(-50%,-52%) scale(${(sc*IGN_K).toFixed(4)})`;
@@ -783,14 +747,14 @@ function scene2(t){
   st($('qBubble'),{opacity:pB,transform:`translateY(${(1-pB)*16}px) scale(${0.96+0.04*pB})`});
   const pT=ez.dec(P(t,tT,tT+0.4));
   st($('typing'),{opacity:pT});
-  // typing dots: one wave per beat
-  const kb=kOf(t);
+  // typing dots: they light in turn at their own pace (not the beat's), without bobbing
   [...$('typing').children].forEach((d,i)=>{
-    const ph=(((kb-i*0.25)%1)+1)%1;
+    const ph=(((t*1.25-i*0.22)%1)+1)%1;
     const k=Math.max(0,Math.sin(ph*Math.PI));
-    st(d,{opacity:0.35+0.65*k,transform:`translateY(${-k*7}px)`});
+    st(d,{opacity:(0.35+0.65*k).toFixed(3)});
   });
-  // the wait counter steps on every beat
+  // the wait counter steps on every beat (one value a frame: motion blur would stack two)
+  const kb=kOf(Math.round(t*30)/30);
   const ticks=t>=vbeat(3)?Math.floor(kb-3)+1:0;
   $('waitRow').textContent='WAITING · 00:'+(47+ticks);
   st($('waitRow'),{opacity:pT});
@@ -822,8 +786,7 @@ const NS_SVG='http://www.w3.org/2000/svg', TRL=[], STK=[];
  for(let i=0;i<30;i++){const l=document.createElementNS(NS_SVG,'line');l.setAttribute('stroke-linecap','round');
    l.setAttribute('stroke',['#BC59D1','#DE0DFF','#8E32C3'][i%3]);s.appendChild(l);
    STK.push({el:l,s:CH0+0.02+(IGN-0.45-CH0-0.02)*Math.pow(i/29,0.8)+R()*0.04,a:R()*Math.PI*2,R0:560+R()*420,len:0.6+R()*0.6,w:1.3+R()*1.5});}}
-const absorbed=t=>ABS.reduce((n,ta)=>n+(t>=ta?Math.min(1.08,ez.outC(P(t,ta,ta+0.2))*1.08-0.08*P(t,ta+0.2,ta+0.36)):0),0);
-const absKick=t=>ABS.reduce((a,ta)=>a+(t>=ta?Math.exp(-(t-ta)/0.11):0),0);
+const absorbed=t=>ABS.reduce((n,ta)=>n+(t>=ta?ez.outC(P(t,ta,ta+0.25)):0),0);
 /* flight of the returning tiles (replaces the old one-by-one ease-in, which kept them off-screen most of the time) */
 function chargeTiles(t){
   FL.forEach((f,j)=>{const e=tile3Els[f.ti],segs=TRL[j];
@@ -850,10 +813,10 @@ function charge(t){
     s.el.setAttribute('x2',(960+c*(r+L)*1.3).toFixed(1));s.el.setAttribute('y2',(540+sn*(r+L)*0.8).toFixed(1));
     s.el.setAttribute('stroke-width',(s.w*(1-0.4*u)).toFixed(2));s.el.setAttribute('opacity',(0.62*Math.pow(Math.sin(Math.PI*u),0.8)).toFixed(3));});
   // ---- charge ring: fills a step on every absorb, spins faster toward the hit, then blasts outward with the shockwave
-  const n=absorbed(t),kk=absKick(t),D=Math.max(0,t-9.85),ang=1.4*D+1.6*Math.pow(D,2.2);
+  const n=absorbed(t),D=Math.max(0,t-9.85),ang=1.4*D+1.6*Math.pow(D,2.2);
   const rin=ez.outC(P(t,9.62,10.1)),blast=P(t,IGN,IGN+0.34),bo=Math.pow(1-blast,1.5)*(t<IGN+0.34?1:0);
   const A=$('chgA'),B=$('chgB');
-  const ra=(104+5*Math.min(kk,1.5))*(1+2.3*ez.outC(blast)),rb=(134+3*Math.min(kk,1.5))*(1+1.9*ez.outC(blast));
+  const ra=104*(1+2.3*ez.outC(blast)),rb=134*(1+1.9*ez.outC(blast));
   const ca=2*Math.PI*ra,cb=2*Math.PI*rb,f=clamp(0.07+0.93*n/8,0,1);
   A.setAttribute('r',ra.toFixed(2));A.setAttribute('stroke-dasharray',`${(ca*f).toFixed(1)} ${(ca*(1-f)+0.01).toFixed(1)}`);
   A.setAttribute('stroke-dashoffset',(-(ang/(2*Math.PI))*ca).toFixed(1));A.setAttribute('stroke-width',(3.2*(1-blast)+0.6).toFixed(2));
@@ -867,9 +830,9 @@ function charge(t){
   slot.forEach((ev,i)=>{const c=$('rip'+i);if(!ev){c.setAttribute('opacity',0);return;}
     const q=P(t,ev[0],ev[0]+0.45);c.setAttribute('r',(ev[1]+(ev[2]-ev[1])*ez.outC(q)).toFixed(1));
     c.setAttribute('stroke-width',(ev[3]*(1-q)+0.4).toFixed(2));c.setAttribute('opacity',(ev[4]*Math.pow(1-q,1.4)).toFixed(3));});
-  // ---- orb core: grows with every absorb, kicks on each one, trembles as it nears the hit, then settles behind the M
+  // ---- orb core: grows with every source it takes in, bursts on the hit, then settles behind the M
   let s;
-  if(t<IGN){s=(0.34+0.075*n)*(1+0.12*Math.min(kk,1.6));}
+  if(t<IGN){s=0.34+0.075*n;}
   else if(t<T.s3[1]){s=lerp(0.94,0.58,ez.outC(P(t,IGN,IGN+0.6)))*(1+0.45*Math.exp(-(t-IGN)/0.15));}
   else {s=0.58*(1-0.8*ez.prem(P(t,T.s4[0],T.s4[0]+0.8)));}
   $('orb').style.transform=`scale(${s.toFixed(4)})`;
@@ -983,115 +946,66 @@ function scene5(t){
   if(con>0){st($('c5en'),{opacity:1-con});st($('c5ar'),{opacity:1-con});}
 }
 
+/* the window: which page it shows over time [time, page, cross-fade]; a page switch is slow, a change in the page quick */
+const SEQ=[[T.s6[0],'pulse-empty',0],[vbeat(39.25),'pulse',0.35],[T.s7[0],'decisions',0.55],[vbeat(53.25),'confirm',0.2],
+  [vbeat(55.25),'done',0.15],[vbeat(56.75),'after',0.3]];
+function pageAt(t){let i=0;for(let j=0;j<SEQ.length;j++)if(t>=SEQ[j][0])i=j;
+  return {cur:SEQ[i][1],prev:i?SEQ[i-1][1]:null,sw:i?ez.ioC(P(t,SEQ[i][0],SEQ[i][0]+SEQ[i][2])):1};}
+/* focus: the window pushes in on what matters (page point, extra zoom), gliding 1.1 s or more between keys */
+const FOC=[[37,720,402,0],[40,720,402,0],[41.75,720,560,0.1],[45.5,720,560,0.1],[47.5,720,402,0],[49.5,720,402,0],
+  [51.25,600,560,0.1],[53.25,600,560,0.1],[55,720,414,0.1],[56.25,720,414,0.1],[58,600,560,0.1]].map(r=>[vbeat(r[0]),r[1],r[2],r[3]]);
+function focusAt(t){
+  if(t<=FOC[0][0])return FOC[0].slice(1);
+  for(let i=0;i<FOC.length-1;i++){const a=FOC[i],b=FOC[i+1];
+    if(t<b[0]){const q=ez.ioC(P(t,a[0],b[0]));return [lerp(a[1],b[1],q),lerp(a[2],b[2],q),lerp(a[3],b[3],q)];}}
+  return FOC[FOC.length-1].slice(1);}
 function sceneUI(t){
-  const on=t>=T.s6[0]-0.01&&t<T.s7[1]+0.02; showS($('s67'),on);
-  if(!on){$('spin2').setAttribute('opacity',0);return;}
-  const a=T.s6[0], b=T.s7[0];
+  const on=t>=T.s6[0]-0.01&&t<T.s7[1]+0.02; showS($('s67'),on); if(!on)return;
+  const b=T.s7[0];
   {const ba=((kOf(t)/8*360)%360)+'deg';$('uiBeam').style.setProperty('--ba',ba);$('uiBeamS').style.setProperty('--ba',ba);}   // one lap per two bars
-  // spinner lands from the S5 contraction: the app is loading
-  const spin=$('spin2');
-  if(t<a+1.35){
-    const p=ez.prem(P(t,a-0.1,a+0.25));
-    const die=ez.prem(P(t,a+1.0,a+1.35));
-    const circ=2*Math.PI*26;
-    spin.setAttribute('stroke-dasharray',`${circ*0.3} ${circ*0.7}`);
-    spin.setAttribute('stroke-dashoffset',-t*260);
-    spin.setAttribute('opacity',p*(1-die));
-  } else spin.setAttribute('opacity',0);
-  // window arrives on the spin beat
-  const pF=ez.dec(P(t,vbeat(37),vbeat(37)+0.65));
-  st($('uiWrap'),{opacity:pF,transform:`translateY(${(1-pF)*34}px) scale(${0.975+0.025*pF})`});
+  // the window arrives with the zoom through the model, pushes in on what matters, and leaves into the shield
+  const pF=ez.dec(P(t,vbeat(37),vbeat(37)+0.65)), pX=t>T.s7[1]-0.5?ez.inC(P(t,T.s7[1]-0.5,T.s7[1])):0;
+  const [fx,fy,z]=focusAt(t), s2=(0.975+0.025*pF)*(1+z)*(1-0.03*pX), px=fx*KW, py=fy*KW, c=0.45*Math.min(1,z/0.3);
+  const Cx=px+(680-px)*c, Cy=py+(380-py)*c, tx=Cx-(680+(px-680)*s2), ty=Cy-(380+(py-380)*s2)+(1-pF)*34;
+  st($('uiWrap'),{opacity:(pF*(1-pX)).toFixed(3),transform:`translate(${tx.toFixed(2)}px,${ty.toFixed(2)}px) scale(${s2.toFixed(4)})`});
+  st($('capBand'),{opacity:(Math.min(1,z/0.06)*(1-pX)).toFixed(3)});
   const pTag=ez.dec(P(t,vbeat(38),vbeat(38)+0.45));
-  st($('uiTag'),{opacity:pTag*0.9});
+  st($('uiTag'),{opacity:(pTag*0.9*(1-Math.min(1,z/0.05))*(1-pX)).toFixed(3)});
   $('uiTag').textContent=(t<b)?'MARSAD · WEB APP · BUSINESS PULSE · نبض الأعمال':'MARSAD · WEB APP · DECISIONS · القرارات';
-  // tab row staggers in with the app shell (right to left, reading order)
-  tabEls67.forEach((e,i)=>{const p=ez.dec(P(t,vbeat(37.75)+i*0.045,vbeat(37.75)+0.35+i*0.045));
-    st(e,{opacity:p,transform:`translateY(${(1-p)*8}px)`});});
-  // active-tab underline travels نبض الأعمال → القرارات on the page switch
-  const sw=ez.prem(P(t,b,b+0.35));
-  const ulIn=ez.dec(P(t,vbeat(38.25),vbeat(38.25)+0.35));
-  st(ulEl,{left:lerp(UL_P[0],UL_D[0],sw)+'px',width:lerp(UL_P[1],UL_D[1],sw)+'px',opacity:ulIn});
-  tabPulse.classList.toggle('on',sw<0.5); tabDec.classList.toggle('on',sw>=0.5);
-  const inS7=t>=b;
-  if(!inS7){
-    /* ---- نبض الأعمال ---- */
-    show($('pgPulse'),true);show($('pgDec'),false);st($('pgPulse'),{opacity:1});
-    st(sideDec,{opacity:0});
-    st($('cursor'),{opacity:0});show($('rip'),false);
-    const pH=ez.dec(P(t,vbeat(39),vbeat(39)+0.6));
-    st($('pulseHead'),{opacity:pH,transform:`translateY(${(1-pH)*18}px)`});
-    const pBt=ez.emph(P(t,vbeat(39.5),vbeat(39.5)+0.5));
-    st($('genBtn'),{opacity:pBt,transform:`scale(${0.92+0.08*pBt})`});
-    const pAd=ez.dec(P(t,vbeat(39.75),vbeat(39.75)+0.5));
-    st($('advCard'),{opacity:pAd,transform:`translateY(${(1-pAd)*22}px)`});
-    recEls.forEach((e,i)=>{const p=ez.dec(P(t,vbeat(40)+i*S16,vbeat(40)+0.6+i*S16));
-      st(e,{opacity:p,transform:`translateY(${(1-p)*22}px)`});});
-    enter($('c6en'),t,vbeat(40.5),0.6); enter($('c6ar'),t,vbeat(41),0.6);
-  } else {
-    /* ---- القرارات ---- */
-    st($('c6en'),{opacity:1-sw});st($('c6ar'),{opacity:1-sw});
-    show($('pgPulse'),sw<0.6);show($('pgDec'),sw>0.35);
-    if(sw<0.6)st($('pgPulse'),{opacity:1-sw/0.6});
-    st($('pgDec'),{opacity:sw});
-    // the decisions page has a section sidebar; slide it in
-    const pS=ez.dec(P(t,b+0.05,b+0.45));
-    st(sideDec,{opacity:pS,transform:`translateX(${(1-pS)*40}px)`});
-    sideItems.forEach((e,i)=>{const p=ez.dec(P(t,b+0.15+i*0.045,b+0.5+i*0.045));
-      st(e,{opacity:p,transform:`translateX(${(1-p)*14}px)`});});
-    const pH=ez.dec(P(t,vbeat(48),vbeat(48)+0.5));
-    st($('decHead'),{opacity:pH,transform:`translateY(${(1-pH)*14}px)`});
-    st($('decBtns'),{opacity:pH});
-    statEls.forEach((e,i)=>{const k=3-i;const p=ez.emph(P(t,vbeat(48.5)+k*S16,vbeat(48.5)+0.45+k*S16));
-      st(e,{opacity:p,transform:`scale(${0.9+0.1*p}) translateY(${(1-p)*10}px)`});});
-    const pSg=ez.dec(P(t,vbeat(49.5),vbeat(49.5)+0.35));
-    st($('segTabs'),{opacity:pSg,transform:`translateY(${(1-pSg)*10}px)`});
-    // list lands, then the top decision lifts forward on beat 4
-    const pL=ez.dec(P(t,vbeat(50),vbeat(50)+0.5));
-    const fw=ez.dec(P(t,vbeat(51),vbeat(51)+0.6));
-    const back=ez.prem(P(t,vbeat(56.5),vbeat(57.25)));          // focus releases once the action is done
-    st($('veil'),{opacity:fw*(1-back)});
-    const toast=ez.emph(P(t,vbeat(56),vbeat(56)+0.45));
-    const lift=1+0.035*fw;
-    st($('decCard'),{opacity:pL*(1-ez.prem(P(t,vbeat(55.25),vbeat(55.75)))),
-      transform:`translateY(${(1-pL)*22}px) scale(${lift})`,
-      boxShadow:`0 ${4+fw*36}px ${10+fw*70}px rgba(60,30,120,${0.04+fw*0.12}), 0 0 ${fw*70}px rgba(142,50,195,${fw*0.42}), 0 0 0 ${fw*1.5}px rgba(142,50,195,${fw*0.35})`});
-    show($('decCard'),t<vbeat(55.75)+0.05);
-    st($('dec2'),{opacity:pL,transform:`translateY(${(1-pL)*30}px)`});
-    show($('toast'),toast>0.01);
-    st($('toast'),{opacity:toast,transform:`scale(${(0.94+0.06*toast)*(1+0.035*(1-back))})`,
-      boxShadow:`0 ${4+(1-back)*36}px ${10+(1-back)*70}px rgba(11,132,71,${0.05+(1-back)*0.12})`});
-    // approve button: hover a 16th before the beat, press on beat 4
-    const press=t>=vbeat(55)&&t<vbeat(55.25);
-    const cf=P(t,vbeat(55),vbeat(55)+0.3), cfl=(t>=vbeat(55)&&cf<1)?1-cf:0;
-    st($('btnOK'),{transform:press?'scale(0.96)':'scale(1)',background:t>=vbeat(54.75)?'#CFEEDD':'#E7F5EE',
-      boxShadow:cfl>0?`0 0 0 ${(5*cfl).toFixed(1)}px rgba(11,132,71,${(0.45*cfl).toFixed(2)}), 0 0 ${(28*cfl).toFixed(0)}px rgba(11,132,71,${(0.5*cfl).toFixed(2)})`:''});
-    // counts update with the toast on the downbeat
-    const upd=t>=vbeat(56), pop=ez.emph(P(t,vbeat(56),vbeat(56)+0.4));
-    statEls[3].querySelector('.n').textContent=upd?'5':'6';
-    statEls[2].querySelector('.n').textContent=upd?'1':'0';
-    [statEls[2],statEls[3]].forEach(e=>{e.querySelector('.n').style.transform=`scale(${upd?1+0.28*(1-pop):1})`;});
-    segEls[1].textContent=upd?'قيد المراجعة (5)':'قيد المراجعة (6)';
-    segEls[2].textContent=upd?'موافق عليها (1)':'موافق عليها (0)';
-    // cursor path in #uiWrap coords: from bottom-right into the موافقة button
-    const cp=ez.prem(P(t,vbeat(52),vbeat(54.75)));
-    const tgt=btnTarget(lift);
-    const sx2=1240,sy2=800,ex2=tgt[0]-3,ey2=tgt[1]-4;
-    const cxp=(sx2+ex2)/2+90,cyp=(sy2+ey2)/2+120;
-    const cx=(1-cp)*(1-cp)*sx2+2*(1-cp)*cp*cxp+cp*cp*ex2;
-    const cy=(1-cp)*(1-cp)*sy2+2*(1-cp)*cp*cyp+cp*cp*ey2;
-    st($('cursor'),{left:cx+'px',top:cy+'px',opacity:(cp>0?1:0)*(1-ez.prem(P(t,vbeat(56),vbeat(56.5))))});
-    // click ripple centred on the button under the cursor tip
-    const rp=P(t,vbeat(55),vbeat(55)+0.5);
-    if(rp>0&&rp<1){const rr=(0.28+0.72*ez.outC(rp))*90;
-      st($('rip'),{left:(tgt[0]-rr)+'px',top:(tgt[1]-rr)+'px',width:2*rr+'px',height:2*rr+'px',
-        opacity:(1-rp)*0.9,borderWidth:(2.5-rp*1.5)+'px'});show($('rip'),true);}
-    else show($('rip'),false);
-    enter($('c7en'),t,vbeat(56.5),0.55);enter($('c7ar'),t,vbeat(57),0.55);
-    // exit
-    if(t>T.s7[1]-0.5){const p=ez.inC(P(t,T.s7[1]-0.5,T.s7[1]));
-      st($('uiWrap'),{opacity:1-p,transform:`scale(${1-p*0.03})`});
-      st($('uiTag'),{opacity:(1-p)*0.9});st($('c7en'),{opacity:1-p});st($('c7ar'),{opacity:1-p});}
-  }
+  // the pages: the new one fades in over the one before (each page opaque, so nothing shows through)
+  const {cur,prev,sw}=pageAt(t), vis={};
+  for(const k in PG){const o=k===cur?sw:(k===prev?1:0);vis[k]=k===cur?sw:(k===prev?1-sw:0);show(PG[k],o>0.001);PG[k].style.opacity=o.toFixed(3);
+    PG[k].style.zIndex=k===cur?2:1;
+    if(VS[k]){show(VS[k],o>0.001);st(VS[k],{opacity:o.toFixed(3),zIndex:PG[k].style.zIndex});}}
+  const V=k=>vis[k]||0;
+  // ---- Business Pulse: «توليد توصيات» (k39), then its recommendations, the first lit
+  genRim.style.opacity=(ez.dec(P(t,vbeat(38.4),vbeat(38.4)+0.4))*(1-ez.inC(P(t,vbeat(39.25),vbeat(39.6))))*V('pulse-empty')).toFixed(3);
+  recRim.style.opacity=(ez.dec(P(t,vbeat(42),vbeat(42)+0.6))*(1-ez.ioC(P(t,vbeat(45),vbeat(46))))*V('pulse')).toFixed(3);
+  enter($('c6en'),t,vbeat(40.5),0.6); enter($('c6ar'),t,vbeat(41),0.6);
+  if(t>=b){st($('c6en'),{opacity:1-sw});st($('c6ar'),{opacity:1-sw});}
+  // ---- Decisions: the decision a monitoring rule raised lights; «موافقة» (k53), the confirm dialog, «تأكيد الموافقة»
+  //      (k55), «تم بنجاح», then the card approved and the counts 5 / 1 (the app holds «تم بنجاح» for 2 s, here 1)
+  cardRim.style.opacity=(ez.dec(P(t,vbeat(51),vbeat(51)+0.6))*(1-ez.ioC(P(t,vbeat(52.4),vbeat(53))))*V('decisions')).toFixed(3);
+  okRim.style.opacity=(ez.dec(P(t,vbeat(57),vbeat(57)+0.6))*(1-0.5*ez.ioC(P(t,vbeat(58),vbeat(59))))*V('after')).toFixed(3);
+  // ---- the hand: «توليد توصيات» (k39), «موافقة» (k53), «تأكيد الموافقة» (k55); it comes in from the lower right
+  {const S0=[1250/KW,700/KW], m0=ez.prem(P(t,vbeat(38),vbeat(38.9))), m1=ez.prem(P(t,vbeat(51.6),vbeat(52.85))), m2=ez.prem(P(t,vbeat(53.5),vbeat(54.85)));
+   let x,y;
+   if(t<vbeat(45)){x=lerp(S0[0],C_GEN[0],m0)+Math.sin(Math.PI*m0)*50;y=lerp(S0[1],C_GEN[1],m0)+Math.sin(Math.PI*m0)*60;}
+   else {x=lerp(S0[0],C_OK[0],m1)+Math.sin(Math.PI*m1)*50;y=lerp(S0[1],C_OK[1],m1)+Math.sin(Math.PI*m1)*60;
+     x=lerp(x,C_CONF[0],m2);y=lerp(y,C_CONF[1],m2);}
+   const v0=t<vbeat(45)?ez.dec(P(t,vbeat(38),vbeat(38)+0.3))*(1-ez.inC(P(t,vbeat(39.5),vbeat(40)))):0;
+   const v1=t>=vbeat(45)?ez.dec(P(t,vbeat(51.6),vbeat(51.6)+0.3))*(1-ez.inC(P(t,vbeat(55.4),vbeat(55.9)))):0;
+   st($('cursor'),{left:(x*KW-3).toFixed(1)+'px',top:(y*KW-4).toFixed(1)+'px',opacity:Math.max(v0,v1).toFixed(3)});
+   const ck=t<vbeat(46)?vbeat(39):t<vbeat(54)?vbeat(53):vbeat(55), tg=t<vbeat(46)?C_GEN:t<vbeat(54)?C_OK:C_CONF, rp=P(t,ck,ck+0.5);
+   if(rp>0&&rp<1){const rr=(0.28+0.72*ez.outC(rp))*90;
+     st($('rip'),{left:(tg[0]*KW-rr).toFixed(1)+'px',top:(tg[1]*KW-rr).toFixed(1)+'px',width:2*rr+'px',height:2*rr+'px',
+       opacity:((1-rp)*0.9).toFixed(3),borderWidth:(2.5-rp*1.5).toFixed(2)+'px'});show($('rip'),true);}
+   else show($('rip'),false);}
+  // ---- "Marsad watches." over the decision it raised, "You decide." on the approval
+  const c7=(id,t1,t2,dy)=>{const e=$(id),[w1,w2]=e.children,p1=ez.dec(P(t,t1,t1+0.6)),p2=ez.dec(P(t,t2,t2+0.6));
+    st(e,{opacity:t>=t1-0.02?(1-pX).toFixed(3):0});
+    st(w1,{opacity:p1.toFixed(3),transform:`translateY(${((1-p1)*dy).toFixed(1)}px)`});st(w2,{opacity:p2.toFixed(3),transform:`translateY(${((1-p2)*dy).toFixed(1)}px)`});};
+  c7('c7en',vbeat(50.5),vbeat(55.5),24);c7('c7ar',vbeat(51),vbeat(56),18);
 }
 
 function scene8(t){
@@ -1125,43 +1039,36 @@ function scene8(t){
     const p=ez.dec(P(t,t0,t0+0.36));
     st(e,{opacity:p*(1-die),transform:`translateX(${(1-p)*22}px)`});
   });
-  enter($('c8en'),t,vbeat(66.5),0.6);enter($('c8ar'),t,vbeat(67),0.6);
+  enter($('c8en'),t,vbeat(62.5),0.6);enter($('c8ar'),t,vbeat(63),0.6);            // with the voice's first phrase
   if(die>0){st($('c8en'),{opacity:1-die});st($('c8ar'),{opacity:1-die});}
 }
 
-function arSub(s,n){return s.slice(0,n);}
 function scene9(t){
   const on=t>=T.s9[0]-0.01&&t<T.s9[1]+0.02; showS($('s9'),on); if(!on)return;
   {const ba=((kOf(t)/8*360+140)%360)+'deg';$('chBeam').style.setProperty('--ba',ba);$('chBeamS').style.setProperty('--ba',ba);}
   enter($('askHead'),t,vbeat(70),0.7,26);
   enter($('askSub'),t,vbeat(70.5),0.7,20);
-  const pC=enter($('chatPanel'),t,vbeat(71),0.6,26);
-  $('chatPanel').style.transform+=` scale(${0.985+0.015*pC})`;
-  // typing into the assistant's input: one key per 32nd note from the breakdown downbeat, two characters a key
-  const sent=t>=vbeat(74.75);
-  const keys=t>=vbeat(72)?Math.floor((t-vbeat(72))/(MB/8))+1:0;
-  const nCh=sent?0:clamp(keys*2,0,Q_AR.length);
-  $('askQ').textContent=arSub(Q_AR,nCh);
-  $('askPh').style.opacity=nCh>0?0:1;
-  $('askCaret').style.opacity=(t>=vbeat(71.5)&&!sent&&(((kOf(t)%1)+1)%1)<0.5)?1:0;   // caret blinks on the beat
-  // send: disabled lavender → active gradient while there is text → press on the 3+
-  const press=t>=vbeat(74.5)&&t<vbeat(74.75);
-  st($('sendBtn'),{background:nCh>0?'linear-gradient(90deg,#5F0DB4,#BC59D1)':'#C9A8E6',transform:press?'scale(0.92)':'scale(1)'});
-  // the question posts as the user's message
-  const pU=ez.dec(P(t,vbeat(74.75),vbeat(74.75)+0.35));
-  st($('userMsg'),{opacity:pU,transform:`translateY(${(1-pU)*16}px) scale(${0.98+0.02*pU})`});
-  // answer streams one word per 16th
-  const pA=ez.dec(P(t,vbeat(75.5),vbeat(75.5)+0.5));
-  st($('ansWrap'),{opacity:pA,transform:`translateY(${(1-pA)*20}px)`});
-  const nW=t>=vbeat(75.75)?clamp(Math.floor((t-vbeat(75.75))/S16)+1,0,ANS_WORDS.length):0;
-  let html='';
-  for(let i=0;i<nW;i++){const w=ANS_WORDS[i];
-    html+= (w==='§'?`<span class="hl">${ANS_HL}</span>`:w)+' ';}
-  $('ansTxt').innerHTML=html;
-  st($('ansChip'),{opacity:ez.dec(P(t,vbeat(79.5),vbeat(79.5)+0.5))});
+  const pC=enter($('askStack'),t,vbeat(71),0.6,26);
+  $('askStack').style.transform+=` scale(${0.985+0.015*pC})`;
+  // the question typed into the app's field, two letters a 32nd from k72 (one step a frame at most), sent on k74.75;
+  // «المساعد يفكّر…» (k75); the answer (k76.25), its sources lit (k77.5)
+  const tq=Math.round(t*30)/30, n=tq<vbeat(72)?0:Math.min(QN,(Math.floor((tq-vbeat(72))/(MB/8))+1)*2);
+  const k=t>=vbeat(76.25)?3:t>=vbeat(75)?2:t>=vbeat(71.5)?1:0;
+  APL.forEach((e,i)=>e.style.display=i===k?'block':'none');
+  const xr=TX1-(TX1-TX0)*n/QN;
+  aTyped.style.clipPath=`inset(0 0 0 ${(xr*AK).toFixed(1)}px)`;aTyped.style.opacity=n>0?1:0;
+  st(aCaret,{left:((FB[0]-TH[0]+xr-1.8)*AK).toFixed(1)+'px',opacity:t<vbeat(74.75)?1:0});
+  st(aSendOn,{opacity:n>0?1:0,transform:`scale(${(1-0.08*Math.sin(Math.PI*P(t,vbeat(74.75)-0.05,vbeat(74.75)+0.2))).toFixed(3)})`});
+  aSrc.style.opacity=(ez.dec(P(t,vbeat(77.5),vbeat(77.5)+0.4))*(1-0.4*ez.ioC(P(t,vbeat(78.5),vbeat(79.5))))).toFixed(3);
   const die=ez.inC(P(t,T.s9[1]-0.5,T.s9[1]));
-  if(die>0)st($('s9'),{opacity:1-die}); else st($('s9'),{opacity:1});
+  st($('s9'),{opacity:1-die});
 }
+
+/* the sample-data label: while the app's screens are up (S6/S7, S9) */
+function sampleNote(t){
+  const a=ez.dec(P(t,vbeat(37.5),vbeat(37.5)+0.5))*(1-ez.inC(P(t,T.s7[1]-0.5,T.s7[1])));
+  const b=ez.dec(P(t,vbeat(71),vbeat(71)+0.5))*(1-ez.inC(P(t,T.s9[1]-0.5,T.s9[1])));
+  $('note').style.opacity=Math.max(a,b).toFixed(3);}
 
 function scene10(t){
   const on=t>=T.s10[0]-0.01; showS($('s10'),on); showS($('wallWrap'),on); if(!on)return;
@@ -1194,7 +1101,7 @@ function orb(t){
     const base=0.30+0.16*ez.prem(P(t,a,a+1.6));
     const pop=ez.emph(P(t,a+2.0,a+2.5));
     const settle=1+0.26*pop;
-    s=base*settle*(1+0.03*Math.sin(t*3));op=0.95;
+    s=base*settle;op=0.95;
     mop=ez.emph(P(t,a+2.15,a+2.75));ms=0.95+0.18*pop;
   } else if(t<T.s4[0]+0.9){ // dissolve into ring
     const p=ez.prem(P(t,T.s4[0],T.s4[0]+0.8));
@@ -1219,9 +1126,7 @@ function orb(t){
 /* flash pulses */
 function flash(t){
   let f=0;
-  const pulse=(t0,amp,dur)=>{const p=P(t,t0,t0+dur);if(p>0&&p<1)f=Math.max(f,amp*Math.sin(p*Math.PI));};
   {const q=t-IGN;if(q>-0.035&&q<1.2)f=Math.max(f,0.42*(q<0?(q+0.035)/0.035:Math.exp(-q/0.22)));}   // ignition, on the downbeat
-  pulse(vbeat(56)-0.05,0.18,0.4); // toast (soft, greenish handled by scene)
   {const q=t-vbeat(81);if(q>-0.035&&q<2.5)f=Math.max(f,0.6*(q<0?(q+0.035)/0.035:Math.exp(-q/0.45)));}   // logo bloom, on the drop
   $('flash').style.opacity=f;
 }
@@ -1231,7 +1136,7 @@ window.SEEK=function(t){
   t=clamp(t,0,window.DURATION);
   CAM=camState(t);
   drawBG(t);
-  scene1(t);scene2(t);scene3(t);scene4(t);scene5(t);sceneUI(t);scene8(t);scene9(t);scene10(t);
+  scene1(t);scene2(t);scene3(t);scene4(t);scene5(t);sceneUI(t);scene8(t);scene9(t);scene10(t);sampleNote(t);
   orb(t);flash(t);
   ignition(t);charge(t);
   camera(t);
