@@ -32,8 +32,10 @@ const KPI_V=4812450;
 function fmt(n){return Math.round(n).toLocaleString('en-US');}
 
 /* ================= B: scattered sources ================= */
-const FILES=['invoices_q3.xlsx','branch_returns.csv','po_2291.pdf','suppliers_2025.xlsx'];
-const FILE_COL={xlsx:'#2EA36B',csv:'#12A594',pdf:'#E5484D'};
+// the sources Marsad takes in (TILES: the feature catalogue's) and the files of the Projects page they land in
+const FILES=['invoices_q3.xlsx','sales_by_branch_q3.csv','ملخص مبيعات الربع الثالث.pdf','طلبات واتساب — سبتمبر'];
+const FILE_COL={xlsx:'#2EA36B',csv:'#12A594',pdf:'#E5484D',wa:'#25D366'};
+const fcol=f=>FILE_COL[/\.(xlsx|csv|pdf)$/.test(f)?f.split('.').pop():'wa'];
 const ITEMS=[...TILES.map(n=>({kind:'tile',n})),...FILES.map(f=>({kind:'file',f}))];
 const HOME=[[330,250],[1590,215],[640,470],[1330,470],[250,640],[1690,610],[905,190],[1085,660],
             [540,130],[1260,120],[330,450],[1560,760]];
@@ -41,33 +43,45 @@ const FILE_ICON='<svg width="22" height="22" viewBox="0 0 24 24" fill="none" str
 {const R=mulberry(54),box=$('items');
  ITEMS.forEach((it,i)=>{const d=document.createElement('div');
    if(it.kind==='tile'){d.className='tile';d.innerHTML=tileHTML(it.n);it.w=112;it.h=112;}
-   else {d.className='fchip';d.innerHTML=GLASS(FILE_COL[it.f.split('.').pop()])+FILE_ICON+`<span>${it.f}</span>`;it.w=0;it.h=58;}
+   else {d.className='fchip';d.innerHTML=GLASS(fcol(it.f))+FILE_ICON+`<span dir="auto">${it.f}</span>`;it.w=0;it.h=58;}
    box.appendChild(d);it.el=d;it.home=HOME[i];it.ro=(R()-0.5)*16;it.ph=R()*6.3;});
  ITEMS.forEach(it=>{if(it.kind==='file')it.w=it.el.offsetWidth||250;});}
 const BURST0=vbeat(8), ABSORB_ORDER=[0,1,2,3,4,5,6,7,8,9,10,11];    // first out, first in: every item rests before it glides
 const ABS_T=ABSORB_ORDER.map((ix,j)=>vbeat(13)+j*S16);                 // one per 16th, k13 → k15.75
 
-/* ================= the app window (C–G) ================= */
-const K=0.7173, uiWrap=$('uiWrap'), uiSite=$('uiSite');
-const strip=(key,html)=>html.replace(SK.chrome(key),'');
-uiSite.innerHTML=
-  `<div class="pg" id="pgProj">${strip('proj',SK.PAGES.projects())}</div>`+
-  `<div class="pg" id="pgAI">${strip('ai',SK.PAGES.assistant())}</div>`+
-  `<div class="pg" id="pgPulse">${strip('pulse',SK.PAGES.pulse())}</div>`+
-  `<div class="pg" id="pgDec">${strip('dec',SK.PAGES.decisions())}</div>`+
-  `<div class="pg" id="skChrome">${SK.chrome('proj')}</div>`;
-const PG={proj:$('pgProj'),ai:$('pgAI'),pulse:$('pgPulse'),dec:$('pgDec')};
-const TABPOS={};SK.TABS.forEach(([k,l,cx,w])=>TABPOS[k]=[cx-w/2,w]);
-const tabEls=[...$('skChrome').querySelectorAll('.sk-tab')], ulEl=$('skUL'), badge=$('skChrome').querySelector('.sk-badge');
-const SWITCH=[[vbeat(16)-0.25,'proj','ai'],[vbeat(24)-0.25,'ai','pulse'],[vbeat(32)-0.25,'pulse','dec']];
-function offsetIn(el,root){let x=0,y=0;while(el&&el!==root){x+=el.offsetLeft;y+=el.offsetTop;el=el.offsetParent;}return [x,y];}
-function centerIn(el){const [x,y]=offsetIn(el,uiSite);return [x+el.offsetWidth/2,y+el.offsetHeight/2];}   // natural coords
+/* ================= the app window (C–G): the real app's pages ================= */
+// The client's front end in dark mode (its Arabic interface, the MARSAD × Fusion look) with sample data, captured whole by
+// tools/app_shot.js (films/app-pages/pages/: 1440 x 805 CSS px; APB, from its shots.json, holds the boxes of the parts
+// animated here). A page fills the 1360 x 760 window; natural coordinates are the page's CSS px.
+const K=1360/1440, uiWrap=$('uiWrap'), uiSite=$('uiSite'), AP='films/app-pages/pages/';
+const PLATES=['projects-base','ask','ask-space','ask-thinking','ask-answer','monitors','decisions','confirm','done','after','passport'];
+uiSite.innerHTML=PLATES.map(k=>`<img class="pg" id="pg-${k}" src="${AP}${k}.png">`).join('')+'<div id="ov"></div>';
+const PG=Object.fromEntries(PLATES.map(k=>[k,$('pg-'+k)])), ov=$('ov');
+// the app's dialogs veil the page from 24 px down (their backdrop sits in a transformed column), leaving the header's top
+// strip bright, its avatar and its bell's badge: veiled here as the backdrop means it (bg-black/70, backdrop-blur-sm)
+const VS={};
+for(const k of ['confirm','done','passport']){const d=document.createElement('div');d.className='vstrip';
+  d.innerHTML=`<img src="${AP}${k}.png">`;PG[k].after(d);VS[k]=d;}
+const bx=(st0,n)=>APB[st0][n], pad=(b,d)=>({x:b.x-d,y:b.y-d,w:b.w+2*d,h:b.h+2*d});
+function part(b,cls,file){const d=document.createElement('div');d.className='part '+(cls||'');
+  st(d,{left:b.x+'px',top:b.y+'px',width:b.w+'px',height:b.h+'px'});
+  if(file)d.innerHTML=`<img src="${AP}${file}.png">`;ov.appendChild(d);return d;}
+// what the window shows over time: [time, page, crossfade]; a page switch is slow, a change in the page quick
+const SEQ=[[0,'projects-base',0],[vbeat(16)-0.25,'ask',0.55],[vbeat(16.75),'ask-space',0.12],[vbeat(19.75),'ask-thinking',0.15],
+  [vbeat(20.5),'ask-answer',0.25],[vbeat(24)-0.25,'monitors',0.55],[vbeat(32)-0.25,'decisions',0.55],[vbeat(37.25),'confirm',0.2],
+  [vbeat(40.25),'done',0.15],[vbeat(43.5),'after',0.25],[vbeat(44.75),'passport',0.3]];
+function pageAt(t){let i=0;for(let j=0;j<SEQ.length;j++)if(t>=SEQ[j][0])i=j;
+  return {cur:SEQ[i][1],prev:i?SEQ[i-1][1]:null,sw:i?ez.ioC(P(t,SEQ[i][0],SEQ[i][0]+SEQ[i][2])):1};}
+function centerIn(el){let x=0,y=0,n=el;while(n&&n!==uiSite){x+=n.offsetLeft;y+=n.offsetTop;n=n.offsetParent;}
+  return [x+el.offsetWidth/2,y+el.offsetHeight/2];}                       // natural coords
 let UIW={s:1,tx:0,ty:0,a:0,gone:0};
-/* focus track: the window pushes in on what matters (natural-space point, extra zoom), smooth between keys */
-const FOCUS=[[16.8,948,530,0],[18.2,600,930,0.22],[19.6,600,930,0.22],   // the question being typed
-  [21.0,515,700,0.18],[23.0,515,700,0.18],                                  // one glide up to the answer and its proof
-  [24.6,948,530,0],[27.4,948,530,0],[29.0,560,300,0.2],[30.8,560,300,0.2],  // Business Pulse, then the alert
-  [32.4,948,530,0],[34.0,948,640,0.06],[39.8,948,640,0.06],[40.8,948,530,0],[42.2,780,600,0.26],[46.8,780,600,0.26],[48.2,948,530,0]]
+/* focus track: the window pushes in on what matters (natural-space point, extra zoom), smooth between keys; every
+   glide takes 1 s or more (1.6 beats and up: the client's calm pace), and goes straight from one subject to the next */
+const FOCUS=[[16.8,720,402,0],[18.4,470,700,0.22],[19.6,470,700,0.22],           // the question being typed
+  [21.2,490,430,0.18],[23.0,490,430,0.18],                                         // the answer and its sources
+  [25.6,600,410,0.12],[27.0,600,410,0.12],[28.6,300,170,0.22],[31.0,300,170,0.22],   // the rules, then the alert
+  [34.0,600,580,0.1],[36.9,600,580,0.1],[38.5,720,414,0.12],[42.6,720,414,0.12],     // the card, the dialogs
+  [44.2,600,580,0.1],[46.2,720,260,0.18],[48.2,720,402,0]]                           // approved; the passport
   .map(r=>[vbeat(r[0]),r[1],r[2],r[3]]);
 function focusAt(t){
   if(t<=FOCUS[0][0])return FOCUS[0].slice(1);
@@ -86,100 +100,34 @@ function uiwState(t){
 }
 function natToStage(nx,ny){const lx=nx*K,ly=ny*K;return [960+(lx-680)*UIW.s+UIW.tx,530+(ly-380)*UIW.s+UIW.ty];}
 
-/* projects: file rows land one by one, sources flash the cards they feed */
-const projCards=[...PG.proj.querySelectorAll('.sk-card')];              // [sections, projects, files]
-const fileRows=[...projCards[2].children].filter(d=>/\.(xlsx|csv|pdf)/.test(d.textContent));
-const fileCount=[...projCards[2].querySelectorAll('span')].find(s=>s.textContent.trim()==='(12)');
-const projItems=[...projCards[1].children].filter(d=>/فواتير|مرتجعات|عقود/.test(d.textContent));
-const secItems=[...projCards[0].children].filter(d=>/المبيعات|المخزون/.test(d.textContent));
-const TARGETS=ITEMS.map((it,i)=>{
-  if(it.kind==='file')return fileRows[i-8];
-  return [projItems[0],projItems[1],projItems[2],secItems[0],secItems[1],projItems[0],projItems[1],projItems[2]][i];});
+/* projects: the files' rows land as their chips do (the page captured without them, then each row); the other sources
+   light the departments and projects they feed */
+const FROWS=['f1','f2','f3','f4'].map(k=>part(bx('projects',k),'',`projects-${k}`));
+const TGL=['d1','p1','p2','p3','d2','d3','p1','p2'].map(k=>part(bx('projects',k),'land'));
+const TARGETS=ITEMS.map((it,i)=>it.kind==='file'?FROWS[i-8]:TGL[i]);
 
-/* assistant: typed question, answer with sources, proof table */
-const aiCard=PG.ai.querySelector('.sk-main .sk-card');
-const aiKids=[...aiCard.children], aiEmpty=aiKids.slice(0,4), aiInRow=aiKids[4];
-const aiInput=aiInRow.querySelector('.sk-input'), aiSend=aiInRow.children[1];
-aiInput.innerHTML='<span id="aiPh">اسأل مرصد عن أي شيء بخصوص بياناتك...</span><span id="aiQ"></span><span id="aiCaret"></span>';
-const Q_AI='من أين جاء رقم مبيعات الربع الثالث؟';
-const ANS_AI=['الرقم','مجموع','§','من','Odoo','للربع','الثالث.'];
-PG.ai.insertAdjacentHTML('beforeend',`
-  <div class="abs" id="aiUser">${Q_AI}</div>
-  <div class="abs" id="aiAv">${SK.ic('bot',28,'#fff',2)}</div>
-  <div class="abs" id="aiAns"><div id="aiTxt"></div><div id="aiChips">
-    <span class="pchip file">${FILE_ICON.replace('22','18').replace('22','18')}<span>invoices_q3.xlsx</span></span>
-    <span class="pchip src">Odoo · ١٬٢٤٧ فاتورة</span>
-    <span class="pchip ok">${SK.ic('check',16,'#0B8447',2.6)}<span>مطابق لتقارير الفروع</span></span></div></div>
-  <div class="abs" id="aiProof">
-    <div class="abs prow h" style="top:0;"><span class="id">INVOICE</span><span class="nm">العميل</span><span class="am">AMOUNT · المبلغ</span></div>
-    <div class="abs prow" style="top:44px;"><span class="id">INV-10482</span><span class="nm">مؤسسة الريان التجارية</span><span class="am">١٢٬٤٥٠ ر.س</span></div>
-    <div class="abs prow" style="top:92px;"><span class="id">INV-10477</span><span class="nm">متاجر الواحة</span><span class="am">٨٬٩٢٠ ر.س</span></div>
-    <div class="abs prow" style="top:140px;"><span class="id">+1,245</span><span class="nm">فاتورة أخرى — الربع الثالث</span><span class="am">…</span></div>
-    <div class="abs prow tot" style="top:188px;"><span class="id">Σ 1,247</span><span class="nm">المجموع</span><span class="am">٤٬٨١٢٬٤٥٠ ر.س ✓</span></div>
-  </div>`);
-const aiChips=[...$('aiChips').children], proofRows=[...$('aiProof').children];
-// the answer's words are laid out once and fade in one by one (no reflow as words arrive)
-$('aiTxt').innerHTML=ANS_AI.map(w=>`<span class="aw">${w==='§'?'<span class="hl">١٬٢٤٧ فاتورة</span>':w}</span>`).join(' ');
-const ansWords=[...$('aiTxt').querySelectorAll('.aw')];
+/* the assistant: the question typed into the app's field (its captured typed field uncovered right to left), sent; it
+   thinks; the answer, its sources lit (the app answers in one piece) */
+const KQN=35, AF=bx('ask-typed','field'), TX0=621, TX1=806;   // «من أين جاء رقم مبيعات الربع الثالث؟»; its span in the field
+const aTyped=part(AF,'',`ask-typed-field`), aSend=part(bx('ask-typed','send'),'',`ask-typed-send`);
+const aCaret=part({x:AF.x,y:AF.y+14,w:1.4,h:20},'caret'), aSrc=part(pad(bx('ask-answer','sources'),6),'glowv');
 
-/* business pulse: the daily advisor switches on, new findings, an alert */
-const togEl=PG.pulse.querySelector('.sk-toggle');
-togEl.innerHTML='<svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke-width="1.8"><rect id="togR" x="2" y="7" width="20" height="10" rx="5" stroke="#535257" fill="#F3F3F3"/><circle id="togK" cx="7.5" cy="12" r="2.8" fill="#535257"/></svg><span id="togT">مُعطّل</span>';
-const newPills=[...PG.pulse.querySelectorAll('.sk-pill.new')];
-PG.pulse.insertAdjacentHTML('beforeend',`<div class="abs" id="scan"></div>
-  <div class="abs" id="alertCard"><span class="dot"></span><span class="t">تنبيه: انخفاض مخزون فرع الرياض ١٨٪</span>
-    <span class="m">${SK.pill('hi','مرتفع')}${SK.pill('src','المخزون · Odoo')}<span class="sk-meta">الآن</span></span>
-    <svg width="130" height="76" viewBox="0 0 130 76"><polyline points="4,16 26,20 46,14 66,30 86,34 104,56 126,62" fill="none" stroke="#A8131C" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="126" cy="62" r="5" fill="#A8131C"/></svg></div>`);
+/* the monitoring rules: the rule that watches the Riyadh branch's stock lights; then its alert comes into the bell */
+const ruleRim=part(bx('monitors','rule'),'rimv'), BB=bx('monitors','bellbtn'), POP=bx('monitors-bell','pop');
+const bellGlow=part(pad(BB,14),'bglow'), pop=part(POP,'pop','monitors-bell-pop');
+pop.style.transformOrigin=`${BB.x+BB.w/2-POP.x}px ${BB.y+BB.h/2-POP.y}px`;
 
-/* decisions: both sides with evidence, then the sealed record */
-const decMain=$('pgDecS'), decCardEl=$('decCard'), veilEl=$('veil');
-$('toast').style.display='none';
-const EV=(f)=>`<span class="ev">${FILE_ICON.replace('22','15').replace('22','15')}<span>${f}</span></span>`;
-const CHECK_C='<svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#0B8447" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m8.3 12.3 2.5 2.5 5-5.3"/></svg>';
-const ALERT_C='<svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#AA3C07" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><path d="M12 9v4M12 17h.01"/></svg>';
-const FOR_R=[['الطلب على المنتج ارتفع ١٢٪','sales_q3.xlsx'],['مهلة المورد ٥ أيام فقط','suppliers_2025.xlsx'],['٤٢ طلب عميل معلّق','Odoo · orders']];
-const AGN_R=[['سيولة مجمّدة ٣٢٠ ألف ر.س','finance_q3.xlsx'],['مرتجعات الفرع ٦٪','branch_returns.csv']];
-decMain.insertAdjacentHTML('beforeend',`
- <div class="abs" id="bsPanel">
-  <div class="abs ttl">انخفاض مخزون فرع الرياض — يُنصح بإعادة التوريد اليوم</div>
-  <div class="abs pills">${SK.pill('hi','مرتفع')}${SK.pill('src','المخزون · Odoo')}</div>
-  <div class="abs bsCol" id="bsFor" style="left:726px;"><div class="abs hd" style="color:#0B8447;">${CHECK_C}<span>مع</span><small>FOR</small></div>
-    ${FOR_R.map((r,i)=>`<div class="abs bsRow" style="top:${62+i*66}px;"><span class="tx">${r[0]}</span>${EV(r[1])}</div>`).join('')}</div>
-  <div class="abs" id="bsDiv"></div>
-  <div class="abs bsCol" id="bsAgn" style="left:36px;"><div class="abs hd" style="color:#AA3C07;">${ALERT_C}<span>ضد</span><small>AGAINST</small></div>
-    ${AGN_R.map((r,i)=>`<div class="abs bsRow" style="top:${62+i*66}px;"><span class="tx">${r[0]}</span>${EV(r[1])}</div>`).join('')}</div>
-  <div class="abs" id="bsRec"><span class="rt">التوصية: إعادة توريد جزئي ٦٠٪</span>
-    <span class="cf"><span class="bar"><b id="cfBar"></b></span><span class="cfv" id="cfV">ثقة ٠٪</span></span>
-    <span id="bsBtns"><span id="bsOK">${SK.ic('check',22,'#0B8447',2.6)}<span>موافقة</span></span><span id="bsEdit">${SK.ic('sliders',20,'#1A191E',2)}<span>تعديل</span></span></span></div>
- </div>
- <div class="abs" id="sealRec"><span class="t">قرار #D-1042 · إعادة توريد جزئي ٦٠٪ لفرع الرياض</span>
-  <span class="m">${SK.pill('ok',SK.ic('check',15,'#0B8447',2.6)+'معتمد')}${SK.pill('src','بواسطة: م. العتيبي')}<span class="sk-meta">الآن</span></span>
-  <span id="sealHash"></span><span id="sealTime">٢٥ سبتمبر ٢٠٢٦ · ١٠:٣٤ ص · سجل التدقيق</span>
-  <svg id="sealLock" width="52" height="60" viewBox="0 0 26 30" fill="none" stroke="#5909B4" stroke-width="2.4" stroke-linecap="round"><path id="lockSh" d="M7 13V9a6 6 0 0 1 12 0v4"/><rect x="3" y="13" width="20" height="15" rx="3" fill="#F1E9FA"/><circle cx="13" cy="20.5" r="2" fill="#5909B4" stroke="none"/></svg>
-  <span id="sealImm">${SK.pill('cat','غير قابل للتعديل · IMMUTABLE')}</span>
-  <span id="sealEdit">${SK.ic('sliders',18,'#6C6A74',2)}<span>تعديل</span></span>
-  <span id="sealTip">${SK.ic('x',18,'#A8131C',2.6)}<span>لا يقبل التعديل · READ-ONLY</span></span>
- </div>
- <svg class="abs" id="stamp" viewBox="0 0 220 220">
-  <defs><path id="stampArc" d="M110,110 m-78,0 a78,78 0 1,1 156,0 a78,78 0 1,1 -156,0"/></defs>
-  <defs><radialGradient id="stGl" cx="38%" cy="28%" r="80%"><stop offset="0" stop-color="#fff" stop-opacity="0.88"/><stop offset="0.6" stop-color="#fff" stop-opacity="0.42"/><stop offset="1" stop-color="#EBDDF8" stop-opacity="0.34"/></radialGradient>
-    <linearGradient id="stSh" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity="0.9"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient></defs>
-  <circle cx="110" cy="110" r="102" fill="url(#stGl)" stroke="#5909B4" stroke-width="5"/>
-  <ellipse cx="110" cy="58" rx="74" ry="36" fill="url(#stSh)" opacity="0.7"/>
-  <circle cx="110" cy="110" r="90" fill="none" stroke="#8E32C3" stroke-width="2"/>
-  <circle cx="110" cy="110" r="58" fill="none" stroke="#BC59D1" stroke-width="2"/>
-  <text font-family="JBMono" font-size="17" font-weight="700" letter-spacing="3" fill="#5909B4"><textPath href="#stampArc">SEALED · مختوم · SEALED · مختوم ·</textPath></text>
-  <image href="assets_logo_m.png" x="72" y="81" width="76" height="58"/>
- </svg>`);
-const forRows=[...$('bsFor').querySelectorAll('.bsRow')], agnRows=[...$('bsAgn').querySelectorAll('.bsRow')];
-const HASH='SHA-256 · 7f3a9c2e51d0b81d04e21b6a93c4';
+/* decisions: «موافقة», the confirm dialog, «تأكيد الموافقة», «تم بنجاح», the card approved; its passport, its seal lit */
+const sealGlow=part(pad(bx('passport','seal'),3),'sglow');
+const box2c=b=>[b.x+b.w/2,b.y+b.h*0.6];
+const C_OK=box2c(bx('decisions','approve')), C_CONF=box2c(bx('confirm','ok')), C_PASS=box2c(bx('after','pass'));
 
-/* ================= G/I: wall of the site's pages ================= */
-const WALL_PAGES=['pulse','home','decisions','knowledgeMap','assistant','objectTypes','links','search','projects','admin'];
+/* ================= G/I: wall of the app's pages ================= */
+const WALL_PAGES=['pulse','home','decisions','map','assistant','schema','search','monitors','projects','after'];
 {const wall=$('wall');const TW=600,TH=335,GAP=44,COLS=5,ROWS=5;
  for(let r=0;r<ROWS;r++)for(let c=0;c<COLS;c++){
    const img=document.createElement('img');img.className='wtile';
-   img.src='site_pages/'+WALL_PAGES[(r*COLS+c+r*3)%WALL_PAGES.length]+'.png';
+   img.src=AP+WALL_PAGES[(r*COLS+c+r*3)%WALL_PAGES.length]+'.png';
    st(img,{left:c*(TW+GAP)+'px',top:r*(TH+GAP)+'px',width:TW+'px',height:TH+'px'});wall.appendChild(img);}}
 
 /* ================= I: ignition burst for the logo (one hit, on k64) ================= */
@@ -197,7 +145,7 @@ function sceneA(t){
   const on=t<vbeat(9.5); showS($('sA'),on); if(!on)return;
   const pIn=ez.dec(P(t,vbeat(1.5),vbeat(1.5)+1.0));
   const shatter=P(t,BURST0-0.04,BURST0+0.50);                         // the card dissolves into its sources
-  const cnt=ez.dec(P(t,vbeat(2),vbeat(5.5)));
+  const cnt=ez.dec(P(Math.round(t*30)/30,vbeat(2),vbeat(5.5)));       // one number per frame: motion blur would stack four
   $('kpiNum').textContent=fmt(KPI_V*cnt);
   st($('kpi'),{opacity:(pIn*(1-ez.outC(shatter))).toFixed(3),
     transform:`translateY(${((1-pIn)*30).toFixed(2)}px) scale(${((0.96+0.04*pIn)*(1+0.08*ez.outC(shatter))).toFixed(4)})`,
@@ -232,89 +180,47 @@ function sceneApp(t){
   st(uiWrap,{opacity:(UIW.a*(1-UIW.gone)).toFixed(3),transform:`translate(${UIW.tx.toFixed(2)}px,${UIW.ty.toFixed(2)}px) scale(${UIW.s.toFixed(4)})`});
   st($('capBand'),{opacity:(ez.dec(P(t,vbeat(16.5),vbeat(17)))*(1-ez.inC(P(t,vbeat(47.5),vbeat(48.5))))).toFixed(3)});
   {const ba=((kOf(t)/8*360)%360)+'deg';$('uiBeam').style.setProperty('--ba',ba);$('uiBeamS').style.setProperty('--ba',ba);}
-  // pages + the tab underline
-  let cur='proj',prev=null,sw=1;
-  for(const [ts,a,b] of SWITCH){if(t>=ts){cur=b;prev=a;sw=ez.ioC(P(t,ts,ts+0.55));}}
-  for(const k in PG){const e=PG[k];const o=k===cur?sw:(k===prev?1-sw:0);show(e,o>0.001);e.style.opacity=o.toFixed(3);}
-  const from=TABPOS[prev||'proj'],to=TABPOS[cur];
-  st(ulEl,{left:lerp(from[0],to[0],sw).toFixed(1)+'px',width:lerp(from[1],to[1],sw).toFixed(1)+'px'});
-  const onKey=sw<0.5&&prev?prev:cur; tabEls.forEach(e=>e.classList.toggle('on',e.dataset.k===onKey));
+  // the pages: the new one fades in over the one before (each page opaque, so nothing shows through)
+  const {cur,prev,sw}=pageAt(t), vis={};
+  for(const k in PG){const o=k===cur?sw:(k===prev?1:0);vis[k]=k===cur?sw:(k===prev?1-sw:0);show(PG[k],o>0.001);PG[k].style.opacity=o.toFixed(3);
+    PG[k].style.zIndex=k===cur?2:1;
+    if(VS[k]){show(VS[k],o>0.001);st(VS[k],{opacity:o.toFixed(3),zIndex:PG[k].style.zIndex});}}
+  const V=k=>vis[k]||0;
   // ---- projects: files and sources land
   ITEMS.forEach((it,i)=>{const ta=ABS_T[ABSORB_ORDER.indexOf(i)];
-    if(it.kind==='file'){const r=TARGETS[i],p=ez.dec(P(t,ta,ta+0.6));st(r,{opacity:(t<vbeat(12)?1:p).toFixed(3),transform:`translateX(${((1-p)*-24).toFixed(1)}px)`});}
-    else landGlow(TARGETS[i],t,ta,'rgba(188,89,209,0.55)');});
-  if(fileCount){const n=8+ITEMS.filter((it,i)=>it.kind==='file'&&t>=ABS_T[ABSORB_ORDER.indexOf(i)]).length;fileCount.textContent=`(${t<vbeat(12)?12:n})`;}
-  // ---- assistant: ask, answer, proof
-  {const k0=vbeat(17),sent=t>=vbeat(19.75);
-   const keys=t>=k0?Math.floor((t-k0)/S32)+1:0, n=sent?0:Math.min(Q_AI.length,keys*2);
-   $('aiQ').textContent=Q_AI.slice(0,n); $('aiPh').style.display=(n>0)?'none':''; $('aiCaret').style.opacity=(t>=vbeat(16.5)&&!sent)?1:0;
-   const press=t>=vbeat(19.5)&&t<vbeat(19.75);
-   st(aiSend,{background:n>0?'linear-gradient(90deg,#5F0DB4,#BC59D1)':'#C9A8E6',transform:press?'scale(0.96)':'scale(1)',
-     boxShadow:n>0?'0 0 26px rgba(188,89,209,0.55)':''});
-   st(aiInput,{borderColor:n>0?'#8E32C3':'#CECDD2'});
-   const gone=ez.dec(P(t,vbeat(19.5),vbeat(19.5)+0.6));aiEmpty.forEach(e=>e.style.opacity=(1-gone).toFixed(3));
-   const pU=ez.dec(P(t,vbeat(19.75),vbeat(19.75)+0.7));st($('aiUser'),{opacity:pU.toFixed(3),transform:`translateY(${((1-pU)*16).toFixed(1)}px)`});
-   const pA2=ez.dec(P(t,vbeat(20),vbeat(20)+0.7));
-   st($('aiAv'),{opacity:pA2.toFixed(3)});st($('aiAns'),{opacity:pA2.toFixed(3),transform:`translateY(${((1-pA2)*20).toFixed(1)}px)`});
-   ansWords.forEach((w,i)=>{const a0=vbeat(20.25)+i*S16;w.style.opacity=ez.dec(P(t,a0,a0+0.35)).toFixed(3);});
-   aiChips.forEach((c,i)=>{const a0=vbeat(21.75)+i*S16,p=ez.dec(P(t,a0,a0+0.6));st(c,{opacity:p.toFixed(3),transform:`translateY(${((1-p)*8).toFixed(1)}px)`});});
-   const pP=ez.dec(P(t,vbeat(22.25),vbeat(22.25)+0.7));st($('aiProof'),{opacity:pP.toFixed(3),transform:`translateY(${((1-pP)*20).toFixed(1)}px)`});
-   proofRows.forEach((r,i)=>{const a0=vbeat(22.25)+i*S16,p=ez.dec(P(t,a0,a0+0.5));st(r,{opacity:p.toFixed(3),transform:`translateX(${((1-p)*10).toFixed(1)}px)`});});}
-  // ---- business pulse: switch on, findings, alert
-  {const pOn=ez.dec(P(t,vbeat(25),vbeat(25)+0.45)), on2=pOn>0.5;
-   $('togK').setAttribute('cx',(7.5+9*pOn).toFixed(2));$('togK').setAttribute('fill',on2?'#5909B4':'#535257');
-   $('togR').setAttribute('fill',on2?'#E6D6F5':'#F3F3F3');$('togR').setAttribute('stroke',on2?'#8E32C3':'#535257');
-   $('togT').textContent=on2?'مُفعّل':'مُعطّل';
-   st(togEl,{background:on2?'#F1E9FA':'#F3F3F3',borderColor:on2?'#D6C1EE':'#D2D1D4',color:on2?'#5909B4':'#535257',
-     boxShadow:on2?'0 0 26px rgba(142,50,195,0.28)':''});
-   newPills.forEach((e,i)=>{const a0=vbeat(26)+i*S8,p=ez.dec(P(t,a0,a0+0.6));st(e,{opacity:p.toFixed(3),transform:`scale(${(0.9+0.1*p).toFixed(3)})`});});
-   const sp=P(t,vbeat(25),vbeat(28.5));st($('scan'),{top:(250+760*sp).toFixed(1)+'px',opacity:(sp>0&&sp<1?0.9*Math.sin(Math.PI*sp):0).toFixed(3)});
-   const pAl=ez.dec(P(t,vbeat(28),vbeat(28)+0.8));st($('alertCard'),{opacity:pAl.toFixed(3),transform:`translateY(${((1-pAl)*-20).toFixed(1)}px)`});
-   const bp=ez.dec(P(t,vbeat(28),vbeat(28)+0.6));badge.textContent=t>=vbeat(28)?'4':'3';badge.style.transform=`scale(${(t>=vbeat(28)?1+0.12*(1-bp):1).toFixed(3)})`;}
-  // ---- decisions: both sides with evidence
-  {const fw=ez.dec(P(t,vbeat(32.5),vbeat(32.5)+0.8));veilEl.style.opacity=(fw*(1-ez.inC(P(t,vbeat(47),vbeat(48))))).toFixed(3);
-   const pb=ez.dec(P(t,vbeat(33),vbeat(33)+1.0));
-   decCardEl.style.opacity=(1-ez.dec(P(t,vbeat(33),vbeat(33)+0.45))).toFixed(3);
-   decCardEl.style.transform=`scale(${(1+0.035*fw).toFixed(4)})`;
-   const morph=ez.ioC(P(t,vbeat(40.5),vbeat(41.5)));
-   st($('bsPanel'),{top:lerp(517,300,pb).toFixed(1)+'px',height:lerp(214,560,pb).toFixed(1)+'px',
-     opacity:(Math.min(1,pb*4)*(1-morph)).toFixed(3)});
-   forRows.forEach((r,i)=>{const t0=vbeat(33.5)+i*S8,p=ez.dec(P(t,t0,t0+0.6));st(r,{opacity:p.toFixed(3),transform:`translateX(${((1-p)*-14).toFixed(1)}px)`});
-     const ev=r.querySelector('.ev'),q=ez.dec(P(t,t0+S16,t0+S16+0.5));st(ev,{opacity:q.toFixed(3),transform:`translateY(-50%) scale(${(0.94+0.06*q).toFixed(3)})`});});
-   agnRows.forEach((r,i)=>{const t0=vbeat(35)+i*S8,p=ez.dec(P(t,t0,t0+0.6));st(r,{opacity:p.toFixed(3),transform:`translateX(${((1-p)*14).toFixed(1)}px)`});
-     const ev=r.querySelector('.ev'),q=ez.dec(P(t,t0+S16,t0+S16+0.5));st(ev,{opacity:q.toFixed(3),transform:`translateY(-50%) scale(${(0.94+0.06*q).toFixed(3)})`});});
-   const pr=ez.dec(P(t,vbeat(36),vbeat(36)+0.7));st($('bsRec'),{opacity:pr.toFixed(3),transform:`translateY(${((1-pr)*16).toFixed(1)}px)`});
-   const cf=ez.dec(P(t,vbeat(36),vbeat(37.5)));$('cfBar').style.width=(80*cf).toFixed(1)+'%';
-   $('cfV').textContent='ثقة '+['٠','١','٢','٣','٤','٥','٦','٧','٨'][Math.round(8*cf)]+(Math.round(8*cf)?'٠':'')+'٪';
-   // approve on the downbeat: press, green flash
-   const press=t>=vbeat(40)&&t<vbeat(40.25),fl=P(t,vbeat(40),vbeat(40)+0.7);
-   st($('bsOK'),{transform:press?'scale(0.97)':'scale(1)',background:t>=vbeat(39.75)?'#CFEEDD':'#E7F5EE',
-     boxShadow:fl>0&&fl<1?`0 0 0 ${(4*(1-fl)).toFixed(1)}px rgba(11,132,71,${(0.4*(1-fl)).toFixed(2)}),0 0 ${(24*(1-fl)).toFixed(0)}px rgba(11,132,71,0.45)`:''});}
-  // ---- the sealed record
-  {const pR=ez.dec(P(t,vbeat(41),vbeat(41)+0.8));st($('sealRec'),{opacity:pR.toFixed(3),transform:`scale(${(0.97+0.03*pR).toFixed(4)})`});
-   const q=P(t,vbeat(42)-0.1,vbeat(42)+0.6), qs=ez.dec(q);                         // the seal settles onto the record
-   st($('stamp'),{opacity:(t>=vbeat(42)-0.1?Math.min(1,q*2.5):0).toFixed(3),transform:`rotate(${(-15+6*qs).toFixed(2)}deg) scale(${(1.25-0.25*qs).toFixed(4)})`});
-   const nh=t>=vbeat(43)?Math.min(HASH.length,(Math.floor((t-vbeat(43))/S32)+1)*2):0;$('sealHash').textContent=HASH.slice(0,nh);
-   $('sealTime').style.opacity=ez.dec(P(t,vbeat(44.5),vbeat(44.5)+0.7)).toFixed(3);
-   const pl=ez.dec(P(t,vbeat(44),vbeat(44)+0.6));st($('sealLock'),{opacity:pl.toFixed(3)});$('lockSh').setAttribute('transform',`translate(0,${(-4*(1-pl)).toFixed(2)})`);
-   st($('sealImm'),{opacity:ez.dec(P(t,vbeat(44.25),vbeat(44.25)+0.7)).toFixed(3)});
-   const pd=ez.dec(P(t,vbeat(46),vbeat(46)+0.4));                                  // edit refused: the button turns red, no wiggle
-   st($('sealEdit'),{borderColor:mixHex('#D6D5DA','#EBC5C7',pd),color:mixHex('#6C6A74','#A8131C',pd)});
-   const pt=ez.dec(P(t,vbeat(46.25),vbeat(46.25)+0.6));st($('sealTip'),{opacity:pt.toFixed(3),transform:`translateY(${((1-pt)*10).toFixed(1)}px)`});}
-  // ---- cursor: to approve (k40), then to edit (k46)
-  {const okC=centerIn($('bsOK')),edC=centerIn($('sealEdit'));
-   const a=[1250/K,700/K],b=[okC[0],okC[1]],c=[edC[0],edC[1]];
-   const m1=ez.prem(P(t,vbeat(38),vbeat(39.75))),m2=ez.prem(P(t,vbeat(44.9),vbeat(45.9)));
-   let x=lerp(a[0],b[0],m1)+Math.sin(Math.PI*m1)*60, y=lerp(a[1],b[1],m1)+Math.sin(Math.PI*m1)*70;
-   x=lerp(x,c[0],m2);y=lerp(y,c[1],m2);
-   // visible for the approve click, hidden while the record seals, back for the edit attempt
-   const vis=(t>=vbeat(38)&&t<vbeat(47.5))?(t<vbeat(44.5)?1-ez.inC(P(t,vbeat(40.6),vbeat(41))):ez.dec(P(t,vbeat(44.6),vbeat(45))))*(1-ez.inC(P(t,vbeat(47),vbeat(47.5)))):0;
-   st($('cursor'),{left:(x*K-3).toFixed(1)+'px',top:(y*K-4).toFixed(1)+'px',opacity:vis.toFixed(3)});
-   const clickAt=t<vbeat(44)?vbeat(40):vbeat(46),rp=P(t,clickAt,clickAt+0.5),tg=t<vbeat(44)?b:c;
+    if(it.kind==='file'){const r=TARGETS[i],p=ez.dec(P(t,ta,ta+0.6));
+      st(r,{opacity:(p*V('projects-base')).toFixed(3),transform:`translateX(${((1-p)*-24).toFixed(1)}px)`});}
+    else {const q=t-ta,e=q<0?0:q<0.1?q/0.1:Math.max(0,1-(q-0.1)/0.7);TARGETS[i].style.opacity=(e*V('projects-base')).toFixed(3);}});
+  // ---- assistant: the question typed (2 letters a 32nd from k17), sent on k19.5; it thinks; the answer, its sources
+  {const k0=vbeat(17), n=t<k0?0:Math.min(KQN,(Math.floor((t-k0)/S32)+1)*2), typing=V('ask-space');
+   const xr=TX1-(TX1-TX0)*n/KQN;
+   aTyped.style.clipPath=`inset(0 0 0 ${(xr-AF.x).toFixed(1)}px)`;aTyped.style.opacity=(n>0?typing:0).toFixed(3);
+   aCaret.style.left=(xr-1.6).toFixed(1)+'px';aCaret.style.opacity=(t>=vbeat(16.75)&&t<vbeat(19.5)?typing:0).toFixed(3);
+   const press=Math.sin(Math.PI*P(t,vbeat(19.5)-0.03,vbeat(19.5)+0.2));
+   aSend.style.opacity=(n>0?typing:0).toFixed(3);aSend.style.transform=`scale(${(1-0.08*press).toFixed(3)})`;
+   aSrc.style.opacity=(ez.dec(P(t,vbeat(21.75),vbeat(21.75)+0.4))*(1-0.4*ez.ioC(P(t,vbeat(22.75),vbeat(23.75))))*V('ask-answer')).toFixed(3);}
+  // ---- monitoring rules: the rule lights; its alert comes out of the bell
+  {const r=ez.dec(P(t,vbeat(25.5),vbeat(25.5)+0.6))*(1-ez.ioC(P(t,vbeat(27.5),vbeat(28.3))));ruleRim.style.opacity=(r*V('monitors')).toFixed(3);
+   const g=ez.dec(P(t,vbeat(27.75),vbeat(28.25)))*(1-0.5*ez.ioC(P(t,vbeat(29.5),vbeat(31))));bellGlow.style.opacity=(g*V('monitors')).toFixed(3);
+   const q=ez.dec(P(t,vbeat(28),vbeat(28)+0.55));
+   st(pop,{opacity:(Math.min(1,q*3)*V('monitors')).toFixed(3),transform:`scale(${(0.08+0.92*q).toFixed(4)})`,filter:q<1?`blur(${(8*(1-q)).toFixed(2)}px)`:'none'});}
+  // ---- the passport's seal: «السلسلة سليمة — لا يوجد عبث»
+  sealGlow.style.opacity=(ez.dec(P(t,vbeat(45.5),vbeat(45.5)+0.6))*V('passport')).toFixed(3);
+  // ---- cursor: «موافقة» (k37), «تأكيد الموافقة» (k40), «جواز القرار» (k44.5)
+  {const a=[1250/K,700/K];
+   const m1=ez.prem(P(t,vbeat(35.75),vbeat(36.9))),m2=ez.prem(P(t,vbeat(38.6),vbeat(39.9))),m3=ez.prem(P(t,vbeat(43.6),vbeat(44.4)));
+   let x=lerp(a[0],C_OK[0],m1)+Math.sin(Math.PI*m1)*60, y=lerp(a[1],C_OK[1],m1)+Math.sin(Math.PI*m1)*70;
+   x=lerp(x,C_CONF[0],m2);y=lerp(y,C_CONF[1],m2);x=lerp(x,C_PASS[0],m3);y=lerp(y,C_PASS[1],m3);
+   const vis1=t>=vbeat(35.75)&&t<vbeat(41)?ez.dec(P(t,vbeat(35.75),vbeat(36.1)))*(1-ez.inC(P(t,vbeat(40.6),vbeat(41)))):0;
+   const vis2=t>=vbeat(43.6)&&t<vbeat(45.4)?ez.dec(P(t,vbeat(43.6),vbeat(43.9)))*(1-ez.inC(P(t,vbeat(45),vbeat(45.4)))):0;
+   st($('cursor'),{left:(x*K-3).toFixed(1)+'px',top:(y*K-4).toFixed(1)+'px',opacity:Math.max(vis1,vis2).toFixed(3)});
+   const clickAt=t<vbeat(39)?vbeat(37):t<vbeat(43)?vbeat(40):vbeat(44.5),rp=P(t,clickAt,clickAt+0.5),tg=t<vbeat(39)?C_OK:t<vbeat(43)?C_CONF:C_PASS;
    if(rp>0&&rp<1){const rr=(0.28+0.72*ez.outC(rp))*90;
      st($('rip'),{left:(tg[0]*K-rr).toFixed(1)+'px',top:(tg[1]*K-rr).toFixed(1)+'px',width:2*rr+'px',height:2*rr+'px',opacity:((1-rp)*0.9).toFixed(3),
-       borderWidth:(2.5-rp*1.5).toFixed(2)+'px',borderColor:t<vbeat(44)?'rgba(11,132,71,0.8)':'rgba(168,19,28,0.8)'});show($('rip'),true);}
+       borderWidth:(2.5-rp*1.5).toFixed(2)+'px'});show($('rip'),true);}
    else show($('rip'),false);}
+  // ---- the sample-data label, while the app is up
+  $('note').style.opacity=(ez.dec(P(t,vbeat(12.5),vbeat(13.5)))*(1-ez.inC(P(t,vbeat(48),vbeat(49))))).toFixed(3);
 }
 function sceneWall(t){
   const inG=t>=vbeat(48)-0.05&&t<vbeat(56.2), inI=t>=IGN-0.1;
@@ -358,22 +264,21 @@ function sceneI(t){
   SPK.forEach(s=>{const p=P(t,IGN+0.02,IGN+0.02+s.life);if(p<=0||p>=1){s.el.setAttribute('opacity',0);return;}
     const d=95+0.7*s.v*ez.outC(p);s.el.setAttribute('cx',CX+Math.cos(s.a)*d);s.el.setAttribute('cy',CY+Math.sin(s.a)*d+30*p*p);
     s.el.setAttribute('r',(s.r*(1-0.5*p)).toFixed(2));s.el.setAttribute('opacity',(0.9*(1-p)**1.2).toFixed(3));});
-  // the mark: a soft scale-in on the hit (4% past size, then settles), then holds
+  // the mark: a soft scale-in on the hit, slowing into its size (never past it: no overshoot), then holds
   let sc,op,bl=0;
   if(t<IGN-0.1){sc=0.6;op=0;}
-  else if(t<IGN+0.45){const q=P(t,IGN-0.1,IGN+0.45);sc=0.6+0.44*ez.dec(q);op=Math.min(1,q*2);bl=4*(1-q);}
-  else if(t<IGN+1.0){sc=1.04-0.04*ez.ioC(P(t,IGN+0.45,IGN+1.0));op=1;}
+  else if(t<IGN+1.0){const q=P(t,IGN-0.1,IGN+1.0);sc=0.6+0.4*ez.dec(q);op=Math.min(1,q*2.2);bl=4*Math.max(0,1-2*q);}
   else {sc=1.0;op=1;}
   const g=24+18*Math.exp(-Math.max(0,t-IGN)/0.45)*(t>=IGN?1:0);
   st($('endM'),{opacity:op.toFixed(3),transform:`scale(${sc.toFixed(4)})`,
     filter:`blur(${bl.toFixed(2)}px) drop-shadow(0 0 ${g.toFixed(1)}px rgba(188,89,209,0.72)) drop-shadow(0 0 ${(g*2.6).toFixed(1)}px rgba(142,50,195,0.45))`});
   const gp=P(t,vbeat(65.25),vbeat(66.25));
   st($('mGlint'),{transform:`scale(${sc.toFixed(4)})`,opacity:(gp>0&&gp<1?Math.sin(Math.PI*gp)*op:0).toFixed(3),backgroundPosition:`${(110-120*ez.ioC(gp)).toFixed(1)}% 0`});
-  // wordmark, tagline, url on the bar lines; the CTA lands when the drums return
+  // wordmark, tagline, url and "Book your demo · احجز عرضك التجريبي" on the bar lines, the CTA held 3.5 s before the fade
   const pW=ez.dec(P(t,vbeat(68),vbeat(68)+1.0));st($('endWord'),{opacity:(pW*0.92).toFixed(3),transform:`translateY(${((1-pW)*18).toFixed(1)}px)`});
   enter($('endTag'),t,vbeat(72),0.9);enter($('endTagAR'),t,vbeat(72.5),0.9,18);
-  enter($('endURL'),t,vbeat(76),0.9,16);
-  const pc=ez.dec(P(t,vbeat(80),vbeat(80)+0.9));st($('endCTA'),{opacity:pc.toFixed(3),transform:`scale(${(0.95+0.05*pc).toFixed(4)})`});
+  enter($('endURL'),t,vbeat(74),0.9,16);
+  const pc=ez.dec(P(t,vbeat(76),vbeat(76)+0.9));st($('endCTA'),{opacity:pc.toFixed(3),transform:`scale(${(0.95+0.05*pc).toFixed(4)})`});
 }
 function captions(t){
   capSimple($('c1en'),t,vbeat(4),BURST0-0.45,BURST0);capSimple($('c1ar'),t,vbeat(4.5),BURST0-0.45,BURST0,18);
@@ -381,7 +286,7 @@ function captions(t){
   capParts($('c3en'),t,[vbeat(17),vbeat(22)],vbeat(23.25),vbeat(24));capParts($('c3ar'),t,[vbeat(17.5),vbeat(22.5)],vbeat(23.25),vbeat(24),18);
   capSimple($('c4en'),t,vbeat(24.5),vbeat(31.25),vbeat(32));capSimple($('c4ar'),t,vbeat(25),vbeat(31.25),vbeat(32),18);
   capParts($('c5en'),t,[vbeat(32.5),vbeat(34)],vbeat(39.25),vbeat(40));capParts($('c5ar'),t,[vbeat(33),vbeat(34.5)],vbeat(39.25),vbeat(40),18);
-  capParts($('c6en'),t,[vbeat(42),vbeat(44)],vbeat(47.25),vbeat(48));capParts($('c6ar'),t,[vbeat(42.5),vbeat(44.5)],vbeat(47.25),vbeat(48),18);
+  capParts($('c6en'),t,[vbeat(44.75),vbeat(45.75)],vbeat(47.25),vbeat(48));capParts($('c6ar'),t,[vbeat(45.25),vbeat(46.25)],vbeat(47.25),vbeat(48),18);
   capSimple($('c7en'),t,vbeat(48.5),vbeat(54.75),vbeat(55.6));capSimple($('c7ar'),t,vbeat(49),vbeat(54.75),vbeat(55.6),18);
 }
 function flash(t){

@@ -19,17 +19,17 @@ cam=re.search(r'^let CAM=.*$',src,re.M).group(0)+'\n'+fn('camState')+'\n'+fn('ca
 css=open('film54_src/style.css',encoding='utf-8').read()
 body=open('film54_src/body.html',encoding='utf-8').read()
 scenes=open('film54_src/scenes.js',encoding='utf-8').read()
+import json
+apb=json.dumps(json.load(open('films/app-pages/pages/shots.json',encoding='utf-8'))['boxes'])   # the real pages' parts (tools/app_shot.js)
 html=f'''<!DOCTYPE html>
 <html>
 <head>
 <meta charset="utf-8">
 <title>MARSAD — Know. Watch. Decide. (54s)</title>
-<link rel="stylesheet" href="site_kit.css">
 <style>
 {fonts}
 {css}
 </style>
-<script src="site_kit.js"></script>
 </head>
 <body>
 {body}
@@ -41,6 +41,8 @@ html=f'''<!DOCTYPE html>
 {tiles}
 {glass}
 {fn('tileHTML')}
+/* ================= the real app's pages: the boxes of their parts (films/app-pages/pages/shots.json) ================= */
+const APB={apb};
 
 {canv}
 /* ================= camera (shared with film.html) ================= */

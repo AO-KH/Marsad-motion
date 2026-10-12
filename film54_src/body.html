@@ -2,7 +2,7 @@
 <canvas id="bg" width="1920" height="1080"></canvas>
 
 <div id="cam">
-<!-- G / I backdrop: a tilted wall of the site's pages -->
+<!-- G / I backdrop: a tilted wall of the app's pages -->
 <div id="wallWrap"><div id="wall"></div><div id="wallVeil"></div></div>
 
 <!-- ignition layer (I) -->
@@ -31,7 +31,7 @@
 <!-- B: scattered sources (tiles + files) -->
 <div id="items"></div>
 
-<!-- C–G: the Marsad web app -->
+<!-- C–G: the Marsad web app (the real app's pages) -->
 <div id="uiWrap">
   <div id="uiFrame"><div class="site" id="uiSite"></div></div>
   <div class="beam soft" id="uiBeamS" style="left:-7px;top:-7px;width:1374px;height:774px;border-radius:25px;"></div><div class="beam" id="uiBeam" style="left:-2px;top:-2px;width:1364px;height:764px;border-radius:20px;"></div>
@@ -65,6 +65,8 @@
   <div id="endCTA"><span id="ctaPill"><span>Book your demo</span><span class="sep">·</span><span class="ar">احجز عرضك التجريبي</span></span></div>
 </div>
 
+<!-- the app's screens show sample data: labelled while the window is up -->
+<div id="note"><span class="en">Sample data</span><span class="sep">·</span><span class="ar">بيانات تجريبية</span></div>
 <!-- a soft white band keeps captions legible over the zoomed app -->
 <div id="capBand"></div>
 <!-- captions (words that belong together reveal together; two-part lines reveal part by part) -->
@@ -73,14 +75,14 @@
   <div class="copyAR" id="c1ar" style="top:912px;">من أين جاء هذا الرقم؟</div>
   <div class="copyEN" id="c2en" style="top:842px;">Your data is everywhere.</div>
   <div class="copyAR" id="c2ar" style="top:912px;">بياناتك في كل مكان</div>
-  <div class="copyEN" id="c3en" style="top:938px;"><span class="cw">Ask.</span> <span class="cw">Get proof.</span></div>
-  <div class="copyAR" id="c3ar" style="top:1000px;"><span class="cw">اسأل...</span> <span class="cw">وخذ الدليل</span></div>
+  <div class="copyEN" id="c3en" style="top:938px;"><span class="cw">Ask.</span> <span class="cw">See where it comes from.</span></div>
+  <div class="copyAR" id="c3ar" style="top:1000px;"><span class="cw">اسأل…</span> <span class="cw">واعرف مصدره.</span></div>
   <div class="copyEN" id="c4en" style="top:938px;">It watches for you.</div>
-  <div class="copyAR" id="c4ar" style="top:1000px;">يراقب عنك</div>
-  <div class="copyEN" id="c5en" style="top:938px;"><span class="cw">Both sides.</span> <span class="cw">With evidence.</span></div>
-  <div class="copyAR" id="c5ar" style="top:1000px;"><span class="cw">الحجج</span> <span class="cw">والأدلة أمامك</span></div>
-  <div class="copyEN" id="c6en" style="top:938px;"><span class="cw">Sealed.</span> <span class="cw">Unrewritable.</span></div>
-  <div class="copyAR" id="c6ar" style="top:1000px;"><span class="cw">مختوم...</span> <span class="cw">لا يقبل التعديل</span></div>
+  <div class="copyAR" id="c4ar" style="top:1000px;">يراقب عنك.</div>
+  <div class="copyEN" id="c5en" style="top:938px;"><span class="cw">Decide.</span> <span class="cw">With its reasons.</span></div>
+  <div class="copyAR" id="c5ar" style="top:1000px;"><span class="cw">قرّر…</span> <span class="cw">وأسبابه أمامك.</span></div>
+  <div class="copyEN" id="c6en" style="top:938px;"><span class="cw">Sealed.</span> <span class="cw">In its passport.</span></div>
+  <div class="copyAR" id="c6ar" style="top:1000px;"><span class="cw">مختوم…</span> <span class="cw">في جواز القرار.</span></div>
   <div class="copyEN" id="c7en" style="top:842px;">And much more.</div>
   <div class="copyAR" id="c7ar" style="top:912px;">وأكثر من ذلك بكثير</div>
 </div>

@@ -330,9 +330,11 @@ Delivered cuts:
 | `marsad-54s-v1.mp4` | First cut. |
 | `marsad-54s-v2.mp4` | Glass icons: source tiles, file chips, Know/Watch/Decide icons, glass seal. |
 | `marsad-54s-v3.mp4` | The "? SOURCE UNKNOWN · المصدر غير معروف" tag is one pill again (it rendered as three boxes), and the glass no longer flickers (the `.gk` base, section 10). The Know/Watch/Decide icons keep v2's richer glow (`.kwd .kwdIcon .gb` at 0.78). |
-| `marsad-54s-v4.mp4` | Calm pace, no shaking (below). Same music, length and storyboard. **Current.** |
+| `marsad-54s-v4.mp4` | Calm pace, no shaking (below). Same music, length and storyboard. |
+| `marsad-54s-v5.mp4` | 2026-10-12 (§18): the app's real screens, the catalogue's story, motion blur. **Current.** |
 
-- **Build:** `./build54.sh out/marsad-54s.mp4` takes about 6 minutes.
+- **Build:** `./build54.sh out/marsad-54s.mp4` takes about 15 minutes: motion blur (4 samples a frame, 16 on the
+  fast moves listed in `FAST`), then QA.
 - **Source:** `film54_src/` holds `style.css`, `body.html` and `scenes.js`. `make_film54.py` combines them with
   engine pieces copied from `film.html` (helpers, source tiles, background, camera) into `film54.html`. Edit
   `film54_src/`, then rebuild. Don't edit `film54.html` by hand. The glass helpers (`GLASS`, `shade`,
@@ -353,26 +355,26 @@ Delivered cuts:
 
   | Time (s) | Caption | Scene |
   |---|---|---|
-  | 0–5 | "Where did this number come from?" | A Q3 sales number counts up, then a "source unknown" tag appears |
-  | 5–10 | "Your data is everywhere." | The number shatters into 8 sources and 4 files; they land in the Projects page on 16ths |
-  | 10–15 | "Ask. Get proof." | The Assistant types the question on 32nds, streams the answer, then shows source chips and a proof table |
-  | 15–20 | "It watches for you." | Business Pulse: the advisor switches on, "new" badges appear and a stock alert slides in |
-  | 20–25 | "Both sides. With evidence." | Decisions: a for/against panel with evidence chips and an 80% confidence recommendation |
-  | 25–30 | "Sealed. Unrewritable." | Approve on k40, the seal stamp lands on k42, then hash, lock and a refused edit |
-  | 30–35 | "And much more." | The window recedes into the wall of pages |
+  | 0–5 | "Where did this number come from?" | A Q3 sales number (4,812,450) counts up, one value a frame, then a "source unknown" tag appears |
+  | 5–10 | "Your data is everywhere." | The number shatters into 8 sources and 4 files; they land in the app's Projects page on 16ths (the files' rows, the departments and projects they feed lit) |
+  | 10–15 | "Ask. See where it comes from." | The app's assistant: the question typed into its field on 32nds, «المساعد يفكّر…», its answer (1,247 invoices in Odoo, the uploaded file) with its three sources lit |
+  | 15–20 | "It watches for you." | The monitoring rules: «مخزون منخفض — فرع الرياض» rimmed; its alert comes out of the bell |
+  | 20–25 | "Decide. With its reasons." | The decision the rule raised; «موافقة» (k37), the confirm dialog with its reason field, «تأكيد الموافقة» (k40), «تم بنجاح» |
+  | 25–30 | "Sealed. In its passport." | The card approved (5 / 1), «جواز القرار» (k44.5), the passport, its seal lit |
+  | 30–35 | "And much more." | The window recedes into the wall of the app's pages |
   | 35–40 | "Know. Watch. Decide." | One word per 2 beats (k56, k58, k60); the words converge into the logo |
-  | 40–54 | — | Logo ignition on k64, then wordmark, tagline, marsadnasl.com and "Book your demo · احجز عرضك التجريبي" when the drums return |
+  | 40–54 | — | Logo ignition on k64 (it slows into its size), then wordmark, tagline, marsadnasl.com (k74) and "Book your demo · احجز عرضك التجريبي" (k76), held 3.5 s before the fade |
 - **Focus track:** `FOCUS` in `scenes.js` pushes the app window in on the key moments, so the small UI text
   stays readable. A white band behind the captions keeps them legible over the zoomed window.
 - **Calm pace (v4).** Keep these when editing:
-  - No shaking: no `shake` camera moves, no rotation lean, no wiggles (the refused edit only turns the button
-    red), no bobbing (the sources drift outward in a straight line), no overshoot on the logo (4%, then settles).
+  - No shaking: no `shake` camera moves, no rotation lean, no wiggles, no bobbing (the sources drift outward in a
+    straight line), no overshoot (since v5 the logo slows into its size; v4's went 4% past, then settled).
   - No beat cuts in the camera: the zoom-through (k16), page nudges (k24, k32) and zoom-out (k48) jumped the
     zoom or position on the beat and were removed. The window's own grow/recede and 0.55 s page cross-fades
     carry those moments. Only the `rise` into Know/Watch/Decide keeps a cut, at a moment with nothing on screen.
   - Punches are small (1–2%) and swell in over 0.25 s (`at:0.25`; `camState` in `film.html` takes an optional
     `at`, default 0.05 s, so the 63 s film is unchanged).
-  - Entrances run 0.6–1.0 s on `ez.dec`; no `ez.emph` pops. Focus glides take 1.4–1.6 beats.
+  - Entrances run 0.6–1.0 s on `ez.dec`; no `ez.emph` pops. Focus glides take 1.6 beats (1 s) or more since v5.
   - Measured on the camera path (point 500 px from centre): rotation 0 (v3: ±0.8° with 29 reversals), peak
     speed 68 px/frame (v3: 162), frames with a jolt over 3 px 31 (v3: 107).
 
@@ -654,8 +656,23 @@ square), the catalogue's fixes, 1080p. One video at a time, each delivered when 
   The captured dialog screens are veiled only from 24 px down: the header's top strip, with the avatar and the
   bell's badge, stays bright, so a film showing a whole dialog screen veils that strip itself.
 
-Every video in `Videos/` that was made before the new front end is now on it, except two legacy samples (the
-website-style film and "Know. Watch. Decide."), which follow.
+- **"Know. Watch. Decide."** (`film54_src/`, 54 s, 2026-10-12): its window shows the real pages of `films/app-pages`
+  whole (1440 × 805 CSS px in the 1360 × 760 window), cross-fading between captured states, with parts lit over them:
+  the files' rows land in Projects (the page captured without them, then each row); the question typed into the
+  assistant's field (its typed field uncovered right to left), «المساعد يفكّر…», the answer «رقم مبيعات الربع الثالث
+  4,812,450 ر.س هو مجموع 1,247 فاتورة في Odoo…» with its three sources lit; the monitoring rules, the Riyadh stock
+  rule rimmed, its alert out of the bell; the decision a rule raised, «موافقة», the confirm dialog, «تأكيد الموافقة»,
+  «تم بنجاح», the card approved, «جواز القرار» and the passport's seal. The Business Pulse scene with the daily
+  advisor (switched off) is gone. Three captions changed with the screens: "Ask. See where it comes from.", "Decide.
+  With its reasons." and "Sealed. In its passport." (they were "Ask. Get proof.", "Both sides. With evidence." and
+  "Sealed. Unrewritable."). The client's rules, applied on the way: the logo slows into its size (it went 4% past),
+  the CTA holds 3.5 s (it had 1 s), every camera glide takes 1 s or more (some took 0.4 s), the opening count shows
+  one number a frame (the motion blur stacked four), and the captured dialog screens' bright top strip is veiled as
+  the app's backdrop means it (black 70 %, blur 4 px). Now with motion blur (it had none): `build54.sh` renders 4
+  samples a frame and its 9 fast moves with 16. QA PASS (shake 0), −13.9 LUFS, −2.0 dBTP, 25 MB.
+
+Every video in `Videos/` that was made before the new front end is now on it, except the website-style film, which
+follows.
 
 **Front-end findings to tell the client** (seen while capturing):
 - The Home page's hero has a small kicker «طبقة القرار السيادية» ("sovereign decision layer"); the catalogue avoids
